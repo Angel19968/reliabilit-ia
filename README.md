@@ -10,7 +10,8 @@ Hub de modelos interactivos de mantenimiento predictivo (Nivel 1 — Público). 
 reliabilit-ia/
 ├── index.html                          ← Hub: catálogo de modelos + CTA
 ├── modelos/
-│   └── radar-de-rodamientos/index.html ← Demo 1 (Reg. Polinomial, rodamientos)
+│   ├── radar-de-rodamientos/index.html ← Demo 1 (Reg. Polinomial, rodamientos)
+│   └── pulso-energetico/index.html     ← Demo 2 (Serie de tiempo, energía)
 ├── assets/
 │   ├── logo.svg
 │   └── og-image.png                    ← (pendiente) imagen para previews al compartir
@@ -37,7 +38,7 @@ Al agregar una demo nueva, copiar el mismo bloque de CTA + tarjeta de contacto (
 
 ## Siguiente demo a construir
 
-Según el roadmap: **Pulso Energético** (TS_ARIMA) → carpeta `modelos/pulso-energetico/index.html`, misma plantilla de 6 secciones y misma paleta.
+Según el roadmap: **Diagnóstico del Motor** (Clf_RandomForest) → carpeta `modelos/diagnostico-del-motor/index.html`, misma plantilla de 6 secciones y misma paleta.
 
 ## Checklist antes de publicar cada demo nueva
 
