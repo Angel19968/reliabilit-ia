@@ -99,6 +99,8 @@
   .result .risk-dot{width:16px; height:16px; border-radius:50%; flex-shrink:0;}
   .result .risk-text h3{font-size:23px; margin-bottom:6px;}
   .result .risk-text p{font-size:15px; color:var(--muted);}
+  .confidence-line{font-size:14px !important; font-weight:600; margin-top:10px !important; color:var(--text) !important;}
+  .confidence-note{font-size:13px !important; color:var(--muted); margin-top:2px !important;}
 
   /* ---- live simulation column ---- */
   .live-col h3{font-size:14px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:14px; font-family:'DM Mono',monospace; font-weight:500;}
@@ -130,6 +132,7 @@
   #residuals{width:100%; height:210px; background:var(--bg); border:1px solid var(--border); border-radius:12px; display:block; margin-top:18px;}
   .metrics{display:flex; gap:24px; margin-top:16px; flex-wrap:wrap; font-size:14px; color:var(--muted);}
   .metrics b{color:var(--text);}
+  .fit-badge{margin-top:14px; font-size:15px; font-weight:600; padding:10px 14px; border-radius:10px; background:var(--panel2); display:inline-block;}
 
   .business p{color:var(--muted); font-size:16px; max-width:640px;}
   .business .stat{color:var(--success); font-weight:500;}
@@ -226,6 +229,8 @@
             <div class="risk-text">
               <h3 id="riskTitle">Calculando…</h3>
               <p id="riskDetail"></p>
+              <p class="confidence-line" id="confidenceLine"></p>
+              <p class="confidence-note" id="confidenceNote"></p>
             </div>
           </div>
         </div>
@@ -257,15 +262,17 @@
 
       <div class="analyst" id="analystPanel">
         <h3 style="font-size:18px; text-transform:none; letter-spacing:0; margin-bottom:8px; color:var(--text);">Reentrenar en vivo</h3>
-        <p style="font-size:15px; color:var(--muted); margin-bottom:18px;">Elige el grado del polinomio y observa cómo se reajusta la curva sobre el mismo set de datos (20 rodamientos, vibración vs. vida útil observada). El panel de residuos debajo muestra dónde el modelo se queda corto o se pasa.</p>
+        <p style="font-size:15px; color:var(--muted); margin-bottom:18px;">Elige el grado del polinomio y observa cómo se reajusta la curva. El set de 20 rodamientos se divide en 13 para entrenar (●, violeta) y 7 reservados para probar qué tan bien generaliza (○, blanco) — el panel de residuos debajo muestra dónde el modelo se queda corto o se pasa.</p>
         <div class="degree-row" id="degreeRow"></div>
         <canvas id="chart" width="800" height="340"></canvas>
         <canvas id="residuals" width="800" height="210"></canvas>
         <div class="metrics">
           <span>Grado: <b id="mDegree">2</b></span>
-          <span>R²: <b id="mR2">–</b></span>
+          <span>R² entrenamiento: <b id="mR2Train">–</b></span>
+          <span>R² prueba: <b id="mR2Test">–</b></span>
           <span>Coeficientes: <b id="mCoef" style="font-size:13px;">–</b></span>
         </div>
+        <div class="fit-badge" id="mFitBadge">–</div>
       </div>
     </div>
   </section>
@@ -350,6 +357,8 @@ const tempVal = document.getElementById('tempVal');
 const riskDot = document.getElementById('riskDot');
 const riskTitle = document.getElementById('riskTitle');
 const riskDetail = document.getElementById('riskDetail');
+const confidenceLine = document.getElementById('confidenceLine');
+const confidenceNote = document.getElementById('confidenceNote');
 const bizDaysInline = document.getElementById('bizDaysInline');
 const bizAction = document.getElementById('bizAction');
 const bizTitle = document.getElementById('bizTitle');
@@ -431,6 +440,24 @@ function drawProjection(days, colorCss){
   pctx.fillText('falla est.', Math.max(padL,x1-58), y1-10);
 }
 
+// Rango "denso" con el que se calibró el modelo de ejemplo. Fuera de ahí, la
+// predicción existe pero es extrapolación — se lo decimos al usuario en vez
+// de aparentar la misma certeza en todo el rango del slider.
+function computeConfidence(vib, temp){
+  const vibIn = vib>=1 && vib<=10;
+  const tempIn = temp>=30 && temp<=80;
+  const vibNear = vib<1 || (vib>10 && vib<=12);
+  const tempNear = temp<30 || (temp>80 && temp<=90);
+
+  if(vibIn && tempIn){
+    return {level:'Alta', color:'var(--success)', note:'Lectura dentro del rango típico con el que se calibró el modelo.'};
+  }
+  if((vibIn||vibNear) && (tempIn||tempNear)){
+    return {level:'Media', color:'#e8c547', note:'Cerca del borde de los datos de calibración: la predicción es razonable, pero menos precisa.'};
+  }
+  return {level:'Baja', color:'var(--cta)', note:'Fuera del rango típico de calibración — el modelo está extrapolando. Trátalo como referencia, no como certeza.'};
+}
+
 function updateBasic(){
   const vib = parseFloat(vibSlider.value);
   const temp = parseFloat(tempSlider.value);
@@ -458,6 +485,11 @@ function updateBasic(){
   riskTitle.style.color = color;
   riskTitle.textContent = title;
   riskDetail.textContent = detail;
+
+  const conf = computeConfidence(vib, temp);
+  confidenceLine.textContent = 'Confianza de la predicción: ' + conf.level;
+  confidenceLine.style.color = conf.color;
+  confidenceNote.textContent = conf.note;
 
   // sección de negocio: se actualiza en vivo con la misma lectura de los sliders
   bizDaysInline.textContent = days + ' días';
@@ -646,9 +678,24 @@ const rnd = seededRandom(42);
 const dataset = [];
 for(let i=0;i<20;i++){
   const vib = 0.5 + rnd()*13.5;
-  const noise = (rnd()-0.5)*14;
+  const noise = (rnd()-0.5)*28; // ruido de sensor realista: suficiente para que un grado 1 sub-ajuste y un grado 3-4 empiece a sobre-ajustar
   const y = Math.max(2, baseLifeDays(vib) + noise);
   dataset.push({x: vib, y: y});
+}
+// Separamos entrenamiento (13) de prueba (7) — el ajuste solo ve el
+// entrenamiento; el R² de prueba es lo que realmente delata sobre/subajuste.
+const trainPoints = dataset.filter((_,i)=> i%3 !== 0);
+const testPoints = dataset.filter((_,i)=> i%3 === 0);
+
+function computeR2(coefs, points){
+  const yMean = points.reduce((a,p)=>a+p.y,0)/points.length;
+  let ssRes=0, ssTot=0;
+  points.forEach(p=>{
+    const pred = evalPoly(coefs, p.x);
+    ssRes += (p.y-pred)**2;
+    ssTot += (p.y-yMean)**2;
+  });
+  return ssTot===0 ? 1 : 1 - ssRes/ssTot;
 }
 
 function polyFit(points, degree){
@@ -683,17 +730,7 @@ function polyFit(points, degree){
     }
   }
   const coefs = A.map((row,i)=> Math.abs(row[i])<1e-10 ? 0 : row[n]/row[i]);
-
-  const yMean = y.reduce((a,b)=>a+b,0)/y.length;
-  let ssRes=0, ssTot=0;
-  points.forEach(p=>{
-    let pred=0;
-    for(let k=0;k<n;k++) pred += coefs[k]*Math.pow(p.x,k);
-    ssRes += (p.y-pred)**2;
-    ssTot += (p.y-yMean)**2;
-  });
-  const r2 = ssTot===0 ? 1 : 1 - ssRes/ssTot;
-  return {coefs, r2};
+  return {coefs};
 }
 
 function padCoefs(coefs, len){
@@ -760,12 +797,35 @@ function drawMainChart(coefs){
   cctx.stroke();
 
   cctx.fillStyle = '#7b5ea7';
-  dataset.forEach(p=>{
+  trainPoints.forEach(p=>{
     const [cx,cy] = toPx(p.x, p.y);
     cctx.beginPath();
     cctx.arc(cx,cy,4,0,Math.PI*2);
     cctx.fill();
   });
+
+  cctx.fillStyle = 'rgba(244,244,247,0.12)';
+  cctx.strokeStyle = '#f4f4f7';
+  cctx.lineWidth = 1.5;
+  testPoints.forEach(p=>{
+    const [cx,cy] = toPx(p.x, p.y);
+    cctx.beginPath();
+    cctx.arc(cx,cy,5,0,Math.PI*2);
+    cctx.fill();
+    cctx.stroke();
+  });
+
+  // legend
+  cctx.fillStyle = '#7b5ea7';
+  cctx.beginPath(); cctx.arc(W-pad-150,pad+2,4,0,Math.PI*2); cctx.fill();
+  cctx.fillStyle = '#a8a8b4';
+  cctx.font = '12px DM Mono, monospace';
+  cctx.fillText('entrenamiento', W-pad-140, pad+6);
+  cctx.fillStyle = 'rgba(244,244,247,0.12)';
+  cctx.strokeStyle = '#f4f4f7';
+  cctx.beginPath(); cctx.arc(W-pad-40,pad+2,4,0,Math.PI*2); cctx.fill(); cctx.stroke();
+  cctx.fillStyle = '#a8a8b4';
+  cctx.fillText('prueba', W-pad-30, pad+6);
 }
 
 function drawResiduals(coefs){
@@ -812,15 +872,32 @@ function drawChartWithCoefs(coefs){
 }
 
 function animateToDegree(newDegree){
-  const {coefs: newCoefsRaw, r2} = polyFit(dataset, newDegree);
+  const {coefs: newCoefsRaw} = polyFit(trainPoints, newDegree);
   const newCoefs = padCoefs(newCoefsRaw, MAX_LEN);
   const startCoefs = displayCoefs ? displayCoefs.slice() : newCoefs.slice();
   const startTime = performance.now();
   const duration = 550;
 
+  const r2Train = computeR2(newCoefsRaw, trainPoints);
+  const r2Test = computeR2(newCoefsRaw, testPoints);
+  const gap = r2Train - r2Test;
+
   document.getElementById('mDegree').textContent = newDegree;
-  document.getElementById('mR2').textContent = r2.toFixed(3);
+  document.getElementById('mR2Train').textContent = r2Train.toFixed(3);
+  document.getElementById('mR2Test').textContent = r2Test.toFixed(3);
   document.getElementById('mCoef').textContent = newCoefsRaw.map(c=>c.toFixed(2)).join(', ');
+
+  const badge = document.getElementById('mFitBadge');
+  if(r2Train < 0.75){
+    badge.textContent = '⚠ Subajuste — el modelo es demasiado simple para el patrón de los datos.';
+    badge.style.color = '#e8c547';
+  } else if(gap > 0.08 || r2Test < 0.15){
+    badge.textContent = '⚠ Sobreajuste — memoriza el entrenamiento pero generaliza peor a datos nuevos.';
+    badge.style.color = 'var(--cta)';
+  } else {
+    badge.textContent = '✓ Ajuste razonable — generaliza bien a los datos de prueba.';
+    badge.style.color = 'var(--success)';
+  }
 
   if(animFrame) cancelAnimationFrame(animFrame);
   function step(now){
