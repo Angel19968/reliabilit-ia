@@ -1,0 +1,5 @@
+<svg width="240" height="60" viewBox="0 0 240 60" xmlns="http://www.w3.org/2000/svg">
+  <rect width="240" height="60" fill="none"/>
+  <text x="0" y="40" font-family="Syne, sans-serif" font-weight="800" font-size="28" fill="#f4f4f7">RELIABILIT<tspan fill="#3ecfa0">-IA</tspan></text>
+  <circle cx="228" cy="14" r="5" fill="#f4722e"/>
+</svg>
