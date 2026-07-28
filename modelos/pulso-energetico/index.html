@@ -1,0 +1,736 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pulso Energético — RELIABILIT-IA</title>
+<meta name="description" content="Proyecta el consumo energético esperado de tu planta y detecta desvíos anómalos antes de que se conviertan en sobrecostos.">
+
+<meta property="og:title" content="Pulso Energético — RELIABILIT-IA">
+<meta property="og:description" content="Mueve producción y consumo y mira en vivo si el gasto energético de hoy es normal o un desvío que vale la pena revisar.">
+<meta property="og:image" content="../../assets/og-image.png">
+<meta property="og:type" content="website">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#0a0a0f;
+    --panel:#121218;
+    --panel2:#181820;
+    --border:#22222c;
+    --text:#f4f4f7;
+    --muted:#9a9aa8;
+    --success:#3ecfa0;
+    --cta:#f4722e;
+    --accent:#7b5ea7;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    background:var(--bg); color:var(--text); font-family:'DM Mono', monospace;
+    line-height:1.6; -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:'Syne', sans-serif; font-weight:800; letter-spacing:-0.02em;}
+  a{color:var(--success);}
+  .wrap{max-width:960px;margin:0 auto;padding:0 24px;}
+  .back{display:inline-block; font-size:13px; color:var(--muted); text-decoration:none; padding-top:20px;}
+  .back:hover{color:var(--success);}
+
+  header.hero{padding:24px 0 40px; border-bottom:1px solid var(--border);}
+  .badge{
+    display:inline-block; font-size:12px; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--success); border:1px solid var(--success); border-radius:999px;
+    padding:5px 14px; margin-bottom:18px;
+  }
+  h1{font-size:clamp(28px,5vw,44px); line-height:1.1; margin-bottom:14px;}
+  .lead{font-family:'Instrument Serif', serif; font-style:italic; font-size:20px; color:var(--muted); max-width:640px;}
+
+  section{padding:40px 0; border-bottom:1px solid var(--border);}
+  section h2{font-size:22px; margin-bottom:14px;}
+  .context p{color:var(--muted); max-width:640px; font-size:15px;}
+
+  .panel{
+    background:var(--panel); border:1px solid var(--border); border-radius:16px; padding:28px;
+  }
+
+  .toggle-row{display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; flex-wrap:wrap; gap:12px;}
+  .toggle-row .label{font-size:15px; color:var(--muted);}
+  .switch{
+    display:inline-flex; align-items:center; gap:10px; cursor:pointer; user-select:none;
+    font-size:14px; color:var(--text);
+  }
+  .switch input{display:none;}
+  .track{
+    width:42px; height:24px; background:var(--border); border-radius:999px; position:relative; transition:.2s;
+    flex-shrink:0;
+  }
+  .track::after{
+    content:''; position:absolute; top:3px; left:3px; width:18px; height:18px; border-radius:50%;
+    background:var(--muted); transition:.2s;
+  }
+  .switch input:checked + .track{background:var(--accent);}
+  .switch input:checked + .track::after{transform:translateX(18px); background:#fff;}
+
+  .demo-grid{display:grid; grid-template-columns:1.05fr 1fr; gap:32px;}
+  @media (max-width:760px){ .demo-grid{grid-template-columns:1fr;} }
+
+  .slider-group{margin-bottom:22px;}
+  .slider-group label{display:flex; justify-content:space-between; font-size:16px; margin-bottom:8px;}
+  .slider-group label .val{color:var(--success); font-weight:500;}
+  input[type=range]{
+    width:100%; -webkit-appearance:none; height:6px; border-radius:999px; background:var(--border); outline:none;
+  }
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none; width:20px; height:20px; border-radius:50%;
+    background:var(--success); cursor:pointer; border:3px solid var(--bg);
+  }
+  input[type=range]::-moz-range-thumb{
+    width:20px; height:20px; border-radius:50%; background:var(--success); cursor:pointer; border:3px solid var(--bg);
+  }
+  .hint{font-size:13px; color:var(--muted); display:flex; justify-content:space-between; margin-top:4px;}
+
+  .result{
+    margin-top:26px; padding:22px; border-radius:14px; background:var(--panel2); border:1px solid var(--border);
+    display:flex; align-items:center; gap:20px; flex-wrap:wrap;
+  }
+  .result .risk-dot{width:16px; height:16px; border-radius:50%; flex-shrink:0;}
+  .result .risk-text h3{font-size:23px; margin-bottom:6px;}
+  .result .risk-text p{font-size:15px; color:var(--muted);}
+  .cost-line{font-size:14px !important; font-weight:600; margin-top:10px !important; color:var(--text) !important;}
+
+  .live-col h3{font-size:14px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:14px; font-family:'DM Mono',monospace; font-weight:500;}
+  .ts-wrap{margin-bottom:18px;}
+  .ts-label{font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:8px;}
+  #tsChart{width:100%; height:190px; background:var(--bg); border:1px solid var(--border); border-radius:10px; display:block;}
+  .gauge-label{font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:8px;}
+  .gauge-wrap{margin-bottom:18px;}
+  .gauge-bar{height:12px; background:var(--border); border-radius:999px; overflow:hidden; margin:8px 0; position:relative;}
+  .gauge-fill{height:100%; width:0%; background:var(--success); transition:background .35s ease, width .3s ease;}
+  .gauge-mid{position:absolute; left:50%; top:-3px; width:2px; height:18px; background:var(--muted); opacity:.6;}
+  .gauge-value{font-size:16px; color:var(--text);}
+  .gauge-value b{font-size:20px;}
+  .gauge-note{font-size:13px; color:var(--muted);}
+  .cost-card{
+    margin-top:4px; padding:16px 18px; border-radius:12px; background:var(--panel2); border:1px solid var(--border);
+  }
+  .cost-card .cc-label{font-size:12px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted);}
+  .cost-card .cc-value{font-size:24px; font-family:'Syne',sans-serif; font-weight:800; margin-top:4px;}
+  .sim-note{font-size:13px; color:var(--muted); line-height:1.7; margin-top:14px;}
+
+  .analyst{margin-top:32px; padding-top:26px; border-top:1px dashed var(--border); display:none;}
+  .analyst.show{display:block;}
+  .degree-row{display:flex; gap:8px; margin-bottom:18px; flex-wrap:wrap;}
+  .degree-btn{
+    font-family:'DM Mono', monospace; font-size:14px; padding:9px 18px; border-radius:8px;
+    border:1px solid var(--border); background:transparent; color:var(--text); cursor:pointer;
+    transition:background .15s, border-color .15s;
+  }
+  .degree-btn.active{background:var(--accent); border-color:var(--accent); color:#fff;}
+  #chart{width:100%; height:320px; background:var(--bg); border:1px solid var(--border); border-radius:12px; display:block;}
+  #residuals{width:100%; height:200px; background:var(--bg); border:1px solid var(--border); border-radius:12px; display:block; margin-top:18px;}
+  .metrics{display:flex; gap:24px; margin-top:16px; flex-wrap:wrap; font-size:14px; color:var(--muted);}
+  .metrics b{color:var(--text);}
+  .fit-badge{margin-top:14px; font-size:15px; font-weight:600; padding:10px 14px; border-radius:10px; background:var(--panel2); display:inline-block;}
+
+  .business p{color:var(--muted); font-size:16px; max-width:640px;}
+  .business .stat{color:var(--success); font-weight:500;}
+  .business-grid{display:grid; grid-template-columns:1.1fr 1fr; gap:32px; align-items:start; margin-top:8px;}
+  @media (max-width:760px){ .business-grid{grid-template-columns:1fr;} }
+  .biz-action{margin-top:18px; padding:18px; border-radius:12px; background:var(--panel2); border:1px solid var(--border); transition:border-color .3s;}
+  .biz-action .biz-title{font-size:17px; font-weight:600;}
+  .biz-action .biz-detail{font-size:14px; color:var(--muted); margin-top:6px;}
+  #projection{width:100%; height:230px; background:var(--bg); border:1px solid var(--border); border-radius:12px; display:block;}
+
+  .cta-row{display:flex; gap:14px; flex-wrap:wrap; margin-top:8px;}
+  .btn{
+    font-family:'DM Mono', monospace; font-size:14px; padding:12px 22px; border-radius:10px;
+    text-decoration:none; border:1px solid var(--border); color:var(--text); display:inline-block;
+  }
+  .btn.primary{background:var(--cta); border-color:var(--cta); color:#0a0a0f; font-weight:600;}
+  .btn.ghost:hover{border-color:var(--accent);}
+
+  .contact-card{
+    display:grid; grid-template-columns:1.1fr 1fr; gap:28px;
+    background:var(--panel2); border:1px solid var(--border); border-radius:16px;
+    padding:28px; margin-top:28px;
+  }
+  @media (max-width:700px){ .contact-card{grid-template-columns:1fr;} }
+  .contact-card h3{font-size:19px; margin-bottom:8px;}
+  .contact-card p{font-size:14px; color:var(--muted); max-width:420px;}
+  .contact-links{display:flex; flex-direction:column; gap:12px;}
+  .contact-row{
+    display:flex; align-items:center; gap:14px; padding:12px 16px; border-radius:12px;
+    background:var(--panel); border:1px solid var(--border); text-decoration:none; color:var(--text);
+    transition:border-color .2s;
+  }
+  .contact-row:hover{border-color:var(--success);}
+  .contact-icon{font-size:20px; width:32px; text-align:center; flex-shrink:0;}
+  .contact-text{font-size:14px; line-height:1.5;}
+  .contact-text b{display:block; font-size:15px;}
+
+  footer{padding:36px 0; text-align:center;}
+  footer p{font-size:13px; color:var(--muted); max-width:560px; margin:0 auto;}
+  .footer-links{display:flex; justify-content:center; gap:18px; flex-wrap:wrap; margin-bottom:16px; font-size:13px;}
+  .footer-links a{color:var(--muted); text-decoration:none;}
+  .footer-links a:hover{color:var(--success);}
+
+  @media (max-width:520px){
+    .result{flex-direction:column; align-items:flex-start;}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <a class="back" href="../../">← Volver al catálogo RELIABILIT-IA</a>
+
+  <header class="hero">
+    <div class="badge">Ingeniería aplicada a Energía</div>
+    <h1>Pulso Energético</h1>
+    <p class="lead">¿El consumo eléctrico de hoy es el normal para lo que produjiste, o hay algo consumiendo de más?</p>
+  </header>
+
+  <section class="context">
+    <h2>El problema</h2>
+    <p>El consumo de una planta sube y baja con la producción — eso es normal. Lo que no es normal es cuando el consumo se desacopla de la producción: una fuga de aire comprimido, un motor que quedó encendido, un compresor perdiendo eficiencia. Este modelo aprende la relación esperada entre producción y consumo, y avisa cuándo el gasto de hoy se sale de ese patrón.</p>
+  </section>
+
+  <section id="demo">
+    <h2>Demo interactivo</h2>
+    <div class="panel">
+      <div class="toggle-row">
+        <span class="label">Modelo entrenado con datos sintéticos (Serie de tiempo, tipo ARIMA) — mueve los sliders para simular una lectura de hoy.</span>
+        <label class="switch">
+          <span>Modo Analista</span>
+          <input type="checkbox" id="analystToggle">
+          <span class="track"></span>
+        </label>
+      </div>
+
+      <div class="demo-grid">
+        <div class="controls-col">
+          <div class="slider-group">
+            <label>Producción de hoy <span class="val" id="prodVal">65 %</span></label>
+            <input type="range" id="prodSlider" min="0" max="100" step="1" value="65">
+            <div class="hint"><span>0 % (parada)</span><span>100 % (capacidad plena)</span></div>
+          </div>
+
+          <div class="slider-group">
+            <label>Consumo medido hoy <span class="val" id="consVal">595 kWh</span></label>
+            <input type="range" id="consSlider" min="250" max="900" step="5" value="595">
+            <div class="hint"><span>250 kWh</span><span>900 kWh</span></div>
+          </div>
+
+          <div class="result" id="resultBox">
+            <div class="risk-dot" id="riskDot"></div>
+            <div class="risk-text">
+              <h3 id="riskTitle">Calculando…</h3>
+              <p id="riskDetail"></p>
+              <p class="cost-line" id="costLine"></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="live-col">
+          <h3>Simulación en vivo</h3>
+          <div class="ts-wrap">
+            <div class="ts-label">Consumo diario (últimos 24 días) + hoy</div>
+            <canvas id="tsChart" width="560" height="190"></canvas>
+          </div>
+
+          <div class="gauge-wrap">
+            <div class="gauge-label">Desviación vs. consumo esperado</div>
+            <div class="gauge-bar"><div class="gauge-mid"></div><div class="gauge-fill" id="gaugeFill"></div></div>
+            <div class="gauge-value"><b id="gaugeValue">0</b> kWh <span class="gauge-note">respecto a lo esperado para esta producción</span></div>
+          </div>
+
+          <div class="cost-card">
+            <div class="cc-label">Sobrecosto mensual proyectado si se mantiene</div>
+            <div class="cc-value" id="costMonthly">S/. 0</div>
+          </div>
+
+          <p class="sim-note">Simulación ilustrativa: la serie histórica y la tarifa (S/. 0.62/kWh) son de ejemplo — no provienen del medidor real de ninguna planta.</p>
+        </div>
+      </div>
+
+      <div class="analyst" id="analystPanel">
+        <h3 style="font-size:18px; text-transform:none; letter-spacing:0; margin-bottom:8px; color:var(--text);">Reentrenar en vivo</h3>
+        <p style="font-size:15px; color:var(--muted); margin-bottom:18px;">Elige la ventana de suavizado (promedio móvil de los últimos N días) y observa cómo cambia el pronóstico. Los primeros 17 días son entrenamiento (●, violeta); los últimos 7 son prueba (○, blanco) — el error de pronóstico (MAPE) en la prueba es lo que de verdad importa.</p>
+        <div class="degree-row" id="degreeRow"></div>
+        <canvas id="chart" width="800" height="320"></canvas>
+        <canvas id="residuals" width="800" height="200"></canvas>
+        <div class="metrics">
+          <span>Ventana: <b id="mWindow">5</b> días</span>
+          <span>MAPE entrenamiento: <b id="mMapeTrain">–</b>%</span>
+          <span>MAPE prueba: <b id="mMapeTest">–</b>%</span>
+        </div>
+        <div class="fit-badge" id="mFitBadge">–</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="business">
+    <h2>¿Qué significa para tu planta?</h2>
+    <div class="business-grid">
+      <div>
+        <p>Con la lectura actual, este desvío proyectado a un mes representa <span class="stat" id="bizCostInline">S/. 0</span> en sobrecosto energético. Detectarlo el mismo día que aparece — en vez de notarlo recién en la factura del mes — es la diferencia entre una corrección de 10 minutos y semanas de dinero perdido.</p>
+        <div class="biz-action" id="bizAction">
+          <div class="biz-title" id="bizTitle">Calculando…</div>
+          <div class="biz-detail" id="bizDetail"></div>
+        </div>
+      </div>
+      <div>
+        <div class="ts-label">Proyección de sobrecosto acumulado (30 días)</div>
+        <canvas id="projection" width="480" height="230"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <section id="cta">
+    <h2>Esto es una maqueta educativa</h2>
+    <p style="color:var(--muted); max-width:640px; margin-bottom:20px;">La serie histórica, la relación producción-consumo y la tarifa de este demo son de ejemplo, ajustados sobre datos sintéticos — sirven para explicar la idea, no para auditar tu planilla eléctrica real. Llevarlo a tu planta implica estandarizar cómo capturas tus lecturas de medidor y producción, analizarlas, y calibrar el modelo de pronóstico con tu propio histórico — ahí es donde entra nuestro motor AutoML, ajustando el modelo correcto y evitando falsas alarmas o desvíos reales que pasen desapercibidos. Si quieres recorrer ese proceso con tus datos, conversemos.</p>
+    <div class="cta-row">
+      <a class="btn primary" href="https://chat.whatsapp.com/GvBz1tuUeNZ0xwTkjsuE3z" target="_blank" rel="noopener">Unirme a la comunidad de WhatsApp</a>
+      <a class="btn ghost" href="https://www.linkedin.com/company/reliabilit-ia/" target="_blank" rel="noopener">Seguir en LinkedIn</a>
+      <a class="btn ghost" href="https://www.youtube.com/@miguelangelcayllahuaquispe998" target="_blank" rel="noopener">Ver en YouTube</a>
+    </div>
+
+    <div class="contact-card">
+      <div>
+        <h3>¿Hablamos de tu consumo energético?</h3>
+        <p>Si tienes datos de medidor y producción y quieres validar este análisis con tu planta, escríbeme directamente.</p>
+      </div>
+      <div class="contact-links">
+        <a class="contact-row" href="https://wa.me/51997610310?text=Hola%20Miguel%2C%20vi%20el%20demo%20Pulso%20Energetico%20y%20quiero%20conversar%20sobre%20la%20calibracion%20para%20mi%20planta" target="_blank" rel="noopener">
+          <span class="contact-icon">💬</span>
+          <span class="contact-text"><b>WhatsApp</b>+51 997 610 310</span>
+        </a>
+        <a class="contact-row" href="https://www.linkedin.com/in/miguelcayllahua/" target="_blank" rel="noopener">
+          <span class="contact-icon">in</span>
+          <span class="contact-text"><b>LinkedIn</b>Miguel Angel Cayllahua Quispe</span>
+        </a>
+        <a class="contact-row" href="mailto:miguelcquispe@gmail.com">
+          <span class="contact-icon">✉</span>
+          <span class="contact-text"><b>Correo</b>miguelcquispe@gmail.com</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-links">
+      <a href="https://chat.whatsapp.com/GvBz1tuUeNZ0xwTkjsuE3z" target="_blank" rel="noopener">WhatsApp</a>
+      <a href="https://www.youtube.com/@miguelangelcayllahuaquispe998" target="_blank" rel="noopener">YouTube</a>
+      <a href="https://www.linkedin.com/company/reliabilit-ia/" target="_blank" rel="noopener">LinkedIn empresa</a>
+      <a href="https://www.linkedin.com/in/miguelcayllahua/" target="_blank" rel="noopener">LinkedIn personal</a>
+      <a href="mailto:miguelcquispe@gmail.com">Correo</a>
+    </div>
+    <p>Contenido con fines ilustrativos, no reemplaza una auditoría energética real. Los datos y la simulación usados en esta demo son sintéticos y no corresponden a ninguna planta real. Modelo entrenado con datos de ejemplo, no es una fórmula fija.</p>
+  </footer>
+</div>
+
+<script>
+/* =========================================================
+   Datos sintéticos base: 24 días de producción y consumo
+   ========================================================= */
+function seededRandom(seed){
+  let s = seed;
+  return function(){
+    s = (s*9301+49297) % 233280;
+    return s/233280;
+  };
+}
+function baseConsumption(prod){
+  // relación de ejemplo: carga base de planta (320 kWh) + consumo proporcional a producción
+  return 320 + 4.2*prod;
+}
+
+const rnd = seededRandom(7);
+const N_HIST = 24;
+const production = [];
+const consumption = [];
+for(let i=0;i<N_HIST;i++){
+  const wd = i%7;
+  const weekend = (wd===5 || wd===6);
+  const prod = weekend ? 30+rnd()*15 : 55+rnd()*35;
+  const noise = (rnd()-0.5)*70;
+  const cons = Math.max(150, baseConsumption(prod)+noise);
+  production.push(prod);
+  consumption.push(cons);
+}
+// Desviación estándar de los residuos reales vs. la relación esperada —
+// de aquí sale la banda de confianza, no de un número inventado.
+const residuals0 = consumption.map((c,i)=> c - baseConsumption(production[i]));
+const stdResidual = Math.sqrt(residuals0.reduce((a,r)=>a+r*r,0)/residuals0.length);
+const BAND = 1.6*stdResidual;
+const TARIFA = 0.62; // soles/kWh, ilustrativo
+
+/* =========================================================
+   MODO BÁSICO
+   ========================================================= */
+const prodSlider = document.getElementById('prodSlider');
+const consSlider = document.getElementById('consSlider');
+const prodVal = document.getElementById('prodVal');
+const consVal = document.getElementById('consVal');
+const riskDot = document.getElementById('riskDot');
+const riskTitle = document.getElementById('riskTitle');
+const riskDetail = document.getElementById('riskDetail');
+const costLine = document.getElementById('costLine');
+const gaugeFill = document.getElementById('gaugeFill');
+const gaugeValue = document.getElementById('gaugeValue');
+const costMonthlyEl = document.getElementById('costMonthly');
+const bizCostInline = document.getElementById('bizCostInline');
+const bizAction = document.getElementById('bizAction');
+const bizTitle = document.getElementById('bizTitle');
+const bizDetail = document.getElementById('bizDetail');
+const projectionCanvas = document.getElementById('projection');
+const pctx = projectionCanvas.getContext('2d');
+const tsCanvas = document.getElementById('tsChart');
+const tctx = tsCanvas.getContext('2d');
+
+function fmtSoles(v){
+  return 'S/. ' + Math.round(v).toLocaleString('es-PE');
+}
+
+function drawProjection(dailyExtraCost, colorCss){
+  const W = projectionCanvas.width, H = projectionCanvas.height;
+  pctx.clearRect(0,0,W,H);
+  const padL = 56, padR = 20, padT = 20, padB = 34;
+  const days = 30;
+  const maxTotal = Math.max(200, dailyExtraCost*days*1.15);
+  function toPx(x,y){
+    return [
+      padL + x/days*(W-padL-padR),
+      H-padB - y/maxTotal*(H-padT-padB)
+    ];
+  }
+  pctx.strokeStyle = '#22222c';
+  pctx.lineWidth = 1;
+  pctx.beginPath();
+  pctx.moveTo(padL, padT); pctx.lineTo(padL, H-padB); pctx.lineTo(W-padR, H-padB);
+  pctx.stroke();
+  pctx.fillStyle = '#8a8a98';
+  pctx.font = '12px DM Mono, monospace';
+  pctx.fillText('días', W/2-14, H-10);
+  pctx.save();
+  pctx.translate(16, H/2+40);
+  pctx.rotate(-Math.PI/2);
+  pctx.fillText('sobrecosto acumulado (S/.)', 0,0);
+  pctx.restore();
+
+  const color = getComputedStyle(document.documentElement).getPropertyValue(colorCss.replace('var(','').replace(')','')).trim() || colorCss;
+  pctx.strokeStyle = colorCss.startsWith('var(') ? color : colorCss;
+  pctx.lineWidth = 2.5;
+  pctx.beginPath();
+  for(let d=0; d<=days; d++){
+    const [x,y] = toPx(d, dailyExtraCost*d);
+    if(d===0) pctx.moveTo(x,y); else pctx.lineTo(x,y);
+  }
+  pctx.stroke();
+
+  const [x1,y1] = toPx(days, dailyExtraCost*days);
+  pctx.fillStyle = pctx.strokeStyle;
+  pctx.beginPath(); pctx.arc(x1,y1,5,0,Math.PI*2); pctx.fill();
+  pctx.fillStyle = '#f4f4f7';
+  pctx.font = '13px DM Mono, monospace';
+  pctx.fillText(fmtSoles(dailyExtraCost*days), Math.max(padL, x1-70), y1-10);
+}
+
+function drawTsChart(todayCons, todayProd, status){
+  const W = tsCanvas.width, H = tsCanvas.height;
+  tctx.clearRect(0,0,W,H);
+  const padL = 40, padR = 16, padT = 14, padB = 22;
+  const totalDays = N_HIST+1;
+  const allVals = consumption.concat([todayCons]);
+  const yMin = Math.min(...allVals)*0.9, yMax = Math.max(...allVals)*1.08;
+  function toPx(i,v){
+    return [
+      padL + i/(totalDays-1)*(W-padL-padR),
+      H-padB - (v-yMin)/(yMax-yMin)*(H-padT-padB)
+    ];
+  }
+  // expected band across history + today
+  tctx.beginPath();
+  const bandPts = [];
+  for(let i=0;i<N_HIST;i++){
+    const exp = baseConsumption(production[i]);
+    bandPts.push([i, exp+BAND]);
+  }
+  bandPts.push([N_HIST, baseConsumption(todayProd)+BAND]);
+  bandPts.forEach((p,idx)=>{ const [x,y]=toPx(p[0],p[1]); if(idx===0) tctx.moveTo(x,y); else tctx.lineTo(x,y); });
+  for(let i=N_HIST;i>=0;i--){
+    const exp = i<N_HIST ? baseConsumption(production[i]) : baseConsumption(todayProd);
+    const [x,y] = toPx(i, exp-BAND);
+    tctx.lineTo(x,y);
+  }
+  tctx.closePath();
+  tctx.fillStyle = 'rgba(62,207,160,0.08)';
+  tctx.fill();
+
+  // historical line
+  tctx.strokeStyle = '#7b5ea7';
+  tctx.lineWidth = 1.8;
+  tctx.beginPath();
+  consumption.forEach((c,i)=>{ const [x,y]=toPx(i,c); if(i===0) tctx.moveTo(x,y); else tctx.lineTo(x,y); });
+  tctx.stroke();
+  tctx.fillStyle = '#7b5ea7';
+  consumption.forEach((c,i)=>{ const [x,y]=toPx(i,c); tctx.beginPath(); tctx.arc(x,y,2,0,Math.PI*2); tctx.fill(); });
+
+  // today marker
+  const [tx,ty] = toPx(N_HIST, todayCons);
+  const [lx,ly] = toPx(N_HIST-1, consumption[N_HIST-1]);
+  tctx.strokeStyle = status.color;
+  tctx.lineWidth = 2;
+  tctx.beginPath(); tctx.moveTo(lx,ly); tctx.lineTo(tx,ty); tctx.stroke();
+  tctx.fillStyle = status.color;
+  tctx.beginPath(); tctx.arc(tx,ty,5.5,0,Math.PI*2); tctx.fill();
+  tctx.fillStyle = '#f4f4f7';
+  tctx.font = '11px DM Mono, monospace';
+  tctx.fillText('hoy', Math.max(padL, tx-14), ty-10);
+
+  tctx.fillStyle = '#8a8a98';
+  tctx.font = '11px DM Mono, monospace';
+  tctx.fillText('kWh/día · zona verde = rango esperado', padL, 12);
+}
+
+function updateBasic(){
+  const prod = parseFloat(prodSlider.value);
+  const cons = parseFloat(consSlider.value);
+  prodVal.textContent = prod.toFixed(0) + ' %';
+  consVal.textContent = cons.toFixed(0) + ' kWh';
+
+  const expected = baseConsumption(prod);
+  const deviation = cons - expected;
+  const absDev = Math.abs(deviation);
+
+  let color, title, detail;
+  if(absDev <= BAND){
+    color = 'var(--success)';
+    title = 'Consumo normal';
+    detail = 'El gasto de hoy está dentro del rango esperado para este nivel de producción.';
+  } else if(absDev <= BAND*2){
+    color = '#e8c547';
+    title = 'Desvío moderado';
+    detail = deviation>0 ? 'Se consume más de lo esperado. Vale la pena revisar en la próxima ronda.' : 'Se consume menos de lo esperado — probablemente algo positivo, pero confirma que no sea un sensor fallando.';
+  } else {
+    color = 'var(--cta)';
+    title = 'Desvío alto — revisar hoy';
+    detail = deviation>0 ? 'Consumo muy por encima de lo esperado: posible fuga de aire, motor mal apagado o equipo funcionando fuera de horario.' : 'Consumo muy por debajo de lo esperado para esta producción — confirma que el medidor y la producción reportada sean correctos.';
+  }
+  riskDot.style.background = color;
+  riskTitle.style.color = color;
+  riskTitle.textContent = title;
+  riskDetail.textContent = detail;
+
+  const dailyExtraCost = Math.max(0, deviation) * TARIFA;
+  costLine.textContent = deviation>0
+    ? ('Sobrecosto de hoy: ' + fmtSoles(dailyExtraCost))
+    : 'Sin sobrecosto — consumo igual o menor al esperado.';
+
+  const pct = Math.min(100, Math.max(0, 50 + (deviation/(BAND*2.5))*50));
+  gaugeFill.style.width = pct.toFixed(1) + '%';
+  gaugeFill.style.background = color;
+  gaugeValue.textContent = (deviation>=0?'+':'') + Math.round(deviation);
+
+  const monthly = dailyExtraCost*30;
+  costMonthlyEl.textContent = fmtSoles(monthly);
+  bizCostInline.textContent = fmtSoles(monthly);
+  bizCostInline.style.color = color;
+  bizAction.style.borderColor = color;
+  bizTitle.style.color = color;
+  bizTitle.textContent = title;
+  bizDetail.textContent = detail;
+
+  drawProjection(dailyExtraCost, color);
+  drawTsChart(cons, prod, {color: color.startsWith('var(') ? getComputedStyle(document.documentElement).getPropertyValue(color.slice(4,-1)).trim() : color});
+}
+prodSlider.addEventListener('input', updateBasic);
+consSlider.addEventListener('input', updateBasic);
+updateBasic();
+
+/* =========================================================
+   MODO ANALISTA — pronóstico por promedio móvil, ventana ajustable
+   ========================================================= */
+function forecastSeries(window){
+  // predicción del día i = promedio de los 'window' días anteriores
+  const preds = [];
+  for(let i=window;i<N_HIST;i++){
+    let sum=0;
+    for(let k=1;k<=window;k++) sum += consumption[i-k];
+    preds.push({i, actual: consumption[i], pred: sum/window});
+  }
+  return preds;
+}
+
+const TRAIN_END = 17; // días 0..16 entrenamiento, 17..23 prueba
+function splitTrainTest(preds){
+  return {
+    train: preds.filter(p=>p.i < TRAIN_END),
+    test: preds.filter(p=>p.i >= TRAIN_END)
+  };
+}
+function mape(preds){
+  if(preds.length===0) return 0;
+  return preds.reduce((a,p)=>a+Math.abs(p.actual-p.pred)/p.actual*100,0)/preds.length;
+}
+
+const chartCanvas = document.getElementById('chart');
+const cctx = chartCanvas.getContext('2d');
+const residualCanvas = document.getElementById('residuals');
+const rctx = residualCanvas.getContext('2d');
+let currentWindow = 5;
+let animFrame = null;
+let displayPreds = null;
+
+function toPxChart(i, v, W, H, pad, yMin, yMax){
+  return [
+    pad + i/(N_HIST-1)*(W-2*pad),
+    H-pad - (v-yMin)/(yMax-yMin)*(H-2*pad)
+  ];
+}
+
+function drawMainChart(preds){
+  const W = chartCanvas.width, H = chartCanvas.height;
+  const pad = 40;
+  cctx.clearRect(0,0,W,H);
+  const yMin = Math.min(...consumption)*0.9, yMax = Math.max(...consumption)*1.08;
+
+  cctx.strokeStyle = '#22222c';
+  cctx.lineWidth = 1;
+  cctx.beginPath();
+  cctx.moveTo(pad, pad); cctx.lineTo(pad, H-pad); cctx.lineTo(W-pad, H-pad);
+  cctx.stroke();
+  cctx.fillStyle = '#a8a8b4';
+  cctx.font = '13px DM Mono, monospace';
+  cctx.fillText('día', W/2-10, H-10);
+  cctx.save();
+  cctx.translate(16, H/2+50);
+  cctx.rotate(-Math.PI/2);
+  cctx.fillText('consumo (kWh)', 0, 0);
+  cctx.restore();
+
+  // actual consumption line (all 24 days)
+  cctx.strokeStyle = '#3ecfa0';
+  cctx.lineWidth = 2;
+  cctx.beginPath();
+  consumption.forEach((c,i)=>{
+    const [x,y] = toPxChart(i,c,W,H,pad,yMin,yMax);
+    if(i===0) cctx.moveTo(x,y); else cctx.lineTo(x,y);
+  });
+  cctx.stroke();
+
+  // forecast points: train (violeta) vs test (blanco)
+  preds.forEach(p=>{
+    const [x,y] = toPxChart(p.i, p.pred, W,H,pad,yMin,yMax);
+    const isTrain = p.i < TRAIN_END;
+    cctx.beginPath();
+    cctx.arc(x,y, isTrain?4:5, 0, Math.PI*2);
+    if(isTrain){
+      cctx.fillStyle = '#7b5ea7';
+      cctx.fill();
+    } else {
+      cctx.fillStyle = 'rgba(244,244,247,0.12)';
+      cctx.strokeStyle = '#f4f4f7';
+      cctx.lineWidth = 1.5;
+      cctx.fill();
+      cctx.stroke();
+    }
+  });
+
+  cctx.fillStyle = '#a8a8b4';
+  cctx.font = '12px DM Mono, monospace';
+  cctx.fillText('línea verde = consumo real · ● pronóstico entrenamiento · ○ pronóstico prueba', pad, pad-16);
+}
+
+function drawResiduals(preds){
+  const W = residualCanvas.width, H = residualCanvas.height;
+  rctx.clearRect(0,0,W,H);
+  const padL = 56, padR = 20, padT = 30, padB = 34;
+  const maxErrPct = 30;
+  function toPxX(i){ return padL + i/(N_HIST-1)*(W-padL-padR); }
+  const midY = padT + (H-padT-padB)/2;
+  const halfH = (H-padT-padB)/2 - 6;
+
+  rctx.fillStyle = '#c9c9d4';
+  rctx.font = '14px DM Mono, monospace';
+  rctx.fillText('Error de pronóstico por día (% del consumo real)', padL, 18);
+
+  rctx.font = '12px DM Mono, monospace';
+  [-30,-15,0,15,30].forEach(v=>{
+    const y = midY - (v/maxErrPct)*halfH;
+    rctx.strokeStyle = v===0 ? '#3a3a48' : '#1a1a22';
+    rctx.lineWidth = 1;
+    rctx.beginPath(); rctx.moveTo(padL, y); rctx.lineTo(W-padR, y); rctx.stroke();
+    rctx.fillStyle = '#8a8a98';
+    rctx.fillText((v>0?'+':'')+v+'%', 6, y+4);
+  });
+  rctx.fillStyle = '#8a8a98';
+  rctx.fillText('día', W/2-10, H-8);
+
+  preds.forEach(p=>{
+    const errPct = (p.actual-p.pred)/p.actual*100;
+    const x = toPxX(p.i);
+    const barH = Math.max(-halfH, Math.min(halfH, (errPct/maxErrPct)*halfH));
+    const isTrain = p.i < TRAIN_END;
+    rctx.fillStyle = errPct >= 0
+      ? (isTrain ? 'rgba(62,207,160,0.85)' : 'rgba(62,207,160,0.5)')
+      : (isTrain ? 'rgba(244,114,46,0.85)' : 'rgba(244,114,46,0.5)');
+    rctx.fillRect(x-4, midY - Math.max(0,barH), 8, Math.abs(barH));
+  });
+}
+
+function setWindow(w){
+  currentWindow = w;
+  const preds = forecastSeries(w);
+  const {train, test} = splitTrainTest(preds);
+  const mapeTrain = mape(train);
+  const mapeTest = mape(test);
+
+  document.getElementById('mWindow').textContent = w;
+  document.getElementById('mMapeTrain').textContent = mapeTrain.toFixed(1);
+  document.getElementById('mMapeTest').textContent = mapeTest.toFixed(1);
+
+  const badge = document.getElementById('mFitBadge');
+  if(w <= 3){
+    badge.textContent = '⚠ Ventana muy corta — reacciona a cada variación normal como si fuera una tendencia (ruidoso).';
+    badge.style.color = 'var(--cta)';
+  } else if(w >= 12){
+    badge.textContent = '⚠ Ventana muy larga — diluye el patrón semanal real y reacciona tarde a cambios genuinos.';
+    badge.style.color = '#e8c547';
+  } else if(mapeTest < 12){
+    badge.textContent = '✓ Buen equilibrio — captura el patrón semanal sin perseguir el ruido diario.';
+    badge.style.color = 'var(--success)';
+  } else {
+    badge.textContent = 'Ajuste aceptable, pero revisa otras ventanas para comparar el error de prueba.';
+    badge.style.color = 'var(--muted)';
+  }
+
+  drawMainChart(preds);
+  drawResiduals(preds);
+}
+
+const degreeRow = document.getElementById('degreeRow');
+[3,5,7,10,14].forEach(w=>{
+  const btn = document.createElement('button');
+  btn.className = 'degree-btn' + (w===currentWindow ? ' active':'');
+  btn.textContent = w + ' días';
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.degree-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    setWindow(w);
+  });
+  degreeRow.appendChild(btn);
+});
+
+const analystToggle = document.getElementById('analystToggle');
+const analystPanel = document.getElementById('analystPanel');
+analystToggle.addEventListener('change', ()=>{
+  analystPanel.classList.toggle('show', analystToggle.checked);
+  if(analystToggle.checked) setWindow(currentWindow);
+});
+</script>
+
+</body>
+</html>
