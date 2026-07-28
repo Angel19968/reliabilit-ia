@@ -1,0 +1,864 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Radar de Rodamientos — RELIABILIT-IA</title>
+<meta name="description" content="Estima días hasta falla de un rodamiento a partir de vibración RMS y temperatura, con simulación en vivo de la señal de vibración y consumo de corriente.">
+
+<meta property="og:title" content="Radar de Rodamientos — RELIABILIT-IA">
+<meta property="og:description" content="Mueve los sliders de vibración y temperatura y mira en vivo cómo cambia la señal, el consumo de corriente y los días estimados hasta falla.">
+<meta property="og:image" content="../../assets/og-image.png">
+<meta property="og:type" content="website">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#0a0a0f;
+    --panel:#121218;
+    --panel2:#181820;
+    --border:#22222c;
+    --text:#f4f4f7;
+    --muted:#9a9aa8;
+    --success:#3ecfa0;
+    --cta:#f4722e;
+    --accent:#7b5ea7;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    background:var(--bg); color:var(--text); font-family:'DM Mono', monospace;
+    line-height:1.6; -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:'Syne', sans-serif; font-weight:800; letter-spacing:-0.02em;}
+  a{color:var(--success);}
+  .wrap{max-width:960px;margin:0 auto;padding:0 24px;}
+  .back{display:inline-block; font-size:13px; color:var(--muted); text-decoration:none; padding-top:20px;}
+  .back:hover{color:var(--success);}
+
+  header.hero{padding:24px 0 40px; border-bottom:1px solid var(--border);}
+  .badge{
+    display:inline-block; font-size:12px; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--success); border:1px solid var(--success); border-radius:999px;
+    padding:5px 14px; margin-bottom:18px;
+  }
+  h1{font-size:clamp(28px,5vw,44px); line-height:1.1; margin-bottom:14px;}
+  .lead{font-family:'Instrument Serif', serif; font-style:italic; font-size:20px; color:var(--muted); max-width:640px;}
+
+  section{padding:40px 0; border-bottom:1px solid var(--border);}
+  section h2{font-size:22px; margin-bottom:14px;}
+  .context p{color:var(--muted); max-width:640px; font-size:15px;}
+
+  .panel{
+    background:var(--panel); border:1px solid var(--border); border-radius:16px; padding:28px;
+  }
+
+  .toggle-row{display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; flex-wrap:wrap; gap:12px;}
+  .toggle-row .label{font-size:15px; color:var(--muted);}
+  .switch{
+    display:inline-flex; align-items:center; gap:10px; cursor:pointer; user-select:none;
+    font-size:14px; color:var(--text);
+  }
+  .switch input{display:none;}
+  .track{
+    width:42px; height:24px; background:var(--border); border-radius:999px; position:relative; transition:.2s;
+    flex-shrink:0;
+  }
+  .track::after{
+    content:''; position:absolute; top:3px; left:3px; width:18px; height:18px; border-radius:50%;
+    background:var(--muted); transition:.2s;
+  }
+  .switch input:checked + .track{background:var(--accent);}
+  .switch input:checked + .track::after{transform:translateX(18px); background:#fff;}
+
+  /* ---- two-column demo layout ---- */
+  .demo-grid{display:grid; grid-template-columns:1.05fr 1fr; gap:32px;}
+  @media (max-width:760px){ .demo-grid{grid-template-columns:1fr;} }
+
+  .slider-group{margin-bottom:22px;}
+  .slider-group label{display:flex; justify-content:space-between; font-size:16px; margin-bottom:8px;}
+  .slider-group label .val{color:var(--success); font-weight:500;}
+  input[type=range]{
+    width:100%; -webkit-appearance:none; height:6px; border-radius:999px; background:var(--border); outline:none;
+  }
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none; width:20px; height:20px; border-radius:50%;
+    background:var(--success); cursor:pointer; border:3px solid var(--bg);
+  }
+  input[type=range]::-moz-range-thumb{
+    width:20px; height:20px; border-radius:50%; background:var(--success); cursor:pointer; border:3px solid var(--bg);
+  }
+  .hint{font-size:13px; color:var(--muted); display:flex; justify-content:space-between; margin-top:4px;}
+
+  .result{
+    margin-top:26px; padding:22px; border-radius:14px; background:var(--panel2); border:1px solid var(--border);
+    display:flex; align-items:center; gap:20px; flex-wrap:wrap;
+  }
+  .result .risk-dot{width:16px; height:16px; border-radius:50%; flex-shrink:0;}
+  .result .risk-text h3{font-size:23px; margin-bottom:6px;}
+  .result .risk-text p{font-size:15px; color:var(--muted);}
+
+  /* ---- live simulation column ---- */
+  .live-col h3{font-size:14px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:14px; font-family:'DM Mono',monospace; font-weight:500;}
+  .instrument-wrap{display:flex; gap:18px; align-items:center; flex-wrap:wrap; margin-bottom:18px;}
+  #instrument{width:240px; height:220px; background:radial-gradient(circle at 50% 45%, #15151e, var(--bg)); border:1px solid var(--border); border-radius:12px; flex-shrink:0;}
+  .instrument-stats{font-size:14px; color:var(--muted); line-height:1.9;}
+  .instrument-stats b{color:var(--text); font-size:18px;}
+  .scope-wrap{margin-bottom:18px;}
+  .scope-label, .gauge-label{font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:8px;}
+  #scope{width:100%; height:140px; background:var(--bg); border:1px solid var(--border); border-radius:10px; display:block;}
+  .gauge-wrap{margin-bottom:16px;}
+  .gauge-bar{height:12px; background:var(--border); border-radius:999px; overflow:hidden; margin:8px 0;}
+  .gauge-fill{height:100%; width:0%; background:var(--success); transition:background .35s ease;}
+  .gauge-value{font-size:16px; color:var(--text);}
+  .gauge-value b{font-size:20px;}
+  .gauge-note{font-size:13px; color:var(--muted);}
+  .sim-note{font-size:13px; color:var(--muted); line-height:1.7; margin-top:6px;}
+
+  .analyst{margin-top:32px; padding-top:26px; border-top:1px dashed var(--border); display:none;}
+  .analyst.show{display:block;}
+  .degree-row{display:flex; gap:8px; margin-bottom:18px; flex-wrap:wrap;}
+  .degree-btn{
+    font-family:'DM Mono', monospace; font-size:14px; padding:9px 18px; border-radius:8px;
+    border:1px solid var(--border); background:transparent; color:var(--text); cursor:pointer;
+    transition:background .15s, border-color .15s;
+  }
+  .degree-btn.active{background:var(--accent); border-color:var(--accent); color:#fff;}
+  #chart{width:100%; height:340px; background:var(--bg); border:1px solid var(--border); border-radius:12px; display:block;}
+  #residuals{width:100%; height:210px; background:var(--bg); border:1px solid var(--border); border-radius:12px; display:block; margin-top:18px;}
+  .metrics{display:flex; gap:24px; margin-top:16px; flex-wrap:wrap; font-size:14px; color:var(--muted);}
+  .metrics b{color:var(--text);}
+
+  .business p{color:var(--muted); font-size:16px; max-width:640px;}
+  .business .stat{color:var(--success); font-weight:500;}
+  .business-grid{display:grid; grid-template-columns:1.1fr 1fr; gap:32px; align-items:start; margin-top:8px;}
+  @media (max-width:760px){ .business-grid{grid-template-columns:1fr;} }
+  .biz-action{margin-top:18px; padding:18px; border-radius:12px; background:var(--panel2); border:1px solid var(--border); transition:border-color .3s;}
+  .biz-action .biz-title{font-size:17px; font-weight:600;}
+  .biz-action .biz-detail{font-size:14px; color:var(--muted); margin-top:6px;}
+  #projection{width:100%; height:230px; background:var(--bg); border:1px solid var(--border); border-radius:12px; display:block;}
+
+  .cta-row{display:flex; gap:14px; flex-wrap:wrap; margin-top:8px;}
+  .btn{
+    font-family:'DM Mono', monospace; font-size:14px; padding:12px 22px; border-radius:10px;
+    text-decoration:none; border:1px solid var(--border); color:var(--text); display:inline-block;
+  }
+  .btn.primary{background:var(--cta); border-color:var(--cta); color:#0a0a0f; font-weight:600;}
+  .btn.ghost:hover{border-color:var(--accent);}
+
+  .contact-card{
+    display:grid; grid-template-columns:1.1fr 1fr; gap:28px;
+    background:var(--panel2); border:1px solid var(--border); border-radius:16px;
+    padding:28px; margin-top:28px;
+  }
+  @media (max-width:700px){ .contact-card{grid-template-columns:1fr;} }
+  .contact-card h3{font-size:19px; margin-bottom:8px;}
+  .contact-card p{font-size:14px; color:var(--muted); max-width:420px;}
+  .contact-links{display:flex; flex-direction:column; gap:12px;}
+  .contact-row{
+    display:flex; align-items:center; gap:14px; padding:12px 16px; border-radius:12px;
+    background:var(--panel); border:1px solid var(--border); text-decoration:none; color:var(--text);
+    transition:border-color .2s;
+  }
+  .contact-row:hover{border-color:var(--success);}
+  .contact-icon{font-size:20px; width:32px; text-align:center; flex-shrink:0;}
+  .contact-text{font-size:14px; line-height:1.5;}
+  .contact-text b{display:block; font-size:15px;}
+
+  footer{padding:36px 0; text-align:center;}
+  footer p{font-size:13px; color:var(--muted); max-width:560px; margin:0 auto;}
+  .footer-links{display:flex; justify-content:center; gap:18px; flex-wrap:wrap; margin-bottom:16px; font-size:13px;}
+  .footer-links a{color:var(--muted); text-decoration:none;}
+  .footer-links a:hover{color:var(--success);}
+
+  @media (max-width:520px){
+    .result{flex-direction:column; align-items:flex-start;}
+    .instrument-wrap{justify-content:center;}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <a class="back" href="../../">← Volver al catálogo RELIABILIT-IA</a>
+
+  <header class="hero">
+    <div class="badge">Ingeniería aplicada a Rodamientos</div>
+    <h1>Radar de Rodamientos</h1>
+    <p class="lead">¿Cuántos días le quedan a un rodamiento antes de fallar, solo con lo que dice su vibración?</p>
+  </header>
+
+  <section class="context">
+    <h2>El problema</h2>
+    <p>Un rodamiento dañado no avisa con una alarma clara — avisa con más vibración y más calor, semanas antes de romperse. Este modelo aprende esa relación a partir de mediciones históricas y estima cuántos días de vida útil quedan, para decidir si el mantenimiento es esta semana o el próximo trimestre.</p>
+  </section>
+
+  <section id="demo">
+    <h2>Demo interactivo</h2>
+    <div class="panel">
+      <div class="toggle-row">
+        <span class="label">Modelo entrenado con datos sintéticos (Reg. Polinomial) — mueve los sliders para simular una lectura de campo.</span>
+        <label class="switch">
+          <span>Modo Analista</span>
+          <input type="checkbox" id="analystToggle">
+          <span class="track"></span>
+        </label>
+      </div>
+
+      <div class="demo-grid">
+        <div class="controls-col">
+          <div class="slider-group">
+            <label>Vibración RMS <span class="val" id="vibVal">4.0 mm/s</span></label>
+            <input type="range" id="vibSlider" min="0.5" max="14" step="0.1" value="4.0">
+            <div class="hint"><span>0.5 (nuevo)</span><span>14 (crítico)</span></div>
+          </div>
+
+          <div class="slider-group">
+            <label>Temperatura de carcasa <span class="val" id="tempVal">45 °C</span></label>
+            <input type="range" id="tempSlider" min="20" max="95" step="1" value="45">
+            <div class="hint"><span>20 °C</span><span>95 °C</span></div>
+          </div>
+
+          <div class="result" id="resultBox">
+            <div class="risk-dot" id="riskDot"></div>
+            <div class="risk-text">
+              <h3 id="riskTitle">Calculando…</h3>
+              <p id="riskDetail"></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="live-col">
+          <h3>Simulación en vivo</h3>
+          <div class="instrument-wrap">
+            <canvas id="instrument" width="240" height="220"></canvas>
+            <div class="instrument-stats">
+              <div>Puntos de desgaste<br>en la pista: <b id="defectCount">0</b></div>
+              <div style="margin-top:8px;">Vueltas simuladas: <b id="revCount">0</b></div>
+            </div>
+          </div>
+
+          <div class="scope-wrap">
+            <div class="scope-label">Señal de vibración (acelerómetro simulado)</div>
+            <canvas id="scope" width="560" height="140"></canvas>
+          </div>
+
+          <div class="gauge-wrap">
+            <div class="gauge-label">Corriente estimada del motor</div>
+            <div class="gauge-bar"><div class="gauge-fill" id="gaugeFill"></div></div>
+            <div class="gauge-value"><b id="gaugeValue">12.4</b> A <span class="gauge-note">(sube con vibración/temperatura por mayores pérdidas mecánicas)</span></div>
+          </div>
+
+          <p class="sim-note">Simulación ilustrativa: la forma de onda, los puntos de desgaste y la corriente se generan a partir de los mismos valores de los sliders — no provienen de un sensor real.</p>
+        </div>
+      </div>
+
+      <div class="analyst" id="analystPanel">
+        <h3 style="font-size:18px; text-transform:none; letter-spacing:0; margin-bottom:8px; color:var(--text);">Reentrenar en vivo</h3>
+        <p style="font-size:15px; color:var(--muted); margin-bottom:18px;">Elige el grado del polinomio y observa cómo se reajusta la curva sobre el mismo set de datos (20 rodamientos, vibración vs. vida útil observada). El panel de residuos debajo muestra dónde el modelo se queda corto o se pasa.</p>
+        <div class="degree-row" id="degreeRow"></div>
+        <canvas id="chart" width="800" height="340"></canvas>
+        <canvas id="residuals" width="800" height="210"></canvas>
+        <div class="metrics">
+          <span>Grado: <b id="mDegree">2</b></span>
+          <span>R²: <b id="mR2">–</b></span>
+          <span>Coeficientes: <b id="mCoef" style="font-size:13px;">–</b></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="business">
+    <h2>¿Qué significa para tu planta?</h2>
+    <div class="business-grid">
+      <div>
+        <p>Con la lectura actual de los sliders, el modelo estima <span class="stat" id="bizDaysInline">32 días</span> antes de que convenga intervenir. Detectar esta tendencia con anticipación típicamente cambia un paro no programado (horas de producción perdida + repuesto de emergencia) por un cambio de rodamiento planificado en la próxima ventana de mantenimiento. La diferencia de costo suele ser de un orden de magnitud.</p>
+        <div class="biz-action" id="bizAction">
+          <div class="biz-title" id="bizTitle">Calculando…</div>
+          <div class="biz-detail" id="bizDetail"></div>
+        </div>
+      </div>
+      <div>
+        <div class="scope-label">Proyección de vida útil restante</div>
+        <canvas id="projection" width="480" height="230"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <section id="cta">
+    <h2>Esto es una maqueta educativa</h2>
+    <p style="color:var(--muted); max-width:640px; margin-bottom:20px;">Los coeficientes y la simulación de este demo son de ejemplo, ajustados sobre datos sintéticos — sirven para explicar la idea, no para diagnosticar tu equipo real. Llevarlo a tu planta no es solo "cambiar el dataset": primero estandarizamos cómo capturas los datos de tus sensores, los analizamos y preparamos a fondo, y construimos las variables que de verdad explican una falla. Con eso, nuestro motor AutoML elige y ajusta el modelo correcto para tu caso, calibra sus parámetros para que aprenda el patrón real —sin memorizar de más ni de menos— y afina las predicciones para evitar dos errores costosos: falsas alarmas, y algo peor, que el equipo falle sin que el modelo lo haya anticipado. Si quieres recorrer ese proceso con tus datos, conversemos.</p>
+    <div class="cta-row">
+      <a class="btn primary" href="https://chat.whatsapp.com/GvBz1tuUeNZ0xwTkjsuE3z" target="_blank" rel="noopener">Unirme a la comunidad de WhatsApp</a>
+      <a class="btn ghost" href="https://www.linkedin.com/company/reliabilit-ia/" target="_blank" rel="noopener">Seguir en LinkedIn</a>
+      <a class="btn ghost" href="https://www.youtube.com/@miguelangelcayllahuaquispe998" target="_blank" rel="noopener">Ver en YouTube</a>
+    </div>
+
+    <div class="contact-card">
+      <div>
+        <h3>¿Hablamos de tu caso de rodamientos?</h3>
+        <p>Si tienes datos de vibración o temperatura de tus equipos y quieres validar este análisis con tu planta, escríbeme directamente.</p>
+      </div>
+      <div class="contact-links">
+        <a class="contact-row" href="https://wa.me/51997610310?text=Hola%20Miguel%2C%20vi%20el%20demo%20Radar%20de%20Rodamientos%20y%20quiero%20conversar%20sobre%20la%20calibracion%20para%20mi%20planta" target="_blank" rel="noopener">
+          <span class="contact-icon">💬</span>
+          <span class="contact-text"><b>WhatsApp</b>+51 997 610 310</span>
+        </a>
+        <a class="contact-row" href="https://www.linkedin.com/in/miguelcayllahua/" target="_blank" rel="noopener">
+          <span class="contact-icon">in</span>
+          <span class="contact-text"><b>LinkedIn</b>Miguel Angel Cayllahua Quispe</span>
+        </a>
+        <a class="contact-row" href="mailto:miguelcquispe@gmail.com">
+          <span class="contact-icon">✉</span>
+          <span class="contact-text"><b>Correo</b>miguelcquispe@gmail.com</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-links">
+      <a href="https://chat.whatsapp.com/GvBz1tuUeNZ0xwTkjsuE3z" target="_blank" rel="noopener">WhatsApp</a>
+      <a href="https://www.youtube.com/@miguelangelcayllahuaquispe998" target="_blank" rel="noopener">YouTube</a>
+      <a href="https://www.linkedin.com/company/reliabilit-ia/" target="_blank" rel="noopener">LinkedIn empresa</a>
+      <a href="https://www.linkedin.com/in/miguelcayllahua/" target="_blank" rel="noopener">LinkedIn personal</a>
+      <a href="mailto:miguelcquispe@gmail.com">Correo</a>
+    </div>
+    <p>Contenido con fines ilustrativos, no reemplaza un diagnóstico técnico en planta. Los datos y la simulación usados en esta demo son sintéticos y no corresponden a ningún cliente real. Modelo entrenado con datos de ejemplo, no es una fórmula fija.</p>
+  </footer>
+</div>
+
+<script>
+/* =========================================================
+   MODO BÁSICO — modelo "pre-entrenado" (coeficientes de ejemplo)
+   ========================================================= */
+function baseLifeDays(vib){
+  const a = 0.42, b = -11.2, c = 78;
+  return a*vib*vib + b*vib + c;
+}
+function tempFactor(temp){
+  if(temp <= 60) return 1 - (temp-45)*0.004;
+  return 1 - 0.06 - (temp-60)*0.012;
+}
+
+const vibSlider = document.getElementById('vibSlider');
+const tempSlider = document.getElementById('tempSlider');
+const vibVal = document.getElementById('vibVal');
+const tempVal = document.getElementById('tempVal');
+const riskDot = document.getElementById('riskDot');
+const riskTitle = document.getElementById('riskTitle');
+const riskDetail = document.getElementById('riskDetail');
+const bizDaysInline = document.getElementById('bizDaysInline');
+const bizAction = document.getElementById('bizAction');
+const bizTitle = document.getElementById('bizTitle');
+const bizDetail = document.getElementById('bizDetail');
+const projectionCanvas = document.getElementById('projection');
+const pctx = projectionCanvas.getContext('2d');
+
+function resolveColor(cssVarOrColor){
+  // resolves 'var(--success)' etc. to an actual rgb value for canvas use
+  if(cssVarOrColor.startsWith('var(')){
+    const name = cssVarOrColor.slice(4,-1).trim();
+    return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+  }
+  return cssVarOrColor;
+}
+
+function drawProjection(days, colorCss){
+  const W = projectionCanvas.width, H = projectionCanvas.height;
+  pctx.clearRect(0,0,W,H);
+  const padL = 46, padR = 60, padT = 20, padB = 34;
+  const xMax = Math.max(30, Math.ceil((days+15)/10)*10);
+  const yMax = Math.max(80, Math.ceil((days+15)/10)*10);
+  function toPx(x,y){
+    return [
+      padL + x/xMax*(W-padL-padR),
+      H-padB - y/yMax*(H-padT-padB)
+    ];
+  }
+
+  function bandRect(y0,y1,fill){
+    const [,py0] = toPx(0,y0);
+    const [,py1] = toPx(0,Math.min(y1,yMax));
+    pctx.fillStyle = fill;
+    pctx.fillRect(padL, py1, W-padL-padR, py0-py1);
+  }
+  bandRect(0,14,'rgba(244,114,46,0.10)');
+  bandRect(14,45,'rgba(232,197,71,0.08)');
+  bandRect(45,yMax,'rgba(62,207,160,0.08)');
+
+  pctx.strokeStyle = '#22222c';
+  pctx.lineWidth = 1;
+  pctx.beginPath();
+  pctx.moveTo(padL, padT); pctx.lineTo(padL, H-padB); pctx.lineTo(W-padR, H-padB);
+  pctx.stroke();
+
+  pctx.fillStyle = '#8a8a98';
+  pctx.font = '12px DM Mono, monospace';
+  pctx.fillText('días desde hoy', W/2-40, H-10);
+  [
+    {label:'alto', y0:0, y1:14, color:'#f4722e'},
+    {label:'medio', y0:14, y1:45, color:'#e8c547'},
+    {label:'bajo', y0:45, y1:yMax, color:'#3ecfa0'}
+  ].forEach(b=>{
+    const mid = Math.max(0, Math.min(yMax, (b.y0 + Math.min(b.y1,yMax))/2));
+    const [,py] = toPx(0, mid);
+    pctx.fillStyle = b.color;
+    pctx.fillText(b.label, W-padR+6, py+4);
+  });
+
+  const color = resolveColor(colorCss) || '#3ecfa0';
+  pctx.strokeStyle = color;
+  pctx.lineWidth = 2.5;
+  pctx.beginPath();
+  const [x0,y0] = toPx(0, days);
+  const [x1,y1] = toPx(days, 0);
+  pctx.moveTo(x0,y0);
+  pctx.lineTo(x1,y1);
+  pctx.stroke();
+
+  pctx.fillStyle = color;
+  pctx.beginPath(); pctx.arc(x0,y0,5,0,Math.PI*2); pctx.fill();
+  pctx.fillStyle = '#f4f4f7';
+  pctx.font = '13px DM Mono, monospace';
+  pctx.fillText('hoy', x0+8, y0-8);
+
+  pctx.fillStyle = color;
+  pctx.beginPath(); pctx.arc(x1,y1,5,0,Math.PI*2); pctx.fill();
+  pctx.fillStyle = '#f4f4f7';
+  pctx.fillText('falla est.', Math.max(padL,x1-58), y1-10);
+}
+
+function updateBasic(){
+  const vib = parseFloat(vibSlider.value);
+  const temp = parseFloat(tempSlider.value);
+  vibVal.textContent = vib.toFixed(1) + ' mm/s';
+  tempVal.textContent = temp.toFixed(0) + ' °C';
+
+  let days = baseLifeDays(vib) * tempFactor(temp);
+  days = Math.max(0, Math.round(days));
+
+  let color, title, detail;
+  if(days > 45){
+    color = 'var(--success)';
+    title = 'Riesgo bajo — ' + days + ' días estimados';
+    detail = 'El rodamiento opera dentro de rango normal. Próxima revisión en la ronda de rutina.';
+  } else if(days > 14){
+    color = '#e8c547';
+    title = 'Riesgo medio — revisar en ' + days + ' días';
+    detail = 'Vibración o temperatura por encima de lo ideal. Programar inspección con analizador portátil.';
+  } else {
+    color = 'var(--cta)';
+    title = 'Riesgo alto — revisar en ' + days + ' días';
+    detail = 'Señal de degradación avanzada. Priorizar cambio de rodamiento en la próxima ventana disponible.';
+  }
+  riskDot.style.background = color;
+  riskTitle.style.color = color;
+  riskTitle.textContent = title;
+  riskDetail.textContent = detail;
+
+  // sección de negocio: se actualiza en vivo con la misma lectura de los sliders
+  bizDaysInline.textContent = days + ' días';
+  bizDaysInline.style.color = color;
+  bizAction.style.borderColor = color;
+  bizTitle.style.color = color;
+  bizTitle.textContent = title;
+  bizDetail.textContent = detail;
+  drawProjection(days, color);
+}
+vibSlider.addEventListener('input', updateBasic);
+tempSlider.addEventListener('input', updateBasic);
+updateBasic();
+
+/* =========================================================
+   SIMULACIÓN EN VIVO — instrumento animado + osciloscopio + corriente
+   (100% generado en cliente a partir de vib/temp, solo ilustrativo)
+   ========================================================= */
+const instrumentCanvas = document.getElementById('instrument');
+const ictx = instrumentCanvas.getContext('2d');
+const scopeCanvas = document.getElementById('scope');
+const sctx = scopeCanvas.getContext('2d');
+const gaugeFill = document.getElementById('gaugeFill');
+const gaugeValue = document.getElementById('gaugeValue');
+const defectCountEl = document.getElementById('defectCount');
+const revCountEl = document.getElementById('revCount');
+
+function lerpColor(c1, c2, t){
+  return c1.map((v,i)=> Math.round(v + (c2[i]-v)*Math.min(1,Math.max(0,t))));
+}
+function rgba(c, a){ return 'rgba(' + c[0] + ',' + c[1] + ',' + c[2] + ',' + a + ')'; }
+const COLOR_SUCCESS = [62,207,160];
+const COLOR_CTA = [244,114,46];
+
+let shaftAngle = 0;
+let simTime = 0;
+let revCount = 0;
+let lastBallMod = 0;
+const scopeBuffer = new Array(160).fill(0);
+let displayedCurrent = 12.4;
+
+function drawInstrument(vib, temp){
+  const W = instrumentCanvas.width, H = instrumentCanvas.height;
+  ictx.clearRect(0,0,W,H);
+  const cx = W/2, cy = H/2;
+  const outerR = 88, innerR = 40;
+
+  // thermal glow behind everything, from cool (success) to hot (cta)
+  const tempT = (temp-20)/(95-20);
+  const glowColor = lerpColor(COLOR_SUCCESS, COLOR_CTA, tempT);
+  const grad = ictx.createRadialGradient(cx,cy,8,cx,cy,outerR+26);
+  grad.addColorStop(0, rgba(glowColor, 0.35));
+  grad.addColorStop(1, rgba(glowColor, 0));
+  ictx.fillStyle = grad;
+  ictx.fillRect(0,0,W,H);
+
+  // jitter proportional to vibration severity
+  const jitterMag = Math.min(1, vib/14);
+  const dx = (Math.random()-0.5) * jitterMag * 6;
+  const dy = (Math.random()-0.5) * jitterMag * 6;
+  ictx.save();
+  ictx.translate(cx+dx, cy+dy);
+
+  // outer race
+  ictx.strokeStyle = '#3a3a48';
+  ictx.lineWidth = 3;
+  ictx.beginPath();
+  ictx.arc(0,0,outerR,0,Math.PI*2);
+  ictx.stroke();
+
+  // wear/defect points on the outer race, count grows with vibration
+  const defectCount = Math.min(8, Math.max(0, Math.round((vib-1.5)*0.7)));
+  defectCountEl.textContent = defectCount;
+  const defectAngles = [];
+  for(let i=0;i<defectCount;i++) defectAngles.push((Math.PI*2/defectCount)*i - Math.PI/2);
+
+  const ballAngle = shaftAngle * 0.42; // cage speed ~ 0.42x shaft speed (typical bearing geometry)
+  const ballMod = ((ballAngle % (Math.PI*2)) + Math.PI*2) % (Math.PI*2);
+  if(ballMod < lastBallMod) revCount++;
+  lastBallMod = ballMod;
+  revCountEl.textContent = revCount;
+
+  defectAngles.forEach(a=>{
+    let diff = Math.abs(a - (ballMod - Math.PI/2));
+    diff = Math.min(diff, Math.PI*2-diff);
+    const hit = diff < 0.18;
+    ictx.beginPath();
+    ictx.fillStyle = hit ? rgba(COLOR_CTA,0.95) : 'rgba(244,114,46,0.55)';
+    const r = hit ? 6 : 3.5;
+    ictx.arc(Math.cos(a)*outerR, Math.sin(a)*outerR, r, 0, Math.PI*2);
+    ictx.fill();
+    if(hit){
+      ictx.beginPath();
+      ictx.strokeStyle = rgba(COLOR_CTA,0.5);
+      ictx.lineWidth = 2;
+      ictx.arc(Math.cos(a)*outerR, Math.sin(a)*outerR, 11, 0, Math.PI*2);
+      ictx.stroke();
+    }
+  });
+
+  // ball / rolling element marker
+  const ballR = (outerR+innerR)/2;
+  ictx.beginPath();
+  ictx.fillStyle = '#f4f4f7';
+  ictx.arc(Math.cos(ballMod-Math.PI/2)*ballR, Math.sin(ballMod-Math.PI/2)*ballR, 5, 0, Math.PI*2);
+  ictx.fill();
+
+  // inner shaft + keyway (rotates faster, constant speed regardless of damage)
+  ictx.beginPath();
+  ictx.strokeStyle = '#5a5a6a';
+  ictx.lineWidth = 2;
+  ictx.arc(0,0,innerR,0,Math.PI*2);
+  ictx.stroke();
+  ictx.beginPath();
+  ictx.strokeStyle = '#7b5ea7';
+  ictx.lineWidth = 2.5;
+  ictx.moveTo(0,0);
+  ictx.lineTo(Math.cos(shaftAngle)*innerR*0.9, Math.sin(shaftAngle)*innerR*0.9);
+  ictx.stroke();
+
+  ictx.restore();
+}
+
+function updateScope(vib){
+  const W = scopeCanvas.width, H = scopeCanvas.height;
+  const severity = Math.min(1, vib/14);
+  const base = Math.sin(simTime*6) * (2 + vib*0.85);
+  const harm2 = Math.sin(simTime*6*3.1) * (severity*severity*10);
+  const harm3 = Math.sin(simTime*6*5.4) * (severity*severity*6);
+  const noise = (Math.random()-0.5) * (1 + severity*3);
+  const sample = base + harm2 + harm3 + noise;
+  scopeBuffer.push(sample);
+  scopeBuffer.shift();
+
+  sctx.clearRect(0,0,W,H);
+  sctx.strokeStyle = '#22222c';
+  sctx.beginPath(); sctx.moveTo(0,H/2); sctx.lineTo(W,H/2); sctx.stroke();
+
+  const lineColor = lerpColor(COLOR_SUCCESS, COLOR_CTA, severity);
+  sctx.strokeStyle = rgba(lineColor,0.9);
+  sctx.lineWidth = 1.6;
+  sctx.beginPath();
+  const maxAmp = 16;
+  scopeBuffer.forEach((v,i)=>{
+    const x = i/(scopeBuffer.length-1) * W;
+    const y = H/2 - (v/maxAmp)*(H/2-6);
+    if(i===0) sctx.moveTo(x,y); else sctx.lineTo(x,y);
+  });
+  sctx.stroke();
+}
+
+function updateGauge(vib, temp){
+  const target = 11.5 + vib*0.22 + Math.max(0,temp-45)*0.045;
+  displayedCurrent += (target-displayedCurrent)*0.08;
+  const pct = Math.min(100, Math.max(0,(displayedCurrent-10)/(20-10)*100));
+  const severity = Math.min(1, vib/14);
+  const col = lerpColor(COLOR_SUCCESS, COLOR_CTA, severity);
+  gaugeFill.style.width = pct.toFixed(1)+'%';
+  gaugeFill.style.background = rgba(col,1);
+  gaugeValue.textContent = displayedCurrent.toFixed(1);
+}
+
+function mainLoop(){
+  simTime += 0.016;
+  shaftAngle += 0.09;
+  const vib = parseFloat(vibSlider.value);
+  const temp = parseFloat(tempSlider.value);
+  drawInstrument(vib, temp);
+  updateScope(vib);
+  updateGauge(vib, temp);
+  requestAnimationFrame(mainLoop);
+}
+requestAnimationFrame(mainLoop);
+
+/* =========================================================
+   MODO ANALISTA — dataset sintético + regresión polinomial animada
+   ========================================================= */
+function seededRandom(seed){
+  let s = seed;
+  return function(){
+    s = (s*9301+49297) % 233280;
+    return s/233280;
+  };
+}
+const rnd = seededRandom(42);
+const dataset = [];
+for(let i=0;i<20;i++){
+  const vib = 0.5 + rnd()*13.5;
+  const noise = (rnd()-0.5)*14;
+  const y = Math.max(2, baseLifeDays(vib) + noise);
+  dataset.push({x: vib, y: y});
+}
+
+function polyFit(points, degree){
+  const n = degree+1;
+  const X = points.map(p => {
+    const row = [];
+    for(let k=0;k<n;k++) row.push(Math.pow(p.x,k));
+    return row;
+  });
+  const y = points.map(p=>p.y);
+
+  const XtX = Array.from({length:n}, ()=>Array(n).fill(0));
+  const Xty = Array(n).fill(0);
+  for(let i=0;i<points.length;i++){
+    for(let r=0;r<n;r++){
+      Xty[r] += X[i][r]*y[i];
+      for(let c=0;c<n;c++){
+        XtX[r][c] += X[i][r]*X[i][c];
+      }
+    }
+  }
+  const A = XtX.map((row,i)=>[...row, Xty[i]]);
+  for(let col=0; col<n; col++){
+    let pivot = col;
+    for(let r=col+1;r<n;r++) if(Math.abs(A[r][col])>Math.abs(A[pivot][col])) pivot = r;
+    [A[col],A[pivot]] = [A[pivot],A[col]];
+    if(Math.abs(A[col][col]) < 1e-10) continue;
+    for(let r=0;r<n;r++){
+      if(r===col) continue;
+      const factor = A[r][col]/A[col][col];
+      for(let c=col;c<=n;c++) A[r][c] -= factor*A[col][c];
+    }
+  }
+  const coefs = A.map((row,i)=> Math.abs(row[i])<1e-10 ? 0 : row[n]/row[i]);
+
+  const yMean = y.reduce((a,b)=>a+b,0)/y.length;
+  let ssRes=0, ssTot=0;
+  points.forEach(p=>{
+    let pred=0;
+    for(let k=0;k<n;k++) pred += coefs[k]*Math.pow(p.x,k);
+    ssRes += (p.y-pred)**2;
+    ssTot += (p.y-yMean)**2;
+  });
+  const r2 = ssTot===0 ? 1 : 1 - ssRes/ssTot;
+  return {coefs, r2};
+}
+
+function padCoefs(coefs, len){
+  const out = new Array(len).fill(0);
+  for(let i=0;i<coefs.length && i<len;i++) out[i]=coefs[i];
+  return out;
+}
+
+const MAX_LEN = 5; // supports up to degree 4
+const chartCanvas = document.getElementById('chart');
+const cctx = chartCanvas.getContext('2d');
+const residualCanvas = document.getElementById('residuals');
+const rctx = residualCanvas.getContext('2d');
+let currentDegree = 2;
+let displayCoefs = null;
+let animFrame = null;
+
+function evalPoly(coefs, x){
+  let y = 0;
+  for(let k=0;k<coefs.length;k++) y += coefs[k]*Math.pow(x,k);
+  return y;
+}
+
+function drawMainChart(coefs){
+  const W = chartCanvas.width, H = chartCanvas.height;
+  const pad = 36;
+  cctx.clearRect(0,0,W,H);
+
+  const ys = dataset.map(p=>p.y);
+  const xMin=0, xMax=15;
+  const yMin=0, yMax=Math.max(...ys)+10;
+
+  function toPx(x,y){
+    return [
+      pad + (x-xMin)/(xMax-xMin)*(W-2*pad),
+      H-pad - (y-yMin)/(yMax-yMin)*(H-2*pad)
+    ];
+  }
+
+  cctx.strokeStyle = '#22222c';
+  cctx.lineWidth = 1;
+  cctx.beginPath();
+  cctx.moveTo(pad, pad); cctx.lineTo(pad, H-pad); cctx.lineTo(W-pad, H-pad);
+  cctx.stroke();
+  cctx.fillStyle = '#a8a8b4';
+  cctx.font = '13px DM Mono, monospace';
+  cctx.fillText('vibración RMS (mm/s)', W/2-70, H-10);
+  cctx.save();
+  cctx.translate(16, H/2+50);
+  cctx.rotate(-Math.PI/2);
+  cctx.fillText('vida útil (días)', 0, 0);
+  cctx.restore();
+
+  cctx.strokeStyle = '#3ecfa0';
+  cctx.lineWidth = 2;
+  cctx.beginPath();
+  for(let px=0; px<=100; px++){
+    const x = xMin + (xMax-xMin)*px/100;
+    let y = evalPoly(coefs, x);
+    y = Math.max(yMin, Math.min(yMax, y));
+    const [cx,cy] = toPx(x,y);
+    if(px===0) cctx.moveTo(cx,cy); else cctx.lineTo(cx,cy);
+  }
+  cctx.stroke();
+
+  cctx.fillStyle = '#7b5ea7';
+  dataset.forEach(p=>{
+    const [cx,cy] = toPx(p.x, p.y);
+    cctx.beginPath();
+    cctx.arc(cx,cy,4,0,Math.PI*2);
+    cctx.fill();
+  });
+}
+
+function drawResiduals(coefs){
+  const W = residualCanvas.width, H = residualCanvas.height;
+  rctx.clearRect(0,0,W,H);
+  const padL = 56, padR = 20, padT = 30, padB = 34;
+  const xMin=0, xMax=15;
+  const maxResid = 20;
+  function toPxX(x){ return padL + (x-xMin)/(xMax-xMin)*(W-padL-padR); }
+  const midY = padT + (H-padT-padB)/2;
+  const halfH = (H-padT-padB)/2 - 6;
+
+  rctx.fillStyle = '#c9c9d4';
+  rctx.font = '14px DM Mono, monospace';
+  rctx.fillText('Residuos: días reales − días predichos', padL, 18);
+
+  // y gridlines with labels
+  rctx.font = '12px DM Mono, monospace';
+  [-20,-10,0,10,20].forEach(v=>{
+    const y = midY - (v/maxResid)*halfH;
+    rctx.strokeStyle = v===0 ? '#3a3a48' : '#1a1a22';
+    rctx.lineWidth = 1;
+    rctx.beginPath(); rctx.moveTo(padL, y); rctx.lineTo(W-padR, y); rctx.stroke();
+    rctx.fillStyle = '#8a8a98';
+    rctx.fillText((v>0?'+':'')+v, 8, y+4);
+  });
+
+  rctx.fillStyle = '#8a8a98';
+  rctx.fillText('vibración RMS (mm/s)', W/2-70, H-8);
+
+  dataset.forEach(p=>{
+    const pred = evalPoly(coefs, p.x);
+    const resid = p.y - pred;
+    const x = toPxX(p.x);
+    const barH = Math.max(-halfH, Math.min(halfH, (resid/maxResid)*halfH));
+    rctx.fillStyle = resid >= 0 ? 'rgba(62,207,160,0.85)' : 'rgba(244,114,46,0.85)';
+    rctx.fillRect(x-4, midY - Math.max(0,barH), 8, Math.abs(barH));
+  });
+}
+
+function drawChartWithCoefs(coefs){
+  drawMainChart(coefs);
+  drawResiduals(coefs);
+}
+
+function animateToDegree(newDegree){
+  const {coefs: newCoefsRaw, r2} = polyFit(dataset, newDegree);
+  const newCoefs = padCoefs(newCoefsRaw, MAX_LEN);
+  const startCoefs = displayCoefs ? displayCoefs.slice() : newCoefs.slice();
+  const startTime = performance.now();
+  const duration = 550;
+
+  document.getElementById('mDegree').textContent = newDegree;
+  document.getElementById('mR2').textContent = r2.toFixed(3);
+  document.getElementById('mCoef').textContent = newCoefsRaw.map(c=>c.toFixed(2)).join(', ');
+
+  if(animFrame) cancelAnimationFrame(animFrame);
+  function step(now){
+    const t = Math.min(1, (now-startTime)/duration);
+    const eased = t<0.5 ? 2*t*t : 1-Math.pow(-2*t+2,2)/2;
+    const interp = startCoefs.map((s,i)=> s + (newCoefs[i]-s)*eased);
+    drawChartWithCoefs(interp);
+    if(t<1){
+      animFrame = requestAnimationFrame(step);
+    } else {
+      displayCoefs = newCoefs;
+      animFrame = null;
+    }
+  }
+  animFrame = requestAnimationFrame(step);
+}
+
+const degreeRow = document.getElementById('degreeRow');
+[1,2,3,4].forEach(d=>{
+  const btn = document.createElement('button');
+  btn.className = 'degree-btn' + (d===currentDegree ? ' active':'');
+  btn.textContent = 'Grado ' + d;
+  btn.addEventListener('click', ()=>{
+    currentDegree = d;
+    document.querySelectorAll('.degree-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    animateToDegree(d);
+  });
+  degreeRow.appendChild(btn);
+});
+
+const analystToggle = document.getElementById('analystToggle');
+const analystPanel = document.getElementById('analystPanel');
+analystToggle.addEventListener('change', ()=>{
+  analystPanel.classList.toggle('show', analystToggle.checked);
+  if(analystToggle.checked) animateToDegree(currentDegree);
+});
+</script>
+
+</body>
+</html>
