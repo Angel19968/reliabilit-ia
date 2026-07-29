@@ -35,7 +35,9 @@
   h1,h2,h3{font-family:'Syne', sans-serif; font-weight:800; letter-spacing:-0.02em;}
   a{color:var(--success);}
   .wrap{max-width:960px;margin:0 auto;padding:0 24px;}
-  .back{display:inline-block; font-size:13px; color:var(--muted); text-decoration:none; padding-top:20px;}
+  .back{display:inline-block; font-size:13px; color:var(--muted); text-decoration:none;}
+  .nav-row{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; padding-top:20px;}
+  .quick-nav{font-family:'DM Mono',monospace; font-size:13px; background:var(--panel); color:var(--text); border:1px solid var(--border); border-radius:8px; padding:6px 10px; max-width:230px;}
   .back:hover{color:var(--success);}
 
   header.hero{padding:24px 0 40px; border-bottom:1px solid var(--border);}
@@ -110,6 +112,7 @@
   .gauge-wrap{margin-bottom:16px;}
   .gauge-label{font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:8px;}
   .gauge-bar{height:12px; background:var(--border); border-radius:999px; overflow:hidden; margin:8px 0; position:relative;}
+  .gauge-tick{position:absolute; top:0; bottom:0; width:2px; background:rgba(244,244,247,0.55); z-index:2;}
   .gauge-fill{height:100%; width:0%; transition:background .35s ease, width .3s ease;}
   .gauge-value{font-size:16px; color:var(--text);}
   .gauge-value b{font-size:20px;}
@@ -194,7 +197,26 @@
 <body>
 
 <div class="wrap">
-  <a class="back" href="../../">← Volver al catálogo RELIABILIT-IA</a>
+  <div class="nav-row">
+    <a class="back" href="../../">← Volver al catálogo RELIABILIT-IA</a>
+    <select class="quick-nav" onchange="if(this.value) location.href=this.value;">
+      <option value="">Ir a otro modelo →</option>
+      <option value="../radar-de-rodamientos/">Radar de Rodamientos</option>
+      <option value="../pulso-energetico/">Pulso Energético</option>
+      <option value="../diagnostico-del-motor/">Diagnóstico del Motor</option>
+      <option value="../pulso-del-motor/">Pulso del Motor</option>
+      <option value="../oido-industrial/">Oído Industrial</option>
+      <option value="../radiografia-de-planta/">Radiografía de Planta</option>
+      <option value="../semaforo-de-bombas/">Semáforo de Bombas</option>
+      <option value="../guardian-de-la-bomba/">Guardián de la Bomba</option>
+      <option value="../frontera-de-vibracion/">Frontera de Vibración</option>
+      <option value="../familias-de-turbinas/">Familias de Turbinas</option>
+      <option value="../nubes-de-sensores/">Nubes de Sensores</option>
+      <option value="../termometro-del-motor/">Termómetro del Motor</option>
+      <option value="../mapa-de-anomalias/">Mapa de Anomalías</option>
+      <option value="../ojo-termico/">Ojo Térmico</option>
+    </select>
+  </div>
 
   <header class="hero">
     <div class="badge">Anomalías · Compresor</div>
@@ -258,7 +280,7 @@
 
           <div class="gauge-wrap">
             <div class="gauge-label">Percentil de anormalidad (0-100)</div>
-            <div class="gauge-bar"><div class="gauge-fill" id="gaugeFill"></div></div>
+            <div class="gauge-bar"><div class="gauge-fill" id="gaugeFill"></div><span class="gauge-tick" style="left:90%"></span><span class="gauge-tick" style="left:97.5%"></span></div>
             <div class="gauge-value"><b id="gaugeValue">0</b> <span class="gauge-note">% de la operación normal más cercana al promedio que esta lectura</span></div>
           </div>
 

@@ -47,19 +47,32 @@
   h1 em{font-style:normal; color:var(--success);}
   .lead{font-family:'Instrument Serif', serif; font-style:italic; font-size:22px; color:var(--muted); max-width:640px;}
   section{padding:56px 0; border-bottom:1px solid var(--border);}
-  .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:20px; margin-top:28px;}
+  .filters{display:flex; flex-wrap:wrap; gap:10px; margin-top:24px; align-items:center;}
+  .filter-group{display:flex; flex-wrap:wrap; gap:8px; align-items:center;}
+  .filter-label{font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-right:2px;}
+  .chip{
+    font-family:'DM Mono', monospace; font-size:13px; padding:7px 14px; border-radius:999px;
+    border:1px solid var(--border); background:transparent; color:var(--text); cursor:pointer;
+    transition:border-color .15s, background .15s;
+  }
+  .chip:hover{border-color:var(--success);}
+  .chip.active{background:var(--success); border-color:var(--success); color:#0a0a0f; font-weight:600;}
+  .filter-reset{font-size:12px; color:var(--muted); background:none; border:none; text-decoration:underline; cursor:pointer; font-family:'DM Mono', monospace;}
+  .filter-count{font-size:13px; color:var(--muted); margin-top:14px;}
+  .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:20px; margin-top:20px;}
+  .card.is-hidden{display:none;}
+  .empty-state{color:var(--muted); font-size:14px; padding:32px 0; text-align:center; display:none;}
+  .empty-state.show{display:block;}
   .card{
     background:var(--panel); border:1px solid var(--border); border-radius:14px;
     padding:24px; transition:border-color .2s, transform .2s; text-decoration:none; color:var(--text);
-    display:block;
+    display:flex; flex-direction:column;
   }
   .card:hover{border-color:var(--success); transform:translateY(-2px);}
-  .card.disabled{opacity:.45; pointer-events:none;}
   .card .tag{font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--accent);}
   .card h3{font-size:20px; margin:10px 0 8px;}
   .card p{font-size:14px; color:var(--muted);}
-  .status{font-size:11px; color:var(--success); margin-top:14px; display:inline-block;}
-  .status.soon{color:var(--muted);}
+  .status{font-size:11px; color:var(--success); margin-top:auto; padding-top:14px; display:inline-block;}
   .cta-row{display:flex; gap:14px; flex-wrap:wrap; margin-top:28px;}
   .btn{
     font-family:'DM Mono', monospace; font-size:14px; padding:12px 22px; border-radius:10px;
@@ -108,98 +121,131 @@
 
   <section id="modelos">
     <h2>Catálogo de demos</h2>
-    <div class="grid">
-      <a class="card" href="./modelos/radar-de-rodamientos/">
+
+    <div class="filters">
+      <div class="filter-group" id="paradigmFilters" data-filter="paradigm">
+        <span class="filter-label">Paradigma:</span>
+        <button class="chip" data-value="regresion">Regresión</button>
+        <button class="chip" data-value="series-tiempo">Series de tiempo</button>
+        <button class="chip" data-value="clasificacion">Clasificación</button>
+        <button class="chip" data-value="anomalias">Anomalías</button>
+        <button class="chip" data-value="clustering">Clustering</button>
+        <button class="chip" data-value="vision">Visión</button>
+        <button class="chip" data-value="nuevas-tecnologias">Nuevas tecnologías</button>
+      </div>
+    </div>
+    <div class="filters">
+      <div class="filter-group" id="sectorFilters" data-filter="sector">
+        <span class="filter-label">Sector:</span>
+        <button class="chip" data-value="rodamientos">Rodamientos</button>
+        <button class="chip" data-value="motores">Motores</button>
+        <button class="chip" data-value="bombas">Bombas</button>
+        <button class="chip" data-value="compresores">Compresores</button>
+        <button class="chip" data-value="aire-comprimido">Aire comprimido</button>
+        <button class="chip" data-value="turbinas">Turbinas</button>
+        <button class="chip" data-value="energia">Energía</button>
+        <button class="chip" data-value="planta">Planta</button>
+        <button class="chip" data-value="sensores">Sensores</button>
+        <button class="chip" data-value="vibracion">Vibración</button>
+        <button class="chip" data-value="termografia">Termografía</button>
+      </div>
+      <button class="filter-reset" id="filterReset">Limpiar filtros</button>
+    </div>
+    <p class="filter-count" id="filterCount"></p>
+
+    <div class="grid" id="modelGrid">
+      <a class="card" data-paradigm="regresion" data-sector="rodamientos" href="./modelos/radar-de-rodamientos/">
         <div class="tag">Regresión · Rodamientos</div>
         <h3>Radar de Rodamientos</h3>
         <p>Estima días hasta falla a partir de vibración RMS y temperatura.</p>
         <span class="status">● Disponible</span>
       </a>
-      <a class="card" href="./modelos/pulso-energetico/">
+      <a class="card" data-paradigm="series-tiempo" data-sector="energia" href="./modelos/pulso-energetico/">
         <div class="tag">Series de tiempo · Energía</div>
         <h3>Pulso Energético</h3>
         <p>Proyecta consumo energético y detecta desvíos anómalos.</p>
         <span class="status">● Disponible</span>
       </a>
-      <a class="card" href="./modelos/diagnostico-del-motor/">
+      <a class="card" data-paradigm="clasificacion" data-sector="motores" href="./modelos/diagnostico-del-motor/">
         <div class="tag">Clasificación · Motor</div>
         <h3>Diagnóstico del Motor</h3>
         <p>Clasifica el estado de un motor en 5 niveles de severidad.</p>
         <span class="status">● Disponible</span>
       </a>
-      <a class="card" href="./modelos/pulso-del-motor/">
+      <a class="card" data-paradigm="nuevas-tecnologias" data-sector="motores" href="./modelos/pulso-del-motor/">
         <div class="tag">Nuevas tecnologías · Motor</div>
         <h3>Pulso del Motor</h3>
         <p>Diagnóstico por firma de corriente (MCSA) con pinza amperimétrica.</p>
         <span class="status">● Disponible</span>
       </a>
-      <a class="card" href="./modelos/oido-industrial/">
+      <a class="card" data-paradigm="nuevas-tecnologias" data-sector="aire-comprimido" href="./modelos/oido-industrial/">
         <div class="tag">Nuevas tecnologías · Aire comprimido</div>
         <h3>Oído Industrial</h3>
         <p>Traduce nivel ultrasónico en costo estimado de fuga.</p>
         <span class="status">● Disponible</span>
       </a>
-      <a class="card" href="./modelos/detector-anomalias-compresor/">
+      <a class="card" data-paradigm="anomalias" data-sector="compresores" href="./modelos/detector-anomalias-compresor/">
         <div class="tag">Anomalías · Compresor</div>
         <h3>Detector de Anomalías del Compresor</h3>
         <p>Detecta lecturas fuera de patrón sin necesitar ejemplos previos de falla.</p>
         <span class="status">● Disponible</span>
       </a>
-      <a class="card" href="./modelos/radiografia-de-planta/">
+      <a class="card" data-paradigm="clustering" data-sector="planta" href="./modelos/radiografia-de-planta/">
         <div class="tag">Clustering · Planta</div>
         <h3>Radiografía de Planta</h3>
         <p>Reduce 10 sensores a un mapa visual de 2 ejes para ver el estado general.</p>
         <span class="status">● Disponible</span>
       </a>
-      <a class="card" href="./modelos/semaforo-de-bombas/">
+      <a class="card" data-paradigm="clasificacion" data-sector="bombas" href="./modelos/semaforo-de-bombas/">
         <div class="tag">Clasificación · Bomba centrífuga</div>
         <h3>Semáforo de Bombas</h3>
         <p>Clasifica el estado de una bomba en verde, amarillo o rojo.</p>
         <span class="status">● Disponible</span>
       </a>
-      <a class="card" href="./modelos/guardian-de-la-bomba/">
+      <a class="card" data-paradigm="anomalias" data-sector="bombas" href="./modelos/guardian-de-la-bomba/">
         <div class="tag">Anomalías · Bomba</div>
         <h3>Guardián de la Bomba</h3>
         <p>Detecta comportamiento anómalo aun con pocos datos históricos.</p>
         <span class="status">● Disponible</span>
       </a>
-      <a class="card" href="./modelos/frontera-de-vibracion/">
+      <a class="card" data-paradigm="clasificacion" data-sector="vibracion" href="./modelos/frontera-de-vibracion/">
         <div class="tag">Clasificación · Vibración</div>
         <h3>Frontera de Vibración</h3>
         <p>Separa 3 estados de vibración con un límite de decisión visual.</p>
         <span class="status">● Disponible</span>
       </a>
-      <a class="card" href="./modelos/familias-de-turbinas/">
+      <a class="card" data-paradigm="clustering" data-sector="turbinas" href="./modelos/familias-de-turbinas/">
         <div class="tag">Clustering · Turbina</div>
         <h3>Familias de Turbinas</h3>
         <p>Agrupa turbinas similares según su comportamiento operativo.</p>
         <span class="status">● Disponible</span>
       </a>
-      <a class="card" href="./modelos/nubes-de-sensores/">
+      <a class="card" data-paradigm="clustering" data-sector="sensores" href="./modelos/nubes-de-sensores/">
         <div class="tag">Clustering · Sensores</div>
         <h3>Nubes de Sensores</h3>
         <p>Descubre grupos naturales en una nube de datos de sensores.</p>
         <span class="status">● Disponible</span>
       </a>
-      <a class="card" href="./modelos/termometro-del-motor/">
+      <a class="card" data-paradigm="regresion" data-sector="motores" href="./modelos/termometro-del-motor/">
         <div class="tag">Regresión · Motor eléctrico</div>
         <h3>Termómetro del Motor</h3>
         <p>Estima la temperatura de un motor eléctrico según su carga.</p>
         <span class="status">● Disponible</span>
       </a>
-      <a class="card" href="./modelos/mapa-de-anomalias/">
+      <a class="card" data-paradigm="anomalias" data-sector="sensores" href="./modelos/mapa-de-anomalias/">
         <div class="tag">Anomalías · Sensores múltiples</div>
         <h3>Mapa de Anomalías</h3>
         <p>Ubica visualmente las lecturas que se salen del comportamiento normal.</p>
         <span class="status">● Disponible</span>
       </a>
-      <a class="card" href="./modelos/ojo-termico/">
+      <a class="card" data-paradigm="vision" data-sector="termografia" href="./modelos/ojo-termico/">
         <div class="tag">Visión · Termografía</div>
         <h3>Ojo Térmico</h3>
         <p>Clasifica imágenes térmicas para detectar puntos calientes en equipos.</p>
         <span class="status">● Disponible</span>
       </a>
     </div>
+    <p class="empty-state" id="emptyState">Ningún modelo coincide con esos filtros. Prueba quitando alguno.</p>
   </section>
 
   <section>
@@ -245,6 +291,59 @@
     <p style="text-align:justify;">Contenido con fines educativos. La metodología detrás de cada demo es real; los datos son sintéticos para poder compartirlos públicamente.<br>Se adapta a distintos equipos, procesos e industrias cuando la calibramos con tus datos — conversemos sobre tu caso.</p>
   </footer>
 </div>
+
+<script>
+(function(){
+  var grid = document.getElementById('modelGrid');
+  var cards = Array.prototype.slice.call(grid.querySelectorAll('.card'));
+  var countEl = document.getElementById('filterCount');
+  var emptyEl = document.getElementById('emptyState');
+  var active = { paradigm: null, sector: null };
+
+  function apply(){
+    var visible = 0;
+    cards.forEach(function(card){
+      var okP = !active.paradigm || card.dataset.paradigm === active.paradigm;
+      var okS = !active.sector || card.dataset.sector === active.sector;
+      var show = okP && okS;
+      card.classList.toggle('is-hidden', !show);
+      if(show) visible++;
+    });
+    emptyEl.classList.toggle('show', visible === 0);
+    if(active.paradigm || active.sector){
+      countEl.textContent = visible + ' de ' + cards.length + ' modelos';
+    } else {
+      countEl.textContent = '';
+    }
+  }
+
+  ['paradigmFilters','sectorFilters'].forEach(function(id){
+    var group = document.getElementById(id);
+    var key = group.getAttribute('data-filter');
+    group.querySelectorAll('.chip').forEach(function(chip){
+      chip.addEventListener('click', function(){
+        var val = chip.getAttribute('data-value');
+        if(active[key] === val){
+          active[key] = null;
+          chip.classList.remove('active');
+        } else {
+          active[key] = val;
+          group.querySelectorAll('.chip').forEach(function(c){ c.classList.remove('active'); });
+          chip.classList.add('active');
+        }
+        apply();
+      });
+    });
+  });
+
+  document.getElementById('filterReset').addEventListener('click', function(){
+    active.paradigm = null;
+    active.sector = null;
+    document.querySelectorAll('.chip').forEach(function(c){ c.classList.remove('active'); });
+    apply();
+  });
+})();
+</script>
 
 </body>
 </html>
