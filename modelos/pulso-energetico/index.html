@@ -49,7 +49,7 @@
 
   section{padding:40px 0; border-bottom:1px solid var(--border);}
   section h2{font-size:22px; margin-bottom:14px;}
-  .context p{color:var(--muted); max-width:640px; font-size:15px;}
+  .context p{color:var(--muted); max-width:640px; font-size:15px; text-align:justify;}
 
   .panel{
     background:var(--panel); border:1px solid var(--border); border-radius:16px; padding:28px;
@@ -134,7 +134,18 @@
   .metrics b{color:var(--text);}
   .fit-badge{margin-top:14px; font-size:15px; font-weight:600; padding:10px 14px; border-radius:10px; background:var(--panel2); display:inline-block;}
 
-  .business p{color:var(--muted); font-size:16px; max-width:640px;}
+  .dataset-wrap{margin-top:24px;}
+  .dataset-label{font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:8px;}
+  .dataset-scroll{max-height:260px; overflow-y:auto; border:1px solid var(--border); border-radius:12px;}
+  .dataset-table{width:100%; border-collapse:collapse; font-size:13px;}
+  .dataset-table th{position:sticky; top:0; background:var(--panel2); color:var(--muted); text-align:left; font-weight:500; padding:8px 12px; border-bottom:1px solid var(--border); text-transform:uppercase; letter-spacing:.04em; font-size:11px;}
+  .dataset-table td{padding:7px 12px; border-bottom:1px solid var(--border); color:var(--text);}
+  .dataset-table tr:last-child td{border-bottom:none;}
+  .dataset-table td.set-train{color:var(--accent);}
+  .dataset-table td.set-test{color:var(--muted);}
+  .dataset-note{font-size:12px; color:var(--muted); margin-top:8px;}
+
+  .business p{color:var(--muted); font-size:16px; max-width:640px; text-align:justify;}
   .business .stat{color:var(--success); font-weight:500;}
   .business-grid{display:grid; grid-template-columns:1.1fr 1fr; gap:32px; align-items:start; margin-top:8px;}
   @media (max-width:760px){ .business-grid{grid-template-columns:1fr;} }
@@ -158,7 +169,7 @@
   }
   @media (max-width:700px){ .contact-card{grid-template-columns:1fr;} }
   .contact-card h3{font-size:19px; margin-bottom:8px;}
-  .contact-card p{font-size:14px; color:var(--muted); max-width:420px;}
+  .contact-card p{font-size:14px; color:var(--muted); max-width:420px; text-align:justify;}
   .contact-links{display:flex; flex-direction:column; gap:12px;}
   .contact-row{
     display:flex; align-items:center; gap:14px; padding:12px 16px; border-radius:12px;
@@ -188,6 +199,7 @@
 
   <header class="hero">
     <div class="badge">Ingeniería aplicada a Energía</div>
+    <span class="badge" style="border-color:var(--accent); color:var(--accent); margin-left:8px;">Serie de tiempo · Estadístico</span>
     <h1>Pulso Energético</h1>
     <p class="lead">¿El consumo eléctrico de hoy es el normal para lo que produjiste, o hay algo consumiendo de más?</p>
   </header>
@@ -257,7 +269,19 @@
 
       <div class="analyst" id="analystPanel">
         <h3 style="font-size:18px; text-transform:none; letter-spacing:0; margin-bottom:8px; color:var(--text);">Reentrenar en vivo</h3>
-        <p style="font-size:15px; color:var(--muted); margin-bottom:18px;">Elige la ventana de suavizado (promedio móvil de los últimos N días) y observa cómo cambia el pronóstico. Los primeros 17 días son entrenamiento (●, violeta); los últimos 7 son prueba (○, blanco) — el error de pronóstico (MAPE) en la prueba es lo que de verdad importa.</p>
+        <p style="font-size:15px; color:var(--muted); margin-bottom:18px; text-align:justify;">Elige la ventana de suavizado (promedio móvil de los últimos N días) y observa cómo cambia el pronóstico. Los primeros 17 días son entrenamiento (●, violeta); los últimos 7 son prueba (○, blanco) — el error de pronóstico (MAPE) en la prueba es lo que de verdad importa.</p>
+
+        <div class="dataset-wrap">
+          <div class="dataset-label">Vista del dataset histórico</div>
+          <div class="dataset-scroll">
+            <table class="dataset-table">
+              <thead><tr><th>Fecha</th><th>Producción (%)</th><th>Consumo (kWh)</th><th>Set</th></tr></thead>
+              <tbody id="datasetBody"></tbody>
+            </table>
+          </div>
+          <p class="dataset-note" id="datasetNote"></p>
+        </div>
+
         <div class="degree-row" id="degreeRow"></div>
         <canvas id="chart" width="800" height="320"></canvas>
         <canvas id="residuals" width="800" height="200"></canvas>
@@ -289,8 +313,8 @@
   </section>
 
   <section id="cta">
-    <h2>Esto es una maqueta educativa</h2>
-    <p style="color:var(--muted); max-width:640px; margin-bottom:20px;">La serie histórica, la relación producción-consumo y la tarifa de este demo son de ejemplo, ajustados sobre datos sintéticos — sirven para explicar la idea, no para auditar tu planilla eléctrica real. Llevarlo a tu planta implica estandarizar cómo capturas tus lecturas de medidor y producción, analizarlas, y calibrar el modelo de pronóstico con tu propio histórico — ahí es donde entra nuestro motor AutoML, ajustando el modelo correcto y evitando falsas alarmas o desvíos reales que pasen desapercibidos. Si quieres recorrer ese proceso con tus datos, conversemos.</p>
+    <h2>De esta demo a tu planta</h2>
+    <p style="color:var(--muted); max-width:640px; margin-bottom:20px; text-align:justify;">La serie histórica, la relación producción-consumo y la tarifa de este demo son de ejemplo, ajustados sobre datos sintéticos — sirven para explicar la idea, no para auditar tu planilla eléctrica real. Llevarlo a tu planta implica estandarizar cómo capturas tus lecturas de medidor y producción, analizarlas, y calibrar el modelo de pronóstico con tu propio histórico — ahí es donde entra nuestro motor AutoML, ajustando el modelo correcto y evitando falsas alarmas o desvíos reales que pasen desapercibidos. Se adapta al rubro de tu planta —manufactura, minería, alimentos, textil— cuando la calibramos con tu histórico real. Si quieres recorrer ese proceso, conversemos.</p>
     <div class="cta-row">
       <a class="btn primary" href="https://chat.whatsapp.com/GvBz1tuUeNZ0xwTkjsuE3z" target="_blank" rel="noopener">Unirme a la comunidad de WhatsApp</a>
       <a class="btn ghost" href="https://www.linkedin.com/company/reliabilit-ia/" target="_blank" rel="noopener">Seguir en LinkedIn</a>
@@ -327,7 +351,7 @@
       <a href="https://www.linkedin.com/in/miguelcayllahua/" target="_blank" rel="noopener">LinkedIn personal</a>
       <a href="mailto:miguelcquispe@gmail.com">Correo</a>
     </div>
-    <p>Contenido con fines ilustrativos, no reemplaza una auditoría energética real. Los datos y la simulación usados en esta demo son sintéticos y no corresponden a ninguna planta real. Modelo entrenado con datos de ejemplo, no es una fórmula fija.</p>
+    <p style="text-align:justify;">Contenido con fines educativos. La metodología es real; los datos y la simulación de esta demo son sintéticos para poder compartirlos públicamente. Se calibra con tu propio histórico de consumo —sin importar el rubro de tu planta— cuando trabajamos juntos. Modelo de ejemplo, no una fórmula fija.</p>
   </footer>
 </div>
 
@@ -346,6 +370,14 @@ function baseConsumption(prod){
   // relación de ejemplo: carga base de planta (320 kWh) + consumo proporcional a producción
   return 320 + 4.2*prod;
 }
+
+// Fechas reales: esta es una serie de tiempo consecutiva, así que cada día
+// del histórico tiene una fecha de calendario real, terminando justo antes
+// de REF_DATE (que representa "hoy" en esta simulación).
+const REF_DATE = new Date('2026-07-15');
+const MESES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+function fmtDate(d){ return String(d.getDate()).padStart(2,'0')+' '+MESES[d.getMonth()]+' '+d.getFullYear(); }
+function dateForDay(i, total){ const d = new Date(REF_DATE); d.setDate(d.getDate()-(total-i)); return d; }
 
 const rnd = seededRandom(7);
 const N_HIST = 24;
@@ -565,6 +597,21 @@ function forecastSeries(window){
 }
 
 const TRAIN_END = 17; // días 0..16 entrenamiento, 17..23 prueba
+
+function renderDatasetPreview(){
+  const tbody = document.getElementById('datasetBody');
+  const note = document.getElementById('datasetNote');
+  if(!tbody) return;
+  tbody.innerHTML = production.map((p,i)=>{
+    const isTrain = i < TRAIN_END;
+    const date = dateForDay(i, N_HIST);
+    return `<tr><td>${fmtDate(date)}</td><td>${p.toFixed(1)}%</td><td>${consumption[i].toFixed(0)} kWh</td><td class="${isTrain?'set-train':'set-test'}">${isTrain?'Entrenamiento':'Prueba'}</td></tr>`;
+  }).join('');
+  const firstDate = dateForDay(0, N_HIST), lastDate = dateForDay(N_HIST-1, N_HIST);
+  note.textContent = `${N_HIST} días históricos (${fmtDate(firstDate)} — ${fmtDate(lastDate)}) — ${TRAIN_END} de entrenamiento, ${N_HIST-TRAIN_END} de prueba. "Hoy" en esta simulación es ${fmtDate(REF_DATE)}.`;
+}
+renderDatasetPreview();
+
 function splitTrainTest(preds){
   return {
     train: preds.filter(p=>p.i < TRAIN_END),

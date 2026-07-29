@@ -1,0 +1,836 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Termómetro del Motor — RELIABILIT-IA</title>
+<meta name="description" content="Predice la temperatura del devanado de un motor eléctrico según su carga y tiempo de operación continuo, usando una red neuronal entrenada desde cero.">
+
+<meta property="og:title" content="Termómetro del Motor — RELIABILIT-IA">
+<meta property="og:description" content="Mueve carga y tiempo de operación y mira en vivo la temperatura estimada del devanado.">
+<meta property="og:image" content="../../assets/og-image.png">
+<meta property="og:type" content="website">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#0a0a0f;
+    --panel:#121218;
+    --panel2:#181820;
+    --border:#22222c;
+    --text:#f4f4f7;
+    --muted:#9a9aa8;
+    --success:#3ecfa0;
+    --cta:#f4722e;
+    --accent:#7b5ea7;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    background:var(--bg); color:var(--text); font-family:'DM Mono', monospace;
+    line-height:1.6; -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:'Syne', sans-serif; font-weight:800; letter-spacing:-0.02em;}
+  a{color:var(--success);}
+  .wrap{max-width:960px;margin:0 auto;padding:0 24px;}
+  .back{display:inline-block; font-size:13px; color:var(--muted); text-decoration:none; padding-top:20px;}
+  .back:hover{color:var(--success);}
+
+  header.hero{padding:24px 0 40px; border-bottom:1px solid var(--border);}
+  .badge{
+    display:inline-block; font-size:12px; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--success); border:1px solid var(--success); border-radius:999px;
+    padding:5px 14px; margin-bottom:18px;
+  }
+  h1{font-size:clamp(28px,5vw,44px); line-height:1.1; margin-bottom:14px;}
+  .lead{font-family:'Instrument Serif', serif; font-style:italic; font-size:20px; color:var(--muted); max-width:640px;}
+
+  section{padding:40px 0; border-bottom:1px solid var(--border);}
+  section h2{font-size:22px; margin-bottom:14px;}
+  .context p{color:var(--muted); max-width:640px; font-size:15px; text-align:justify;}
+  .context p + p{margin-top:12px;}
+
+  .panel{
+    background:var(--panel); border:1px solid var(--border); border-radius:16px; padding:28px;
+  }
+
+  .toggle-row{display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; flex-wrap:wrap; gap:12px;}
+  .toggle-row .label{font-size:15px; color:var(--muted);}
+  .switch{
+    display:inline-flex; align-items:center; gap:10px; cursor:pointer; user-select:none;
+    font-size:14px; color:var(--text);
+  }
+  .switch input{display:none;}
+  .track{
+    width:42px; height:24px; background:var(--border); border-radius:999px; position:relative; transition:.2s;
+    flex-shrink:0;
+  }
+  .track::after{
+    content:''; position:absolute; top:3px; left:3px; width:18px; height:18px; border-radius:50%;
+    background:var(--muted); transition:.2s;
+  }
+  .switch input:checked + .track{background:var(--accent);}
+  .switch input:checked + .track::after{transform:translateX(18px); background:#fff;}
+
+  .demo-grid{display:grid; grid-template-columns:1.05fr 1fr; gap:32px;}
+  @media (max-width:760px){ .demo-grid{grid-template-columns:1fr;} }
+
+  .slider-group{margin-bottom:22px;}
+  .slider-group label{display:flex; justify-content:space-between; font-size:16px; margin-bottom:8px;}
+  .slider-group label .val{color:var(--success); font-weight:500;}
+  input[type=range]{
+    width:100%; -webkit-appearance:none; height:6px; border-radius:999px; background:var(--border); outline:none;
+  }
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none; width:20px; height:20px; border-radius:50%;
+    background:var(--success); cursor:pointer; border:3px solid var(--bg);
+  }
+  input[type=range]::-moz-range-thumb{
+    width:20px; height:20px; border-radius:50%; background:var(--success); cursor:pointer; border:3px solid var(--bg);
+  }
+  .hint{font-size:13px; color:var(--muted); display:flex; justify-content:space-between; margin-top:4px;}
+
+  .result{
+    margin-top:26px; padding:22px; border-radius:14px; background:var(--panel2); border:1px solid var(--border);
+    display:flex; align-items:center; gap:20px; flex-wrap:wrap;
+  }
+  .result .risk-dot{width:16px; height:16px; border-radius:50%; flex-shrink:0;}
+  .result .risk-text h3{font-size:23px; margin-bottom:6px;}
+  .result .risk-text p{font-size:15px; color:var(--muted);}
+  .confidence-line{font-size:14px !important; font-weight:600; margin-top:10px !important; color:var(--text) !important;}
+  .confidence-note{font-size:13px !important; color:var(--muted); margin-top:2px !important;}
+
+  .live-col h3{font-size:14px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:14px; font-family:'DM Mono',monospace; font-weight:500;}
+  .instrument-wrap{margin-bottom:18px;}
+  #instrument{width:100%; max-width:420px; height:260px; background:var(--bg); border:1px solid var(--border); border-radius:12px; display:block;}
+  .instrument-stats{font-size:13px; color:var(--muted); line-height:1.9; margin-top:10px; display:flex; gap:22px; flex-wrap:wrap;}
+  .instrument-stats b{color:var(--text); font-size:15px;}
+  .gauge-wrap{margin-bottom:16px;}
+  .gauge-label{font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:8px;}
+  .gauge-bar{height:12px; background:var(--border); border-radius:999px; overflow:hidden; margin:8px 0; position:relative;}
+  .gauge-fill{height:100%; width:0%; transition:background .35s ease, width .3s ease;}
+  .gauge-value{font-size:16px; color:var(--text);}
+  .gauge-value b{font-size:20px;}
+  .gauge-note{font-size:13px; color:var(--muted);}
+  .sim-note{font-size:13px; color:var(--muted); line-height:1.7; margin-top:6px;}
+
+  .analyst{margin-top:32px; padding-top:26px; border-top:1px dashed var(--border); display:none;}
+  .analyst.show{display:block;}
+  .degree-row{display:flex; gap:8px; margin-bottom:18px; flex-wrap:wrap;}
+  .degree-btn{
+    font-family:'DM Mono', monospace; font-size:14px; padding:9px 18px; border-radius:8px;
+    border:1px solid var(--border); background:transparent; color:var(--text); cursor:pointer;
+    transition:background .15s, border-color .15s;
+  }
+  .degree-btn.active{background:var(--accent); border-color:var(--accent); color:#fff;}
+  #chart{width:100%; height:340px; background:var(--bg); border:1px solid var(--border); border-radius:12px; display:block;}
+  #residuals{width:100%; height:220px; background:var(--bg); border:1px solid var(--border); border-radius:12px; display:block; margin-top:18px;}
+  .metrics{display:flex; gap:24px; margin-top:16px; flex-wrap:wrap; font-size:14px; color:var(--muted);}
+  .metrics b{color:var(--text);}
+  .fit-badge{margin-top:14px; font-size:15px; font-weight:600; padding:10px 14px; border-radius:10px; background:var(--panel2); display:inline-block;}
+
+  .dataset-wrap{margin-top:24px;}
+  .dataset-label{font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:8px;}
+  .dataset-scroll{max-height:260px; overflow-y:auto; border:1px solid var(--border); border-radius:12px;}
+  .dataset-table{width:100%; border-collapse:collapse; font-size:13px;}
+  .dataset-table th{position:sticky; top:0; background:var(--panel2); color:var(--muted); text-align:left; font-weight:500; padding:8px 12px; border-bottom:1px solid var(--border); text-transform:uppercase; letter-spacing:.04em; font-size:11px;}
+  .dataset-table td{padding:7px 12px; border-bottom:1px solid var(--border); color:var(--text);}
+  .dataset-table tr:last-child td{border-bottom:none;}
+  .dataset-note{font-size:12px; color:var(--muted); margin-top:8px;}
+
+  .business p{color:var(--muted); font-size:16px; max-width:640px; text-align:justify;}
+  .business .stat{color:var(--success); font-weight:500;}
+  .business-grid{display:grid; grid-template-columns:1.1fr 1fr; gap:32px; align-items:start; margin-top:8px;}
+  @media (max-width:760px){ .business-grid{grid-template-columns:1fr;} }
+  .biz-action{margin-top:18px; padding:18px; border-radius:12px; background:var(--panel2); border:1px solid var(--border); transition:border-color .3s;}
+  .biz-action .biz-title{font-size:17px; font-weight:600;}
+  .biz-action .biz-detail{font-size:14px; color:var(--muted); margin-top:6px;}
+  #projection{width:100%; height:230px; background:var(--bg); border:1px solid var(--border); border-radius:12px; display:block;}
+
+  .cta-row{display:flex; gap:14px; flex-wrap:wrap; margin-top:8px;}
+  .btn{
+    font-family:'DM Mono', monospace; font-size:14px; padding:12px 22px; border-radius:10px;
+    text-decoration:none; border:1px solid var(--border); color:var(--text); display:inline-block;
+  }
+  .btn.primary{background:var(--cta); border-color:var(--cta); color:#0a0a0f; font-weight:600;}
+  .btn.ghost:hover{border-color:var(--accent);}
+
+  .contact-card{
+    display:grid; grid-template-columns:1.1fr 1fr; gap:28px;
+    background:var(--panel2); border:1px solid var(--border); border-radius:16px;
+    padding:28px; margin-top:28px;
+  }
+  @media (max-width:700px){ .contact-card{grid-template-columns:1fr;} }
+  .contact-card h3{font-size:19px; margin-bottom:8px;}
+  .contact-card p{font-size:14px; color:var(--muted); max-width:420px; text-align:justify;}
+  .contact-links{display:flex; flex-direction:column; gap:12px;}
+  .contact-row{
+    display:flex; align-items:center; gap:14px; padding:12px 16px; border-radius:12px;
+    background:var(--panel); border:1px solid var(--border); text-decoration:none; color:var(--text);
+    transition:border-color .2s;
+  }
+  .contact-row:hover{border-color:var(--success);}
+  .contact-icon{font-size:20px; width:32px; text-align:center; flex-shrink:0;}
+  .contact-text{font-size:14px; line-height:1.5;}
+  .contact-text b{display:block; font-size:15px;}
+
+  footer{padding:36px 0; text-align:center;}
+  footer p{font-size:13px; color:var(--muted); max-width:560px; margin:0 auto;}
+  .footer-links{display:flex; justify-content:center; gap:18px; flex-wrap:wrap; margin-bottom:16px; font-size:13px;}
+  .footer-links a{color:var(--muted); text-decoration:none;}
+  .footer-links a:hover{color:var(--success);}
+
+  @media (max-width:520px){
+    .result{flex-direction:column; align-items:flex-start;}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <a class="back" href="../../">← Volver al catálogo RELIABILIT-IA</a>
+
+  <header class="hero">
+    <div class="badge">Regresión · Motor eléctrico</div>
+    <span class="badge" style="border-color:var(--accent); color:var(--accent); margin-left:8px;">Aprendizaje supervisado · Red neuronal</span>
+    <h1>Termómetro del Motor</h1>
+    <p class="lead">¿A qué temperatura llegará el devanado si este motor sigue así de cargado por unas horas más?</p>
+  </header>
+
+  <section class="context">
+    <h2>El problema</h2>
+    <p>La temperatura de un devanado no sube en línea recta con la carga ni con el tiempo: sube rápido al principio y luego se va "aplanando" a medida que el motor se acerca a su temperatura de equilibrio térmico — una curva de saturación, no una recta ni una parábola simple. Modelarla bien requiere capturar cómo interactúan dos variables a la vez (carga y tiempo de operación) sobre una forma no lineal. En vez de forzar esa curva con más términos polinomiales como en el <a href="../radar-de-rodamientos/">Radar de Rodamientos</a>, este módulo usa una red neuronal pequeña —un perceptrón multicapa entrenado por retropropagación (backpropagation), la técnica detrás de la mayoría del "deep learning" actual, aquí implementada desde cero— que aprende la forma de la curva directamente de los datos, sin que nadie le diga de antemano qué forma tiene.</p>
+    <p>Este demo simula la temperatura del devanado de un motor eléctrico según dos datos que cualquier variador o PLC ya registra: el porcentaje de carga y las horas de operación continua desde el último arranque en frío. Es información que casi cualquier planta con motores eléctricos críticos ya tiene disponible, solo que rara vez se usa para anticipar sobrecalentamientos antes de que ocurran.</p>
+  </section>
+
+  <section id="demo">
+    <h2>Demo interactivo</h2>
+    <div class="panel">
+      <div class="toggle-row">
+        <span class="label">Red neuronal (perceptrón multicapa, retropropagación) — mueve los sliders para simular una condición de operación.</span>
+        <label class="switch">
+          <span>Modo Analista</span>
+          <input type="checkbox" id="analystToggle">
+          <span class="track"></span>
+        </label>
+      </div>
+
+      <div class="demo-grid">
+        <div class="controls-col">
+          <div class="slider-group">
+            <label>Carga del motor <span class="val" id="loadVal">40 %</span></label>
+            <input type="range" id="loadSlider" min="10" max="100" step="1" value="40">
+            <div class="hint"><span>10%</span><span>100%</span></div>
+          </div>
+
+          <div class="slider-group">
+            <label>Tiempo de operación continua <span class="val" id="tVal">2.0 h</span></label>
+            <input type="range" id="tSlider" min="0" max="8" step="0.1" value="2.0">
+            <div class="hint"><span>0 h</span><span>8 h</span></div>
+          </div>
+
+          <div class="result" id="resultBox">
+            <div class="risk-dot" id="riskDot"></div>
+            <div class="risk-text">
+              <h3 id="riskTitle">Calculando…</h3>
+              <p id="riskDetail"></p>
+              <p class="confidence-line" id="confidenceLine"></p>
+              <p class="confidence-note" id="confidenceNote"></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="live-col">
+          <h3>Simulación en vivo</h3>
+          <div class="instrument-wrap">
+            <canvas id="instrument" width="420" height="260"></canvas>
+            <div class="instrument-stats">
+              <div>Temperatura estimada: <b id="tempStat">–</b></div>
+              <div>Margen de error típico: <b id="rmseStat">± 4.0 °C</b></div>
+            </div>
+          </div>
+
+          <div class="gauge-wrap">
+            <div class="gauge-label">Temperatura del devanado (0-130°C)</div>
+            <div class="gauge-bar"><div class="gauge-fill" id="gaugeFill"></div></div>
+            <div class="gauge-value"><b id="gaugeValue">0</b>°C</div>
+          </div>
+
+          <p class="sim-note">Simulación ilustrativa: el mapa y el punto se dibujan a partir de los mismos valores de los sliders — no provienen de un motor real.</p>
+        </div>
+      </div>
+
+      <div class="analyst" id="analystPanel">
+        <h3 style="font-size:18px; text-transform:none; letter-spacing:0; margin-bottom:8px; color:var(--text);">Ajustar el tamaño de la red en vivo</h3>
+        <p style="font-size:15px; color:var(--muted); margin-bottom:18px; text-align:justify;">Cada botón entrena una red con un número distinto de neuronas en su única capa oculta, usando los mismos datos y la misma cantidad de iteraciones de entrenamiento. Con muy pocas neuronas, la red no tiene suficiente capacidad para aprender la forma curva de saturación y subajusta. A partir de 4 neuronas, la red ya captura bien la curva — y en este problema en particular, seguir agregando neuronas no la hace sobreajustar: la relación entre carga, tiempo y temperatura es una curva suave, así que el error que queda es sobre todo ruido de medición genuino, no memorización.</p>
+
+        <div class="dataset-wrap">
+          <div class="dataset-label">Vista del dataset (220 lecturas simuladas — 146 entrenamiento / 74 prueba)</div>
+          <div class="dataset-scroll">
+            <table class="dataset-table">
+              <thead><tr><th>#</th><th>Fecha</th><th>Carga (%)</th><th>Tiempo (h)</th><th>Temperatura (°C)</th><th>Conjunto</th></tr></thead>
+              <tbody id="datasetBody"></tbody>
+            </table>
+          </div>
+          <p class="dataset-note" id="datasetNote"></p>
+        </div>
+
+        <div class="degree-row" id="hRow"></div>
+        <div class="dataset-label">Superficie aprendida (temperatura estimada según carga y tiempo)</div>
+        <canvas id="chart" width="800" height="340"></canvas>
+        <div class="dataset-label" style="margin-top:18px;">Calibración: temperatura real vs. predicha (conjunto de prueba)</div>
+        <canvas id="residuals" width="800" height="220"></canvas>
+        <div class="metrics">
+          <span>Neuronas ocultas (H): <b id="mH">4</b></span>
+          <span>R² entrenamiento: <b id="mR2Train">–</b></span>
+          <span>R² prueba: <b id="mR2Test">–</b></span>
+          <span>RMSE prueba: <b id="mRmse">–</b></span>
+        </div>
+        <div class="fit-badge" id="mFitBadge">–</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="business">
+    <h2>¿Qué significa para tu planta?</h2>
+    <div class="business-grid">
+      <div>
+        <p>Con la condición actual, el devanado se estima en <span class="stat" id="bizLevelInline">Normal</span>. Anticipar la temperatura antes de que el motor llegue ahí —en vez de solo alarmar cuando ya la cruzó— da tiempo para bajar la carga, mejorar la ventilación o programar una parada antes de que el aislamiento del devanado empiece a degradarse por calor acumulado, que es una de las causas más comunes de falla prematura en motores eléctricos.</p>
+        <div class="biz-action" id="bizAction">
+          <div class="biz-title" id="bizTitle">Calculando…</div>
+          <div class="biz-detail" id="bizDetail"></div>
+        </div>
+      </div>
+      <div>
+        <div class="gauge-label">Vida útil del aislamiento estimada por nivel</div>
+        <canvas id="projection" width="480" height="230"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <section id="cta">
+    <h2>De esta demo a tu planta</h2>
+    <p style="color:var(--muted); max-width:640px; margin-bottom:20px; text-align:justify;">El dataset y la red de este demo son de ejemplo, ajustados sobre datos sintéticos — sirven para explicar la idea, no para monitorear tu motor real. Llevarlo a tu planta implica entrenar esta misma red con lecturas reales de temperatura, carga y tiempo de operación de tus motores críticos, sumar variables adicionales que ya mides (temperatura ambiente, ventilación, calidad de la alimentación eléctrica) y calibrar el punto de alerta según la clase de aislamiento real de cada motor — ahí es donde entra nuestro motor AutoML. Se adapta al tipo de equipo y a la industria —minería, manufactura, energía, alimentos— cuando la calibramos con tus datos. Si quieres recorrer ese proceso, conversemos.</p>
+    <div class="cta-row">
+      <a class="btn primary" href="https://chat.whatsapp.com/GvBz1tuUeNZ0xwTkjsuE3z" target="_blank" rel="noopener">Unirme a la comunidad de WhatsApp</a>
+      <a class="btn ghost" href="https://www.linkedin.com/company/reliabilit-ia/" target="_blank" rel="noopener">Seguir en LinkedIn</a>
+      <a class="btn ghost" href="https://www.youtube.com/@miguelangelcayllahuaquispe998" target="_blank" rel="noopener">Ver en YouTube</a>
+    </div>
+
+    <div class="contact-card">
+      <div>
+        <h3>¿Hablamos de tus motores críticos?</h3>
+        <p>Si tienes motores eléctricos donde el sobrecalentamiento es un riesgo conocido y quieres validar este análisis con tu planta, escríbeme directamente.</p>
+      </div>
+      <div class="contact-links">
+        <a class="contact-row" href="https://wa.me/51997610310?text=Hola%20Miguel%2C%20vi%20el%20demo%20Termometro%20del%20Motor%20y%20quiero%20conversar%20sobre%20la%20calibracion%20para%20mi%20planta" target="_blank" rel="noopener">
+          <span class="contact-icon">💬</span>
+          <span class="contact-text"><b>WhatsApp</b>+51 997 610 310</span>
+        </a>
+        <a class="contact-row" href="https://www.linkedin.com/in/miguelcayllahua/" target="_blank" rel="noopener">
+          <span class="contact-icon">in</span>
+          <span class="contact-text"><b>LinkedIn</b>Miguel Angel Cayllahua Quispe</span>
+        </a>
+        <a class="contact-row" href="mailto:miguelcquispe@gmail.com">
+          <span class="contact-icon">✉</span>
+          <span class="contact-text"><b>Correo</b>miguelcquispe@gmail.com</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-links">
+      <a href="https://chat.whatsapp.com/GvBz1tuUeNZ0xwTkjsuE3z" target="_blank" rel="noopener">WhatsApp</a>
+      <a href="https://www.youtube.com/@miguelangelcayllahuaquispe998" target="_blank" rel="noopener">YouTube</a>
+      <a href="https://www.linkedin.com/company/reliabilit-ia/" target="_blank" rel="noopener">LinkedIn empresa</a>
+      <a href="https://www.linkedin.com/in/miguelcayllahua/" target="_blank" rel="noopener">LinkedIn personal</a>
+      <a href="mailto:miguelcquispe@gmail.com">Correo</a>
+    </div>
+    <p style="text-align:justify;">Contenido con fines educativos. La metodología es real; los datos y la simulación de esta demo son sintéticos para poder compartirlos públicamente. Se calibra con tus propios datos —sin importar el tipo de equipo o la industria— cuando trabajamos juntos. Modelo de ejemplo, no una fórmula fija.</p>
+  </footer>
+</div>
+
+<script>
+/* =========================================================
+   Generación del dataset sintético: curva térmica de carga
+   tipo exponencial saturante, con dos variables de entrada.
+   ========================================================= */
+function seededRandom(seed){
+  let s = seed;
+  return function(){ s = (s*9301+49297) % 233280; return s/233280; };
+}
+function gaussian(rnd){
+  const u1 = Math.max(1e-9, rnd()), u2 = rnd();
+  return Math.sqrt(-2*Math.log(u1))*Math.cos(2*Math.PI*u2);
+}
+const REF_DATE = new Date('2026-07-15');
+const MESES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+function fmtDate(d){ return String(d.getDate()).padStart(2,'0')+' '+MESES[d.getMonth()]+' '+d.getFullYear(); }
+function dateFromDaysAgo(daysAgo){ const d = new Date(REF_DATE); d.setDate(d.getDate()-Math.round(daysAgo)); return d; }
+
+const rnd = seededRandom(211);
+const T_AMB = 25, TAU = 1.8;
+function trueTemp(load, t){
+  const deltaMax = 90*Math.pow(load/100, 1.7);
+  return T_AMB + deltaMax*(1-Math.exp(-t/TAU));
+}
+
+const N = 220;
+const dataset = [];
+for(let i=0;i<N;i++){
+  const load = 10 + rnd()*90;
+  const t = rnd()*8;
+  const T = trueTemp(load,t) + gaussian(rnd)*2.5;
+  const date = dateFromDaysAgo(rnd()*400);
+  dataset.push({load, t, T, date});
+}
+for(let i=dataset.length-1;i>0;i--){ const j=Math.floor(rnd()*(i+1)); [dataset[i],dataset[j]]=[dataset[j],dataset[i]]; }
+const trainData = dataset.filter((_,i)=> i%3 !== 0);
+const testData  = dataset.filter((_,i)=> i%3 === 0);
+
+function stats(arr,key){
+  const v = arr.map(p=>p[key]);
+  const m = v.reduce((a,b)=>a+b,0)/v.length;
+  const sd = Math.sqrt(v.reduce((a,x)=>a+(x-m)**2,0)/v.length);
+  return {m,sd};
+}
+const SL = stats(trainData,'load'), ST = stats(trainData,'t'), SY = stats(trainData,'T');
+function zx(p){ return [(p.load-SL.m)/SL.sd, (p.t-ST.m)/ST.sd]; }
+function zy(T){ return (T-SY.m)/SY.sd; }
+function unzy(z){ return z*SY.sd + SY.m; }
+
+function renderDatasetPreview(){
+  const tbody = document.getElementById('datasetBody');
+  const note = document.getElementById('datasetNote');
+  if(!tbody) return;
+  const rows = dataset.slice(0,60).map((p,i)=>{
+    const inTrain = i%3 !== 0;
+    return `<tr><td>${i+1}</td><td>${fmtDate(p.date)}</td><td>${p.load.toFixed(1)}</td><td>${p.t.toFixed(2)}</td><td>${p.T.toFixed(1)}</td><td>${inTrain?'Entrenamiento':'Prueba'}</td></tr>`;
+  }).join('');
+  tbody.innerHTML = rows;
+  const sortedDates = dataset.map(p=>p.date).sort((a,b)=>a-b);
+  note.textContent = `Mostrando 60 de ${dataset.length} lecturas totales, entre ${fmtDate(sortedDates[0])} y ${fmtDate(sortedDates[sortedDates.length-1])} (${trainData.length} entrenamiento / ${testData.length} prueba).`;
+}
+renderDatasetPreview();
+
+/* =========================================================
+   Red neuronal: perceptrón multicapa (2 entradas -> H ocultas
+   con tanh -> 1 salida lineal), entrenado por retropropagación
+   desde cero.
+   ========================================================= */
+function initMLP(H, seed){
+  const r = seededRandom(seed);
+  function randW(){ return (r()*2-1)*0.5; }
+  const W1 = Array.from({length:H},()=>[randW(),randW()]);
+  const b1 = Array.from({length:H},()=>0);
+  const W2 = Array.from({length:H},()=>randW());
+  return { W1, b1, W2, b2:0, H };
+}
+function forward(net, x){
+  const z1 = net.W1.map((w,i)=> w[0]*x[0]+w[1]*x[1]+net.b1[i]);
+  const a1 = z1.map(v=>Math.tanh(v));
+  const z2 = a1.reduce((s,a,i)=>s+a*net.W2[i], net.b2);
+  return { a1, z2 };
+}
+function trainMLP(net, data, epochs, lr, l2){
+  const n = data.length;
+  for(let e=0;e<epochs;e++){
+    const gW1 = net.W1.map(()=>[0,0]);
+    const gb1 = net.b1.map(()=>0);
+    const gW2 = net.W2.map(()=>0);
+    let gb2 = 0;
+    data.forEach(p=>{
+      const x = zx(p);
+      const y = zy(p.T);
+      const { a1, z2 } = forward(net, x);
+      const err = z2 - y;
+      gb2 += err;
+      a1.forEach((a,i)=> gW2[i] += err*a);
+      a1.forEach((a,i)=>{
+        const dz1 = err*net.W2[i]*(1-a*a);
+        gb1[i] += dz1;
+        gW1[i][0] += dz1*x[0];
+        gW1[i][1] += dz1*x[1];
+      });
+    });
+    net.W1.forEach((w,i)=>{ w[0] -= lr*(gW1[i][0]/n + l2*w[0]); w[1] -= lr*(gW1[i][1]/n + l2*w[1]); });
+    net.b1.forEach((b,i)=> net.b1[i] -= lr*(gb1[i]/n));
+    net.W2.forEach((w,i)=> net.W2[i] -= lr*(gW2[i]/n + l2*w));
+    net.b2 -= lr*(gb2/n);
+  }
+  return net;
+}
+function predictNet(net, p){
+  const { z2 } = forward(net, zx(p));
+  return unzy(z2);
+}
+function r2Of(net, data){
+  const yMean = data.reduce((s,p)=>s+p.T,0)/data.length;
+  const ssRes = data.reduce((s,p)=>s+(p.T-predictNet(net,p))**2,0);
+  const ssTot = data.reduce((s,p)=>s+(p.T-yMean)**2,0);
+  return 1 - ssRes/ssTot;
+}
+function rmseOf(net, data){
+  const errs = data.map(p=> (predictNet(net,p)-p.T)**2 );
+  return Math.sqrt(errs.reduce((a,b)=>a+b,0)/data.length);
+}
+
+/* =========================================================
+   MODELO DE PRODUCCIÓN fijo (H=4, validado como el punto
+   donde la red ya captura bien la curva de saturación).
+   ========================================================= */
+const PROD_H = 4, PROD_EPOCHS = 600, PROD_LR = 0.08, PROD_L2 = 0.001, PROD_SEED = 999;
+const prodNet = initMLP(PROD_H, PROD_SEED);
+trainMLP(prodNet, trainData, PROD_EPOCHS, PROD_LR, PROD_L2);
+const PROD_RMSE = rmseOf(prodNet, testData);
+
+const LEVELS = ['Normal','Elevada','Crítica'];
+const LEVEL_COLORS = ['#3ecfa0','#e8c547','#f4722e'];
+const LEVEL_DETAIL = [
+  'La temperatura estimada está dentro de un rango normal de operación.',
+  'La temperatura estimada ya se acerca a niveles que aceleran el desgaste del aislamiento — vale la pena vigilar si la carga o el tiempo de operación se mantienen así.',
+  'La temperatura estimada está en un rango que puede degradar el aislamiento del devanado si se sostiene por mucho tiempo — considera reducir carga o mejorar la ventilación.'
+];
+function levelOf(temp){
+  if(temp < 75) return 0;
+  if(temp < 100) return 1;
+  return 2;
+}
+
+/* =========================================================
+   MODO BÁSICO
+   ========================================================= */
+const loadSlider = document.getElementById('loadSlider');
+const tSlider = document.getElementById('tSlider');
+const loadVal = document.getElementById('loadVal');
+const tVal = document.getElementById('tVal');
+const riskDot = document.getElementById('riskDot');
+const riskTitle = document.getElementById('riskTitle');
+const riskDetail = document.getElementById('riskDetail');
+const confidenceLine = document.getElementById('confidenceLine');
+const confidenceNote = document.getElementById('confidenceNote');
+const tempStat = document.getElementById('tempStat');
+const gaugeFill = document.getElementById('gaugeFill');
+const gaugeValue = document.getElementById('gaugeValue');
+const bizLevelInline = document.getElementById('bizLevelInline');
+const bizAction = document.getElementById('bizAction');
+const bizTitle = document.getElementById('bizTitle');
+const bizDetail = document.getElementById('bizDetail');
+const projectionCanvas = document.getElementById('projection');
+const pctx = projectionCanvas.getContext('2d');
+
+function drawProjection(activeIdx, realTemp){
+  const W = projectionCanvas.width, H = projectionCanvas.height;
+  pctx.clearRect(0,0,W,H);
+  const padL = 56, padR = 20, padT = 20, padB = 46;
+  const years = [8, 3, 0.5];
+  const maxYears = years[0]*1.15;
+  const bw = (W-padL-padR)/years.length;
+
+  pctx.strokeStyle = '#22222c';
+  pctx.lineWidth = 1;
+  pctx.beginPath();
+  pctx.moveTo(padL, padT); pctx.lineTo(padL, H-padB); pctx.lineTo(W-padR, H-padB);
+  pctx.stroke();
+
+  years.forEach((y,i)=>{
+    const barH = Math.max(2,(y/maxYears)*(H-padT-padB));
+    const x = padL + i*bw + bw*0.18;
+    const yTop = H-padB-barH;
+    const w = bw*0.64;
+    pctx.fillStyle = i===activeIdx ? LEVEL_COLORS[i] : 'rgba(244,244,247,0.14)';
+    pctx.fillRect(x,yTop,w,barH);
+    pctx.fillStyle = '#a8a8b4';
+    pctx.font = '11px DM Mono, monospace';
+    pctx.fillText(LEVELS[i], x-2, H-padB+16);
+    if(i===activeIdx){
+      pctx.fillStyle = '#f4f4f7';
+      pctx.font = '12px DM Mono, monospace';
+      pctx.fillText('~'+y+' años', x-6, yTop-8);
+    }
+  });
+  pctx.fillStyle = '#8a8a98';
+  pctx.font = '11px DM Mono, monospace';
+  pctx.fillText('vida útil del aislamiento si se opera así de forma sostenida (ilustrativo)', padL, 14);
+
+  // Indicador continuo: la temperatura real predicha por la red neuronal
+  // para esta lectura (no solo a qué nivel discreto pertenece).
+  if(typeof realTemp === 'number'){
+    const pctReal = Math.min(100, Math.max(0, (realTemp/130)*100));
+    const by = H-12, bh = 5;
+    pctx.fillStyle = 'rgba(244,244,247,0.10)';
+    pctx.fillRect(padL, by, W-padL-padR, bh);
+    const fw = (pctReal/100)*(W-padL-padR);
+    pctx.fillStyle = LEVEL_COLORS[activeIdx];
+    pctx.fillRect(padL, by, fw, bh);
+    pctx.fillStyle = '#c9c9d4';
+    pctx.font = '10px DM Mono, monospace';
+    pctx.fillText('temperatura real predicha: '+realTemp.toFixed(1)+'°C', padL, by-4);
+  }
+}
+
+function updateBasic(){
+  const load = parseFloat(loadSlider.value);
+  const t = parseFloat(tSlider.value);
+  loadVal.textContent = load.toFixed(0) + ' %';
+  tVal.textContent = t.toFixed(1) + ' h';
+
+  const temp = predictNet(prodNet, {load, t});
+  const idx = levelOf(temp);
+  const color = LEVEL_COLORS[idx];
+
+  riskDot.style.background = color;
+  riskTitle.style.color = color;
+  riskTitle.textContent = LEVELS[idx];
+  riskDetail.textContent = LEVEL_DETAIL[idx];
+
+  const distToThresh = Math.min(Math.abs(temp-75), Math.abs(temp-100)) / PROD_RMSE;
+  let confLevel, confColor, confNote;
+  if(distToThresh > 1.5){
+    confLevel = 'Alta'; confColor = 'var(--success)';
+    confNote = 'La estimación está lejos de cualquier umbral entre niveles, más allá del margen de error típico del modelo.';
+  } else if(distToThresh > 0.6){
+    confLevel = 'Media'; confColor = '#e8c547';
+    confNote = 'Cerca de un umbral — el nivel vecino también es plausible dado el margen de error típico.';
+  } else {
+    confLevel = 'Baja'; confColor = 'var(--cta)';
+    confNote = 'Justo en el borde entre dos niveles, dentro del margen de error del modelo — trata esta lectura con cautela.';
+  }
+  confidenceLine.textContent = 'Confianza de la clasificación: ' + confLevel;
+  confidenceLine.style.color = confColor;
+  confidenceNote.textContent = confNote;
+
+  tempStat.textContent = temp.toFixed(1) + ' °C';
+
+  const pct = Math.min(100, Math.max(0, (temp/130)*100));
+  gaugeFill.style.width = pct.toFixed(1) + '%';
+  gaugeFill.style.background = color;
+  gaugeValue.textContent = temp.toFixed(0);
+
+  bizLevelInline.textContent = LEVELS[idx];
+  bizLevelInline.style.color = color;
+  bizAction.style.borderColor = color;
+  bizTitle.style.color = color;
+  bizTitle.textContent = LEVELS[idx];
+  bizDetail.textContent = LEVEL_DETAIL[idx];
+
+  drawProjection(idx, temp);
+  drawInstrument(load, t, idx);
+}
+loadSlider.addEventListener('input', updateBasic);
+tSlider.addEventListener('input', updateBasic);
+
+/* =========================================================
+   SIMULACIÓN EN VIVO — mapa de calor de temperatura estimada.
+   ========================================================= */
+const instrumentCanvas = document.getElementById('instrument');
+const ictx = instrumentCanvas.getContext('2d');
+function hexToRgb(hex){ const v=hex.replace('#',''); return [parseInt(v.slice(0,2),16),parseInt(v.slice(2,4),16),parseInt(v.slice(4,6),16)]; }
+function rgba(c,a){ return `rgba(${c[0]},${c[1]},${c[2]},${a})`; }
+const LOAD_MIN=10, LOAD_MAX=100, T_MIN=0, T_MAX=8;
+function tempColor(temp){
+  const idx = levelOf(temp);
+  return LEVEL_COLORS[idx];
+}
+
+function drawInstrument(load, t, idx){
+  const W = instrumentCanvas.width, H = instrumentCanvas.height;
+  const pad = 36;
+  ictx.clearRect(0,0,W,H);
+  function toPx(loadv,tv){ return [ pad+(loadv-LOAD_MIN)/(LOAD_MAX-LOAD_MIN)*(W-2*pad), H-pad-(tv-T_MIN)/(T_MAX-T_MIN)*(H-2*pad) ]; }
+
+  const cell = 8;
+  for(let px=pad; px<W-pad; px+=cell){
+    for(let py=pad; py<H-pad; py+=cell){
+      const loadv = LOAD_MIN + (px-pad)/(W-2*pad)*(LOAD_MAX-LOAD_MIN);
+      const tv = T_MIN + (1-(py-pad)/(H-2*pad))*(T_MAX-T_MIN);
+      const temp = predictNet(prodNet, {load:loadv, t:tv});
+      ictx.fillStyle = rgba(hexToRgb(tempColor(temp)), 0.16);
+      ictx.fillRect(px,py,cell,cell);
+    }
+  }
+
+  ictx.strokeStyle = '#22222c';
+  ictx.lineWidth = 1;
+  ictx.beginPath();
+  ictx.moveTo(pad, pad); ictx.lineTo(pad, H-pad); ictx.lineTo(W-pad, H-pad);
+  ictx.stroke();
+  ictx.fillStyle = '#8a8a98';
+  ictx.font = '10px DM Mono, monospace';
+  ictx.fillText('carga (%)', pad, H-10);
+  ictx.save();
+  ictx.translate(12, H/2+40);
+  ictx.rotate(-Math.PI/2);
+  ictx.fillText('tiempo de operación (h)', 0, 0);
+  ictx.restore();
+
+  const color = LEVEL_COLORS[idx];
+  const [cx,cy] = toPx(load,t);
+  ictx.beginPath();
+  ictx.fillStyle = rgba(hexToRgb(color),0.25);
+  ictx.arc(cx,cy,13,0,Math.PI*2);
+  ictx.fill();
+  ictx.beginPath();
+  ictx.fillStyle = color;
+  ictx.arc(cx,cy,6,0,Math.PI*2);
+  ictx.fill();
+  ictx.strokeStyle = '#f4f4f7';
+  ictx.lineWidth = 1.3;
+  ictx.stroke();
+}
+
+/* =========================================================
+   MODO ANALISTA — H ajustable
+   ========================================================= */
+const chartCanvas = document.getElementById('chart');
+const cctx = chartCanvas.getContext('2d');
+const residualCanvas = document.getElementById('residuals');
+const rctx = residualCanvas.getContext('2d');
+let currentH = PROD_H;
+
+function toPxChart(loadv,tv,W,H,pad){
+  return [ pad+(loadv-LOAD_MIN)/(LOAD_MAX-LOAD_MIN)*(W-2*pad), H-pad-(tv-T_MIN)/(T_MAX-T_MIN)*(H-2*pad) ];
+}
+
+function drawSurface(net){
+  const W = chartCanvas.width, H = chartCanvas.height;
+  const pad = 40;
+  cctx.clearRect(0,0,W,H);
+
+  const cell = 6;
+  for(let px=pad; px<W-pad; px+=cell){
+    for(let py=pad; py<H-pad; py+=cell){
+      const loadv = LOAD_MIN + (px-pad)/(W-2*pad)*(LOAD_MAX-LOAD_MIN);
+      const tv = T_MIN + (1-(py-pad)/(H-2*pad))*(T_MAX-T_MIN);
+      const temp = predictNet(net, {load:loadv, t:tv});
+      cctx.fillStyle = rgba(hexToRgb(tempColor(temp)), 0.18);
+      cctx.fillRect(px,py,cell,cell);
+    }
+  }
+
+  cctx.strokeStyle = '#22222c';
+  cctx.lineWidth = 1;
+  cctx.beginPath();
+  cctx.moveTo(pad, pad); cctx.lineTo(pad, H-pad); cctx.lineTo(W-pad, H-pad);
+  cctx.stroke();
+  cctx.fillStyle = '#a8a8b4';
+  cctx.font = '13px DM Mono, monospace';
+  cctx.fillText('carga (%)', W/2-30, H-10);
+  cctx.save();
+  cctx.translate(16, H/2+50);
+  cctx.rotate(-Math.PI/2);
+  cctx.fillText('tiempo de operación (h)', 0, 0);
+  cctx.restore();
+
+  trainData.forEach(p=>{
+    const [x,y] = toPxChart(p.load,p.t,W,H,pad);
+    cctx.beginPath();
+    cctx.fillStyle = '#f4f4f7';
+    cctx.arc(x,y,1.8,0,Math.PI*2);
+    cctx.fill();
+  });
+
+  cctx.fillStyle = '#a8a8b4';
+  cctx.font = '12px DM Mono, monospace';
+  cctx.fillText('color = temperatura estimada por la red · puntos blancos = datos de entrenamiento', pad, pad-16);
+}
+
+function drawCalibration(net){
+  const W = residualCanvas.width, H = residualCanvas.height;
+  const pad = 40;
+  rctx.clearRect(0,0,W,H);
+  const allT = dataset.map(p=>p.T);
+  const minT = Math.min(...allT)-5, maxT = Math.max(...allT)+5;
+  function toPx(v){ return pad+(v-minT)/(maxT-minT)*(W-2*pad); }
+
+  rctx.strokeStyle = '#22222c';
+  rctx.lineWidth = 1;
+  rctx.beginPath();
+  rctx.moveTo(pad, pad); rctx.lineTo(pad, H-pad); rctx.lineTo(W-pad, H-pad);
+  rctx.stroke();
+
+  // linea diagonal ideal (predicho = real)
+  rctx.strokeStyle = 'rgba(244,244,247,0.3)';
+  rctx.setLineDash([5,4]);
+  rctx.beginPath();
+  rctx.moveTo(toPx(minT), H-pad-(toPx(minT)-pad));
+  const x1 = toPx(minT), y1 = H-pad, x2 = toPx(maxT), yTop = pad;
+  rctx.moveTo(pad, H-pad);
+  rctx.lineTo(W-pad, pad);
+  rctx.stroke();
+  rctx.setLineDash([]);
+
+  testData.forEach(p=>{
+    const pred = predictNet(net, p);
+    const x = toPx(p.T);
+    const y = H-pad-((pred-minT)/(maxT-minT))*(H-2*pad);
+    rctx.beginPath();
+    rctx.fillStyle = 'rgba(62,207,160,0.7)';
+    rctx.arc(x,y,3,0,Math.PI*2);
+    rctx.fill();
+  });
+
+  rctx.fillStyle = '#a8a8b4';
+  rctx.font = '12px DM Mono, monospace';
+  rctx.fillText('eje X = temperatura real · eje Y = predicha por la red · línea punteada = predicción perfecta', pad, 16);
+  rctx.fillText('temperatura real (°C)', W/2-50, H-8);
+}
+
+function setH(H){
+  currentH = H;
+  const net = initMLP(H, PROD_SEED);
+  trainMLP(net, trainData, PROD_EPOCHS, PROD_LR, PROD_L2);
+  const r2train = r2Of(net, trainData);
+  const r2test = r2Of(net, testData);
+  const rmseTest = rmseOf(net, testData);
+  const gapPP = (r2train-r2test)*100;
+
+  document.getElementById('mH').textContent = H;
+  document.getElementById('mR2Train').textContent = (r2train*100).toFixed(1)+'%';
+  document.getElementById('mR2Test').textContent = (r2test*100).toFixed(1)+'%';
+  document.getElementById('mRmse').textContent = rmseTest.toFixed(2)+' °C';
+
+  const badge = document.getElementById('mFitBadge');
+  if(r2train < 0.90){
+    badge.textContent = '⚠ Subajuste — con tan pocas neuronas, la red no logra capturar la curva de saturación ni siquiera en los datos que ya conoce.';
+    badge.style.color = 'var(--cta)';
+  } else if(gapPP > 8){
+    badge.textContent = '⚠ Sobreajuste — la red memoriza detalles del entrenamiento que no generalizan a datos nuevos.';
+    badge.style.color = '#e8c547';
+  } else {
+    badge.textContent = '✓ Ajuste razonable — buen R² en ambos conjuntos. En este problema, más neuronas no generan sobreajuste porque la curva real es suave: el error restante es sobre todo ruido de medición, no memorización.';
+    badge.style.color = 'var(--success)';
+  }
+
+  drawSurface(net);
+  drawCalibration(net);
+}
+
+const hRow = document.getElementById('hRow');
+[1,2,3,4,6,8,12,20].forEach(H=>{
+  const btn = document.createElement('button');
+  btn.className = 'degree-btn' + (H===currentH ? ' active':'');
+  btn.textContent = 'H=' + H;
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.degree-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    setH(H);
+  });
+  hRow.appendChild(btn);
+});
+
+const analystToggle = document.getElementById('analystToggle');
+const analystPanel = document.getElementById('analystPanel');
+analystToggle.addEventListener('change', ()=>{
+  analystPanel.classList.toggle('show', analystToggle.checked);
+  if(analystToggle.checked) setH(currentH);
+});
+
+updateBasic();
+</script>
+
+</body>
+</html>

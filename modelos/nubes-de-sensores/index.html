@@ -1,0 +1,826 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nubes de Sensores — RELIABILIT-IA</title>
+<meta name="description" content="Agrupa sensores de planta por su patrón de comportamiento y detecta automáticamente cuáles no encajan en ningún grupo conocido, usando clustering basado en densidad (DBSCAN).">
+
+<meta property="og:title" content="Nubes de Sensores — RELIABILIT-IA">
+<meta property="og:description" content="Mueve amplitud y frecuencia y mira en vivo a qué nube de sensores pertenece esa lectura — o si queda fuera de todas.">
+<meta property="og:image" content="../../assets/og-image.png">
+<meta property="og:type" content="website">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#0a0a0f;
+    --panel:#121218;
+    --panel2:#181820;
+    --border:#22222c;
+    --text:#f4f4f7;
+    --muted:#9a9aa8;
+    --success:#3ecfa0;
+    --cta:#f4722e;
+    --accent:#7b5ea7;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    background:var(--bg); color:var(--text); font-family:'DM Mono', monospace;
+    line-height:1.6; -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:'Syne', sans-serif; font-weight:800; letter-spacing:-0.02em;}
+  a{color:var(--success);}
+  .wrap{max-width:960px;margin:0 auto;padding:0 24px;}
+  .back{display:inline-block; font-size:13px; color:var(--muted); text-decoration:none; padding-top:20px;}
+  .back:hover{color:var(--success);}
+
+  header.hero{padding:24px 0 40px; border-bottom:1px solid var(--border);}
+  .badge{
+    display:inline-block; font-size:12px; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--success); border:1px solid var(--success); border-radius:999px;
+    padding:5px 14px; margin-bottom:18px;
+  }
+  h1{font-size:clamp(28px,5vw,44px); line-height:1.1; margin-bottom:14px;}
+  .lead{font-family:'Instrument Serif', serif; font-style:italic; font-size:20px; color:var(--muted); max-width:640px;}
+
+  section{padding:40px 0; border-bottom:1px solid var(--border);}
+  section h2{font-size:22px; margin-bottom:14px;}
+  .context p{color:var(--muted); max-width:640px; font-size:15px; text-align:justify;}
+  .context p + p{margin-top:12px;}
+
+  .panel{
+    background:var(--panel); border:1px solid var(--border); border-radius:16px; padding:28px;
+  }
+
+  .toggle-row{display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; flex-wrap:wrap; gap:12px;}
+  .toggle-row .label{font-size:15px; color:var(--muted);}
+  .switch{
+    display:inline-flex; align-items:center; gap:10px; cursor:pointer; user-select:none;
+    font-size:14px; color:var(--text);
+  }
+  .switch input{display:none;}
+  .track{
+    width:42px; height:24px; background:var(--border); border-radius:999px; position:relative; transition:.2s;
+    flex-shrink:0;
+  }
+  .track::after{
+    content:''; position:absolute; top:3px; left:3px; width:18px; height:18px; border-radius:50%;
+    background:var(--muted); transition:.2s;
+  }
+  .switch input:checked + .track{background:var(--accent);}
+  .switch input:checked + .track::after{transform:translateX(18px); background:#fff;}
+
+  .demo-grid{display:grid; grid-template-columns:1.05fr 1fr; gap:32px;}
+  @media (max-width:760px){ .demo-grid{grid-template-columns:1fr;} }
+
+  .slider-group{margin-bottom:22px;}
+  .slider-group label{display:flex; justify-content:space-between; font-size:16px; margin-bottom:8px;}
+  .slider-group label .val{color:var(--success); font-weight:500;}
+  input[type=range]{
+    width:100%; -webkit-appearance:none; height:6px; border-radius:999px; background:var(--border); outline:none;
+  }
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none; width:20px; height:20px; border-radius:50%;
+    background:var(--success); cursor:pointer; border:3px solid var(--bg);
+  }
+  input[type=range]::-moz-range-thumb{
+    width:20px; height:20px; border-radius:50%; background:var(--success); cursor:pointer; border:3px solid var(--bg);
+  }
+  .hint{font-size:13px; color:var(--muted); display:flex; justify-content:space-between; margin-top:4px;}
+
+  .result{
+    margin-top:26px; padding:22px; border-radius:14px; background:var(--panel2); border:1px solid var(--border);
+    display:flex; align-items:center; gap:20px; flex-wrap:wrap;
+  }
+  .result .risk-dot{width:16px; height:16px; border-radius:50%; flex-shrink:0;}
+  .result .risk-text h3{font-size:23px; margin-bottom:6px;}
+  .result .risk-text p{font-size:15px; color:var(--muted);}
+  .confidence-line{font-size:14px !important; font-weight:600; margin-top:10px !important; color:var(--text) !important;}
+  .confidence-note{font-size:13px !important; color:var(--muted); margin-top:2px !important;}
+
+  .live-col h3{font-size:14px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:14px; font-family:'DM Mono',monospace; font-weight:500;}
+  .instrument-wrap{margin-bottom:18px;}
+  #instrument{width:100%; max-width:420px; height:260px; background:var(--bg); border:1px solid var(--border); border-radius:12px; display:block;}
+  .instrument-stats{font-size:13px; color:var(--muted); line-height:1.9; margin-top:10px; display:flex; gap:22px; flex-wrap:wrap;}
+  .instrument-stats b{color:var(--text); font-size:15px;}
+  .gauge-wrap{margin-bottom:16px;}
+  .gauge-label{font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:8px;}
+  .gauge-bar{height:12px; background:var(--border); border-radius:999px; overflow:hidden; margin:8px 0; position:relative;}
+  .gauge-fill{height:100%; width:0%; transition:background .35s ease, width .3s ease;}
+  .gauge-value{font-size:16px; color:var(--text);}
+  .gauge-value b{font-size:20px;}
+  .gauge-note{font-size:13px; color:var(--muted);}
+  .sim-note{font-size:13px; color:var(--muted); line-height:1.7; margin-top:6px;}
+
+  .analyst{margin-top:32px; padding-top:26px; border-top:1px dashed var(--border); display:none;}
+  .analyst.show{display:block;}
+  .degree-row{display:flex; gap:8px; margin-bottom:18px; flex-wrap:wrap;}
+  .degree-btn{
+    font-family:'DM Mono', monospace; font-size:14px; padding:9px 18px; border-radius:8px;
+    border:1px solid var(--border); background:transparent; color:var(--text); cursor:pointer;
+    transition:background .15s, border-color .15s;
+  }
+  .degree-btn.active{background:var(--accent); border-color:var(--accent); color:#fff;}
+  #chart{width:100%; height:340px; background:var(--bg); border:1px solid var(--border); border-radius:12px; display:block;}
+  #residuals{width:100%; height:190px; background:var(--bg); border:1px solid var(--border); border-radius:12px; display:block; margin-top:18px;}
+  .metrics{display:flex; gap:24px; margin-top:16px; flex-wrap:wrap; font-size:14px; color:var(--muted);}
+  .metrics b{color:var(--text);}
+  .fit-badge{margin-top:14px; font-size:15px; font-weight:600; padding:10px 14px; border-radius:10px; background:var(--panel2); display:inline-block;}
+
+  .dataset-wrap{margin-top:24px;}
+  .dataset-label{font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:8px;}
+  .dataset-scroll{max-height:260px; overflow-y:auto; border:1px solid var(--border); border-radius:12px;}
+  .dataset-table{width:100%; border-collapse:collapse; font-size:13px;}
+  .dataset-table th{position:sticky; top:0; background:var(--panel2); color:var(--muted); text-align:left; font-weight:500; padding:8px 12px; border-bottom:1px solid var(--border); text-transform:uppercase; letter-spacing:.04em; font-size:11px;}
+  .dataset-table td{padding:7px 12px; border-bottom:1px solid var(--border); color:var(--text);}
+  .dataset-table tr:last-child td{border-bottom:none;}
+  .dataset-note{font-size:12px; color:var(--muted); margin-top:8px;}
+
+  .business p{color:var(--muted); font-size:16px; max-width:640px; text-align:justify;}
+  .business .stat{color:var(--success); font-weight:500;}
+  .business-grid{display:grid; grid-template-columns:1.1fr 1fr; gap:32px; align-items:start; margin-top:8px;}
+  @media (max-width:760px){ .business-grid{grid-template-columns:1fr;} }
+  .biz-action{margin-top:18px; padding:18px; border-radius:12px; background:var(--panel2); border:1px solid var(--border); transition:border-color .3s;}
+  .biz-action .biz-title{font-size:17px; font-weight:600;}
+  .biz-action .biz-detail{font-size:14px; color:var(--muted); margin-top:6px;}
+  #projection{width:100%; height:230px; background:var(--bg); border:1px solid var(--border); border-radius:12px; display:block;}
+
+  .cta-row{display:flex; gap:14px; flex-wrap:wrap; margin-top:8px;}
+  .btn{
+    font-family:'DM Mono', monospace; font-size:14px; padding:12px 22px; border-radius:10px;
+    text-decoration:none; border:1px solid var(--border); color:var(--text); display:inline-block;
+  }
+  .btn.primary{background:var(--cta); border-color:var(--cta); color:#0a0a0f; font-weight:600;}
+  .btn.ghost:hover{border-color:var(--accent);}
+
+  .contact-card{
+    display:grid; grid-template-columns:1.1fr 1fr; gap:28px;
+    background:var(--panel2); border:1px solid var(--border); border-radius:16px;
+    padding:28px; margin-top:28px;
+  }
+  @media (max-width:700px){ .contact-card{grid-template-columns:1fr;} }
+  .contact-card h3{font-size:19px; margin-bottom:8px;}
+  .contact-card p{font-size:14px; color:var(--muted); max-width:420px; text-align:justify;}
+  .contact-links{display:flex; flex-direction:column; gap:12px;}
+  .contact-row{
+    display:flex; align-items:center; gap:14px; padding:12px 16px; border-radius:12px;
+    background:var(--panel); border:1px solid var(--border); text-decoration:none; color:var(--text);
+    transition:border-color .2s;
+  }
+  .contact-row:hover{border-color:var(--success);}
+  .contact-icon{font-size:20px; width:32px; text-align:center; flex-shrink:0;}
+  .contact-text{font-size:14px; line-height:1.5;}
+  .contact-text b{display:block; font-size:15px;}
+
+  footer{padding:36px 0; text-align:center;}
+  footer p{font-size:13px; color:var(--muted); max-width:560px; margin:0 auto;}
+  .footer-links{display:flex; justify-content:center; gap:18px; flex-wrap:wrap; margin-bottom:16px; font-size:13px;}
+  .footer-links a{color:var(--muted); text-decoration:none;}
+  .footer-links a:hover{color:var(--success);}
+
+  @media (max-width:520px){
+    .result{flex-direction:column; align-items:flex-start;}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <a class="back" href="../../">← Volver al catálogo RELIABILIT-IA</a>
+
+  <header class="hero">
+    <div class="badge">Clustering · Sensores</div>
+    <span class="badge" style="border-color:var(--accent); color:var(--accent); margin-left:8px;">No supervisado · DBSCAN</span>
+    <h1>Nubes de Sensores</h1>
+    <p class="lead">¿Qué sensores de tu planta se comportan igual — y cuáles no se parecen a ningún otro?</p>
+  </header>
+
+  <section class="context">
+    <h2>El problema</h2>
+    <p>Las <a href="../familias-de-turbinas/">Familias de Turbinas</a> se agruparon con clustering jerárquico, que siempre termina metiendo a todos los elementos en algún grupo. Pero una planta con cientos de sensores casi siempre tiene algunos que no se parecen a ningún otro: mal calibrados, midiendo algo genuinamente distinto, o simplemente con un patrón único. Forzarlos dentro de un grupo solo para que "encajen" es engañoso. Este módulo usa DBSCAN, un algoritmo de clustering basado en densidad: agrupa los sensores que están rodeados de suficientes vecinos parecidos, y — a diferencia de los métodos anteriores — puede decir explícitamente "este sensor no pertenece a ninguna nube conocida", en vez de forzarlo al grupo más cercano aunque no encaje bien.</p>
+    <p>Las dos variables que usa este demo —amplitud normalizada de la señal y frecuencia dominante relativa— describen el "perfil" típico de la lectura de un sensor, sin importar qué mide exactamente. Sensores de variables lentas (temperatura, presión estática) tienden a agruparse en una zona; sensores cíclicos (flujo) en otra; sensores de vibración de alta frecuencia en otra. Los que caen fuera de esas tres nubes son candidatos a revisar primero.</p>
+  </section>
+
+  <section id="demo">
+    <h2>Demo interactivo</h2>
+    <div class="panel">
+      <div class="toggle-row">
+        <span class="label">DBSCAN (clustering basado en densidad) — mueve los sliders para simular el perfil de un sensor.</span>
+        <label class="switch">
+          <span>Modo Analista</span>
+          <input type="checkbox" id="analystToggle">
+          <span class="track"></span>
+        </label>
+      </div>
+
+      <div class="demo-grid">
+        <div class="controls-col">
+          <div class="slider-group">
+            <label>Amplitud normalizada <span class="val" id="ampVal">0.30</span></label>
+            <input type="range" id="ampSlider" min="0" max="1" step="0.01" value="0.30">
+            <div class="hint"><span>0.0</span><span>1.0</span></div>
+          </div>
+
+          <div class="slider-group">
+            <label>Frecuencia dominante relativa <span class="val" id="freqVal">0.18</span></label>
+            <input type="range" id="freqSlider" min="0" max="1" step="0.01" value="0.18">
+            <div class="hint"><span>0.0</span><span>1.0</span></div>
+          </div>
+
+          <div class="result" id="resultBox">
+            <div class="risk-dot" id="riskDot"></div>
+            <div class="risk-text">
+              <h3 id="riskTitle">Calculando…</h3>
+              <p id="riskDetail"></p>
+              <p class="confidence-line" id="confidenceLine"></p>
+              <p class="confidence-note" id="confidenceNote"></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="live-col">
+          <h3>Simulación en vivo</h3>
+          <div class="instrument-wrap">
+            <canvas id="instrument" width="420" height="260"></canvas>
+            <div class="instrument-stats">
+              <div>Vecinos dentro del radio (eps): <b id="neighborStat">–</b></div>
+              <div>Umbral mínimo de vecinos: <b id="minptsStat">4</b></div>
+            </div>
+          </div>
+
+          <div class="gauge-wrap">
+            <div class="gauge-label">Densidad de vecinos alrededor de esta lectura</div>
+            <div class="gauge-bar"><div class="gauge-fill" id="gaugeFill"></div></div>
+            <div class="gauge-value"><b id="gaugeValue">0</b> <span class="gauge-note">0 = zona vacía (candidato a ruido), 100 o más = zona densa, claramente dentro de una nube</span></div>
+          </div>
+
+          <p class="sim-note">Simulación ilustrativa: el mapa y el punto se dibujan a partir de los mismos valores de los sliders — no provienen de sensores reales.</p>
+        </div>
+      </div>
+
+      <div class="analyst" id="analystPanel">
+        <h3 style="font-size:18px; text-transform:none; letter-spacing:0; margin-bottom:8px; color:var(--text);">Ajustar el radio de densidad (eps) en vivo</h3>
+        <p style="font-size:15px; color:var(--muted); margin-bottom:18px; text-align:justify;">eps define qué tan cerca tienen que estar dos sensores para considerarse "vecinos". Con un eps muy chico, hasta sensores que sí pertenecen a una nube real quedan aislados y se marcan como ruido. Con un eps muy grande, nubes que en realidad son distintas terminan fusionadas en una sola. minPts (fijo en 4) es la cantidad mínima de vecinos que necesita un punto para considerarse el núcleo de una nube.</p>
+
+        <div class="dataset-wrap">
+          <div class="dataset-label">Vista del dataset (90 sensores simulados — incluye sensores atípicos reales, usados solo para validar)</div>
+          <div class="dataset-scroll">
+            <table class="dataset-table">
+              <thead><tr><th>#</th><th>Fecha</th><th>Amplitud</th><th>Frecuencia</th><th>Origen real</th></tr></thead>
+              <tbody id="datasetBody"></tbody>
+            </table>
+          </div>
+          <p class="dataset-note" id="datasetNote"></p>
+        </div>
+
+        <div class="degree-row" id="epsRow"></div>
+        <canvas id="chart" width="800" height="340"></canvas>
+        <canvas id="residuals" width="800" height="190"></canvas>
+        <div class="metrics">
+          <span>eps: <b id="mEps">0.12</b></span>
+          <span>Nubes encontradas: <b id="mClusters">–</b></span>
+          <span>% marcado como ruido: <b id="mNoise">–</b></span>
+          <span>Pureza vs. origen real: <b id="mPurity">–</b></span>
+        </div>
+        <div class="fit-badge" id="mFitBadge">–</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="business">
+    <h2>¿Qué significa para tu planta?</h2>
+    <div class="business-grid">
+      <div>
+        <p>Con el perfil actual, este sensor se agrupa como <span class="stat" id="bizLevelInline">Proceso lento</span>. Encontrar automáticamente qué sensores no encajan en ninguna nube conocida es, en la práctica, una forma barata de priorizar auditorías de instrumentación: en vez de revisar los cientos de sensores de una planta uno por uno, empiezas por los pocos que el algoritmo ya marcó como distintos a todo lo demás.</p>
+        <div class="biz-action" id="bizAction">
+          <div class="biz-title" id="bizTitle">Calculando…</div>
+          <div class="biz-detail" id="bizDetail"></div>
+        </div>
+      </div>
+      <div>
+        <div class="gauge-label">Sensores por categoría (ejemplo ilustrativo)</div>
+        <canvas id="projection" width="480" height="230"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <section id="cta">
+    <h2>De esta demo a tu planta</h2>
+    <p style="color:var(--muted); max-width:640px; margin-bottom:20px; text-align:justify;">El dataset y las nubes de este demo son de ejemplo, ajustados sobre datos sintéticos — sirven para explicar la idea, no para auditar tu instrumentación real. Llevarlo a tu planta implica calcular estas mismas métricas de comportamiento sobre el historial real de cada sensor, ajustar el radio de densidad al volumen y tipo de sensores que administras, y decidir junto contigo qué hacer con los que el algoritmo marque como atípicos — ahí es donde entra nuestro motor AutoML. Se adapta al tipo de equipo y a la industria —minería, manufactura, energía, alimentos— cuando la calibramos con tus datos. Si quieres recorrer ese proceso, conversemos.</p>
+    <div class="cta-row">
+      <a class="btn primary" href="https://chat.whatsapp.com/GvBz1tuUeNZ0xwTkjsuE3z" target="_blank" rel="noopener">Unirme a la comunidad de WhatsApp</a>
+      <a class="btn ghost" href="https://www.linkedin.com/company/reliabilit-ia/" target="_blank" rel="noopener">Seguir en LinkedIn</a>
+      <a class="btn ghost" href="https://www.youtube.com/@miguelangelcayllahuaquispe998" target="_blank" rel="noopener">Ver en YouTube</a>
+    </div>
+
+    <div class="contact-card">
+      <div>
+        <h3>¿Hablamos de tu inventario de sensores?</h3>
+        <p>Si administras muchos sensores y quieres identificar cuáles se comportan de forma distinta al resto, escríbeme directamente.</p>
+      </div>
+      <div class="contact-links">
+        <a class="contact-row" href="https://wa.me/51997610310?text=Hola%20Miguel%2C%20vi%20el%20demo%20Nubes%20de%20Sensores%20y%20quiero%20conversar%20sobre%20la%20calibracion%20para%20mi%20planta" target="_blank" rel="noopener">
+          <span class="contact-icon">💬</span>
+          <span class="contact-text"><b>WhatsApp</b>+51 997 610 310</span>
+        </a>
+        <a class="contact-row" href="https://www.linkedin.com/in/miguelcayllahua/" target="_blank" rel="noopener">
+          <span class="contact-icon">in</span>
+          <span class="contact-text"><b>LinkedIn</b>Miguel Angel Cayllahua Quispe</span>
+        </a>
+        <a class="contact-row" href="mailto:miguelcquispe@gmail.com">
+          <span class="contact-icon">✉</span>
+          <span class="contact-text"><b>Correo</b>miguelcquispe@gmail.com</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-links">
+      <a href="https://chat.whatsapp.com/GvBz1tuUeNZ0xwTkjsuE3z" target="_blank" rel="noopener">WhatsApp</a>
+      <a href="https://www.youtube.com/@miguelangelcayllahuaquispe998" target="_blank" rel="noopener">YouTube</a>
+      <a href="https://www.linkedin.com/company/reliabilit-ia/" target="_blank" rel="noopener">LinkedIn empresa</a>
+      <a href="https://www.linkedin.com/in/miguelcayllahua/" target="_blank" rel="noopener">LinkedIn personal</a>
+      <a href="mailto:miguelcquispe@gmail.com">Correo</a>
+    </div>
+    <p style="text-align:justify;">Contenido con fines educativos. La metodología es real; los datos y la simulación de esta demo son sintéticos para poder compartirlos públicamente. Se calibra con tus propios datos —sin importar el tipo de equipo o la industria— cuando trabajamos juntos. Modelo de ejemplo, no una fórmula fija.</p>
+  </footer>
+</div>
+
+<script>
+/* =========================================================
+   Generación del dataset sintético: 3 "nubes" reales de
+   sensores + un grupo de sensores atípicos genuinos (ruido).
+   ========================================================= */
+function seededRandom(seed){
+  let s = seed;
+  return function(){ s = (s*9301+49297) % 233280; return s/233280; };
+}
+function gaussian(rnd){
+  const u1 = Math.max(1e-9, rnd()), u2 = rnd();
+  return Math.sqrt(-2*Math.log(u1))*Math.cos(2*Math.PI*u2);
+}
+const REF_DATE = new Date('2026-07-15');
+const MESES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+function fmtDate(d){ return String(d.getDate()).padStart(2,'0')+' '+MESES[d.getMonth()]+' '+d.getFullYear(); }
+function dateFromDaysAgo(daysAgo){ const d = new Date(REF_DATE); d.setDate(d.getDate()-Math.round(daysAgo)); return d; }
+
+const rnd = seededRandom(191);
+const CLOUD_NAMES = ['Proceso lento','Flujo / cíclicos','Vibración'];
+const CLOUD_COLORS = ['#3ecfa0','#e8c547','#f4722e'];
+const CLOUD_DETAIL = [
+  'Perfil típico de sensores de variables lentas: temperatura, presión estática. Amplitud y frecuencia bajas.',
+  'Perfil típico de sensores de procesos cíclicos: flujo, nivel. Amplitud y frecuencia intermedias.',
+  'Perfil típico de sensores de vibración: amplitud y frecuencia altas.'
+];
+const NOISE_COLOR = '#5a5a68';
+
+const points = [];
+for(let i=0;i<26;i++){ const amp=Math.min(1,Math.max(0,0.28+gaussian(rnd)*0.06)), freq=Math.min(1,Math.max(0,0.16+gaussian(rnd)*0.05)); points.push({x:amp,y:freq,fam:0,date:dateFromDaysAgo(rnd()*400)}); }
+for(let i=0;i<26;i++){ const amp=Math.min(1,Math.max(0,0.52+gaussian(rnd)*0.06)), freq=Math.min(1,Math.max(0,0.53+gaussian(rnd)*0.06)); points.push({x:amp,y:freq,fam:1,date:dateFromDaysAgo(rnd()*400)}); }
+for(let i=0;i<26;i++){ const amp=Math.min(1,Math.max(0,0.78+gaussian(rnd)*0.06)), freq=Math.min(1,Math.max(0,0.85+gaussian(rnd)*0.06)); points.push({x:amp,y:freq,fam:2,date:dateFromDaysAgo(rnd()*400)}); }
+for(let i=0;i<12;i++){ const amp=rnd(), freq=rnd(); points.push({x:amp,y:freq,fam:-1,date:dateFromDaysAgo(rnd()*400)}); }
+for(let i=points.length-1;i>0;i--){ const j=Math.floor(rnd()*(i+1)); [points[i],points[j]]=[points[j],points[i]]; }
+
+function dist(a,b){ return Math.sqrt((a.x-b.x)**2+(a.y-b.y)**2); }
+
+/* =========================================================
+   DBSCAN implementado desde cero.
+   ========================================================= */
+function dbscan(points, eps, minPts){
+  const n = points.length;
+  const labels = new Array(n).fill(undefined);
+  const visited = new Array(n).fill(false);
+  let clusterId = 0;
+  function regionQuery(idx){
+    const neighbors = [];
+    for(let j=0;j<n;j++){ if(dist(points[idx],points[j])<=eps) neighbors.push(j); }
+    return neighbors;
+  }
+  for(let i=0;i<n;i++){
+    if(visited[i]) continue;
+    visited[i] = true;
+    const neighbors = regionQuery(i);
+    if(neighbors.length < minPts){ labels[i] = -1; continue; }
+    labels[i] = clusterId;
+    const seeds = neighbors.slice();
+    for(let s=0;s<seeds.length;s++){
+      const j = seeds[s];
+      if(!visited[j]){
+        visited[j] = true;
+        const jN = regionQuery(j);
+        if(jN.length >= minPts) jN.forEach(nb=>{ if(!seeds.includes(nb)) seeds.push(nb); });
+      }
+      if(labels[j]===undefined || labels[j]===-1) labels[j] = clusterId;
+    }
+    clusterId++;
+  }
+  return { labels, nClusters: clusterId };
+}
+function evaluate(labels){
+  const n = labels.length;
+  const noiseCount = labels.filter(l=>l===-1).length;
+  const clusterIds = [...new Set(labels.filter(l=>l!==-1))];
+  let correct = 0;
+  clusterIds.forEach(cid=>{
+    const idxs = labels.map((l,i)=>l===cid?i:-1).filter(i=>i!==-1);
+    const counts = {};
+    idxs.forEach(i=>{ const f=points[i].fam; counts[f]=(counts[f]||0)+1; });
+    correct += Math.max(...Object.values(counts));
+  });
+  correct += labels.filter((l,i)=> l===-1 && points[i].fam===-1).length;
+  return { noiseCount, noiseFrac: noiseCount/n, nClusters: clusterIds.length, purity: correct/n };
+}
+
+function renderDatasetPreview(){
+  const tbody = document.getElementById('datasetBody');
+  const note = document.getElementById('datasetNote');
+  if(!tbody) return;
+  tbody.innerHTML = points.map((p,i)=>{
+    const origen = p.fam===-1 ? 'Atípico (ruido real)' : CLOUD_NAMES[p.fam];
+    return `<tr><td>${i+1}</td><td>${fmtDate(p.date)}</td><td>${p.x.toFixed(2)}</td><td>${p.y.toFixed(2)}</td><td>${origen}</td></tr>`;
+  }).join('');
+  const sortedDates = points.map(p=>p.date).sort((a,b)=>a-b);
+  note.textContent = `${points.length} sensores simulados, registrados entre ${fmtDate(sortedDates[0])} y ${fmtDate(sortedDates[sortedDates.length-1])} (${points.filter(p=>p.fam===-1).length} son atípicos reales). La columna "origen real" solo se usa para validar — el algoritmo nunca la ve.`;
+}
+renderDatasetPreview();
+
+/* =========================================================
+   MODELO DE PRODUCCIÓN fijo (eps=0.12, minPts=4 — validado
+   como el mejor punto: 3 nubes, ruido contenido, alta pureza).
+   ========================================================= */
+const PROD_EPS = 0.12, PROD_MINPTS = 4;
+const prodResult = dbscan(points, PROD_EPS, PROD_MINPTS);
+const prodClusterFamily = {};
+for(let c=0;c<prodResult.nClusters;c++){
+  const idxs = prodResult.labels.map((l,i)=>l===c?i:-1).filter(i=>i!==-1);
+  const counts = {};
+  idxs.forEach(i=>{ const f=points[i].fam; counts[f]=(counts[f]||0)+1; });
+  prodClusterFamily[c] = Number(Object.keys(counts).reduce((a,b)=>counts[a]>counts[b]?a:b));
+}
+
+function classifyNew(x, y, eps, minPts, points, labels){
+  const p = {x,y};
+  const neighborIdx = [];
+  points.forEach((q,i)=>{ if(dist(p,q)<=eps) neighborIdx.push(i); });
+  if(neighborIdx.length === 0) return { isNoise:true, neighborCount:0, clusterId:null };
+  const counts = {};
+  neighborIdx.forEach(i=>{ const l = labels[i]; if(l!==-1) counts[l]=(counts[l]||0)+1; });
+  const keys = Object.keys(counts);
+  if(keys.length===0) return { isNoise:true, neighborCount:neighborIdx.length, clusterId:null };
+  const bestCluster = Number(keys.reduce((a,b)=>counts[a]>counts[b]?a:b));
+  return { isNoise:false, neighborCount:neighborIdx.length, clusterId:bestCluster };
+}
+
+/* =========================================================
+   MODO BÁSICO
+   ========================================================= */
+const ampSlider = document.getElementById('ampSlider');
+const freqSlider = document.getElementById('freqSlider');
+const ampVal = document.getElementById('ampVal');
+const freqVal = document.getElementById('freqVal');
+const riskDot = document.getElementById('riskDot');
+const riskTitle = document.getElementById('riskTitle');
+const riskDetail = document.getElementById('riskDetail');
+const confidenceLine = document.getElementById('confidenceLine');
+const confidenceNote = document.getElementById('confidenceNote');
+const neighborStat = document.getElementById('neighborStat');
+const gaugeFill = document.getElementById('gaugeFill');
+const gaugeValue = document.getElementById('gaugeValue');
+const bizLevelInline = document.getElementById('bizLevelInline');
+const bizAction = document.getElementById('bizAction');
+const bizTitle = document.getElementById('bizTitle');
+const bizDetail = document.getElementById('bizDetail');
+const projectionCanvas = document.getElementById('projection');
+const pctx = projectionCanvas.getContext('2d');
+
+function labelName(cls){
+  if(cls.isNoise) return 'Atípico';
+  return CLOUD_NAMES[prodClusterFamily[cls.clusterId]];
+}
+function labelColor(cls){
+  if(cls.isNoise) return NOISE_COLOR;
+  return CLOUD_COLORS[prodClusterFamily[cls.clusterId]];
+}
+function labelDetail(cls){
+  if(cls.isNoise) return 'Esta lectura no tiene suficientes vecinos parecidos cerca — no encaja claramente en ninguna de las tres nubes conocidas. Vale la pena revisarlo antes de asumir que el sensor está bien.';
+  return CLOUD_DETAIL[prodClusterFamily[cls.clusterId]];
+}
+
+function drawProjection(activeKey){
+  const W = projectionCanvas.width, H = projectionCanvas.height;
+  pctx.clearRect(0,0,W,H);
+  const padL = 56, padR = 20, padT = 20, padB = 46;
+  const categories = [0,1,2,'noise'];
+  const counts = categories.map(c=> c==='noise' ? points.filter(p=>p.fam===-1).length : points.filter(p=>p.fam===c).length);
+  const maxCount = Math.max(...counts)*1.15;
+  const bw = (W-padL-padR)/categories.length;
+
+  pctx.strokeStyle = '#22222c';
+  pctx.lineWidth = 1;
+  pctx.beginPath();
+  pctx.moveTo(padL, padT); pctx.lineTo(padL, H-padB); pctx.lineTo(W-padR, H-padB);
+  pctx.stroke();
+
+  categories.forEach((c,i)=>{
+    const n = counts[i];
+    const barH = Math.max(2,(n/maxCount)*(H-padT-padB));
+    const x = padL + i*bw + bw*0.18;
+    const y = H-padB-barH;
+    const w = bw*0.64;
+    const color = c==='noise' ? NOISE_COLOR : CLOUD_COLORS[c];
+    pctx.fillStyle = c===activeKey ? color : 'rgba(244,244,247,0.14)';
+    pctx.fillRect(x,y,w,barH);
+    pctx.fillStyle = '#a8a8b4';
+    pctx.font = '11px DM Mono, monospace';
+    pctx.fillText(c==='noise'?'Atípicos':CLOUD_NAMES[c].split(' ')[0], x-4, H-padB+16);
+    if(c===activeKey){
+      pctx.fillStyle = '#f4f4f7';
+      pctx.font = '12px DM Mono, monospace';
+      pctx.fillText(n+' sensores', x-6, y-8);
+    }
+  });
+  pctx.fillStyle = '#8a8a98';
+  pctx.font = '11px DM Mono, monospace';
+  pctx.fillText('sensores por categoría en el dataset de ejemplo', padL, 14);
+}
+
+function updateBasic(){
+  const amp = parseFloat(ampSlider.value);
+  const freq = parseFloat(freqSlider.value);
+  ampVal.textContent = amp.toFixed(2);
+  freqVal.textContent = freq.toFixed(2);
+
+  const cls = classifyNew(amp, freq, PROD_EPS, PROD_MINPTS, points, prodResult.labels);
+  const color = labelColor(cls);
+
+  riskDot.style.background = color;
+  riskTitle.style.color = color;
+  riskTitle.textContent = labelName(cls);
+  riskDetail.textContent = labelDetail(cls);
+
+  let confLevel, confColor, confNote;
+  if(cls.isNoise){
+    confLevel = 'N/A'; confColor = 'var(--muted)';
+    confNote = 'No aplica un puntaje de confianza de nube: esta lectura fue marcada como atípica.';
+  } else if(cls.neighborCount >= PROD_MINPTS*2){
+    confLevel = 'Alta'; confColor = 'var(--success)';
+    confNote = 'Está en el núcleo denso de la nube.';
+  } else if(cls.neighborCount >= PROD_MINPTS){
+    confLevel = 'Media'; confColor = '#e8c547';
+    confNote = 'Está dentro de la nube, pero cerca de su borde.';
+  } else {
+    confLevel = 'Baja'; confColor = 'var(--cta)';
+    confNote = 'Está apenas conectado a la nube — un sensor "borde", no un núcleo típico.';
+  }
+  confidenceLine.textContent = 'Confianza de la asignación: ' + confLevel;
+  confidenceLine.style.color = confColor;
+  confidenceNote.textContent = confNote;
+
+  neighborStat.textContent = cls.neighborCount;
+
+  const pct = Math.min(100, (cls.neighborCount/(PROD_MINPTS*2))*100);
+  gaugeFill.style.width = pct.toFixed(1) + '%';
+  gaugeFill.style.background = color;
+  gaugeValue.textContent = Math.round(pct);
+
+  bizLevelInline.textContent = labelName(cls);
+  bizLevelInline.style.color = color;
+  bizAction.style.borderColor = color;
+  bizTitle.style.color = color;
+  bizTitle.textContent = labelName(cls);
+  bizDetail.textContent = labelDetail(cls);
+
+  const activeKey = cls.isNoise ? 'noise' : prodClusterFamily[cls.clusterId];
+  drawProjection(activeKey);
+  drawInstrument(amp, freq, cls);
+}
+ampSlider.addEventListener('input', updateBasic);
+freqSlider.addEventListener('input', updateBasic);
+
+/* =========================================================
+   SIMULACIÓN EN VIVO — mapa de sensores con el punto actual.
+   ========================================================= */
+const instrumentCanvas = document.getElementById('instrument');
+const ictx = instrumentCanvas.getContext('2d');
+function hexToRgb(hex){ const v=hex.replace('#',''); return [parseInt(v.slice(0,2),16),parseInt(v.slice(2,4),16),parseInt(v.slice(4,6),16)]; }
+function rgba(c,a){ return `rgba(${c[0]},${c[1]},${c[2]},${a})`; }
+
+function drawInstrument(amp, freq, cls){
+  const W = instrumentCanvas.width, H = instrumentCanvas.height;
+  const pad = 36;
+  ictx.clearRect(0,0,W,H);
+  function toPx(xv,yv){ return [ pad+xv*(W-2*pad), H-pad-yv*(H-2*pad) ]; }
+
+  ictx.strokeStyle = '#22222c';
+  ictx.lineWidth = 1;
+  ictx.beginPath();
+  ictx.moveTo(pad, pad); ictx.lineTo(pad, H-pad); ictx.lineTo(W-pad, H-pad);
+  ictx.stroke();
+  ictx.fillStyle = '#8a8a98';
+  ictx.font = '10px DM Mono, monospace';
+  ictx.fillText('amplitud normalizada', pad, H-10);
+  ictx.save();
+  ictx.translate(12, H/2+50);
+  ictx.rotate(-Math.PI/2);
+  ictx.fillText('frecuencia dominante relativa', 0, 0);
+  ictx.restore();
+
+  points.forEach((p,i)=>{
+    const [x,y] = toPx(p.x,p.y);
+    const l = prodResult.labels[i];
+    const color = l===-1 ? NOISE_COLOR : CLOUD_COLORS[prodClusterFamily[l]];
+    ictx.beginPath();
+    ictx.fillStyle = rgba(hexToRgb(color), l===-1?0.5:0.65);
+    ictx.arc(x,y,l===-1?2:2.6,0,Math.PI*2);
+    ictx.fill();
+  });
+
+  const color = labelColor(cls);
+  const [cx,cy] = toPx(amp,freq);
+  // radio eps visual (aproximado a la escala del gráfico)
+  const epsPx = PROD_EPS*(W-2*pad);
+  ictx.beginPath();
+  ictx.strokeStyle = rgba(hexToRgb(color),0.4);
+  ictx.lineWidth = 1;
+  ictx.arc(cx,cy,epsPx,0,Math.PI*2);
+  ictx.stroke();
+  ictx.beginPath();
+  ictx.fillStyle = rgba(hexToRgb(color),0.25);
+  ictx.arc(cx,cy,13,0,Math.PI*2);
+  ictx.fill();
+  ictx.beginPath();
+  ictx.fillStyle = color;
+  ictx.arc(cx,cy,6,0,Math.PI*2);
+  ictx.fill();
+  ictx.strokeStyle = '#f4f4f7';
+  ictx.lineWidth = 1.3;
+  ictx.stroke();
+}
+
+/* =========================================================
+   MODO ANALISTA — eps ajustable
+   ========================================================= */
+const chartCanvas = document.getElementById('chart');
+const cctx = chartCanvas.getContext('2d');
+let currentEps = 0.12;
+const CLUSTER_PALETTE = ['#3ecfa0','#e8c547','#f4722e','#7b5ea7','#4a9de0','#e05f9e'];
+
+function toPxChart(xv,yv,W,H,pad){ return [ pad+xv*(W-2*pad), H-pad-yv*(H-2*pad) ]; }
+
+function drawClusterMap(labels){
+  const W = chartCanvas.width, H = chartCanvas.height;
+  const pad = 40;
+  cctx.clearRect(0,0,W,H);
+  cctx.strokeStyle = '#22222c';
+  cctx.lineWidth = 1;
+  cctx.beginPath();
+  cctx.moveTo(pad, pad); cctx.lineTo(pad, H-pad); cctx.lineTo(W-pad, H-pad);
+  cctx.stroke();
+  cctx.fillStyle = '#a8a8b4';
+  cctx.font = '13px DM Mono, monospace';
+  cctx.fillText('amplitud normalizada', W/2-60, H-10);
+  cctx.save();
+  cctx.translate(16, H/2+70);
+  cctx.rotate(-Math.PI/2);
+  cctx.fillText('frecuencia dominante relativa', 0, 0);
+  cctx.restore();
+
+  points.forEach((p,i)=>{
+    const [x,y] = toPxChart(p.x,p.y,W,H,pad);
+    const l = labels[i];
+    if(l===-1){
+      cctx.beginPath();
+      cctx.strokeStyle = NOISE_COLOR;
+      cctx.lineWidth = 1.4;
+      cctx.arc(x,y,3.5,0,Math.PI*2);
+      cctx.stroke();
+    } else {
+      cctx.beginPath();
+      cctx.fillStyle = CLUSTER_PALETTE[l % CLUSTER_PALETTE.length];
+      cctx.arc(x,y,4,0,Math.PI*2);
+      cctx.fill();
+    }
+  });
+
+  cctx.fillStyle = '#a8a8b4';
+  cctx.font = '12px DM Mono, monospace';
+  cctx.fillText('círculo relleno = dentro de una nube · círculo hueco = marcado como ruido', pad, pad-16);
+}
+
+const EPS_OPTIONS = [0.05,0.08,0.10,0.12,0.15,0.18,0.22,0.28];
+
+const residualCanvas = document.getElementById('residuals');
+const rctx = residualCanvas.getContext('2d');
+function drawEpsCurve(activeEps){
+  const W = residualCanvas.width, H = residualCanvas.height;
+  rctx.clearRect(0,0,W,H);
+  const padL = 50, padR = 60, padT = 26, padB = 30;
+
+  const rows = EPS_OPTIONS.map(eps=>{
+    const { labels, nClusters } = dbscan(points, eps, PROD_MINPTS);
+    const ev = evaluate(labels);
+    return { eps, nClusters, noiseFrac: ev.noiseFrac };
+  });
+  const maxClusters = Math.max(4, ...rows.map(r=>r.nClusters));
+
+  rctx.fillStyle = '#c9c9d4';
+  rctx.font = '13px DM Mono, monospace';
+  rctx.fillText('nubes encontradas (barras) y % de ruido (línea) según eps', padL, 16);
+
+  rctx.strokeStyle = '#3a3a48';
+  rctx.lineWidth = 1;
+  rctx.beginPath();
+  rctx.moveTo(padL, H-padB); rctx.lineTo(W-padR, H-padB); rctx.stroke();
+
+  const bw = (W-padL-padR)/rows.length;
+  rows.forEach((r,i)=>{
+    const x0 = padL + i*bw;
+    const barH = (r.nClusters/maxClusters)*(H-padT-padB);
+    rctx.fillStyle = r.eps===activeEps ? 'rgba(123,94,167,0.9)' : 'rgba(123,94,167,0.35)';
+    rctx.fillRect(x0+bw*0.2, H-padB-barH, bw*0.5, barH);
+    rctx.fillStyle = '#8a8a98';
+    rctx.font = '10px DM Mono, monospace';
+    rctx.fillText(String(r.eps), x0+bw*0.12, H-padB+14);
+  });
+
+  rctx.strokeStyle = '#f4722e';
+  rctx.lineWidth = 2;
+  rctx.beginPath();
+  rows.forEach((r,i)=>{
+    const x = padL + i*bw + bw*0.45;
+    const y = H-padB - r.noiseFrac*(H-padT-padB);
+    if(i===0) rctx.moveTo(x,y); else rctx.lineTo(x,y);
+  });
+  rctx.stroke();
+  rows.forEach((r,i)=>{
+    const x = padL + i*bw + bw*0.45;
+    const y = H-padB - r.noiseFrac*(H-padT-padB);
+    rctx.beginPath();
+    rctx.fillStyle = r.eps===activeEps ? '#f4722e' : 'rgba(244,114,46,0.5)';
+    rctx.arc(x,y,r.eps===activeEps?4:2.5,0,Math.PI*2);
+    rctx.fill();
+  });
+
+  rctx.fillStyle = '#a8a8b4';
+  rctx.font = '10px DM Mono, monospace';
+  rctx.fillText('morado = nubes (eje izq.)', W-padR+6, H-padB-2);
+  rctx.fillStyle = '#f4722e';
+  rctx.fillText('naranja = % ruido (eje der.)', W-padR+6, H-padB+12);
+}
+
+function setEps(eps){
+  currentEps = eps;
+  const { labels, nClusters } = dbscan(points, eps, PROD_MINPTS);
+  const ev = evaluate(labels);
+
+  document.getElementById('mEps').textContent = eps;
+  document.getElementById('mClusters').textContent = ev.nClusters;
+  document.getElementById('mNoise').textContent = (ev.noiseFrac*100).toFixed(1)+'%';
+  document.getElementById('mPurity').textContent = (ev.purity*100).toFixed(1)+'%';
+
+  const badge = document.getElementById('mFitBadge');
+  if(ev.nClusters > 3 || ev.noiseFrac > 0.15){
+    badge.textContent = '⚠ eps demasiado chico — sensores que sí pertenecen a una nube real quedan aislados como ruido falso, o una nube se fragmenta en varias.';
+    badge.style.color = 'var(--cta)';
+  } else if(ev.nClusters < 3){
+    badge.textContent = '⚠ eps demasiado grande — nubes que en realidad son distintas terminan fusionadas en una sola.';
+    badge.style.color = '#e8c547';
+  } else {
+    badge.textContent = '✓ Separación razonable — recupera las 3 nubes reales sin fragmentar y sin marcar de más como ruido.';
+    badge.style.color = 'var(--success)';
+  }
+
+  drawClusterMap(labels);
+  drawEpsCurve(eps);
+}
+
+const epsRow = document.getElementById('epsRow');
+EPS_OPTIONS.forEach(eps=>{
+  const btn = document.createElement('button');
+  btn.className = 'degree-btn' + (eps===currentEps ? ' active':'');
+  btn.textContent = 'eps=' + eps;
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.degree-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    setEps(eps);
+  });
+  epsRow.appendChild(btn);
+});
+
+const analystToggle = document.getElementById('analystToggle');
+const analystPanel = document.getElementById('analystPanel');
+analystToggle.addEventListener('change', ()=>{
+  analystPanel.classList.toggle('show', analystToggle.checked);
+  if(analystToggle.checked) setEps(currentEps);
+});
+
+updateBasic();
+</script>
+
+</body>
+</html>

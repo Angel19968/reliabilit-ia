@@ -1,0 +1,859 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Semáforo de Bombas — RELIABILIT-IA</title>
+<meta name="description" content="Clasifica el estado de una bomba centrífuga en verde, amarillo o rojo según qué tan lejos opera de su punto óptimo, con regresión logística polinomial ajustable.">
+
+<meta property="og:title" content="Semáforo de Bombas — RELIABILIT-IA">
+<meta property="og:description" content="Mueve el caudal relativo al punto óptimo y la vibración y mira en vivo en qué color cae tu bomba.">
+<meta property="og:image" content="../../assets/og-image.png">
+<meta property="og:type" content="website">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#0a0a0f;
+    --panel:#121218;
+    --panel2:#181820;
+    --border:#22222c;
+    --text:#f4f4f7;
+    --muted:#9a9aa8;
+    --success:#3ecfa0;
+    --cta:#f4722e;
+    --accent:#7b5ea7;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    background:var(--bg); color:var(--text); font-family:'DM Mono', monospace;
+    line-height:1.6; -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:'Syne', sans-serif; font-weight:800; letter-spacing:-0.02em;}
+  a{color:var(--success);}
+  .wrap{max-width:960px;margin:0 auto;padding:0 24px;}
+  .back{display:inline-block; font-size:13px; color:var(--muted); text-decoration:none; padding-top:20px;}
+  .back:hover{color:var(--success);}
+
+  header.hero{padding:24px 0 40px; border-bottom:1px solid var(--border);}
+  .badge{
+    display:inline-block; font-size:12px; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--success); border:1px solid var(--success); border-radius:999px;
+    padding:5px 14px; margin-bottom:18px;
+  }
+  h1{font-size:clamp(28px,5vw,44px); line-height:1.1; margin-bottom:14px;}
+  .lead{font-family:'Instrument Serif', serif; font-style:italic; font-size:20px; color:var(--muted); max-width:640px;}
+
+  section{padding:40px 0; border-bottom:1px solid var(--border);}
+  section h2{font-size:22px; margin-bottom:14px;}
+  .context p{color:var(--muted); max-width:640px; font-size:15px; text-align:justify;}
+  .context p + p{margin-top:12px;}
+
+  .panel{
+    background:var(--panel); border:1px solid var(--border); border-radius:16px; padding:28px;
+  }
+
+  .toggle-row{display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; flex-wrap:wrap; gap:12px;}
+  .toggle-row .label{font-size:15px; color:var(--muted);}
+  .switch{
+    display:inline-flex; align-items:center; gap:10px; cursor:pointer; user-select:none;
+    font-size:14px; color:var(--text);
+  }
+  .switch input{display:none;}
+  .track{
+    width:42px; height:24px; background:var(--border); border-radius:999px; position:relative; transition:.2s;
+    flex-shrink:0;
+  }
+  .track::after{
+    content:''; position:absolute; top:3px; left:3px; width:18px; height:18px; border-radius:50%;
+    background:var(--muted); transition:.2s;
+  }
+  .switch input:checked + .track{background:var(--accent);}
+  .switch input:checked + .track::after{transform:translateX(18px); background:#fff;}
+
+  .demo-grid{display:grid; grid-template-columns:1.05fr 1fr; gap:32px;}
+  @media (max-width:760px){ .demo-grid{grid-template-columns:1fr;} }
+
+  .slider-group{margin-bottom:22px;}
+  .slider-group label{display:flex; justify-content:space-between; font-size:16px; margin-bottom:8px;}
+  .slider-group label .val{color:var(--success); font-weight:500;}
+  input[type=range]{
+    width:100%; -webkit-appearance:none; height:6px; border-radius:999px; background:var(--border); outline:none;
+  }
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none; width:20px; height:20px; border-radius:50%;
+    background:var(--success); cursor:pointer; border:3px solid var(--bg);
+  }
+  input[type=range]::-moz-range-thumb{
+    width:20px; height:20px; border-radius:50%; background:var(--success); cursor:pointer; border:3px solid var(--bg);
+  }
+  .hint{font-size:13px; color:var(--muted); display:flex; justify-content:space-between; margin-top:4px;}
+
+  .result{
+    margin-top:26px; padding:22px; border-radius:14px; background:var(--panel2); border:1px solid var(--border);
+    display:flex; align-items:center; gap:20px; flex-wrap:wrap;
+  }
+  .result .risk-dot{width:16px; height:16px; border-radius:50%; flex-shrink:0;}
+  .result .risk-text h3{font-size:23px; margin-bottom:6px;}
+  .result .risk-text p{font-size:15px; color:var(--muted);}
+  .confidence-line{font-size:14px !important; font-weight:600; margin-top:10px !important; color:var(--text) !important;}
+  .confidence-note{font-size:13px !important; color:var(--muted); margin-top:2px !important;}
+
+  .live-col h3{font-size:14px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:14px; font-family:'DM Mono',monospace; font-weight:500;}
+  .instrument-wrap{margin-bottom:18px;}
+  #instrument{width:100%; max-width:420px; height:220px; background:var(--bg); border:1px solid var(--border); border-radius:12px; display:block;}
+  .instrument-stats{font-size:13px; color:var(--muted); line-height:1.9; margin-top:10px; display:flex; gap:22px; flex-wrap:wrap;}
+  .instrument-stats b{color:var(--text); font-size:15px;}
+  .gauge-wrap{margin-bottom:16px;}
+  .gauge-label{font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:8px;}
+  .gauge-bar{height:12px; background:var(--border); border-radius:999px; overflow:hidden; margin:8px 0; position:relative;}
+  .gauge-fill{height:100%; width:0%; transition:background .35s ease, width .3s ease;}
+  .gauge-value{font-size:16px; color:var(--text);}
+  .gauge-value b{font-size:20px;}
+  .gauge-note{font-size:13px; color:var(--muted);}
+  .sim-note{font-size:13px; color:var(--muted); line-height:1.7; margin-top:6px;}
+
+  .analyst{margin-top:32px; padding-top:26px; border-top:1px dashed var(--border); display:none;}
+  .analyst.show{display:block;}
+  .degree-row{display:flex; gap:8px; margin-bottom:18px; flex-wrap:wrap;}
+  .degree-btn{
+    font-family:'DM Mono', monospace; font-size:14px; padding:9px 18px; border-radius:8px;
+    border:1px solid var(--border); background:transparent; color:var(--text); cursor:pointer;
+    transition:background .15s, border-color .15s;
+  }
+  .degree-btn.active{background:var(--accent); border-color:var(--accent); color:#fff;}
+  #chart{width:100%; height:340px; background:var(--bg); border:1px solid var(--border); border-radius:12px; display:block;}
+  #residuals{width:100%; height:200px; background:var(--bg); border:1px solid var(--border); border-radius:12px; display:block; margin-top:18px;}
+  .metrics{display:flex; gap:24px; margin-top:16px; flex-wrap:wrap; font-size:14px; color:var(--muted);}
+  .metrics b{color:var(--text);}
+  .fit-badge{margin-top:14px; font-size:15px; font-weight:600; padding:10px 14px; border-radius:10px; background:var(--panel2); display:inline-block;}
+
+  .dataset-wrap{margin-top:24px;}
+  .dataset-label{font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:8px;}
+  .dataset-scroll{max-height:260px; overflow-y:auto; border:1px solid var(--border); border-radius:12px;}
+  .dataset-table{width:100%; border-collapse:collapse; font-size:13px;}
+  .dataset-table th{position:sticky; top:0; background:var(--panel2); color:var(--muted); text-align:left; font-weight:500; padding:8px 12px; border-bottom:1px solid var(--border); text-transform:uppercase; letter-spacing:.04em; font-size:11px;}
+  .dataset-table td{padding:7px 12px; border-bottom:1px solid var(--border); color:var(--text);}
+  .dataset-table tr:last-child td{border-bottom:none;}
+  .dataset-table td.set-train{color:var(--accent);}
+  .dataset-table td.set-test{color:var(--muted);}
+  .dataset-note{font-size:12px; color:var(--muted); margin-top:8px;}
+
+  .business p{color:var(--muted); font-size:16px; max-width:640px; text-align:justify;}
+  .business .stat{color:var(--success); font-weight:500;}
+  .business-grid{display:grid; grid-template-columns:1.1fr 1fr; gap:32px; align-items:start; margin-top:8px;}
+  @media (max-width:760px){ .business-grid{grid-template-columns:1fr;} }
+  .biz-action{margin-top:18px; padding:18px; border-radius:12px; background:var(--panel2); border:1px solid var(--border); transition:border-color .3s;}
+  .biz-action .biz-title{font-size:17px; font-weight:600;}
+  .biz-action .biz-detail{font-size:14px; color:var(--muted); margin-top:6px;}
+  #projection{width:100%; height:230px; background:var(--bg); border:1px solid var(--border); border-radius:12px; display:block;}
+
+  .cta-row{display:flex; gap:14px; flex-wrap:wrap; margin-top:8px;}
+  .btn{
+    font-family:'DM Mono', monospace; font-size:14px; padding:12px 22px; border-radius:10px;
+    text-decoration:none; border:1px solid var(--border); color:var(--text); display:inline-block;
+  }
+  .btn.primary{background:var(--cta); border-color:var(--cta); color:#0a0a0f; font-weight:600;}
+  .btn.ghost:hover{border-color:var(--accent);}
+
+  .contact-card{
+    display:grid; grid-template-columns:1.1fr 1fr; gap:28px;
+    background:var(--panel2); border:1px solid var(--border); border-radius:16px;
+    padding:28px; margin-top:28px;
+  }
+  @media (max-width:700px){ .contact-card{grid-template-columns:1fr;} }
+  .contact-card h3{font-size:19px; margin-bottom:8px;}
+  .contact-card p{font-size:14px; color:var(--muted); max-width:420px; text-align:justify;}
+  .contact-links{display:flex; flex-direction:column; gap:12px;}
+  .contact-row{
+    display:flex; align-items:center; gap:14px; padding:12px 16px; border-radius:12px;
+    background:var(--panel); border:1px solid var(--border); text-decoration:none; color:var(--text);
+    transition:border-color .2s;
+  }
+  .contact-row:hover{border-color:var(--success);}
+  .contact-icon{font-size:20px; width:32px; text-align:center; flex-shrink:0;}
+  .contact-text{font-size:14px; line-height:1.5;}
+  .contact-text b{display:block; font-size:15px;}
+
+  footer{padding:36px 0; text-align:center;}
+  footer p{font-size:13px; color:var(--muted); max-width:560px; margin:0 auto;}
+  .footer-links{display:flex; justify-content:center; gap:18px; flex-wrap:wrap; margin-bottom:16px; font-size:13px;}
+  .footer-links a{color:var(--muted); text-decoration:none;}
+  .footer-links a:hover{color:var(--success);}
+
+  @media (max-width:520px){
+    .result{flex-direction:column; align-items:flex-start;}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <a class="back" href="../../">← Volver al catálogo RELIABILIT-IA</a>
+
+  <header class="hero">
+    <div class="badge">Clasificación · Bomba centrífuga</div>
+    <span class="badge" style="border-color:var(--accent); color:var(--accent); margin-left:8px;">Aprendizaje supervisado · Clasificación</span>
+    <h1>Semáforo de Bombas</h1>
+    <p class="lead">¿Tu bomba está operando cerca de su punto óptimo, o ya se metió en zona de riesgo sin que nadie lo note?</p>
+  </header>
+
+  <section class="context">
+    <h2>El problema</h2>
+    <p>Toda bomba centrífuga tiene un punto de diseño (BEP, best efficiency point) donde opera de forma más eficiente y con menor desgaste. Alejarse de ese punto —ya sea por defecto o por exceso de caudal— cambia el problema pero no lo elimina: muy por debajo aparece recirculación interna que calienta y desgasta el impulsor; muy por encima aparece cavitación, que erosiona los álabes a golpes microscópicos. El riesgo no crece en una sola dirección: es igual de alto lejos del punto óptimo por defecto que por exceso, algo que un modelo lineal simple no puede capturar bien.</p>
+    <p>Este demo simula esa lectura: mueve el caudal relativo al punto óptimo y la vibración, y mira en vivo en qué color —verde, amarillo o rojo— cae la bomba.</p>
+  </section>
+
+  <section id="demo">
+    <h2>Demo interactivo</h2>
+    <div class="panel">
+      <div class="toggle-row">
+        <span class="label">Clasificación por umbrales de referencia — mueve los sliders para simular una lectura de campo.</span>
+        <label class="switch">
+          <span>Modo Analista</span>
+          <input type="checkbox" id="analystToggle">
+          <span class="track"></span>
+        </label>
+      </div>
+
+      <div class="demo-grid">
+        <div class="controls-col">
+          <div class="slider-group">
+            <label>Caudal relativo al punto óptimo <span class="val" id="flowVal">100 %</span></label>
+            <input type="range" id="flowSlider" min="50" max="150" step="1" value="100">
+            <div class="hint"><span>50 % (muy bajo)</span><span>150 % (muy alto)</span></div>
+          </div>
+
+          <div class="slider-group">
+            <label>Vibración RMS <span class="val" id="vibVal">2.0 mm/s</span></label>
+            <input type="range" id="vibSlider" min="0" max="12" step="0.1" value="2.0">
+            <div class="hint"><span>0 mm/s</span><span>12 mm/s</span></div>
+          </div>
+
+          <div class="result" id="resultBox">
+            <div class="risk-dot" id="riskDot"></div>
+            <div class="risk-text">
+              <h3 id="riskTitle">Calculando…</h3>
+              <p id="riskDetail"></p>
+              <p class="confidence-line" id="confidenceLine"></p>
+              <p class="confidence-note" id="confidenceNote"></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="live-col">
+          <h3>Simulación en vivo</h3>
+          <div class="instrument-wrap">
+            <canvas id="instrument" width="420" height="220"></canvas>
+          </div>
+
+          <div class="gauge-wrap">
+            <div class="gauge-label">Índice de riesgo (0-100)</div>
+            <div class="gauge-bar"><div class="gauge-fill" id="gaugeFill"></div></div>
+            <div class="gauge-value"><b id="gaugeValue">0</b> <span class="gauge-note">combina desviación del punto óptimo (50%) y vibración (50%)</span></div>
+          </div>
+
+          <p class="sim-note">Simulación ilustrativa: la curva de la bomba y el punto de operación se dibujan a partir de los mismos valores de los sliders — no provienen de un sensor real.</p>
+        </div>
+      </div>
+
+      <div class="analyst" id="analystPanel">
+        <h3 style="font-size:18px; text-transform:none; letter-spacing:0; margin-bottom:8px; color:var(--text);">Reentrenar en vivo</h3>
+        <p style="font-size:15px; color:var(--muted); margin-bottom:18px; text-align:justify;">Elige el grado de expansión polinomial de la regresión logística (softmax) y observa cómo cambian las regiones de decisión. El set de 160 lecturas se divide en 106 para entrenar (●) y 54 reservadas para probar qué tan bien generaliza (○). Con grado 1 el modelo solo puede trazar una frontera recta — y como el riesgo sube tanto por defecto como por exceso de caudal, una recta no alcanza para separar las 3 clases; hacen falta términos cuadráticos para capturar esa forma de "U".</p>
+
+        <div class="dataset-wrap">
+          <div class="dataset-label">Vista del dataset de entrenamiento</div>
+          <div class="dataset-scroll">
+            <table class="dataset-table">
+              <thead><tr><th>#</th><th>Fecha</th><th>Caudal (% BEP)</th><th>Vibración (mm/s)</th><th>Nivel real</th><th>Set</th></tr></thead>
+              <tbody id="datasetBody"></tbody>
+            </table>
+          </div>
+          <p class="dataset-note" id="datasetNote"></p>
+        </div>
+
+        <div class="degree-row" id="degreeRow"></div>
+        <canvas id="chart" width="800" height="340"></canvas>
+        <canvas id="residuals" width="800" height="200"></canvas>
+        <div class="metrics">
+          <span>Grado: <b id="mDegree">2</b></span>
+          <span>Exactitud entrenamiento: <b id="mAccTrain">–</b></span>
+          <span>Exactitud prueba: <b id="mAccTest">–</b></span>
+        </div>
+        <div class="fit-badge" id="mFitBadge">–</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="business">
+    <h2>¿Qué significa para tu planta?</h2>
+    <div class="business-grid">
+      <div>
+        <p>Con la lectura actual, la bomba se clasifica en <span class="stat" id="bizLevelInline">Verde</span>. Operar sostenidamente en zona amarilla o roja acelera el desgaste del impulsor y los sellos mecánicos mucho más rápido que operar cerca del punto óptimo — detectarlo a tiempo suele ser la diferencia entre ajustar una válvula de estrangulamiento o reemplazar un impulsor erosionado por cavitación.</p>
+        <div class="biz-action" id="bizAction">
+          <div class="biz-title" id="bizTitle">Calculando…</div>
+          <div class="biz-detail" id="bizDetail"></div>
+        </div>
+      </div>
+      <div>
+        <div class="gauge-label">Costo estimado de intervención por nivel</div>
+        <canvas id="projection" width="480" height="230"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <section id="cta">
+    <h2>De esta demo a tu planta</h2>
+    <p style="color:var(--muted); max-width:640px; margin-bottom:20px; text-align:justify;">Los umbrales, las clases y la simulación de este demo son de ejemplo, ajustados sobre datos sintéticos — sirven para explicar la idea, no para diagnosticar tu bomba real. Llevarlo a tu planta implica estandarizar cómo capturas tus datos de caudal y vibración, encontrar el punto óptimo real de cada bomba (no todas comparten el mismo BEP), y calibrar el modelo con tu propio histórico — ahí es donde entra nuestro motor AutoML, ajustando el modelo correcto para tu caso y evitando tanto falsas alarmas como bombas operando en zona de riesgo sin ninguna alerta. Se adapta al tipo de bomba y a la industria —minería, manufactura, energía, alimentos— cuando la calibramos con tus datos. Si quieres recorrer ese proceso, conversemos.</p>
+    <div class="cta-row">
+      <a class="btn primary" href="https://chat.whatsapp.com/GvBz1tuUeNZ0xwTkjsuE3z" target="_blank" rel="noopener">Unirme a la comunidad de WhatsApp</a>
+      <a class="btn ghost" href="https://www.linkedin.com/company/reliabilit-ia/" target="_blank" rel="noopener">Seguir en LinkedIn</a>
+      <a class="btn ghost" href="https://www.youtube.com/@miguelangelcayllahuaquispe998" target="_blank" rel="noopener">Ver en YouTube</a>
+    </div>
+
+    <div class="contact-card">
+      <div>
+        <h3>¿Hablamos del estado de tus bombas?</h3>
+        <p>Si tienes datos de caudal o vibración de tus bombas y quieres validar este análisis con tu planta, escríbeme directamente.</p>
+      </div>
+      <div class="contact-links">
+        <a class="contact-row" href="https://wa.me/51997610310?text=Hola%20Miguel%2C%20vi%20el%20demo%20Semaforo%20de%20Bombas%20y%20quiero%20conversar%20sobre%20la%20calibracion%20para%20mi%20planta" target="_blank" rel="noopener">
+          <span class="contact-icon">💬</span>
+          <span class="contact-text"><b>WhatsApp</b>+51 997 610 310</span>
+        </a>
+        <a class="contact-row" href="https://www.linkedin.com/in/miguelcayllahua/" target="_blank" rel="noopener">
+          <span class="contact-icon">in</span>
+          <span class="contact-text"><b>LinkedIn</b>Miguel Angel Cayllahua Quispe</span>
+        </a>
+        <a class="contact-row" href="mailto:miguelcquispe@gmail.com">
+          <span class="contact-icon">✉</span>
+          <span class="contact-text"><b>Correo</b>miguelcquispe@gmail.com</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-links">
+      <a href="https://chat.whatsapp.com/GvBz1tuUeNZ0xwTkjsuE3z" target="_blank" rel="noopener">WhatsApp</a>
+      <a href="https://www.youtube.com/@miguelangelcayllahuaquispe998" target="_blank" rel="noopener">YouTube</a>
+      <a href="https://www.linkedin.com/company/reliabilit-ia/" target="_blank" rel="noopener">LinkedIn empresa</a>
+      <a href="https://www.linkedin.com/in/miguelcayllahua/" target="_blank" rel="noopener">LinkedIn personal</a>
+      <a href="mailto:miguelcquispe@gmail.com">Correo</a>
+    </div>
+    <p style="text-align:justify;">Contenido con fines educativos. La metodología es real; los datos y la simulación de esta demo son sintéticos para poder compartirlos públicamente. Se calibra con tus propios datos —sin importar el tipo de bomba o la industria— cuando trabajamos juntos. Modelo de ejemplo, no una fórmula fija.</p>
+  </footer>
+</div>
+
+<script>
+/* =========================================================
+   Definición de niveles (compartido por Modo Básico y Analista)
+   ========================================================= */
+const LEVELS = ['Verde','Amarillo','Rojo'];
+const LEVEL_COLORS = ['#3ecfa0','#e8c547','#f4722e'];
+const LEVEL_DETAIL = [
+  'La bomba opera cerca de su punto óptimo. Sin acción requerida.',
+  'La bomba se aleja del punto óptimo o su vibración empieza a subir. Vale la pena revisar el punto de operación en la próxima ronda.',
+  'La bomba opera lejos de su punto óptimo, con riesgo de cavitación o recirculación, o su vibración ya es alta. Priorizar inspección y ajuste del punto de operación.'
+];
+const SCORE_THRESHOLDS = [35, 65];
+
+function severityIndex(flowPct, vib){
+  const flowDev = Math.min(1, Math.abs(flowPct-100)/50);
+  const vibN = Math.min(1, vib/12);
+  return 100*(0.5*flowDev + 0.5*vibN);
+}
+function classify(score){
+  if(score < SCORE_THRESHOLDS[0]) return 0;
+  if(score < SCORE_THRESHOLDS[1]) return 1;
+  return 2;
+}
+
+/* =========================================================
+   MODO BÁSICO
+   ========================================================= */
+const flowSlider = document.getElementById('flowSlider');
+const vibSlider = document.getElementById('vibSlider');
+const flowVal = document.getElementById('flowVal');
+const vibVal = document.getElementById('vibVal');
+const riskDot = document.getElementById('riskDot');
+const riskTitle = document.getElementById('riskTitle');
+const riskDetail = document.getElementById('riskDetail');
+const confidenceLine = document.getElementById('confidenceLine');
+const confidenceNote = document.getElementById('confidenceNote');
+const gaugeFill = document.getElementById('gaugeFill');
+const gaugeValue = document.getElementById('gaugeValue');
+const bizLevelInline = document.getElementById('bizLevelInline');
+const bizAction = document.getElementById('bizAction');
+const bizTitle = document.getElementById('bizTitle');
+const bizDetail = document.getElementById('bizDetail');
+const projectionCanvas = document.getElementById('projection');
+const pctx = projectionCanvas.getContext('2d');
+
+function drawProjection(activeIdx, scorePct){
+  const W = projectionCanvas.width, H = projectionCanvas.height;
+  pctx.clearRect(0,0,W,H);
+  const padL = 56, padR = 20, padT = 20, padB = 46;
+  const costs = [0, 1500, 12000];
+  const maxCost = costs[costs.length-1]*1.1;
+  const bw = (W-padL-padR)/costs.length;
+
+  pctx.strokeStyle = '#22222c';
+  pctx.lineWidth = 1;
+  pctx.beginPath();
+  pctx.moveTo(padL, padT); pctx.lineTo(padL, H-padB); pctx.lineTo(W-padR, H-padB);
+  pctx.stroke();
+
+  costs.forEach((c,i)=>{
+    const barH = Math.max(2,(c/maxCost)*(H-padT-padB));
+    const x = padL + i*bw + bw*0.18;
+    const y = H-padB-barH;
+    const w = bw*0.64;
+    pctx.fillStyle = i===activeIdx ? LEVEL_COLORS[i] : 'rgba(244,244,247,0.14)';
+    pctx.fillRect(x,y,w,barH);
+    pctx.fillStyle = '#a8a8b4';
+    pctx.font = '11px DM Mono, monospace';
+    pctx.fillText(LEVELS[i], x-2, H-padB+16);
+    if(i===activeIdx){
+      pctx.fillStyle = '#f4f4f7';
+      pctx.font = '12px DM Mono, monospace';
+      pctx.fillText('S/. '+c.toLocaleString('es-PE'), x-4, y-8);
+    }
+  });
+  pctx.fillStyle = '#8a8a98';
+  pctx.font = '11px DM Mono, monospace';
+  pctx.fillText('costo estimado de intervención en cada nivel (ilustrativo)', padL, 14);
+
+  // Indicador continuo: el índice de severidad real calculado para esta
+  // lectura (no solo a qué nivel discreto pertenece).
+  if(typeof scorePct === 'number'){
+    const by = H-12, bh = 5;
+    pctx.fillStyle = 'rgba(244,244,247,0.10)';
+    pctx.fillRect(padL, by, W-padL-padR, bh);
+    const fw = Math.min(1,Math.max(0,scorePct/100))*(W-padL-padR);
+    pctx.fillStyle = LEVEL_COLORS[activeIdx];
+    pctx.fillRect(padL, by, fw, bh);
+    pctx.fillStyle = '#c9c9d4';
+    pctx.font = '10px DM Mono, monospace';
+    pctx.fillText('índice de severidad real: '+scorePct.toFixed(0)+'/100', padL, by-4);
+  }
+}
+
+function updateBasic(){
+  const flowPct = parseFloat(flowSlider.value);
+  const vib = parseFloat(vibSlider.value);
+  flowVal.textContent = flowPct.toFixed(0) + ' %';
+  vibVal.textContent = vib.toFixed(1) + ' mm/s';
+
+  const score = severityIndex(flowPct, vib);
+  const idx = classify(score);
+  const color = LEVEL_COLORS[idx];
+
+  riskDot.style.background = color;
+  riskTitle.style.color = color;
+  riskTitle.textContent = LEVELS[idx] + ' — índice ' + Math.round(score) + '/100';
+  riskDetail.textContent = LEVEL_DETAIL[idx];
+
+  const distToThresh = Math.min(...SCORE_THRESHOLDS.map(t=>Math.abs(score-t)), score, 100-score);
+  let confLevel, confColor, confNote;
+  if(distToThresh > 9){
+    confLevel = 'Alta'; confColor = 'var(--success)';
+    confNote = 'La lectura está lejos de cualquier umbral entre niveles.';
+  } else if(distToThresh > 4){
+    confLevel = 'Media'; confColor = '#e8c547';
+    confNote = 'Cerca de un umbral — el nivel vecino también es plausible.';
+  } else {
+    confLevel = 'Baja'; confColor = 'var(--cta)';
+    confNote = 'Justo en el borde entre dos niveles — trátalo como referencia, repite la medición.';
+  }
+  confidenceLine.textContent = 'Confianza de la clasificación: ' + confLevel;
+  confidenceLine.style.color = confColor;
+  confidenceNote.textContent = confNote;
+
+  gaugeFill.style.width = Math.min(100,Math.max(0,score)).toFixed(1) + '%';
+  gaugeFill.style.background = color;
+  gaugeValue.textContent = Math.round(score);
+
+  bizLevelInline.textContent = LEVELS[idx];
+  bizLevelInline.style.color = color;
+  bizAction.style.borderColor = color;
+  bizTitle.style.color = color;
+  bizTitle.textContent = LEVELS[idx] + ' — ' + Math.round(score) + '/100';
+  bizDetail.textContent = LEVEL_DETAIL[idx];
+
+  drawProjection(idx, Math.min(100,Math.max(0,score)));
+  drawInstrument(flowPct, vib, idx);
+}
+flowSlider.addEventListener('input', updateBasic);
+vibSlider.addEventListener('input', updateBasic);
+
+/* =========================================================
+   SIMULACIÓN EN VIVO — curva característica H-Q de la bomba,
+   con el punto de operación marcado (100% generado en cliente)
+   ========================================================= */
+const instrumentCanvas = document.getElementById('instrument');
+const ictx = instrumentCanvas.getContext('2d');
+function lerpColorRgb(c1,c2,t){ return c1.map((v,i)=>Math.round(v+(c2[i]-v)*Math.min(1,Math.max(0,t)))); }
+function rgba(c,a){ return `rgba(${c[0]},${c[1]},${c[2]},${a})`; }
+const COLOR_SUCCESS=[62,207,160], COLOR_CTA=[244,114,46];
+let simTime = 0;
+
+function pumpHead(flowPct){
+  // curva característica H-Q simplificada, normalizada 0-100%
+  const q = flowPct/100;
+  return Math.max(0, 100 - 22*(q-1)*(q-1) - 6*Math.max(0,q-1.3));
+}
+
+function drawInstrument(flowPct, vib, idx){
+  const W = instrumentCanvas.width, H = instrumentCanvas.height;
+  const padL=46, padR=16, padT=18, padB=30;
+  ictx.clearRect(0,0,W,H);
+  simTime += 1;
+
+  function toPx(q,h){ return [ padL+(q-50)/(150-50)*(W-padL-padR), H-padB-(h/100)*(H-padT-padB) ]; }
+
+  ictx.strokeStyle = '#22222c';
+  ictx.lineWidth = 1;
+  ictx.beginPath();
+  ictx.moveTo(padL,padT); ictx.lineTo(padL,H-padB); ictx.lineTo(W-padR,H-padB);
+  ictx.stroke();
+  ictx.fillStyle = '#8a8a98';
+  ictx.font = '10px DM Mono, monospace';
+  ictx.fillText('caudal (% del punto óptimo)', padL, H-8);
+  ictx.save();
+  ictx.translate(12, H/2+40);
+  ictx.rotate(-Math.PI/2);
+  ictx.fillText('altura (curva H-Q)', 0, 0);
+  ictx.restore();
+
+  // curva de la bomba
+  ictx.strokeStyle = '#5a5a6a';
+  ictx.lineWidth = 2;
+  ictx.beginPath();
+  for(let px=0;px<=100;px++){
+    const q = 50 + (150-50)*px/100;
+    const h = pumpHead(q);
+    const [x,y] = toPx(q,h);
+    if(px===0) ictx.moveTo(x,y); else ictx.lineTo(x,y);
+  }
+  ictx.stroke();
+
+  // marca del BEP
+  const [bepX, bepY] = toPx(100, pumpHead(100));
+  ictx.strokeStyle = 'rgba(122,122,140,0.6)';
+  ictx.setLineDash([3,4]);
+  ictx.beginPath(); ictx.moveTo(bepX, padT); ictx.lineTo(bepX, H-padB); ictx.stroke();
+  ictx.setLineDash([]);
+  ictx.fillStyle = '#8a8a98';
+  ictx.font = '10px DM Mono, monospace';
+  ictx.fillText('BEP', bepX-10, padT-4>0?padT+10:12);
+
+  // punto de operación, con jitter proporcional a la vibración
+  const jitterMag = Math.min(1, vib/12);
+  const dx = (Math.random()-0.5)*jitterMag*6;
+  const dy = (Math.random()-0.5)*jitterMag*6;
+  const [ox,oy] = toPx(flowPct, pumpHead(flowPct));
+  const color = LEVEL_COLORS[idx];
+
+  // efecto de cavitación (burbujas) si el caudal es muy alto, o de
+  // recirculación (remolino) si es muy bajo — puramente ilustrativo
+  if(flowPct > 118){
+    for(let i=0;i<6;i++){
+      const t=(i/6+simTime*0.02)%1;
+      const bx = ox+dx-14-t*18, by = oy+dy-6+Math.sin(t*10+i)*6;
+      ictx.beginPath();
+      ictx.fillStyle = rgba(COLOR_CTA, (1-t)*0.6);
+      ictx.arc(bx,by,1.5+t*2,0,Math.PI*2);
+      ictx.fill();
+    }
+  } else if(flowPct < 82){
+    ictx.strokeStyle = rgba(COLOR_CTA,0.5);
+    ictx.lineWidth = 1.4;
+    ictx.beginPath();
+    ictx.arc(ox+dx-10, oy+dy, 6, simTime*0.08, simTime*0.08+Math.PI*1.4);
+    ictx.stroke();
+  }
+
+  ictx.beginPath();
+  ictx.fillStyle = rgba(hexToRgb(color),0.28);
+  ictx.arc(ox+dx,oy+dy,12,0,Math.PI*2);
+  ictx.fill();
+  ictx.beginPath();
+  ictx.fillStyle = color;
+  ictx.arc(ox+dx,oy+dy,6,0,Math.PI*2);
+  ictx.fill();
+  ictx.strokeStyle = '#f4f4f7';
+  ictx.lineWidth = 1.3;
+  ictx.stroke();
+}
+function hexToRgb(hex){ const v=hex.replace('#',''); return [parseInt(v.slice(0,2),16),parseInt(v.slice(2,4),16),parseInt(v.slice(4,6),16)]; }
+
+/* =========================================================
+   MODO ANALISTA — dataset sintético + regresión logística
+   multinomial (softmax) con expansión polinomial de grado d
+   ========================================================= */
+function seededRandom(seed){ let s=seed; return function(){ s=(s*9301+49297)%233280; return s/233280; }; }
+function gaussian(rnd){ const u1=Math.max(1e-9,rnd()), u2=rnd(); return Math.sqrt(-2*Math.log(u1))*Math.cos(2*Math.PI*u2); }
+
+// Ruido de etiqueta realista (mismo espíritu que en los otros módulos):
+// suficiente para que grado 1 (frontera recta) subajuste genuinamente,
+// dado que el riesgo real sube tanto por defecto como por exceso de
+// caudal. Validado por simulación externa (seed=101) antes de fijar.
+const REF_DATE = new Date('2026-07-15');
+const MESES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+function fmtDate(d){ return String(d.getDate()).padStart(2,'0')+' '+MESES[d.getMonth()]+' '+d.getFullYear(); }
+function dateFromDaysAgo(daysAgo){ const d = new Date(REF_DATE); d.setDate(d.getDate()-Math.round(daysAgo)); return d; }
+
+const rnd = seededRandom(101);
+const dataset = [];
+for(let i=0;i<160;i++){
+  const flowPct = 50 + rnd()*100;
+  const vib = Math.max(0, 2 + gaussian(rnd)*3 + Math.abs(flowPct-100)*0.03);
+  const score = severityIndex(flowPct, vib) + (rnd()-0.5)*18;
+  const label = classify(Math.max(0, Math.min(100, score)));
+  const date = dateFromDaysAgo(rnd()*365);
+  dataset.push({x1: flowPct, x2: vib, label, date});
+}
+const trainPoints = dataset.filter((_,i)=> i%3 !== 0); // 106
+const testPoints = dataset.filter((_,i)=> i%3 === 0);  // 54
+
+function renderDatasetPreview(){
+  const tbody = document.getElementById('datasetBody');
+  const note = document.getElementById('datasetNote');
+  if(!tbody) return;
+  tbody.innerHTML = dataset.map((d,i)=>{
+    const isTrain = i%3 !== 0;
+    return `<tr><td>${i+1}</td><td>${fmtDate(d.date)}</td><td>${d.x1.toFixed(1)}</td><td>${d.x2.toFixed(2)}</td><td>${LEVELS[d.label]}</td><td class="${isTrain?'set-train':'set-test'}">${isTrain?'Entrenamiento':'Prueba'}</td></tr>`;
+  }).join('');
+  const sortedDates = dataset.map(d=>d.date).sort((a,b)=>a-b);
+  note.textContent = `${dataset.length} lecturas de bomba, entre ${fmtDate(sortedDates[0])} y ${fmtDate(sortedDates[sortedDates.length-1])} — ${trainPoints.length} de entrenamiento, ${testPoints.length} de prueba.`;
+}
+renderDatasetPreview();
+
+// estandarización con estadísticos del set de entrenamiento
+const m1 = trainPoints.reduce((a,d)=>a+d.x1,0)/trainPoints.length;
+const m2 = trainPoints.reduce((a,d)=>a+d.x2,0)/trainPoints.length;
+const s1 = Math.sqrt(trainPoints.reduce((a,d)=>a+(d.x1-m1)**2,0)/trainPoints.length);
+const s2 = Math.sqrt(trainPoints.reduce((a,d)=>a+(d.x2-m2)**2,0)/trainPoints.length);
+function stdize(d){ return [(d.x1-m1)/s1, (d.x2-m2)/s2]; }
+
+function polyFeatures(z1,z2,degree){
+  const feats=[1];
+  for(let total=1; total<=degree; total++){
+    for(let i=total;i>=0;i--){
+      const j = total-i;
+      feats.push(Math.pow(z1,i)*Math.pow(z2,j));
+    }
+  }
+  return feats;
+}
+
+function trainSoftmax(points, degree, epochs=400, lr=0.4, l2=1e-3){
+  const X = points.map(d=>{ const [z1,z2]=stdize(d); return polyFeatures(z1,z2,degree); });
+  const y = points.map(d=>d.label);
+  const nFeat = X[0].length, K=3;
+  let W = Array.from({length:K},()=>new Array(nFeat).fill(0));
+  for(let ep=0; ep<epochs; ep++){
+    const grad = Array.from({length:K},()=>new Array(nFeat).fill(0));
+    for(let i=0;i<X.length;i++){
+      const logits = W.map(w => w.reduce((a,wj,j)=>a+wj*X[i][j],0));
+      const maxL = Math.max(...logits);
+      const exps = logits.map(l=>Math.exp(l-maxL));
+      const sumE = exps.reduce((a,b)=>a+b,0);
+      const probs = exps.map(e=>e/sumE);
+      for(let k=0;k<K;k++){
+        const err = probs[k] - (y[i]===k?1:0);
+        for(let j=0;j<nFeat;j++) grad[k][j] += err*X[i][j];
+      }
+    }
+    for(let k=0;k<K;k++) for(let j=0;j<nFeat;j++){
+      grad[k][j] = grad[k][j]/X.length + l2*W[k][j];
+      W[k][j] -= lr*grad[k][j];
+    }
+  }
+  return W;
+}
+function predictClass(W, z1,z2, degree){
+  const feats = polyFeatures(z1,z2,degree);
+  const logits = W.map(w=>w.reduce((a,wj,j)=>a+wj*feats[j],0));
+  let bi=0,bl=-Infinity;
+  logits.forEach((l,i)=>{ if(l>bl){bl=l;bi=i;} });
+  return bi;
+}
+function accuracy(W, points, degree){
+  let c=0;
+  points.forEach(d=>{ const [z1,z2]=stdize(d); if(predictClass(W,z1,z2,degree)===d.label) c++; });
+  return c/points.length;
+}
+function perClassAccuracy(W, points, degree){
+  const out=[];
+  for(let cls=0; cls<3; cls++){
+    const subset = points.filter(d=>d.label===cls);
+    out.push(subset.length ? accuracy(W, subset, degree) : null);
+  }
+  return out;
+}
+
+const chartCanvas = document.getElementById('chart');
+const cctx = chartCanvas.getContext('2d');
+const residualCanvas = document.getElementById('residuals');
+const rctx = residualCanvas.getContext('2d');
+let currentDegree = 2;
+
+const X1_MIN=50, X1_MAX=150, X2_MIN=0, X2_MAX=12;
+function toPxChart(x1,x2,W,H,pad){
+  return [ pad+(x1-X1_MIN)/(X1_MAX-X1_MIN)*(W-2*pad), H-pad-(x2-X2_MIN)/(X2_MAX-X2_MIN)*(H-2*pad) ];
+}
+function hexToRgbT(hex){ const v=hex.replace('#',''); return [parseInt(v.slice(0,2),16),parseInt(v.slice(2,4),16),parseInt(v.slice(4,6),16)]; }
+
+function drawDecisionMap(W_model, degree){
+  const W = chartCanvas.width, H = chartCanvas.height;
+  const pad = 40;
+  cctx.clearRect(0,0,W,H);
+
+  const cell = 8;
+  for(let px=pad; px<W-pad; px+=cell){
+    for(let py=pad; py<H-pad; py+=cell){
+      const x1 = X1_MIN + (px-pad)/(W-2*pad)*(X1_MAX-X1_MIN);
+      const x2 = X2_MIN + (1-(py-pad)/(H-2*pad))*(X2_MAX-X2_MIN);
+      const z1=(x1-m1)/s1, z2=(x2-m2)/s2;
+      const label = predictClass(W_model, z1, z2, degree);
+      cctx.fillStyle = rgba(hexToRgbT(LEVEL_COLORS[label]), 0.16);
+      cctx.fillRect(px, py, cell, cell);
+    }
+  }
+
+  cctx.strokeStyle = '#22222c';
+  cctx.lineWidth = 1;
+  cctx.beginPath();
+  cctx.moveTo(pad, pad); cctx.lineTo(pad, H-pad); cctx.lineTo(W-pad, H-pad);
+  cctx.stroke();
+  cctx.fillStyle = '#a8a8b4';
+  cctx.font = '13px DM Mono, monospace';
+  cctx.fillText('caudal (% del punto óptimo)', W/2-90, H-10);
+  cctx.save();
+  cctx.translate(16, H/2+50);
+  cctx.rotate(-Math.PI/2);
+  cctx.fillText('vibración RMS (mm/s)', 0, 0);
+  cctx.restore();
+
+  trainPoints.forEach(d=>{
+    const [x,y] = toPxChart(d.x1,d.x2,W,H,pad);
+    cctx.beginPath();
+    cctx.fillStyle = LEVEL_COLORS[d.label];
+    cctx.arc(x,y,4,0,Math.PI*2);
+    cctx.fill();
+  });
+  testPoints.forEach(d=>{
+    const [x,y] = toPxChart(d.x1,d.x2,W,H,pad);
+    cctx.beginPath();
+    cctx.fillStyle = LEVEL_COLORS[d.label];
+    cctx.globalAlpha = 0.35;
+    cctx.arc(x,y,5,0,Math.PI*2);
+    cctx.fill();
+    cctx.globalAlpha = 1;
+    cctx.strokeStyle = '#f4f4f7';
+    cctx.lineWidth = 1.3;
+    cctx.stroke();
+  });
+
+  cctx.fillStyle = '#a8a8b4';
+  cctx.font = '12px DM Mono, monospace';
+  cctx.fillText('● entrenamiento · ○ prueba · color = nivel real', pad, pad-16);
+}
+
+// Matriz de confusión (conjunto de prueba) — reemplaza las barras de
+// exactitud por nivel: muestra con qué otro nivel se confunde cada
+// error, más útil para decidir prioridades de inspección.
+function drawConfusion(W_model, degree){
+  const N = LEVELS.length;
+  const conf = Array.from({length:N},()=>new Array(N).fill(0));
+  testPoints.forEach(d=>{ const [z1,z2]=stdize(d); conf[d.label][predictClass(W_model,z1,z2,degree)]++; });
+
+  const W = residualCanvas.width, H = residualCanvas.height;
+  rctx.clearRect(0,0,W,H);
+  const padL = 80, padT = 30, cellW = (W-padL-10)/N, cellH = (H-padT-6)/N;
+
+  rctx.fillStyle = '#c9c9d4';
+  rctx.font = '12px DM Mono, monospace';
+  rctx.fillText('Matriz de confusión (prueba) — filas = nivel real, columnas = predicho', padL-60, 14);
+
+  LEVELS.forEach((name,j)=>{
+    rctx.fillStyle = '#8a8a98';
+    rctx.font = '10px DM Mono, monospace';
+    rctx.fillText(name, padL + j*cellW + 6, padT-6);
+  });
+  LEVELS.forEach((name,i)=>{
+    const y = padT + i*cellH;
+    rctx.fillStyle = '#8a8a98';
+    rctx.font = '10px DM Mono, monospace';
+    rctx.fillText(name, 6, y+cellH*0.6);
+    LEVELS.forEach((_,j)=>{
+      const x = padL + j*cellW;
+      const val = conf[i][j];
+      const total = conf[i].reduce((a,b)=>a+b,0);
+      const intensity = total ? val/total : 0;
+      rctx.fillStyle = i===j ? rgba(hexToRgbT(LEVEL_COLORS[i]), 0.15+intensity*0.6) : rgba([244,244,247], 0.04+intensity*0.22);
+      rctx.fillRect(x, y, cellW-4, cellH-4);
+      rctx.fillStyle = '#f4f4f7';
+      rctx.font = '14px DM Mono, monospace';
+      rctx.fillText(String(val), x+cellW/2-6, y+cellH*0.6);
+    });
+  });
+}
+
+function setDegree(degree){
+  currentDegree = degree;
+  const W_model = trainSoftmax(trainPoints, degree);
+  const accTrain = accuracy(W_model, trainPoints, degree);
+  const accTest = accuracy(W_model, testPoints, degree);
+  const gapPP = (accTrain-accTest)*100;
+
+  document.getElementById('mDegree').textContent = degree;
+  document.getElementById('mAccTrain').textContent = (accTrain*100).toFixed(1)+'%';
+  document.getElementById('mAccTest').textContent = (accTest*100).toFixed(1)+'%';
+
+  const badge = document.getElementById('mFitBadge');
+  if(accTrain < 0.75){
+    badge.textContent = '⚠ Subajuste — una frontera de grado 1 no puede separar un riesgo que sube en dos direcciones.';
+    badge.style.color = '#e8c547';
+  } else if(gapPP > 15){
+    badge.textContent = '⚠ Sobreajuste — memoriza el entrenamiento pero generaliza peor a datos nuevos.';
+    badge.style.color = 'var(--cta)';
+  } else {
+    badge.textContent = '✓ Ajuste razonable — generaliza bien a los datos de prueba.';
+    badge.style.color = 'var(--success)';
+  }
+
+  drawDecisionMap(W_model, degree);
+  drawConfusion(W_model, degree);
+}
+
+const degreeRow = document.getElementById('degreeRow');
+[1,2,3,4].forEach(d=>{
+  const btn = document.createElement('button');
+  btn.className = 'degree-btn' + (d===currentDegree ? ' active':'');
+  btn.textContent = 'Grado ' + d;
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.degree-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    setDegree(d);
+  });
+  degreeRow.appendChild(btn);
+});
+
+const analystToggle = document.getElementById('analystToggle');
+const analystPanel = document.getElementById('analystPanel');
+analystToggle.addEventListener('change', ()=>{
+  analystPanel.classList.toggle('show', analystToggle.checked);
+  if(analystToggle.checked) setDegree(currentDegree);
+});
+
+updateBasic();
+</script>
+
+</body>
+</html>

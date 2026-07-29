@@ -1,0 +1,878 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mapa de Anomalías — RELIABILIT-IA</title>
+<meta name="description" content="Detecta combinaciones anómalas entre varios sensores a la vez usando un bosque de aislamiento (Isolation Forest), sin necesitar una fórmula de distancia entre variables.">
+
+<meta property="og:title" content="Mapa de Anomalías — RELIABILIT-IA">
+<meta property="og:description" content="Mueve 4 lecturas de sensor a la vez y mira en vivo qué tan fácil es 'aislar' esa combinación del comportamiento normal del equipo.">
+<meta property="og:image" content="../../assets/og-image.png">
+<meta property="og:type" content="website">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#0a0a0f;
+    --panel:#121218;
+    --panel2:#181820;
+    --border:#22222c;
+    --text:#f4f4f7;
+    --muted:#9a9aa8;
+    --success:#3ecfa0;
+    --cta:#f4722e;
+    --accent:#7b5ea7;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    background:var(--bg); color:var(--text); font-family:'DM Mono', monospace;
+    line-height:1.6; -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:'Syne', sans-serif; font-weight:800; letter-spacing:-0.02em;}
+  a{color:var(--success);}
+  .wrap{max-width:960px;margin:0 auto;padding:0 24px;}
+  .back{display:inline-block; font-size:13px; color:var(--muted); text-decoration:none; padding-top:20px;}
+  .back:hover{color:var(--success);}
+
+  header.hero{padding:24px 0 40px; border-bottom:1px solid var(--border);}
+  .badge{
+    display:inline-block; font-size:12px; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--success); border:1px solid var(--success); border-radius:999px;
+    padding:5px 14px; margin-bottom:18px;
+  }
+  h1{font-size:clamp(28px,5vw,44px); line-height:1.1; margin-bottom:14px;}
+  .lead{font-family:'Instrument Serif', serif; font-style:italic; font-size:20px; color:var(--muted); max-width:640px;}
+
+  section{padding:40px 0; border-bottom:1px solid var(--border);}
+  section h2{font-size:22px; margin-bottom:14px;}
+  .context p{color:var(--muted); max-width:640px; font-size:15px; text-align:justify;}
+  .context p + p{margin-top:12px;}
+
+  .panel{
+    background:var(--panel); border:1px solid var(--border); border-radius:16px; padding:28px;
+  }
+
+  .toggle-row{display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; flex-wrap:wrap; gap:12px;}
+  .toggle-row .label{font-size:15px; color:var(--muted);}
+  .switch{
+    display:inline-flex; align-items:center; gap:10px; cursor:pointer; user-select:none;
+    font-size:14px; color:var(--text);
+  }
+  .switch input{display:none;}
+  .track{
+    width:42px; height:24px; background:var(--border); border-radius:999px; position:relative; transition:.2s;
+    flex-shrink:0;
+  }
+  .track::after{
+    content:''; position:absolute; top:3px; left:3px; width:18px; height:18px; border-radius:50%;
+    background:var(--muted); transition:.2s;
+  }
+  .switch input:checked + .track{background:var(--accent);}
+  .switch input:checked + .track::after{transform:translateX(18px); background:#fff;}
+
+  .demo-grid{display:grid; grid-template-columns:1.05fr 1fr; gap:32px;}
+  @media (max-width:760px){ .demo-grid{grid-template-columns:1fr;} }
+
+  .slider-group{margin-bottom:18px;}
+  .slider-group label{display:flex; justify-content:space-between; font-size:15px; margin-bottom:8px;}
+  .slider-group label .val{color:var(--success); font-weight:500;}
+  input[type=range]{
+    width:100%; -webkit-appearance:none; height:6px; border-radius:999px; background:var(--border); outline:none;
+  }
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none; width:20px; height:20px; border-radius:50%;
+    background:var(--success); cursor:pointer; border:3px solid var(--bg);
+  }
+  input[type=range]::-moz-range-thumb{
+    width:20px; height:20px; border-radius:50%; background:var(--success); cursor:pointer; border:3px solid var(--bg);
+  }
+  .hint{font-size:12px; color:var(--muted); display:flex; justify-content:space-between; margin-top:4px;}
+
+  .result{
+    margin-top:26px; padding:22px; border-radius:14px; background:var(--panel2); border:1px solid var(--border);
+    display:flex; align-items:center; gap:20px; flex-wrap:wrap;
+  }
+  .result .risk-dot{width:16px; height:16px; border-radius:50%; flex-shrink:0;}
+  .result .risk-text h3{font-size:23px; margin-bottom:6px;}
+  .result .risk-text p{font-size:15px; color:var(--muted);}
+  .confidence-line{font-size:14px !important; font-weight:600; margin-top:10px !important; color:var(--text) !important;}
+  .confidence-note{font-size:13px !important; color:var(--muted); margin-top:2px !important;}
+
+  .live-col h3{font-size:14px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:14px; font-family:'DM Mono',monospace; font-weight:500;}
+  .instrument-wrap{margin-bottom:18px;}
+  #instrument{width:100%; max-width:420px; height:260px; background:var(--bg); border:1px solid var(--border); border-radius:12px; display:block;}
+  .instrument-stats{font-size:13px; color:var(--muted); line-height:1.9; margin-top:10px; display:flex; gap:22px; flex-wrap:wrap;}
+  .instrument-stats b{color:var(--text); font-size:15px;}
+  .gauge-wrap{margin-bottom:16px;}
+  .gauge-label{font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:8px;}
+  .gauge-bar{height:12px; background:var(--border); border-radius:999px; overflow:hidden; margin:8px 0; position:relative;}
+  .gauge-fill{height:100%; width:0%; transition:background .35s ease, width .3s ease;}
+  .gauge-value{font-size:16px; color:var(--text);}
+  .gauge-value b{font-size:20px;}
+  .gauge-note{font-size:13px; color:var(--muted);}
+  .sim-note{font-size:13px; color:var(--muted); line-height:1.7; margin-top:6px;}
+
+  .analyst{margin-top:32px; padding-top:26px; border-top:1px dashed var(--border); display:none;}
+  .analyst.show{display:block;}
+  .degree-row{display:flex; gap:8px; margin-bottom:18px; flex-wrap:wrap;}
+  .degree-btn{
+    font-family:'DM Mono', monospace; font-size:14px; padding:9px 18px; border-radius:8px;
+    border:1px solid var(--border); background:transparent; color:var(--text); cursor:pointer;
+    transition:background .15s, border-color .15s;
+  }
+  .degree-btn.active{background:var(--accent); border-color:var(--accent); color:#fff;}
+  #chart{width:100%; height:280px; background:var(--bg); border:1px solid var(--border); border-radius:12px; display:block;}
+  #residuals{width:100%; height:190px; background:var(--bg); border:1px solid var(--border); border-radius:12px; display:block; margin-top:18px;}
+  .metrics{display:flex; gap:24px; margin-top:16px; flex-wrap:wrap; font-size:14px; color:var(--muted);}
+  .metrics b{color:var(--text);}
+  .fit-badge{margin-top:14px; font-size:15px; font-weight:600; padding:10px 14px; border-radius:10px; background:var(--panel2); display:inline-block;}
+
+  .dataset-wrap{margin-top:24px;}
+  .dataset-label{font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:8px;}
+  .dataset-scroll{max-height:260px; overflow-y:auto; border:1px solid var(--border); border-radius:12px;}
+  .dataset-table{width:100%; border-collapse:collapse; font-size:13px;}
+  .dataset-table th{position:sticky; top:0; background:var(--panel2); color:var(--muted); text-align:left; font-weight:500; padding:8px 12px; border-bottom:1px solid var(--border); text-transform:uppercase; letter-spacing:.04em; font-size:11px;}
+  .dataset-table td{padding:7px 12px; border-bottom:1px solid var(--border); color:var(--text);}
+  .dataset-table tr:last-child td{border-bottom:none;}
+  .dataset-table td.hit{color:var(--cta); font-weight:600;}
+  .dataset-table td.miss{color:var(--muted);}
+  .dataset-note{font-size:12px; color:var(--muted); margin-top:8px;}
+
+  .business p{color:var(--muted); font-size:16px; max-width:640px; text-align:justify;}
+  .business .stat{color:var(--success); font-weight:500;}
+  .business-grid{display:grid; grid-template-columns:1.1fr 1fr; gap:32px; align-items:start; margin-top:8px;}
+  @media (max-width:760px){ .business-grid{grid-template-columns:1fr;} }
+  .biz-action{margin-top:18px; padding:18px; border-radius:12px; background:var(--panel2); border:1px solid var(--border); transition:border-color .3s;}
+  .biz-action .biz-title{font-size:17px; font-weight:600;}
+  .biz-action .biz-detail{font-size:14px; color:var(--muted); margin-top:6px;}
+  #projection{width:100%; height:230px; background:var(--bg); border:1px solid var(--border); border-radius:12px; display:block;}
+
+  .cta-row{display:flex; gap:14px; flex-wrap:wrap; margin-top:8px;}
+  .btn{
+    font-family:'DM Mono', monospace; font-size:14px; padding:12px 22px; border-radius:10px;
+    text-decoration:none; border:1px solid var(--border); color:var(--text); display:inline-block;
+  }
+  .btn.primary{background:var(--cta); border-color:var(--cta); color:#0a0a0f; font-weight:600;}
+  .btn.ghost:hover{border-color:var(--accent);}
+
+  .contact-card{
+    display:grid; grid-template-columns:1.1fr 1fr; gap:28px;
+    background:var(--panel2); border:1px solid var(--border); border-radius:16px;
+    padding:28px; margin-top:28px;
+  }
+  @media (max-width:700px){ .contact-card{grid-template-columns:1fr;} }
+  .contact-card h3{font-size:19px; margin-bottom:8px;}
+  .contact-card p{font-size:14px; color:var(--muted); max-width:420px; text-align:justify;}
+  .contact-links{display:flex; flex-direction:column; gap:12px;}
+  .contact-row{
+    display:flex; align-items:center; gap:14px; padding:12px 16px; border-radius:12px;
+    background:var(--panel); border:1px solid var(--border); text-decoration:none; color:var(--text);
+    transition:border-color .2s;
+  }
+  .contact-row:hover{border-color:var(--success);}
+  .contact-icon{font-size:20px; width:32px; text-align:center; flex-shrink:0;}
+  .contact-text{font-size:14px; line-height:1.5;}
+  .contact-text b{display:block; font-size:15px;}
+
+  footer{padding:36px 0; text-align:center;}
+  footer p{font-size:13px; color:var(--muted); max-width:560px; margin:0 auto;}
+  .footer-links{display:flex; justify-content:center; gap:18px; flex-wrap:wrap; margin-bottom:16px; font-size:13px;}
+  .footer-links a{color:var(--muted); text-decoration:none;}
+  .footer-links a:hover{color:var(--success);}
+
+  @media (max-width:520px){
+    .result{flex-direction:column; align-items:flex-start;}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <a class="back" href="../../">← Volver al catálogo RELIABILIT-IA</a>
+
+  <header class="hero">
+    <div class="badge">Anomalías · Sensores múltiples</div>
+    <span class="badge" style="border-color:var(--accent); color:var(--accent); margin-left:8px;">No supervisado · Isolation Forest</span>
+    <h1>Mapa de Anomalías</h1>
+    <p class="lead">¿Qué tan fácil es "aislar" esta combinación de lecturas del comportamiento normal del equipo?</p>
+  </header>
+
+  <section class="context">
+    <h2>El problema</h2>
+    <p>El <a href="../detector-anomalias-compresor/">Detector de Anomalías del Compresor</a> usa distancia de Mahalanobis sobre 2 variables — funciona bien, pero calcular esa distancia se vuelve más costoso y más difícil de interpretar a medida que se suman sensores. Este módulo usa una idea distinta para cuando hay varios sensores a la vez: Isolation Forest (bosque de aislamiento). En vez de calcular una distancia, construye muchos árboles con cortes al azar sobre las variables; los puntos normales, rodeados de vecinos parecidos, necesitan muchos cortes para quedar solos, mientras que los puntos raros —por definición, distintos a la mayoría— suelen aislarse en pocos cortes. El promedio de cuántos cortes hace falta para aislar una lectura, sobre muchos árboles, es directamente su puntaje de anomalía.</p>
+    <p>Este demo usa 4 sensores típicos de un equipo rotativo —vibración, temperatura, presión y corriente eléctrica— que en operación normal se mueven de forma parcialmente relacionada (más carga sube vibración, temperatura y corriente juntas). Isolation Forest detecta bien las combinaciones raras entre varios sensores a la vez —por ejemplo, vibración y temperatura altas juntas sin que la carga lo explique—, aunque, de forma honesta, una lectura que es extraña en un solo sensor mientras los demás se ven perfectamente normales puede pasar más desapercibida: con más sensores compitiendo por la atención de cada corte al azar, ninguno solo domina la partición. Las tablas de este módulo muestran ambos casos.</p>
+  </section>
+
+  <section id="demo">
+    <h2>Demo interactivo</h2>
+    <div class="panel">
+      <div class="toggle-row">
+        <span class="label">Isolation Forest (bosque de aislamiento) — mueve los sliders para simular una lectura conjunta de los 4 sensores.</span>
+        <label class="switch">
+          <span>Modo Analista</span>
+          <input type="checkbox" id="analystToggle">
+          <span class="track"></span>
+        </label>
+      </div>
+
+      <div class="demo-grid">
+        <div class="controls-col">
+          <div class="slider-group">
+            <label>Vibración <span class="val" id="vibVal">3.0 mm/s</span></label>
+            <input type="range" id="vibSlider" min="1" max="9" step="0.1" value="3.0">
+            <div class="hint"><span>1</span><span>9 mm/s</span></div>
+          </div>
+          <div class="slider-group">
+            <label>Temperatura <span class="val" id="tempVal">65 °C</span></label>
+            <input type="range" id="tempSlider" min="30" max="95" step="1" value="65">
+            <div class="hint"><span>30</span><span>95 °C</span></div>
+          </div>
+          <div class="slider-group">
+            <label>Presión <span class="val" id="presVal">6.5 bar</span></label>
+            <input type="range" id="presSlider" min="1" max="10" step="0.1" value="6.5">
+            <div class="hint"><span>1</span><span>10 bar</span></div>
+          </div>
+          <div class="slider-group">
+            <label>Corriente <span class="val" id="corrVal">40 A</span></label>
+            <input type="range" id="corrSlider" min="5" max="70" step="1" value="40">
+            <div class="hint"><span>5</span><span>70 A</span></div>
+          </div>
+
+          <div class="result" id="resultBox">
+            <div class="risk-dot" id="riskDot"></div>
+            <div class="risk-text">
+              <h3 id="riskTitle">Calculando…</h3>
+              <p id="riskDetail"></p>
+              <p class="confidence-line" id="confidenceLine"></p>
+              <p class="confidence-note" id="confidenceNote"></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="live-col">
+          <h3>Simulación en vivo</h3>
+          <div class="instrument-wrap">
+            <canvas id="instrument" width="420" height="260"></canvas>
+            <div class="instrument-stats">
+              <div>Puntaje de anomalía: <b id="scoreStat">–</b></div>
+              <div>Umbral "Anómalo": <b id="threshStat">0.60</b></div>
+            </div>
+          </div>
+
+          <div class="gauge-wrap">
+            <div class="gauge-label">Puntaje de anomalía (0-100)</div>
+            <div class="gauge-bar"><div class="gauge-fill" id="gaugeFill"></div></div>
+            <div class="gauge-value"><b id="gaugeValue">0</b> <span class="gauge-note">0 = igual al patrón normal, 100 o más = se aísla casi de inmediato del resto</span></div>
+          </div>
+
+          <p class="sim-note">Simulación ilustrativa: el mapa y las 4 lecturas se dibujan a partir de los mismos valores de los sliders — no provienen de sensores reales.</p>
+        </div>
+      </div>
+
+      <div class="analyst" id="analystPanel">
+        <h3 style="font-size:18px; text-transform:none; letter-spacing:0; margin-bottom:8px; color:var(--text);">Ajustar el tamaño del bosque en vivo</h3>
+        <p style="font-size:15px; color:var(--muted); margin-bottom:18px; text-align:justify;">Cada árbol del bosque se construye con cortes al azar, así que un solo árbol puede dar una lectura de "aislamiento" bastante casual. Con pocos árboles, el puntaje de anomalía final —el promedio entre todos— cambia bastante según qué cortes tocaron por suerte. Con más árboles, ese promedio se estabiliza. Para medir esto de forma honesta, cada botón reconstruye el bosque completo varias veces con distintas semillas de azar y mide cuánto varía el puntaje resultante (su coeficiente de variación).</p>
+
+        <div class="dataset-wrap">
+          <div class="dataset-label">Vista del historial normal (150 lecturas simuladas, usadas para construir el bosque)</div>
+          <div class="dataset-scroll">
+            <table class="dataset-table">
+              <thead><tr><th>#</th><th>Fecha</th><th>Vibración</th><th>Temperatura</th><th>Presión</th><th>Corriente</th></tr></thead>
+              <tbody id="datasetBody"></tbody>
+            </table>
+          </div>
+          <p class="dataset-note" id="datasetNote"></p>
+        </div>
+
+        <div class="dataset-wrap">
+          <div class="dataset-label">Incidentes históricos usados solo para validar (nunca entrenan el bosque)</div>
+          <div class="dataset-scroll">
+            <table class="dataset-table">
+              <thead><tr><th>#</th><th>Fecha del incidente</th><th>Descripción</th><th>Tipo</th><th>Puntaje con nTrees actual</th><th>Resultado</th></tr></thead>
+              <tbody id="incidentBody"></tbody>
+            </table>
+          </div>
+          <p class="dataset-note" id="incidentNote"></p>
+        </div>
+
+        <div class="degree-row" id="treeRow"></div>
+        <div class="dataset-label">Distribución de puntajes: historial normal vs. incidentes</div>
+        <canvas id="chart" width="800" height="280"></canvas>
+        <div class="dataset-label" style="margin-top:18px;">Estabilidad del puntaje al reconstruir el bosque varias veces</div>
+        <canvas id="residuals" width="800" height="190"></canvas>
+        <div class="metrics">
+          <span>nTrees: <b id="mTrees">100</b></span>
+          <span>Incidentes detectados (score&gt;0.60): <b id="mRecall">–</b></span>
+          <span>Falsos positivos sobre normales: <b id="mFpr">–</b></span>
+          <span>Variabilidad (CV) del puntaje: <b id="mCv">–</b></span>
+        </div>
+        <div class="fit-badge" id="mFitBadge">–</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="business">
+    <h2>¿Qué significa para tu planta?</h2>
+    <div class="business-grid">
+      <div>
+        <p>Con la combinación actual, el equipo se clasifica como <span class="stat" id="bizLevelInline">Normal</span>. La ventaja de mirar varios sensores a la vez —en vez de poner una alarma independiente en cada uno— es que detecta patrones que ningún sensor por sí solo revelaría: vibración y temperatura subiendo juntas sin que la carga lo justifique, por ejemplo, casi nunca dispara una alarma de umbral fijo en ninguno de los dos sensores por separado, pero sí es una combinación clara de que algo no está bien.</p>
+        <div class="biz-action" id="bizAction">
+          <div class="biz-title" id="bizTitle">Calculando…</div>
+          <div class="biz-detail" id="bizDetail"></div>
+        </div>
+      </div>
+      <div>
+        <div class="gauge-label">Costo evitado estimado por nivel</div>
+        <canvas id="projection" width="480" height="230"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <section id="cta">
+    <h2>De esta demo a tu planta</h2>
+    <p style="color:var(--muted); max-width:640px; margin-bottom:20px; text-align:justify;">El historial, los sensores y la simulación de este demo son de ejemplo, ajustados sobre datos sintéticos — sirven para explicar la idea, no para vigilar tu equipo real. Llevarlo a tu planta implica correr este mismo algoritmo sobre el historial real de tus sensores —pueden ser 4, 10 o 30 a la vez, Isolation Forest escala bien con más variables—, ajustar el tamaño del bosque y el umbral de alerta a tu propio nivel de tolerancia a falsos positivos, y sumar reglas complementarias para los casos de un solo sensor extremo que el bosque por sí solo puede pasar por alto — ahí es donde entra nuestro motor AutoML. Se adapta al tipo de equipo y a la industria —minería, manufactura, energía, alimentos— cuando la calibramos con tus datos. Si quieres recorrer ese proceso, conversemos.</p>
+    <div class="cta-row">
+      <a class="btn primary" href="https://chat.whatsapp.com/GvBz1tuUeNZ0xwTkjsuE3z" target="_blank" rel="noopener">Unirme a la comunidad de WhatsApp</a>
+      <a class="btn ghost" href="https://www.linkedin.com/company/reliabilit-ia/" target="_blank" rel="noopener">Seguir en LinkedIn</a>
+      <a class="btn ghost" href="https://www.youtube.com/@miguelangelcayllahuaquispe998" target="_blank" rel="noopener">Ver en YouTube</a>
+    </div>
+
+    <div class="contact-card">
+      <div>
+        <h3>¿Hablamos de monitorear varios sensores a la vez?</h3>
+        <p>Si tienes equipos con varios sensores instalados y quieres validar este análisis con tu propia planta, escríbeme directamente.</p>
+      </div>
+      <div class="contact-links">
+        <a class="contact-row" href="https://wa.me/51997610310?text=Hola%20Miguel%2C%20vi%20el%20demo%20Mapa%20de%20Anomalias%20y%20quiero%20conversar%20sobre%20la%20calibracion%20para%20mi%20planta" target="_blank" rel="noopener">
+          <span class="contact-icon">💬</span>
+          <span class="contact-text"><b>WhatsApp</b>+51 997 610 310</span>
+        </a>
+        <a class="contact-row" href="https://www.linkedin.com/in/miguelcayllahua/" target="_blank" rel="noopener">
+          <span class="contact-icon">in</span>
+          <span class="contact-text"><b>LinkedIn</b>Miguel Angel Cayllahua Quispe</span>
+        </a>
+        <a class="contact-row" href="mailto:miguelcquispe@gmail.com">
+          <span class="contact-icon">✉</span>
+          <span class="contact-text"><b>Correo</b>miguelcquispe@gmail.com</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-links">
+      <a href="https://chat.whatsapp.com/GvBz1tuUeNZ0xwTkjsuE3z" target="_blank" rel="noopener">WhatsApp</a>
+      <a href="https://www.youtube.com/@miguelangelcayllahuaquispe998" target="_blank" rel="noopener">YouTube</a>
+      <a href="https://www.linkedin.com/company/reliabilit-ia/" target="_blank" rel="noopener">LinkedIn empresa</a>
+      <a href="https://www.linkedin.com/in/miguelcayllahua/" target="_blank" rel="noopener">LinkedIn personal</a>
+      <a href="mailto:miguelcquispe@gmail.com">Correo</a>
+    </div>
+    <p style="text-align:justify;">Contenido con fines educativos. La metodología es real; los datos y la simulación de esta demo son sintéticos para poder compartirlos públicamente. Se calibra con tus propios datos —sin importar el tipo de equipo o la industria— cuando trabajamos juntos. Modelo de ejemplo, no una fórmula fija.</p>
+  </footer>
+</div>
+
+<script>
+/* =========================================================
+   Generación del dataset sintético: 4 sensores correlacionados
+   a través de un factor de carga latente.
+   ========================================================= */
+function seededRandom(seed){
+  let s = seed;
+  return function(){ s = (s*9301+49297) % 233280; return s/233280; };
+}
+function gaussian(rnd){
+  const u1 = Math.max(1e-9, rnd()), u2 = rnd();
+  return Math.sqrt(-2*Math.log(u1))*Math.cos(2*Math.PI*u2);
+}
+const REF_DATE = new Date('2026-07-15');
+const MESES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+function fmtDate(d){ return String(d.getDate()).padStart(2,'0')+' '+MESES[d.getMonth()]+' '+d.getFullYear(); }
+function dateFromDaysAgo(daysAgo){ const d = new Date(REF_DATE); d.setDate(d.getDate()-Math.round(daysAgo)); return d; }
+
+const rnd = seededRandom(271);
+const FEATURES = ['vib','temp','presion','corriente'];
+const FEATURE_LABELS = {vib:'Vibración', temp:'Temperatura', presion:'Presión', corriente:'Corriente'};
+const FEATURE_UNITS = {vib:'mm/s', temp:'°C', presion:'bar', corriente:'A'};
+const FEATURE_RANGE = {vib:[1,9], temp:[30,95], presion:[1,10], corriente:[5,70]};
+
+function genNormal(){
+  const carga = gaussian(rnd);
+  const vib = Math.max(0.5, 3.0 + 0.35*carga + gaussian(rnd)*0.35);
+  const temp = Math.max(30, 65 + 3.2*carga + gaussian(rnd)*2.8);
+  const presion = Math.max(1, 6.5 + gaussian(rnd)*0.35);
+  const corriente = Math.max(5, 40 + 2.3*carga + gaussian(rnd)*2.2);
+  const date = dateFromDaysAgo(rnd()*365);
+  return {vib, temp, presion, corriente, date};
+}
+const N = 150;
+const normalData = [];
+for(let i=0;i<N;i++) normalData.push(genNormal());
+
+// Incidentes históricos documentados — fechas fijas (eventos discretos
+// a lo largo de ~2 años), no derivadas del rnd del historial normal.
+const incidents = [
+  {vib:6.8, temp:79, presion:6.4, corriente:41, label:'Desgaste de rodamiento', tipo:'Multi-sensor', date:new Date('2024-08-19')},
+  {vib:3.4, temp:88, presion:6.6, corriente:58, label:'Falla eléctrica incipiente', tipo:'Multi-sensor', date:new Date('2024-11-27')},
+  {vib:7.2, temp:70, presion:3.1, corriente:39, label:'Cavitación', tipo:'Multi-sensor', date:new Date('2025-02-14')},
+  {vib:3.0, temp:64, presion:9.4, corriente:40, label:'Obstrucción parcial', tipo:'Un solo sensor', date:new Date('2025-05-03')},
+  {vib:5.9, temp:75, presion:6.3, corriente:52, label:'Desalineación + sobrecarga', tipo:'Multi-sensor', date:new Date('2025-08-21')},
+  {vib:2.9, temp:63, presion:6.5, corriente:63, label:'Corriente anómala (posible fuga eléctrica)', tipo:'Un solo sensor', date:new Date('2025-11-09')},
+  {vib:8.5, temp:82, presion:6.7, corriente:44, label:'Desbalance severo', tipo:'Multi-sensor', date:new Date('2026-03-02')},
+  {vib:3.1, temp:65, presion:6.4, corriente:9,  label:'Sensor de corriente en falla (lectura muy baja)', tipo:'Un solo sensor', date:new Date('2026-06-11')}
+];
+
+function stats(arr,key){
+  const v = arr.map(p=>p[key]);
+  const m = v.reduce((a,b)=>a+b,0)/v.length;
+  const sd = Math.sqrt(v.reduce((a,x)=>a+(x-m)**2,0)/v.length);
+  return {m,sd};
+}
+const S = {}; FEATURES.forEach(f=> S[f]=stats(normalData,f));
+function toVec(p){ return FEATURES.map(f=> (p[f]-S[f].m)/S[f].sd); }
+const normalVecs = normalData.map(toVec);
+const incidentVecs = incidents.map(toVec);
+
+function renderDatasetPreview(){
+  const tbody = document.getElementById('datasetBody');
+  const note = document.getElementById('datasetNote');
+  if(!tbody) return;
+  tbody.innerHTML = normalData.slice(0,60).map((p,i)=>`<tr><td>${i+1}</td><td>${fmtDate(p.date)}</td><td>${p.vib.toFixed(2)}</td><td>${p.temp.toFixed(1)}</td><td>${p.presion.toFixed(2)}</td><td>${p.corriente.toFixed(1)}</td></tr>`).join('');
+  const sortedDates = normalData.map(p=>p.date).sort((a,b)=>a-b);
+  note.textContent = `Mostrando 60 de ${normalData.length} lecturas normales simuladas, entre ${fmtDate(sortedDates[0])} y ${fmtDate(sortedDates[sortedDates.length-1])}.`;
+}
+renderDatasetPreview();
+
+/* =========================================================
+   Isolation Forest implementado desde cero.
+   ========================================================= */
+function buildTree(data, depth, maxDepth, rnd){
+  if(depth>=maxDepth || data.length<=1) return { isExternal:true, size:data.length };
+  const nFeat = data[0].length;
+  const featIdx = Math.floor(rnd()*nFeat);
+  const vals = data.map(d=>d[featIdx]);
+  const mn = Math.min(...vals), mx = Math.max(...vals);
+  if(mn===mx) return { isExternal:true, size:data.length };
+  const splitVal = mn + rnd()*(mx-mn);
+  const left = data.filter(d=>d[featIdx] < splitVal);
+  const right = data.filter(d=>d[featIdx] >= splitVal);
+  return { isExternal:false, featIdx, splitVal, left: buildTree(left,depth+1,maxDepth,rnd), right: buildTree(right,depth+1,maxDepth,rnd) };
+}
+function cFactor(n){
+  if(n<=1) return 0;
+  const H = Math.log(n-1) + 0.5772156649;
+  return 2*H - (2*(n-1)/n);
+}
+function pathLength(tree, x, depth){
+  if(tree.isExternal) return depth + cFactor(tree.size);
+  return x[tree.featIdx] < tree.splitVal ? pathLength(tree.left,x,depth+1) : pathLength(tree.right,x,depth+1);
+}
+function buildForest(data, nTrees, sampleSize, seed){
+  const rndF = seededRandom(seed);
+  const maxDepth = Math.ceil(Math.log2(Math.max(2,sampleSize)));
+  const trees = [];
+  for(let i=0;i<nTrees;i++){
+    const idxs = data.map((_,i)=>i);
+    for(let k=idxs.length-1;k>0;k--){ const j=Math.floor(rndF()*(k+1)); [idxs[k],idxs[j]]=[idxs[j],idxs[k]]; }
+    const sample = idxs.slice(0, Math.min(sampleSize, data.length)).map(i=>data[i]);
+    trees.push(buildTree(sample, 0, maxDepth, rndF));
+  }
+  return { trees, n: Math.min(sampleSize, data.length) };
+}
+function anomalyScore(forest, x){
+  const avgPath = forest.trees.reduce((s,t)=>s+pathLength(t,x,0),0)/forest.trees.length;
+  return Math.pow(2, -avgPath/cFactor(forest.n));
+}
+
+/* =========================================================
+   MODELO DE PRODUCCIÓN fijo (nTrees=100, sampleSize=128).
+   ========================================================= */
+const PROD_TREES = 100, SAMPLE_SIZE = 128, PROD_SEED = 777;
+const prodForest = buildForest(normalVecs, PROD_TREES, SAMPLE_SIZE, PROD_SEED);
+const T_ATENCION = 0.53, T_ANOMALO = 0.60;
+
+const LEVELS = ['Normal','Atención','Anómalo'];
+const LEVEL_COLORS = ['#3ecfa0','#e8c547','#f4722e'];
+const LEVEL_DETAIL = [
+  'Esta combinación de lecturas se aísla tan lento como el resto del historial normal.',
+  'Esta combinación empieza a aislarse más rápido que lo típico — vale la pena anotarla y confirmar en la siguiente ronda.',
+  'Esta combinación se aísla mucho más rápido que el historial normal: es una combinación rara entre varios sensores a la vez. Confirma con una inspección antes de actuar.'
+];
+function levelOf(score){
+  if(score < T_ATENCION) return 0;
+  if(score < T_ANOMALO) return 1;
+  return 2;
+}
+
+/* =========================================================
+   MODO BÁSICO
+   ========================================================= */
+const vibSlider = document.getElementById('vibSlider');
+const tempSlider = document.getElementById('tempSlider');
+const presSlider = document.getElementById('presSlider');
+const corrSlider = document.getElementById('corrSlider');
+const vibVal = document.getElementById('vibVal');
+const tempVal = document.getElementById('tempVal');
+const presVal = document.getElementById('presVal');
+const corrVal = document.getElementById('corrVal');
+const riskDot = document.getElementById('riskDot');
+const riskTitle = document.getElementById('riskTitle');
+const riskDetail = document.getElementById('riskDetail');
+const confidenceLine = document.getElementById('confidenceLine');
+const confidenceNote = document.getElementById('confidenceNote');
+const scoreStat = document.getElementById('scoreStat');
+const gaugeFill = document.getElementById('gaugeFill');
+const gaugeValue = document.getElementById('gaugeValue');
+const bizLevelInline = document.getElementById('bizLevelInline');
+const bizAction = document.getElementById('bizAction');
+const bizTitle = document.getElementById('bizTitle');
+const bizDetail = document.getElementById('bizDetail');
+const projectionCanvas = document.getElementById('projection');
+const pctx = projectionCanvas.getContext('2d');
+
+function hexToRgb(hex){ const v=hex.replace('#',''); return [parseInt(v.slice(0,2),16),parseInt(v.slice(2,4),16),parseInt(v.slice(4,6),16)]; }
+function rgba(c,a){ return `rgba(${c[0]},${c[1]},${c[2]},${a})`; }
+
+function drawProjection(activeIdx, scorePct){
+  const W = projectionCanvas.width, H = projectionCanvas.height;
+  pctx.clearRect(0,0,W,H);
+  const padL = 56, padR = 20, padT = 20, padB = 46;
+  const costs = [0, 700, 9500];
+  const maxCost = costs[costs.length-1]*1.1;
+  const bw = (W-padL-padR)/costs.length;
+  pctx.strokeStyle = '#22222c';
+  pctx.lineWidth = 1;
+  pctx.beginPath();
+  pctx.moveTo(padL, padT); pctx.lineTo(padL, H-padB); pctx.lineTo(W-padR, H-padB);
+  pctx.stroke();
+  costs.forEach((c,i)=>{
+    const barH = Math.max(2,(c/maxCost)*(H-padT-padB));
+    const x = padL + i*bw + bw*0.18;
+    const y = H-padB-barH;
+    const w = bw*0.64;
+    pctx.fillStyle = i===activeIdx ? LEVEL_COLORS[i] : 'rgba(244,244,247,0.14)';
+    pctx.fillRect(x,y,w,barH);
+    pctx.fillStyle = '#a8a8b4';
+    pctx.font = '11px DM Mono, monospace';
+    pctx.fillText(LEVELS[i], x-2, H-padB+16);
+    if(i===activeIdx){
+      pctx.fillStyle = '#f4f4f7';
+      pctx.font = '12px DM Mono, monospace';
+      pctx.fillText('S/. '+c.toLocaleString('es-PE'), x-4, y-8);
+    }
+  });
+  pctx.fillStyle = '#8a8a98';
+  pctx.font = '11px DM Mono, monospace';
+  pctx.fillText('costo de intervención evitado con detección temprana (ilustrativo)', padL, 14);
+
+  // Indicador continuo: el puntaje real de Isolation Forest para esta
+  // lectura respecto al umbral de "Anómalo" (no solo el nivel discreto).
+  if(typeof scorePct === 'number'){
+    const by = H-12, bh = 5;
+    pctx.fillStyle = 'rgba(244,244,247,0.10)';
+    pctx.fillRect(padL, by, W-padL-padR, bh);
+    const fw = Math.min(1,Math.max(0,scorePct/100))*(W-padL-padR);
+    pctx.fillStyle = LEVEL_COLORS[activeIdx];
+    pctx.fillRect(padL, by, fw, bh);
+    pctx.fillStyle = '#c9c9d4';
+    pctx.font = '10px DM Mono, monospace';
+    pctx.fillText('puntaje Isolation Forest vs. umbral: '+scorePct.toFixed(0)+'/100', padL, by-4);
+  }
+}
+
+function currentReading(){
+  return {
+    vib: parseFloat(vibSlider.value),
+    temp: parseFloat(tempSlider.value),
+    presion: parseFloat(presSlider.value),
+    corriente: parseFloat(corrSlider.value)
+  };
+}
+
+function updateBasic(){
+  const reading = currentReading();
+  vibVal.textContent = reading.vib.toFixed(1) + ' mm/s';
+  tempVal.textContent = reading.temp.toFixed(0) + ' °C';
+  presVal.textContent = reading.presion.toFixed(1) + ' bar';
+  corrVal.textContent = reading.corriente.toFixed(0) + ' A';
+
+  const vec = toVec(reading);
+  const score = anomalyScore(prodForest, vec);
+  const idx = levelOf(score);
+  const color = LEVEL_COLORS[idx];
+
+  riskDot.style.background = color;
+  riskTitle.style.color = color;
+  riskTitle.textContent = LEVELS[idx];
+  riskDetail.textContent = LEVEL_DETAIL[idx];
+
+  const distToThresh = Math.min(Math.abs(score-T_ATENCION), Math.abs(score-T_ANOMALO));
+  let confLevel, confColor, confNote;
+  if(distToThresh > 0.06){
+    confLevel = 'Alta'; confColor = 'var(--success)';
+    confNote = 'El puntaje está lejos de cualquier umbral entre niveles.';
+  } else if(distToThresh > 0.025){
+    confLevel = 'Media'; confColor = '#e8c547';
+    confNote = 'Cerca de un umbral — el nivel vecino también es plausible.';
+  } else {
+    confLevel = 'Baja'; confColor = 'var(--cta)';
+    confNote = 'Justo en el borde entre dos niveles — confirma con otra lectura antes de decidir.';
+  }
+  confidenceLine.textContent = 'Confianza de la clasificación: ' + confLevel;
+  confidenceLine.style.color = confColor;
+  confidenceNote.textContent = confNote;
+
+  scoreStat.textContent = score.toFixed(3);
+
+  const pct = Math.min(100, (score/T_ANOMALO)*100);
+  gaugeFill.style.width = pct.toFixed(1) + '%';
+  gaugeFill.style.background = color;
+  gaugeValue.textContent = Math.round(pct);
+
+  bizLevelInline.textContent = LEVELS[idx];
+  bizLevelInline.style.color = color;
+  bizAction.style.borderColor = color;
+  bizTitle.style.color = color;
+  bizTitle.textContent = LEVELS[idx];
+  bizDetail.textContent = LEVEL_DETAIL[idx];
+
+  drawProjection(idx, pct);
+  drawInstrument(reading, idx);
+}
+[vibSlider,tempSlider,presSlider,corrSlider].forEach(s=> s.addEventListener('input', updateBasic));
+
+/* =========================================================
+   SIMULACIÓN EN VIVO — coordenadas paralelas de los 4 sensores.
+   ========================================================= */
+const instrumentCanvas = document.getElementById('instrument');
+const ictx = instrumentCanvas.getContext('2d');
+
+function drawInstrument(reading, idx){
+  const W = instrumentCanvas.width, H = instrumentCanvas.height;
+  const padT = 34, padB = 30;
+  ictx.clearRect(0,0,W,H);
+  const nAxes = FEATURES.length;
+  const axisX = FEATURES.map((_,i)=> 50 + i*((W-90)/(nAxes-1)));
+
+  FEATURES.forEach((f,i)=>{
+    const [mn,mx] = FEATURE_RANGE[f];
+    const x = axisX[i];
+    ictx.strokeStyle = '#22222c';
+    ictx.lineWidth = 1;
+    ictx.beginPath();
+    ictx.moveTo(x, padT); ictx.lineTo(x, H-padB);
+    ictx.stroke();
+
+    // banda normal (media +/- 2 sd) proyectada sobre el eje
+    const bandLoY = H-padB - ((S[f].m-2*S[f].sd - mn)/(mx-mn))*(H-padT-padB);
+    const bandHiY = H-padB - ((S[f].m+2*S[f].sd - mn)/(mx-mn))*(H-padT-padB);
+    ictx.fillStyle = 'rgba(62,207,160,0.12)';
+    ictx.fillRect(x-6, Math.min(bandLoY,bandHiY), 12, Math.abs(bandHiY-bandLoY));
+
+    ictx.fillStyle = '#8a8a98';
+    ictx.font = '10px DM Mono, monospace';
+    ictx.save();
+    ictx.translate(x, H-padB+12);
+    ictx.textAlign = 'center';
+    ictx.fillText(FEATURE_LABELS[f], 0, 0);
+    ictx.restore();
+  });
+
+  // linea del punto actual
+  const color = LEVEL_COLORS[idx];
+  ictx.strokeStyle = color;
+  ictx.lineWidth = 2;
+  ictx.beginPath();
+  FEATURES.forEach((f,i)=>{
+    const [mn,mx] = FEATURE_RANGE[f];
+    const v = Math.min(mx,Math.max(mn,reading[f]));
+    const y = H-padB - ((v-mn)/(mx-mn))*(H-padT-padB);
+    if(i===0) ictx.moveTo(axisX[i], y); else ictx.lineTo(axisX[i], y);
+  });
+  ictx.stroke();
+  FEATURES.forEach((f,i)=>{
+    const [mn,mx] = FEATURE_RANGE[f];
+    const v = Math.min(mx,Math.max(mn,reading[f]));
+    const y = H-padB - ((v-mn)/(mx-mn))*(H-padT-padB);
+    ictx.beginPath();
+    ictx.fillStyle = color;
+    ictx.arc(axisX[i], y, 4, 0, Math.PI*2);
+    ictx.fill();
+  });
+
+  ictx.fillStyle = '#8a8a98';
+  ictx.font = '10px DM Mono, monospace';
+  ictx.fillText('banda verde = rango normal (±2 desv.) · línea = lectura actual', 10, 14);
+}
+
+/* =========================================================
+   MODO ANALISTA — nTrees ajustable
+   ========================================================= */
+const chartCanvas = document.getElementById('chart');
+const cctx = chartCanvas.getContext('2d');
+const residualCanvas = document.getElementById('residuals');
+const rctx = residualCanvas.getContext('2d');
+let currentTrees = PROD_TREES;
+
+function drawScoreDistribution(forest){
+  const W = chartCanvas.width, H = chartCanvas.height;
+  const pad = 40;
+  cctx.clearRect(0,0,W,H);
+  const normalScores = normalVecs.map(x=>anomalyScore(forest,x));
+  const incidentScores = incidentVecs.map(x=>anomalyScore(forest,x));
+  const allScores = normalScores.concat(incidentScores);
+  const minS = Math.min(...allScores)-0.02, maxS = Math.max(...allScores)+0.02;
+
+  const nBins = 24;
+  const bins = new Array(nBins).fill(0);
+  normalScores.forEach(s=>{ const b = Math.min(nBins-1, Math.floor((s-minS)/(maxS-minS)*nBins)); bins[b]++; });
+  const maxBin = Math.max(...bins);
+
+  cctx.strokeStyle = '#22222c';
+  cctx.lineWidth = 1;
+  cctx.beginPath();
+  cctx.moveTo(pad, pad); cctx.lineTo(pad, H-pad); cctx.lineTo(W-pad, H-pad);
+  cctx.stroke();
+
+  const bw = (W-2*pad)/nBins;
+  bins.forEach((c,i)=>{
+    const barH = (c/maxBin)*(H-2*pad);
+    cctx.fillStyle = 'rgba(122,122,140,0.5)';
+    cctx.fillRect(pad+i*bw, H-pad-barH, bw-1, barH);
+  });
+
+  incidentScores.forEach((s,i)=>{
+    const x = pad + ((s-minS)/(maxS-minS))*(W-2*pad);
+    const tipo = incidents[i].tipo;
+    cctx.strokeStyle = tipo==='Multi-sensor' ? '#3ecfa0' : '#f4722e';
+    cctx.lineWidth = 2;
+    cctx.beginPath();
+    cctx.moveTo(x, H-pad); cctx.lineTo(x, pad);
+    cctx.stroke();
+  });
+
+  const xThresh = pad + ((T_ANOMALO-minS)/(maxS-minS))*(W-2*pad);
+  cctx.strokeStyle = 'rgba(244,244,247,0.4)';
+  cctx.setLineDash([5,4]);
+  cctx.beginPath();
+  cctx.moveTo(xThresh, pad); cctx.lineTo(xThresh, H-pad);
+  cctx.stroke();
+  cctx.setLineDash([]);
+
+  cctx.fillStyle = '#a8a8b4';
+  cctx.font = '12px DM Mono, monospace';
+  cctx.fillText('barras grises = distribución de puntajes del historial normal', pad, pad-20);
+  cctx.fillText('líneas verdes = incidentes multi-sensor · líneas naranjas = incidentes de un solo sensor · punteada = umbral "Anómalo"', pad, pad-6);
+}
+
+function stdevArr(arr){ const m=arr.reduce((a,b)=>a+b,0)/arr.length; return Math.sqrt(arr.reduce((a,x)=>a+(x-m)**2,0)/arr.length); }
+
+function drawStabilityBars(cvNormal, cvIncident){
+  const W = residualCanvas.width, H = residualCanvas.height;
+  rctx.clearRect(0,0,W,H);
+  const padL = 220, padR = 60, padT = 24, padB = 20;
+  const rows = [
+    {label:'Variabilidad — lectura normal típica', value: cvNormal, color:'#3ecfa0'},
+    {label:'Variabilidad — incidente multi-sensor', value: cvIncident, color:'#f4722e'}
+  ];
+  const maxV = Math.max(0.2, cvNormal, cvIncident);
+  const rowH = (H-padT-padB)/rows.length;
+  rctx.fillStyle = '#c9c9d4';
+  rctx.font = '13px DM Mono, monospace';
+  rctx.fillText('¿Qué tanto cambia el puntaje si reconstruimos el bosque con otra semilla de azar?', padL-140, 14);
+  rows.forEach((r,i)=>{
+    const y = padT + i*rowH + rowH*0.22;
+    const barW = Math.min(1, r.value/maxV)*(W-padL-padR);
+    rctx.fillStyle = '#8a8a98';
+    rctx.font = '12px DM Mono, monospace';
+    rctx.fillText(r.label, 8, y+rowH*0.36);
+    rctx.fillStyle = 'rgba(244,244,247,0.08)';
+    rctx.fillRect(padL, y, W-padL-padR, rowH*0.44);
+    rctx.fillStyle = r.color;
+    rctx.fillRect(padL, y, Math.max(2,barW), rowH*0.44);
+    rctx.fillStyle = '#f4f4f7';
+    rctx.fillText((r.value*100).toFixed(1)+'%', W-padR+8, y+rowH*0.36);
+  });
+}
+
+function renderIncidentTable(forest){
+  const tbody = document.getElementById('incidentBody');
+  const note = document.getElementById('incidentNote');
+  if(!tbody) return;
+  let detected = 0;
+  tbody.innerHTML = incidents.map((inc,i)=>{
+    const score = anomalyScore(forest, incidentVecs[i]);
+    const flagged = score > T_ANOMALO;
+    if(flagged) detected++;
+    return `<tr><td>${i+1}</td><td>${fmtDate(inc.date)}</td><td>${inc.label}</td><td>${inc.tipo}</td><td>${score.toFixed(3)}</td><td class="${flagged?'hit':'miss'}">${flagged?'✓ Detectado':'✗ No detectado'}</td></tr>`;
+  }).join('');
+  note.textContent = `${detected} de ${incidents.length} incidentes históricos habrían sido marcados como "Anómalo" con este número de árboles.`;
+}
+
+function setTrees(nTrees){
+  currentTrees = nTrees;
+  const forest = buildForest(normalVecs, nTrees, SAMPLE_SIZE, PROD_SEED);
+
+  const normalScores = normalVecs.map(x=>anomalyScore(forest,x));
+  const incidentScores = incidentVecs.map(x=>anomalyScore(forest,x));
+  const detected = incidentScores.filter(s=>s>T_ANOMALO).length;
+  const fpr = normalScores.filter(s=>s>T_ANOMALO).length/normalScores.length;
+
+  // estabilidad: reconstruir el bosque varias veces con distinta semilla
+  const seeds = [101,202,303,404,505,606];
+  const repNormalScores = seeds.map(sd=> anomalyScore(buildForest(normalVecs,nTrees,SAMPLE_SIZE,sd), normalVecs[0]) );
+  const repIncidentScores = seeds.map(sd=> anomalyScore(buildForest(normalVecs,nTrees,SAMPLE_SIZE,sd), incidentVecs[6]) );
+  const cvNormal = stdevArr(repNormalScores)/(repNormalScores.reduce((a,b)=>a+b,0)/repNormalScores.length);
+  const cvIncident = stdevArr(repIncidentScores)/(repIncidentScores.reduce((a,b)=>a+b,0)/repIncidentScores.length);
+  const cvMax = Math.max(cvNormal, cvIncident);
+
+  document.getElementById('mTrees').textContent = nTrees;
+  document.getElementById('mRecall').textContent = detected+'/'+incidents.length;
+  document.getElementById('mFpr').textContent = (fpr*100).toFixed(1)+'%';
+  document.getElementById('mCv').textContent = (cvMax*100).toFixed(1)+'%';
+
+  const badge = document.getElementById('mFitBadge');
+  if(cvMax > 0.08){
+    badge.textContent = '⚠ Inestable — con tan pocos árboles, el puntaje de anomalía cambia bastante según el azar de construcción del bosque.';
+    badge.style.color = 'var(--cta)';
+  } else if(cvMax > 0.03){
+    badge.textContent = '~ Aceptable pero variable — el puntaje ya es razonablemente estable, aunque más árboles lo afinan un poco más.';
+    badge.style.color = '#e8c547';
+  } else {
+    badge.textContent = '✓ Estable — el puntaje ya no depende del azar de construcción del bosque.';
+    badge.style.color = 'var(--success)';
+  }
+
+  renderIncidentTable(forest);
+  drawScoreDistribution(forest);
+  drawStabilityBars(cvNormal, cvIncident);
+}
+
+const treeRow = document.getElementById('treeRow');
+[3,5,10,20,50,100,200].forEach(n=>{
+  const btn = document.createElement('button');
+  btn.className = 'degree-btn' + (n===currentTrees ? ' active':'');
+  btn.textContent = 'nTrees=' + n;
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.degree-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    setTrees(n);
+  });
+  treeRow.appendChild(btn);
+});
+
+const analystToggle = document.getElementById('analystToggle');
+const analystPanel = document.getElementById('analystPanel');
+analystToggle.addEventListener('change', ()=>{
+  analystPanel.classList.toggle('show', analystToggle.checked);
+  if(analystToggle.checked) setTrees(currentTrees);
+});
+
+updateBasic();
+</script>
+
+</body>
+</html>

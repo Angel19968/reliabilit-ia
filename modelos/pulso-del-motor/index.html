@@ -1,0 +1,890 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pulso del Motor — RELIABILIT-IA</title>
+<meta name="description" content="Detecta barras de rotor rotas con firma de corriente (MCSA) y una pinza amperimétrica, sin detener el motor. Simulación en vivo del espectro y clasificador ajustable.">
+
+<meta property="og:title" content="Pulso del Motor — RELIABILIT-IA">
+<meta property="og:description" content="Mueve la carga y la profundidad de banda lateral y mira en vivo qué tan cerca está tu motor de una barra rota.">
+<meta property="og:image" content="../../assets/og-image.png">
+<meta property="og:type" content="website">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#0a0a0f;
+    --panel:#121218;
+    --panel2:#181820;
+    --border:#22222c;
+    --text:#f4f4f7;
+    --muted:#9a9aa8;
+    --success:#3ecfa0;
+    --cta:#f4722e;
+    --accent:#7b5ea7;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    background:var(--bg); color:var(--text); font-family:'DM Mono', monospace;
+    line-height:1.6; -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:'Syne', sans-serif; font-weight:800; letter-spacing:-0.02em;}
+  a{color:var(--success);}
+  .wrap{max-width:960px;margin:0 auto;padding:0 24px;}
+  .back{display:inline-block; font-size:13px; color:var(--muted); text-decoration:none; padding-top:20px;}
+  .back:hover{color:var(--success);}
+
+  header.hero{padding:24px 0 40px; border-bottom:1px solid var(--border);}
+  .badge{
+    display:inline-block; font-size:12px; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--success); border:1px solid var(--success); border-radius:999px;
+    padding:5px 14px; margin-bottom:18px;
+  }
+  h1{font-size:clamp(28px,5vw,44px); line-height:1.1; margin-bottom:14px;}
+  .lead{font-family:'Instrument Serif', serif; font-style:italic; font-size:20px; color:var(--muted); max-width:640px;}
+
+  section{padding:40px 0; border-bottom:1px solid var(--border);}
+  section h2{font-size:22px; margin-bottom:14px;}
+  .context p{color:var(--muted); max-width:640px; font-size:15px; text-align:justify;}
+  .context p + p{margin-top:12px;}
+
+  .panel{
+    background:var(--panel); border:1px solid var(--border); border-radius:16px; padding:28px;
+  }
+
+  .toggle-row{display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; flex-wrap:wrap; gap:12px;}
+  .toggle-row .label{font-size:15px; color:var(--muted);}
+  .switch{
+    display:inline-flex; align-items:center; gap:10px; cursor:pointer; user-select:none;
+    font-size:14px; color:var(--text);
+  }
+  .switch input{display:none;}
+  .track{
+    width:42px; height:24px; background:var(--border); border-radius:999px; position:relative; transition:.2s;
+    flex-shrink:0;
+  }
+  .track::after{
+    content:''; position:absolute; top:3px; left:3px; width:18px; height:18px; border-radius:50%;
+    background:var(--muted); transition:.2s;
+  }
+  .switch input:checked + .track{background:var(--accent);}
+  .switch input:checked + .track::after{transform:translateX(18px); background:#fff;}
+
+  .demo-grid{display:grid; grid-template-columns:1.05fr 1fr; gap:32px;}
+  @media (max-width:760px){ .demo-grid{grid-template-columns:1fr;} }
+
+  .slider-group{margin-bottom:22px;}
+  .slider-group label{display:flex; justify-content:space-between; font-size:16px; margin-bottom:8px;}
+  .slider-group label .val{color:var(--success); font-weight:500;}
+  input[type=range]{
+    width:100%; -webkit-appearance:none; height:6px; border-radius:999px; background:var(--border); outline:none;
+  }
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none; width:20px; height:20px; border-radius:50%;
+    background:var(--success); cursor:pointer; border:3px solid var(--bg);
+  }
+  input[type=range]::-moz-range-thumb{
+    width:20px; height:20px; border-radius:50%; background:var(--success); cursor:pointer; border:3px solid var(--bg);
+  }
+  .hint{font-size:13px; color:var(--muted); display:flex; justify-content:space-between; margin-top:4px;}
+
+  .result{
+    margin-top:26px; padding:22px; border-radius:14px; background:var(--panel2); border:1px solid var(--border);
+    display:flex; align-items:center; gap:20px; flex-wrap:wrap;
+  }
+  .result .risk-dot{width:16px; height:16px; border-radius:50%; flex-shrink:0;}
+  .result .risk-text h3{font-size:23px; margin-bottom:6px;}
+  .result .risk-text p{font-size:15px; color:var(--muted);}
+  .confidence-line{font-size:14px !important; font-weight:600; margin-top:10px !important; color:var(--text) !important;}
+  .confidence-note{font-size:13px !important; color:var(--muted); margin-top:2px !important;}
+
+  .prob-bars{margin-top:16px; width:100%;}
+  .prob-row{display:flex; align-items:center; gap:10px; margin-bottom:6px; font-size:13px;}
+  .prob-row .prob-label{width:82px; flex-shrink:0; color:var(--muted);}
+  .prob-row .prob-track{flex:1; height:8px; background:var(--border); border-radius:999px; overflow:hidden;}
+  .prob-row .prob-fill{height:100%; border-radius:999px; transition:width .25s ease;}
+  .prob-row .prob-pct{width:40px; text-align:right; flex-shrink:0; color:var(--text);}
+
+  .live-col h3{font-size:14px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:14px; font-family:'DM Mono',monospace; font-weight:500;}
+  .instrument-wrap{margin-bottom:18px;}
+  #instrument{width:100%; max-width:420px; height:200px; background:radial-gradient(circle at 50% 30%, #15151e, var(--bg)); border:1px solid var(--border); border-radius:12px; display:block;}
+  .instrument-stats{font-size:13px; color:var(--muted); line-height:1.9; margin-top:10px; display:flex; gap:22px; flex-wrap:wrap;}
+  .instrument-stats b{color:var(--text); font-size:15px;}
+  .gauge-wrap{margin-bottom:16px;}
+  .gauge-label{font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:8px;}
+  .gauge-bar{height:12px; background:var(--border); border-radius:999px; overflow:hidden; margin:8px 0; position:relative;}
+  .gauge-fill{height:100%; width:0%; transition:background .35s ease, width .3s ease;}
+  .gauge-value{font-size:16px; color:var(--text);}
+  .gauge-value b{font-size:20px;}
+  .gauge-note{font-size:13px; color:var(--muted);}
+  .sim-note{font-size:13px; color:var(--muted); line-height:1.7; margin-top:6px;}
+
+  .analyst{margin-top:32px; padding-top:26px; border-top:1px dashed var(--border); display:none;}
+  .analyst.show{display:block;}
+  .degree-row{display:flex; gap:8px; margin-bottom:18px; flex-wrap:wrap;}
+  .degree-btn{
+    font-family:'DM Mono', monospace; font-size:14px; padding:9px 18px; border-radius:8px;
+    border:1px solid var(--border); background:transparent; color:var(--text); cursor:pointer;
+    transition:background .15s, border-color .15s;
+  }
+  .degree-btn.active{background:var(--accent); border-color:var(--accent); color:#fff;}
+  #chart{width:100%; height:340px; background:var(--bg); border:1px solid var(--border); border-radius:12px; display:block;}
+  #residuals{width:100%; height:200px; background:var(--bg); border:1px solid var(--border); border-radius:12px; display:block; margin-top:18px;}
+  .metrics{display:flex; gap:24px; margin-top:16px; flex-wrap:wrap; font-size:14px; color:var(--muted);}
+  .metrics b{color:var(--text);}
+  .fit-badge{margin-top:14px; font-size:15px; font-weight:600; padding:10px 14px; border-radius:10px; background:var(--panel2); display:inline-block;}
+
+  .dataset-wrap{margin-top:24px;}
+  .dataset-label{font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:8px;}
+  .dataset-scroll{max-height:260px; overflow-y:auto; border:1px solid var(--border); border-radius:12px;}
+  .dataset-table{width:100%; border-collapse:collapse; font-size:13px;}
+  .dataset-table th{position:sticky; top:0; background:var(--panel2); color:var(--muted); text-align:left; font-weight:500; padding:8px 12px; border-bottom:1px solid var(--border); text-transform:uppercase; letter-spacing:.04em; font-size:11px;}
+  .dataset-table td{padding:7px 12px; border-bottom:1px solid var(--border); color:var(--text);}
+  .dataset-table tr:last-child td{border-bottom:none;}
+  .dataset-table td.set-train{color:var(--accent);}
+  .dataset-table td.set-test{color:var(--muted);}
+  .dataset-note{font-size:12px; color:var(--muted); margin-top:8px;}
+
+  .business p{color:var(--muted); font-size:16px; max-width:640px; text-align:justify;}
+  .business .stat{color:var(--success); font-weight:500;}
+  .business-grid{display:grid; grid-template-columns:1.1fr 1fr; gap:32px; align-items:start; margin-top:8px;}
+  @media (max-width:760px){ .business-grid{grid-template-columns:1fr;} }
+  .biz-action{margin-top:18px; padding:18px; border-radius:12px; background:var(--panel2); border:1px solid var(--border); transition:border-color .3s;}
+  .biz-action .biz-title{font-size:17px; font-weight:600;}
+  .biz-action .biz-detail{font-size:14px; color:var(--muted); margin-top:6px;}
+  #projection{width:100%; height:230px; background:var(--bg); border:1px solid var(--border); border-radius:12px; display:block;}
+
+  .cta-row{display:flex; gap:14px; flex-wrap:wrap; margin-top:8px;}
+  .btn{
+    font-family:'DM Mono', monospace; font-size:14px; padding:12px 22px; border-radius:10px;
+    text-decoration:none; border:1px solid var(--border); color:var(--text); display:inline-block;
+  }
+  .btn.primary{background:var(--cta); border-color:var(--cta); color:#0a0a0f; font-weight:600;}
+  .btn.ghost:hover{border-color:var(--accent);}
+
+  .contact-card{
+    display:grid; grid-template-columns:1.1fr 1fr; gap:28px;
+    background:var(--panel2); border:1px solid var(--border); border-radius:16px;
+    padding:28px; margin-top:28px;
+  }
+  @media (max-width:700px){ .contact-card{grid-template-columns:1fr;} }
+  .contact-card h3{font-size:19px; margin-bottom:8px;}
+  .contact-card p{font-size:14px; color:var(--muted); max-width:420px; text-align:justify;}
+  .contact-links{display:flex; flex-direction:column; gap:12px;}
+  .contact-row{
+    display:flex; align-items:center; gap:14px; padding:12px 16px; border-radius:12px;
+    background:var(--panel); border:1px solid var(--border); text-decoration:none; color:var(--text);
+    transition:border-color .2s;
+  }
+  .contact-row:hover{border-color:var(--success);}
+  .contact-icon{font-size:20px; width:32px; text-align:center; flex-shrink:0;}
+  .contact-text{font-size:14px; line-height:1.5;}
+  .contact-text b{display:block; font-size:15px;}
+
+  footer{padding:36px 0; text-align:center;}
+  footer p{font-size:13px; color:var(--muted); max-width:560px; margin:0 auto;}
+  .footer-links{display:flex; justify-content:center; gap:18px; flex-wrap:wrap; margin-bottom:16px; font-size:13px;}
+  .footer-links a{color:var(--muted); text-decoration:none;}
+  .footer-links a:hover{color:var(--success);}
+
+  @media (max-width:520px){
+    .result{flex-direction:column; align-items:flex-start;}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <a class="back" href="../../">← Volver al catálogo RELIABILIT-IA</a>
+
+  <header class="hero">
+    <div class="badge">Nuevas tecnologías · Motor</div>
+    <span class="badge" style="border-color:var(--accent); color:var(--accent); margin-left:8px;">Aprendizaje supervisado · Clasificación</span>
+    <h1>Pulso del Motor</h1>
+    <p class="lead">¿Qué tan cerca está tu motor de una barra de rotor rota, y qué tan seguro puedes estar con solo una pinza amperimétrica?</p>
+  </header>
+
+  <section class="context">
+    <h2>El problema</h2>
+    <p>Para saber si un motor tiene barras de rotor dañadas, la forma tradicional es detenerlo y abrirlo — algo que en planta cuesta producción y solo se hace cuando ya hay sospecha fuerte. El Análisis de Firma de Corriente (MCSA, por sus siglas en inglés) permite mirar "adentro" del motor sin detenerlo: basta con una pinza amperimétrica y un analizador de espectro. Cuando una barra del rotor se rompe o fisura, aparecen dos picos pequeños ("bandas laterales") a los costados del pico principal de corriente, separados por una distancia que depende del deslizamiento del motor. Entre más profunda esa banda lateral respecto al pico principal, más severo el daño.</p>
+    <p>Este demo simula esa lectura: mueve la carga del motor y la profundidad de banda lateral medida, y mira en vivo qué severidad indica — y qué tan confiable es esa lectura.</p>
+  </section>
+
+  <section id="demo">
+    <h2>Demo interactivo</h2>
+    <div class="panel">
+      <div class="toggle-row">
+        <span class="label">Clasificación por umbrales de referencia — mueve los sliders para simular una lectura de campo.</span>
+        <label class="switch">
+          <span>Modo Analista</span>
+          <input type="checkbox" id="analystToggle">
+          <span class="track"></span>
+        </label>
+      </div>
+
+      <div class="demo-grid">
+        <div class="controls-col">
+          <div class="slider-group">
+            <label>Carga del motor <span class="val" id="loadVal">55 %</span></label>
+            <input type="range" id="loadSlider" min="10" max="100" step="1" value="55">
+            <div class="hint"><span>10 % (marcha en vacío)</span><span>100 % (carga nominal)</span></div>
+          </div>
+
+          <div class="slider-group">
+            <label>Profundidad de banda lateral medida <span class="val" id="dbVal">-38.0 dB</span></label>
+            <input type="range" id="dbSlider" min="-55" max="-15" step="0.5" value="-38">
+            <div class="hint"><span>-55 dB (sano)</span><span>-15 dB (severo)</span></div>
+          </div>
+
+          <div class="result" id="resultBox">
+            <div class="risk-dot" id="riskDot"></div>
+            <div class="risk-text">
+              <h3 id="riskTitle">Calculando…</h3>
+              <p id="riskDetail"></p>
+              <p class="confidence-line" id="confidenceLine"></p>
+              <p class="confidence-note" id="confidenceNote"></p>
+              <div class="prob-bars" id="probBars"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="live-col">
+          <h3>Simulación en vivo</h3>
+          <div class="instrument-wrap">
+            <canvas id="instrument" width="420" height="200"></canvas>
+            <div class="instrument-stats">
+              <div>Frecuencia de línea: <b>60.0 Hz</b></div>
+              <div>Deslizamiento estimado: <b id="slipStat">–</b></div>
+              <div>Separación de bandas: <b id="offsetStat">–</b></div>
+            </div>
+          </div>
+
+          <div class="gauge-wrap">
+            <div class="gauge-label">Índice de severidad de banda lateral (0-100)</div>
+            <div class="gauge-bar"><div class="gauge-fill" id="gaugeFill"></div></div>
+            <div class="gauge-value"><b id="gaugeValue">0</b> <span class="gauge-note">0 = -55dB (sano), 100 = -15dB (severo)</span></div>
+          </div>
+
+          <p class="sim-note">Simulación ilustrativa: el espectro de corriente (pico de línea + bandas laterales) se dibuja a partir de los mismos valores de los sliders — no proviene de una pinza amperimétrica real.</p>
+        </div>
+      </div>
+
+      <div class="analyst" id="analystPanel">
+        <h3 style="font-size:18px; text-transform:none; letter-spacing:0; margin-bottom:8px; color:var(--text);">Reentrenar en vivo (k vecinos más cercanos)</h3>
+        <p style="font-size:15px; color:var(--muted); margin-bottom:18px; text-align:justify;">Los umbrales fijos (-38 / -30 / -22 dB) son una tabla de referencia genérica. Un modelo k-NN entrenado con un historial de 140 motores —cada uno con conteo real de barras rotas confirmado en taller al momento de la medición— puede aprender el patrón real de la firma de corriente, en vez de depender de un umbral único para todos los motores y cargas. El set se divide en 93 casos de entrenamiento (●) y 47 reservados para probar qué tan bien generaliza (○). Elige k: con k=1 el modelo memoriza cada punto de entrenamiento (incluido su ruido); con k muy alto, promedia tantos vecinos que diluye las fronteras entre clases.</p>
+
+        <div class="dataset-wrap">
+          <div class="dataset-label">Vista del dataset de entrenamiento</div>
+          <div class="dataset-scroll">
+            <table class="dataset-table">
+              <thead><tr><th>#</th><th>Fecha</th><th>Banda lateral (dB)</th><th>Deslizamiento (%)</th><th>Barras rotas (real)</th><th>Clase real</th><th>Set</th></tr></thead>
+              <tbody id="datasetBody"></tbody>
+            </table>
+          </div>
+          <p class="dataset-note" id="datasetNote"></p>
+        </div>
+
+        <div class="degree-row" id="degreeRow"></div>
+        <canvas id="chart" width="800" height="340"></canvas>
+        <canvas id="residuals" width="800" height="200"></canvas>
+        <div class="metrics">
+          <span>k: <b id="mDepth">9</b></span>
+          <span>Exactitud entrenamiento: <b id="mAccTrain">–</b></span>
+          <span>Exactitud prueba: <b id="mAccTest">–</b></span>
+        </div>
+        <div class="fit-badge" id="mFitBadge">–</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="business">
+    <h2>¿Qué significa para tu planta?</h2>
+    <div class="business-grid">
+      <div>
+        <p>Con la lectura actual, el motor se clasifica como <span class="stat" id="bizLevelInline">Sano</span>. Detectar una barra rota en etapa "Incipiente" en vez de "Severo" típicamente cambia una parada de emergencia con motor quemado (rebobinado + reemplazo de rotor + producción detenida) por una intervención planificada en la próxima ventana de mantenimiento — sin abrir el motor para confirmar la sospecha.</p>
+        <div class="biz-action" id="bizAction">
+          <div class="biz-title" id="bizTitle">Calculando…</div>
+          <div class="biz-detail" id="bizDetail"></div>
+        </div>
+      </div>
+      <div>
+        <div class="gauge-label">Costo estimado de intervención por nivel</div>
+        <canvas id="projection" width="480" height="230"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <section id="cta">
+    <h2>De esta demo a tu planta</h2>
+    <p style="color:var(--muted); max-width:640px; margin-bottom:20px; text-align:justify;">Los umbrales de dB, las clases de severidad y la simulación de este demo son de ejemplo, ajustados sobre datos sintéticos — sirven para explicar la idea, no para diagnosticar tu motor real. Llevarlo a tu planta implica estandarizar cómo capturas tus datos, analizarlos y prepararlos a fondo, y construir las variables que de verdad explican el problema. Con eso, nuestro motor AutoML elige y ajusta el modelo correcto para tu caso, calibra sus parámetros para que aprenda el patrón real —sin memorizar de más ni de menos— y afina las predicciones para evitar dos errores costosos: falsas alarmas, y algo peor, que el motor falle sin que el modelo lo haya anticipado. Se adapta al tipo de motor y a la industria —minería, manufactura, energía, alimentos— cuando la calibramos con tus datos. Si quieres recorrer ese proceso, conversemos.</p>
+    <div class="cta-row">
+      <a class="btn primary" href="https://chat.whatsapp.com/GvBz1tuUeNZ0xwTkjsuE3z" target="_blank" rel="noopener">Unirme a la comunidad de WhatsApp</a>
+      <a class="btn ghost" href="https://www.linkedin.com/company/reliabilit-ia/" target="_blank" rel="noopener">Seguir en LinkedIn</a>
+      <a class="btn ghost" href="https://www.youtube.com/@miguelangelcayllahuaquispe998" target="_blank" rel="noopener">Ver en YouTube</a>
+    </div>
+
+    <div class="contact-card">
+      <div>
+        <h3>¿Hablamos del estado de tus motores?</h3>
+        <p>Si tienes lecturas de corriente o quieres validar este análisis con tu planta, escríbeme directamente.</p>
+      </div>
+      <div class="contact-links">
+        <a class="contact-row" href="https://wa.me/51997610310?text=Hola%20Miguel%2C%20vi%20el%20demo%20Pulso%20del%20Motor%20y%20quiero%20conversar%20sobre%20la%20calibracion%20para%20mi%20planta" target="_blank" rel="noopener">
+          <span class="contact-icon">💬</span>
+          <span class="contact-text"><b>WhatsApp</b>+51 997 610 310</span>
+        </a>
+        <a class="contact-row" href="https://www.linkedin.com/in/miguelcayllahua/" target="_blank" rel="noopener">
+          <span class="contact-icon">in</span>
+          <span class="contact-text"><b>LinkedIn</b>Miguel Angel Cayllahua Quispe</span>
+        </a>
+        <a class="contact-row" href="mailto:miguelcquispe@gmail.com">
+          <span class="contact-icon">✉</span>
+          <span class="contact-text"><b>Correo</b>miguelcquispe@gmail.com</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-links">
+      <a href="https://chat.whatsapp.com/GvBz1tuUeNZ0xwTkjsuE3z" target="_blank" rel="noopener">WhatsApp</a>
+      <a href="https://www.youtube.com/@miguelangelcayllahuaquispe998" target="_blank" rel="noopener">YouTube</a>
+      <a href="https://www.linkedin.com/company/reliabilit-ia/" target="_blank" rel="noopener">LinkedIn empresa</a>
+      <a href="https://www.linkedin.com/in/miguelcayllahua/" target="_blank" rel="noopener">LinkedIn personal</a>
+      <a href="mailto:miguelcquispe@gmail.com">Correo</a>
+    </div>
+    <p style="text-align:justify;">Contenido con fines educativos. La metodología es real; los datos y la simulación de esta demo son sintéticos para poder compartirlos públicamente. Se calibra con tus propios datos —sin importar el tipo de motor o la industria— cuando trabajamos juntos. Modelo de ejemplo, no una fórmula fija.</p>
+  </footer>
+</div>
+
+<script>
+/* =========================================================
+   Definición de clases y color de severidad (compartido por
+   Modo Básico y Modo Analista).
+   ========================================================= */
+const LEVELS = ['Sano','Incipiente','Moderado','Severo'];
+const LEVEL_COLORS = ['#3ecfa0','#a8d966','#e8c547','#f4722e'];
+const LEVEL_DETAIL = [
+  'Las bandas laterales están muy por debajo de la fundamental — no hay evidencia de barras rotas. Mantener ronda de monitoreo habitual.',
+  'Aparece una banda lateral incipiente, consistente con una micro-fisura o barra en etapa temprana de daño. Repetir la medición en 2-4 semanas para confirmar tendencia.',
+  'Banda lateral clara y sostenida. Indicio de una o más barras dañadas. Programar inspección física en la próxima parada.',
+  'Banda lateral muy próxima a la fundamental — señal fuerte de barras rotas múltiples. Priorizar intervención antes de la próxima falla no programada.'
+];
+const DB_MIN = -55, DB_MAX = -15;
+const THRESHOLDS = [-38, -30, -22];
+function classify(dB){
+  if(dB < THRESHOLDS[0]) return 0;
+  if(dB < THRESHOLDS[1]) return 1;
+  if(dB < THRESHOLDS[2]) return 2;
+  return 3;
+}
+function slipFromLoad(loadPct){
+  return 0.6 + (loadPct/100)*3.4; // % — rango típico de motores de inducción
+}
+
+/* =========================================================
+   MODO BÁSICO
+   ========================================================= */
+const loadSlider = document.getElementById('loadSlider');
+const dbSlider = document.getElementById('dbSlider');
+const loadVal = document.getElementById('loadVal');
+const dbVal = document.getElementById('dbVal');
+const riskDot = document.getElementById('riskDot');
+const riskTitle = document.getElementById('riskTitle');
+const riskDetail = document.getElementById('riskDetail');
+const confidenceLine = document.getElementById('confidenceLine');
+const confidenceNote = document.getElementById('confidenceNote');
+const probBars = document.getElementById('probBars');
+const gaugeFill = document.getElementById('gaugeFill');
+const gaugeValue = document.getElementById('gaugeValue');
+const slipStat = document.getElementById('slipStat');
+const offsetStat = document.getElementById('offsetStat');
+const bizLevelInline = document.getElementById('bizLevelInline');
+const bizAction = document.getElementById('bizAction');
+const bizTitle = document.getElementById('bizTitle');
+const bizDetail = document.getElementById('bizDetail');
+const projectionCanvas = document.getElementById('projection');
+const pctx = projectionCanvas.getContext('2d');
+
+// "probabilidades" pseudo-suaves: qué tan cerca está la lectura de cada
+// clase, convertido a pesos tipo softmax. Aproximación ilustrativa de
+// confianza por clase, no la salida real de un k-NN.
+function classWeights(dB){
+  const centers = [-46, -34, -26, -18];
+  const temp = 5.5;
+  const raw = centers.map(c => Math.exp(-((dB-c)**2)/(2*temp*temp)));
+  const sum = raw.reduce((a,b)=>a+b,0);
+  return raw.map(r=>r/sum);
+}
+
+function buildProbBars(weights, activeIdx){
+  probBars.innerHTML = '';
+  weights.forEach((w,i)=>{
+    const row = document.createElement('div');
+    row.className = 'prob-row';
+    const pct = Math.round(w*100);
+    row.innerHTML = `
+      <span class="prob-label">${LEVELS[i]}</span>
+      <span class="prob-track"><span class="prob-fill" style="width:${pct}%; background:${LEVEL_COLORS[i]}; opacity:${i===activeIdx?1:0.55}"></span></span>
+      <span class="prob-pct">${pct}%</span>
+    `;
+    probBars.appendChild(row);
+  });
+}
+
+function drawProjection(activeIdx, scorePct){
+  const W = projectionCanvas.width, H = projectionCanvas.height;
+  pctx.clearRect(0,0,W,H);
+  const padL = 50, padR = 20, padT = 20, padB = 46;
+  const costs = [400, 1800, 5500, 15000]; // soles, ilustrativo: creciente por nivel
+  const maxCost = costs[costs.length-1]*1.1;
+  const bw = (W-padL-padR)/costs.length;
+
+  pctx.strokeStyle = '#22222c';
+  pctx.lineWidth = 1;
+  pctx.beginPath();
+  pctx.moveTo(padL, padT); pctx.lineTo(padL, H-padB); pctx.lineTo(W-padR, H-padB);
+  pctx.stroke();
+
+  costs.forEach((c,i)=>{
+    const barH = (c/maxCost)*(H-padT-padB);
+    const x = padL + i*bw + bw*0.18;
+    const y = H-padB-barH;
+    const w = bw*0.64;
+    pctx.fillStyle = i===activeIdx ? LEVEL_COLORS[i] : 'rgba(244,244,247,0.14)';
+    pctx.fillRect(x,y,w,barH);
+    pctx.fillStyle = '#a8a8b4';
+    pctx.font = '11px DM Mono, monospace';
+    pctx.fillText(LEVELS[i], x-2, H-padB+16);
+    if(i===activeIdx){
+      pctx.fillStyle = '#f4f4f7';
+      pctx.font = '12px DM Mono, monospace';
+      pctx.fillText('S/. '+c.toLocaleString('es-PE'), x-4, y-8);
+    }
+  });
+  pctx.fillStyle = '#8a8a98';
+  pctx.font = '11px DM Mono, monospace';
+  pctx.fillText('costo estimado de intervención en cada nivel (ilustrativo)', padL, 14);
+
+  // Indicador continuo: posición real de la banda lateral (dB) medida
+  // dentro del rango completo, no solo a qué nivel discreto pertenece.
+  if(typeof scorePct === 'number'){
+    const by = H-12, bh = 5;
+    pctx.fillStyle = 'rgba(244,244,247,0.10)';
+    pctx.fillRect(padL, by, W-padL-padR, bh);
+    const fw = Math.min(1,Math.max(0,scorePct/100))*(W-padL-padR);
+    pctx.fillStyle = LEVEL_COLORS[activeIdx];
+    pctx.fillRect(padL, by, fw, bh);
+    pctx.fillStyle = '#c9c9d4';
+    pctx.font = '10px DM Mono, monospace';
+    pctx.fillText('severidad real (banda lateral): '+scorePct.toFixed(0)+'/100', padL, by-4);
+  }
+}
+
+function updateBasic(){
+  const load = parseFloat(loadSlider.value);
+  const dB = parseFloat(dbSlider.value);
+  loadVal.textContent = load.toFixed(0) + ' %';
+  dbVal.textContent = dB.toFixed(1) + ' dB';
+
+  const slip = slipFromLoad(load);
+  const offsetHz = 2*slip*60/100;
+  slipStat.textContent = slip.toFixed(2) + ' %';
+  offsetStat.textContent = '±' + offsetHz.toFixed(2) + ' Hz';
+
+  const idx = classify(dB);
+  const color = LEVEL_COLORS[idx];
+
+  riskDot.style.background = color;
+  riskTitle.style.color = color;
+  riskTitle.textContent = LEVELS[idx] + ' — ' + dB.toFixed(1) + ' dB bajo la fundamental';
+  riskDetail.textContent = LEVEL_DETAIL[idx];
+
+  // confianza: distancia real al umbral más cercano (en dB). Cerca de un
+  // umbral, dos clases son casi igual de plausibles.
+  const distToThresh = Math.min(...THRESHOLDS.map(t=>Math.abs(dB-t)), dB-DB_MIN, DB_MAX-dB);
+  let confLevel, confColor, confNote;
+  if(distToThresh > 3){
+    confLevel = 'Alta'; confColor = 'var(--success)';
+    confNote = 'La lectura está lejos de cualquier umbral entre clases.';
+  } else if(distToThresh > 1.5){
+    confLevel = 'Media'; confColor = '#e8c547';
+    confNote = 'Cerca de un umbral — la clase vecina también es plausible.';
+  } else {
+    confLevel = 'Baja'; confColor = 'var(--cta)';
+    confNote = 'Justo en el borde entre dos niveles — trátalo como referencia, repite la medición.';
+  }
+  confidenceLine.textContent = 'Confianza de la clasificación: ' + confLevel;
+  confidenceLine.style.color = confColor;
+  confidenceNote.textContent = confNote;
+
+  const weights = classWeights(dB);
+  buildProbBars(weights, idx);
+
+  const pct = ((dB-DB_MIN)/(DB_MAX-DB_MIN))*100;
+  gaugeFill.style.width = Math.min(100,Math.max(0,pct)).toFixed(1) + '%';
+  gaugeFill.style.background = color;
+  gaugeValue.textContent = Math.round(pct);
+
+  bizLevelInline.textContent = LEVELS[idx];
+  bizLevelInline.style.color = color;
+  bizAction.style.borderColor = color;
+  bizTitle.style.color = color;
+  bizTitle.textContent = LEVELS[idx] + ' — ' + dB.toFixed(1) + ' dB';
+  bizDetail.textContent = LEVEL_DETAIL[idx];
+
+  drawProjection(idx, Math.min(100,Math.max(0,pct)));
+}
+loadSlider.addEventListener('input', updateBasic);
+dbSlider.addEventListener('input', updateBasic);
+updateBasic();
+
+/* =========================================================
+   SIMULACIÓN EN VIVO — espectro de corriente animado
+   (100% generado en cliente a partir de carga/dB, solo ilustrativo)
+   ========================================================= */
+const instrumentCanvas = document.getElementById('instrument');
+const ictx = instrumentCanvas.getContext('2d');
+
+function lerpColorRgb(c1, c2, t){
+  return c1.map((v,i)=> Math.round(v + (c2[i]-v)*Math.min(1,Math.max(0,t))));
+}
+function rgba(c, a){ return 'rgba(' + c[0] + ',' + c[1] + ',' + c[2] + ',' + a + ')'; }
+const COLOR_SUCCESS = [62,207,160];
+const COLOR_CTA = [244,114,46];
+let tPhase = 0;
+
+function drawSpectrum(load, dB){
+  const W = instrumentCanvas.width, H = instrumentCanvas.height;
+  ictx.clearRect(0,0,W,H);
+  const padL = 46, padR = 16, padT = 18, padB = 30;
+
+  const slip = slipFromLoad(load);
+  const offsetHz = 2*slip*60/100;
+  const fMin = 60 - 8, fMax = 60 + 8;
+  const xOf = f => padL + ((f-fMin)/(fMax-fMin))*(W-padL-padR);
+
+  // eje
+  ictx.strokeStyle = '#22222c';
+  ictx.lineWidth = 1;
+  ictx.beginPath();
+  ictx.moveTo(padL, padT); ictx.lineTo(padL, H-padB); ictx.lineTo(W-padR, H-padB);
+  ictx.stroke();
+  ictx.fillStyle = '#8a8a98';
+  ictx.font = '10px DM Mono, monospace';
+  ictx.fillText('55Hz', padL-6, H-padB+14);
+  ictx.fillText('60Hz', xOf(60)-10, H-padB+14);
+  ictx.fillText('65Hz', W-padR-24, H-padB+14);
+
+  // piso de ruido animado
+  tPhase += 0.14;
+  ictx.strokeStyle = 'rgba(122,122,140,0.35)';
+  ictx.lineWidth = 1;
+  ictx.beginPath();
+  for(let px=padL; px<=W-padR; px+=3){
+    const noise = (Math.sin(px*0.35+tPhase) * 0.5 + Math.random()*0.5) * 3;
+    const y = H-padB-4-Math.abs(noise);
+    if(px===padL) ictx.moveTo(px,y); else ictx.lineTo(px,y);
+  }
+  ictx.stroke();
+
+  const dBnorm = (dB-DB_MIN)/(DB_MAX-DB_MIN); // 0 sano .. 1 severo
+  const sidebandColor = lerpColorRgb(COLOR_SUCCESS, COLOR_CTA, dBnorm);
+  const peakH = H-padT-padB;
+  const sideH = peakH * (0.06 + dBnorm*0.62); // más severo = banda más alta
+
+  function drawPeak(f, h, color, width){
+    const x = xOf(f);
+    const grad = ictx.createLinearGradient(0, H-padB-h, 0, H-padB);
+    grad.addColorStop(0, rgba(color, 0.95));
+    grad.addColorStop(1, rgba(color, 0.15));
+    ictx.fillStyle = grad;
+    ictx.beginPath();
+    ictx.moveTo(x-width, H-padB);
+    ictx.lineTo(x, H-padB-h);
+    ictx.lineTo(x+width, H-padB);
+    ictx.closePath();
+    ictx.fill();
+  }
+
+  // bandas laterales
+  drawPeak(60-offsetHz, sideH, sidebandColor, 5);
+  drawPeak(60+offsetHz, sideH, sidebandColor, 5);
+  // fundamental
+  drawPeak(60, peakH*0.92, [122,122,140], 4);
+
+  ictx.fillStyle = '#c9c9d4';
+  ictx.font = '11px DM Mono, monospace';
+  ictx.fillText('f₁ (fundamental)', xOf(60)-30, padT+10);
+  ictx.fillStyle = rgba(sidebandColor,0.9);
+  ictx.fillText('bandas laterales (2×s×f₁)', padL, padT+10);
+}
+
+function mainLoop(){
+  const load = parseFloat(loadSlider.value);
+  const dB = parseFloat(dbSlider.value);
+  drawSpectrum(load, dB);
+  requestAnimationFrame(mainLoop);
+}
+requestAnimationFrame(mainLoop);
+
+/* =========================================================
+   MODO ANALISTA — dataset sintético + clasificador k-NN
+   ========================================================= */
+function seededRandom(seed){
+  let s = seed;
+  return function(){
+    s = (s*9301+49297) % 233280;
+    return s/233280;
+  };
+}
+function mapBrokenToClass(b){
+  if(b<=0) return 0;
+  if(b===1) return 1;
+  if(b===2) return 2;
+  return 3; // 3 o 4 barras rotas
+}
+// Ruido de medición realista (mismo espíritu que en los otros módulos):
+// suficiente para que k=1 memorice el ruido y un k demasiado alto diluya
+// el patrón. Validado por simulación externa (seed=17, ruido=16dB) antes
+// de fijar este valor.
+const REF_DATE = new Date('2026-07-15');
+const MESES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+function fmtDate(d){ return String(d.getDate()).padStart(2,'0')+' '+MESES[d.getMonth()]+' '+d.getFullYear(); }
+function dateFromDaysAgo(daysAgo){ const d = new Date(REF_DATE); d.setDate(d.getDate()-Math.round(daysAgo)); return d; }
+
+const rnd = seededRandom(17);
+const dataset = [];
+for(let i=0;i<140;i++){
+  const r = rnd();
+  let brokenBars;
+  if(r<0.30) brokenBars=0;
+  else if(r<0.55) brokenBars=1;
+  else if(r<0.75) brokenBars=2;
+  else if(r<0.90) brokenBars=3;
+  else brokenBars=4;
+  const loadPct = 10 + rnd()*90;
+  const slip = slipFromLoad(loadPct);
+  const dBbase = -50 + brokenBars*8;
+  const dBmeasured = dBbase + slip*0.8 + (rnd()-0.5)*16;
+  const date = dateFromDaysAgo(rnd()*450);
+  dataset.push({dB: dBmeasured, slip, label: mapBrokenToClass(brokenBars), loadPct, brokenBars, date});
+}
+const dBs = dataset.map(d=>d.dB), slips = dataset.map(d=>d.slip);
+const NORM = {
+  dBmin: Math.min(...dBs), dBmax: Math.max(...dBs),
+  slMin: Math.min(...slips), slMax: Math.max(...slips)
+};
+dataset.forEach(d=>{
+  d.nDB = (d.dB-NORM.dBmin)/(NORM.dBmax-NORM.dBmin);
+  d.nSlip = (d.slip-NORM.slMin)/(NORM.slMax-NORM.slMin);
+});
+const trainPoints = dataset.filter((_,i)=> i%3 !== 0);
+const testPoints = dataset.filter((_,i)=> i%3 === 0);
+
+function renderDatasetPreview(){
+  const tbody = document.getElementById('datasetBody');
+  const note = document.getElementById('datasetNote');
+  if(!tbody) return;
+  tbody.innerHTML = dataset.map((p,i)=>{
+    const isTrain = i%3 !== 0;
+    return `<tr><td>${i+1}</td><td>${fmtDate(p.date)}</td><td>${p.dB.toFixed(1)}</td><td>${p.slip.toFixed(2)}</td><td>${p.brokenBars}</td><td>${LEVELS[p.label]}</td><td class="${isTrain?'set-train':'set-test'}">${isTrain?'Entrenamiento':'Prueba'}</td></tr>`;
+  }).join('');
+  const sortedDates = dataset.map(p=>p.date).sort((a,b)=>a-b);
+  note.textContent = `${dataset.length} motores en el historial, registrados entre ${fmtDate(sortedDates[0])} y ${fmtDate(sortedDates[sortedDates.length-1])} — ${trainPoints.length} de entrenamiento, ${testPoints.length} de prueba.`;
+}
+renderDatasetPreview();
+
+function knnPredict(train, point, k){
+  const dists = train.map(t=>{
+    const dd = t.nDB-point.nDB, ds = t.nSlip-point.nSlip;
+    return {d: Math.sqrt(dd*dd+ds*ds), label: t.label};
+  });
+  dists.sort((a,b)=>a.d-b.d);
+  const top = dists.slice(0,k);
+  const counts = {};
+  top.forEach(t=> counts[t.label]=(counts[t.label]||0)+1);
+  let best=null, bestC=-1;
+  Object.entries(counts).forEach(([l,c])=>{ if(c>bestC){bestC=c; best=parseInt(l);} });
+  return best;
+}
+function accuracyKnn(train, points, k){
+  let c=0;
+  points.forEach(p=>{ if(knnPredict(train,p,k)===p.label) c++; });
+  return c/points.length;
+}
+function perClassAccuracy(train, points, k){
+  const out = [];
+  for(let cls=0; cls<4; cls++){
+    const subset = points.filter(p=>p.label===cls);
+    out.push(subset.length ? accuracyKnn(train, subset, k) : null);
+  }
+  return out;
+}
+
+const chartCanvas = document.getElementById('chart');
+const cctx = chartCanvas.getContext('2d');
+const residualCanvas = document.getElementById('residuals');
+const rctx = residualCanvas.getContext('2d');
+let currentK = 9;
+
+function toPxChart(dB, slip, W, H, pad){
+  return [
+    pad + (dB-DB_MIN)/(DB_MAX-DB_MIN)*(W-2*pad),
+    H-pad - (slip-NORM.slMin)/(NORM.slMax-NORM.slMin)*(H-2*pad)
+  ];
+}
+function hexToRgb(hex){
+  const v = hex.replace('#','');
+  return [parseInt(v.slice(0,2),16), parseInt(v.slice(2,4),16), parseInt(v.slice(4,6),16)];
+}
+
+function drawDecisionMap(k){
+  const W = chartCanvas.width, H = chartCanvas.height;
+  const pad = 40;
+  cctx.clearRect(0,0,W,H);
+
+  const cell = 8;
+  for(let px=pad; px<W-pad; px+=cell){
+    for(let py=pad; py<H-pad; py+=cell){
+      const dB = DB_MIN + (px-pad)/(W-2*pad)*(DB_MAX-DB_MIN);
+      const slip = NORM.slMin + (1-(py-pad)/(H-2*pad))*(NORM.slMax-NORM.slMin);
+      const point = {nDB:(dB-NORM.dBmin)/(NORM.dBmax-NORM.dBmin), nSlip:(slip-NORM.slMin)/(NORM.slMax-NORM.slMin)};
+      const label = knnPredict(trainPoints, point, k);
+      cctx.fillStyle = rgba(hexToRgb(LEVEL_COLORS[label]), 0.16);
+      cctx.fillRect(px, py, cell, cell);
+    }
+  }
+
+  cctx.strokeStyle = '#22222c';
+  cctx.lineWidth = 1;
+  cctx.beginPath();
+  cctx.moveTo(pad, pad); cctx.lineTo(pad, H-pad); cctx.lineTo(W-pad, H-pad);
+  cctx.stroke();
+  cctx.fillStyle = '#a8a8b4';
+  cctx.font = '13px DM Mono, monospace';
+  cctx.fillText('banda lateral medida (dB bajo la fundamental)', W/2-120, H-10);
+  cctx.save();
+  cctx.translate(16, H/2+50);
+  cctx.rotate(-Math.PI/2);
+  cctx.fillText('deslizamiento (%)', 0, 0);
+  cctx.restore();
+
+  trainPoints.forEach(p=>{
+    const [x,y] = toPxChart(p.dB, p.slip, W, H, pad);
+    cctx.beginPath();
+    cctx.fillStyle = LEVEL_COLORS[p.label];
+    cctx.arc(x,y,4,0,Math.PI*2);
+    cctx.fill();
+  });
+  testPoints.forEach(p=>{
+    const [x,y] = toPxChart(p.dB, p.slip, W, H, pad);
+    cctx.beginPath();
+    cctx.fillStyle = LEVEL_COLORS[p.label];
+    cctx.globalAlpha = 0.35;
+    cctx.arc(x,y,5,0,Math.PI*2);
+    cctx.fill();
+    cctx.globalAlpha = 1;
+    cctx.strokeStyle = '#f4f4f7';
+    cctx.lineWidth = 1.3;
+    cctx.stroke();
+  });
+
+  cctx.fillStyle = '#a8a8b4';
+  cctx.font = '12px DM Mono, monospace';
+  cctx.fillText('● entrenamiento · ○ prueba · color = nivel de severidad', pad, pad-16);
+}
+
+// Matriz de confusión (conjunto de prueba) — reemplaza las barras de
+// exactitud por clase: muestra con qué otro nivel se confunde cada
+// error, no solo cuánto acierta cada uno.
+function drawConfusion(k){
+  const N = LEVELS.length;
+  const conf = Array.from({length:N},()=>new Array(N).fill(0));
+  testPoints.forEach(p=>{ conf[p.label][knnPredict(trainPoints,p,k)]++; });
+
+  const W = residualCanvas.width, H = residualCanvas.height;
+  rctx.clearRect(0,0,W,H);
+  const padL = 90, padT = 30, cellW = (W-padL-10)/N, cellH = (H-padT-6)/N;
+
+  rctx.fillStyle = '#c9c9d4';
+  rctx.font = '12px DM Mono, monospace';
+  rctx.fillText('Matriz de confusión (prueba) — filas = nivel real, columnas = predicho', padL-70, 14);
+
+  LEVELS.forEach((name,j)=>{
+    rctx.fillStyle = '#8a8a98';
+    rctx.font = '10px DM Mono, monospace';
+    rctx.fillText(name.slice(0,9), padL + j*cellW + 4, padT-6);
+  });
+  LEVELS.forEach((name,i)=>{
+    const y = padT + i*cellH;
+    rctx.fillStyle = '#8a8a98';
+    rctx.font = '10px DM Mono, monospace';
+    rctx.fillText(name.slice(0,10), 4, y+cellH*0.6);
+    LEVELS.forEach((_,j)=>{
+      const x = padL + j*cellW;
+      const val = conf[i][j];
+      const total = conf[i].reduce((a,b)=>a+b,0);
+      const intensity = total ? val/total : 0;
+      rctx.fillStyle = i===j ? rgba(hexToRgb(LEVEL_COLORS[i]), 0.15+intensity*0.6) : rgba([244,244,247], 0.04+intensity*0.22);
+      rctx.fillRect(x, y, cellW-4, cellH-4);
+      rctx.fillStyle = '#f4f4f7';
+      rctx.font = '13px DM Mono, monospace';
+      rctx.fillText(String(val), x+cellW/2-6, y+cellH*0.6);
+    });
+  });
+}
+
+function setK(k){
+  currentK = k;
+  const accTrain = accuracyKnn(trainPoints, trainPoints, k);
+  const accTest = accuracyKnn(trainPoints, testPoints, k);
+  const gap = accTrain - accTest;
+
+  document.getElementById('mDepth').textContent = k;
+  document.getElementById('mAccTrain').textContent = (accTrain*100).toFixed(1)+'%';
+  document.getElementById('mAccTest').textContent = (accTest*100).toFixed(1)+'%';
+
+  const badge = document.getElementById('mFitBadge');
+  if(accTrain < 0.66){
+    badge.textContent = '⚠ Subajuste — con k tan alto, el modelo promedia demasiados vecinos y diluye las fronteras entre clases.';
+    badge.style.color = '#e8c547';
+  } else if(gap > 0.15){
+    badge.textContent = '⚠ Sobreajuste — memoriza los puntos de entrenamiento (incluido su ruido) pero generaliza peor a datos nuevos.';
+    badge.style.color = 'var(--cta)';
+  } else {
+    badge.textContent = '✓ Ajuste razonable — generaliza bien a los datos de prueba.';
+    badge.style.color = 'var(--success)';
+  }
+
+  drawDecisionMap(k);
+  drawConfusion(k);
+}
+
+const degreeRow = document.getElementById('degreeRow');
+[1,3,5,7,9,15,21,31].forEach(k=>{
+  const btn = document.createElement('button');
+  btn.className = 'degree-btn' + (k===currentK ? ' active':'');
+  btn.textContent = 'k=' + k;
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.degree-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    setK(k);
+  });
+  degreeRow.appendChild(btn);
+});
+
+const analystToggle = document.getElementById('analystToggle');
+const analystPanel = document.getElementById('analystPanel');
+analystToggle.addEventListener('change', ()=>{
+  analystPanel.classList.toggle('show', analystToggle.checked);
+  if(analystToggle.checked) setK(currentK);
+});
+</script>
+
+</body>
+</html>

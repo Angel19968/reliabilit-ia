@@ -1,0 +1,827 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ojo Térmico — RELIABILIT-IA</title>
+<meta name="description" content="Detecta y mide puntos calientes en una imagen termográfica simulada de un panel eléctrico, usando segmentación por crecimiento de regiones y el criterio ΔT que ya se usa en inspecciones termográficas reales.">
+
+<meta property="og:title" content="Ojo Térmico — RELIABILIT-IA">
+<meta property="og:description" content="Mueve carga y severidad de una conexión y mira en vivo cómo el algoritmo aísla el punto caliente en la imagen térmica.">
+<meta property="og:image" content="../../assets/og-image.png">
+<meta property="og:type" content="website">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#0a0a0f;
+    --panel:#121218;
+    --panel2:#181820;
+    --border:#22222c;
+    --text:#f4f4f7;
+    --muted:#9a9aa8;
+    --success:#3ecfa0;
+    --cta:#f4722e;
+    --accent:#7b5ea7;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    background:var(--bg); color:var(--text); font-family:'DM Mono', monospace;
+    line-height:1.6; -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:'Syne', sans-serif; font-weight:800; letter-spacing:-0.02em;}
+  a{color:var(--success);}
+  .wrap{max-width:960px;margin:0 auto;padding:0 24px;}
+  .back{display:inline-block; font-size:13px; color:var(--muted); text-decoration:none; padding-top:20px;}
+  .back:hover{color:var(--success);}
+
+  header.hero{padding:24px 0 40px; border-bottom:1px solid var(--border);}
+  .badge{
+    display:inline-block; font-size:12px; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--success); border:1px solid var(--success); border-radius:999px;
+    padding:5px 14px; margin-bottom:18px;
+  }
+  h1{font-size:clamp(28px,5vw,44px); line-height:1.1; margin-bottom:14px;}
+  .lead{font-family:'Instrument Serif', serif; font-style:italic; font-size:20px; color:var(--muted); max-width:640px;}
+
+  section{padding:40px 0; border-bottom:1px solid var(--border);}
+  section h2{font-size:22px; margin-bottom:14px;}
+  .context p{color:var(--muted); max-width:640px; font-size:15px; text-align:justify;}
+  .context p + p{margin-top:12px;}
+
+  .panel{
+    background:var(--panel); border:1px solid var(--border); border-radius:16px; padding:28px;
+  }
+
+  .toggle-row{display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; flex-wrap:wrap; gap:12px;}
+  .toggle-row .label{font-size:15px; color:var(--muted);}
+  .switch{
+    display:inline-flex; align-items:center; gap:10px; cursor:pointer; user-select:none;
+    font-size:14px; color:var(--text);
+  }
+  .switch input{display:none;}
+  .track{
+    width:42px; height:24px; background:var(--border); border-radius:999px; position:relative; transition:.2s;
+    flex-shrink:0;
+  }
+  .track::after{
+    content:''; position:absolute; top:3px; left:3px; width:18px; height:18px; border-radius:50%;
+    background:var(--muted); transition:.2s;
+  }
+  .switch input:checked + .track{background:var(--accent);}
+  .switch input:checked + .track::after{transform:translateX(18px); background:#fff;}
+
+  .demo-grid{display:grid; grid-template-columns:1.05fr 1fr; gap:32px;}
+  @media (max-width:760px){ .demo-grid{grid-template-columns:1fr;} }
+
+  .slider-group{margin-bottom:22px;}
+  .slider-group label{display:flex; justify-content:space-between; font-size:16px; margin-bottom:8px;}
+  .slider-group label .val{color:var(--success); font-weight:500;}
+  input[type=range]{
+    width:100%; -webkit-appearance:none; height:6px; border-radius:999px; background:var(--border); outline:none;
+  }
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none; width:20px; height:20px; border-radius:50%;
+    background:var(--success); cursor:pointer; border:3px solid var(--bg);
+  }
+  input[type=range]::-moz-range-thumb{
+    width:20px; height:20px; border-radius:50%; background:var(--success); cursor:pointer; border:3px solid var(--bg);
+  }
+  .hint{font-size:13px; color:var(--muted); display:flex; justify-content:space-between; margin-top:4px;}
+
+  .result{
+    margin-top:26px; padding:22px; border-radius:14px; background:var(--panel2); border:1px solid var(--border);
+    display:flex; align-items:center; gap:20px; flex-wrap:wrap;
+  }
+  .result .risk-dot{width:16px; height:16px; border-radius:50%; flex-shrink:0;}
+  .result .risk-text h3{font-size:23px; margin-bottom:6px;}
+  .result .risk-text p{font-size:15px; color:var(--muted);}
+  .confidence-line{font-size:14px !important; font-weight:600; margin-top:10px !important; color:var(--text) !important;}
+  .confidence-note{font-size:13px !important; color:var(--muted); margin-top:2px !important;}
+
+  .live-col h3{font-size:14px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:14px; font-family:'DM Mono',monospace; font-weight:500;}
+  .instrument-wrap{margin-bottom:18px;}
+  #instrument{width:100%; max-width:420px; height:260px; background:var(--bg); border:1px solid var(--border); border-radius:12px; display:block; image-rendering:pixelated;}
+  .instrument-stats{font-size:13px; color:var(--muted); line-height:1.9; margin-top:10px; display:flex; gap:22px; flex-wrap:wrap;}
+  .instrument-stats b{color:var(--text); font-size:15px;}
+  .gauge-wrap{margin-bottom:16px;}
+  .gauge-label{font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:8px;}
+  .gauge-bar{height:12px; background:var(--border); border-radius:999px; overflow:hidden; margin:8px 0; position:relative;}
+  .gauge-fill{height:100%; width:0%; transition:background .35s ease, width .3s ease;}
+  .gauge-value{font-size:16px; color:var(--text);}
+  .gauge-value b{font-size:20px;}
+  .gauge-note{font-size:13px; color:var(--muted);}
+  .sim-note{font-size:13px; color:var(--muted); line-height:1.7; margin-top:6px;}
+
+  .analyst{margin-top:32px; padding-top:26px; border-top:1px dashed var(--border); display:none;}
+  .analyst.show{display:block;}
+  .degree-row{display:flex; gap:8px; margin-bottom:18px; flex-wrap:wrap;}
+  .degree-btn{
+    font-family:'DM Mono', monospace; font-size:14px; padding:9px 18px; border-radius:8px;
+    border:1px solid var(--border); background:transparent; color:var(--text); cursor:pointer;
+    transition:background .15s, border-color .15s;
+  }
+  .degree-btn.active{background:var(--accent); border-color:var(--accent); color:#fff;}
+  #chart{width:100%; max-width:600px; height:400px; background:var(--bg); border:1px solid var(--border); border-radius:12px; display:block; margin:0 auto; image-rendering:pixelated;}
+  #residuals{width:100%; height:190px; background:var(--bg); border:1px solid var(--border); border-radius:12px; display:block; margin-top:18px;}
+  .metrics{display:flex; gap:24px; margin-top:16px; flex-wrap:wrap; font-size:14px; color:var(--muted);}
+  .metrics b{color:var(--text);}
+  .fit-badge{margin-top:14px; font-size:15px; font-weight:600; padding:10px 14px; border-radius:10px; background:var(--panel2); display:inline-block;}
+
+  .dataset-wrap{margin-top:24px;}
+  .dataset-label{font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:8px;}
+  .dataset-scroll{max-height:260px; overflow-y:auto; border:1px solid var(--border); border-radius:12px;}
+  .dataset-table{width:100%; border-collapse:collapse; font-size:13px;}
+  .dataset-table th{position:sticky; top:0; background:var(--panel2); color:var(--muted); text-align:left; font-weight:500; padding:8px 12px; border-bottom:1px solid var(--border); text-transform:uppercase; letter-spacing:.04em; font-size:11px;}
+  .dataset-table td{padding:7px 12px; border-bottom:1px solid var(--border); color:var(--text);}
+  .dataset-table tr:last-child td{border-bottom:none;}
+  .dataset-table td.hit{color:var(--success); font-weight:600;}
+  .dataset-table td.miss{color:var(--cta); font-weight:600;}
+  .dataset-note{font-size:12px; color:var(--muted); margin-top:8px;}
+
+  .business p{color:var(--muted); font-size:16px; max-width:640px; text-align:justify;}
+  .business .stat{color:var(--success); font-weight:500;}
+  .business-grid{display:grid; grid-template-columns:1.1fr 1fr; gap:32px; align-items:start; margin-top:8px;}
+  @media (max-width:760px){ .business-grid{grid-template-columns:1fr;} }
+  .biz-action{margin-top:18px; padding:18px; border-radius:12px; background:var(--panel2); border:1px solid var(--border); transition:border-color .3s;}
+  .biz-action .biz-title{font-size:17px; font-weight:600;}
+  .biz-action .biz-detail{font-size:14px; color:var(--muted); margin-top:6px;}
+  #projection{width:100%; height:230px; background:var(--bg); border:1px solid var(--border); border-radius:12px; display:block;}
+
+  .cta-row{display:flex; gap:14px; flex-wrap:wrap; margin-top:8px;}
+  .btn{
+    font-family:'DM Mono', monospace; font-size:14px; padding:12px 22px; border-radius:10px;
+    text-decoration:none; border:1px solid var(--border); color:var(--text); display:inline-block;
+  }
+  .btn.primary{background:var(--cta); border-color:var(--cta); color:#0a0a0f; font-weight:600;}
+  .btn.ghost:hover{border-color:var(--accent);}
+
+  .contact-card{
+    display:grid; grid-template-columns:1.1fr 1fr; gap:28px;
+    background:var(--panel2); border:1px solid var(--border); border-radius:16px;
+    padding:28px; margin-top:28px;
+  }
+  @media (max-width:700px){ .contact-card{grid-template-columns:1fr;} }
+  .contact-card h3{font-size:19px; margin-bottom:8px;}
+  .contact-card p{font-size:14px; color:var(--muted); max-width:420px; text-align:justify;}
+  .contact-links{display:flex; flex-direction:column; gap:12px;}
+  .contact-row{
+    display:flex; align-items:center; gap:14px; padding:12px 16px; border-radius:12px;
+    background:var(--panel); border:1px solid var(--border); text-decoration:none; color:var(--text);
+    transition:border-color .2s;
+  }
+  .contact-row:hover{border-color:var(--success);}
+  .contact-icon{font-size:20px; width:32px; text-align:center; flex-shrink:0;}
+  .contact-text{font-size:14px; line-height:1.5;}
+  .contact-text b{display:block; font-size:15px;}
+
+  footer{padding:36px 0; text-align:center;}
+  footer p{font-size:13px; color:var(--muted); max-width:560px; margin:0 auto;}
+  .footer-links{display:flex; justify-content:center; gap:18px; flex-wrap:wrap; margin-bottom:16px; font-size:13px;}
+  .footer-links a{color:var(--muted); text-decoration:none;}
+  .footer-links a:hover{color:var(--success);}
+
+  @media (max-width:520px){
+    .result{flex-direction:column; align-items:flex-start;}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <a class="back" href="../../">← Volver al catálogo RELIABILIT-IA</a>
+
+  <header class="hero">
+    <div class="badge">Visión · Termografía</div>
+    <span class="badge" style="border-color:var(--accent); color:var(--accent); margin-left:8px;">Visión por computadora · basado en reglas, sin aprendizaje</span>
+    <h1>Ojo Térmico</h1>
+    <p class="lead">¿Ese punto caliente en la imagen térmica es una diferencia normal entre conexiones, o algo que hay que revisar?</p>
+  </header>
+
+  <section class="context">
+    <h2>El problema</h2>
+    <p>Hasta ahora, todos los módulos de RELIABILIT-IA trabajaron con números: vibración, temperatura puntual, corriente. Este último módulo trabaja con algo distinto — una imagen. Una cámara termográfica no entrega un solo número de temperatura, sino una grilla de miles de lecturas de temperatura, una por píxel. El trabajo del algoritmo no es clasificar un número, sino primero encontrar dónde está el punto caliente dentro de la imagen —una tarea de visión por computadora, no solo de estadística— y después medir qué tan caliente está en verdad. Este módulo implementa desde cero un algoritmo de crecimiento de regiones (flood fill): parte de los píxeles que superan un umbral de temperatura y va "contagiando" a sus vecinos inmediatos que también lo superan, hasta delimitar la región caliente completa como una sola forma conectada — el mismo principio que usa cualquier software de segmentación de imágenes, aplicado aquí a una imagen térmica en vez de una fotografía.</p>
+    <p>El criterio de severidad no usa temperatura absoluta, sino la diferencia (ΔT) entre el punto caliente y una conexión de referencia sana bajo la misma carga — así es como se interpretan las inspecciones termográficas reales en la industria (criterio similar al usado en normas como NETA ATS): una conexión a 45°C puede ser completamente normal si su vecina idéntica, con la misma carga, también está a 43°C — pero anormal si esa misma vecina está a 28°C.</p>
+  </section>
+
+  <section id="demo">
+    <h2>Demo interactivo</h2>
+    <div class="panel">
+      <div class="toggle-row">
+        <span class="label">Segmentación por crecimiento de regiones sobre una imagen térmica simulada — mueve los sliders para simular una inspección.</span>
+        <label class="switch">
+          <span>Modo Analista</span>
+          <input type="checkbox" id="analystToggle">
+          <span class="track"></span>
+        </label>
+      </div>
+
+      <div class="demo-grid">
+        <div class="controls-col">
+          <div class="slider-group">
+            <label>Carga del panel <span class="val" id="loadVal">60 %</span></label>
+            <input type="range" id="loadSlider" min="20" max="100" step="1" value="60">
+            <div class="hint"><span>20%</span><span>100%</span></div>
+          </div>
+
+          <div class="slider-group">
+            <label>Severidad de la conexión central <span class="val" id="sevVal">+15 °C</span></label>
+            <input type="range" id="sevSlider" min="0" max="50" step="1" value="15">
+            <div class="hint"><span>+0°C (sana)</span><span>+50°C (grave)</span></div>
+          </div>
+
+          <div class="result" id="resultBox">
+            <div class="risk-dot" id="riskDot"></div>
+            <div class="risk-text">
+              <h3 id="riskTitle">Calculando…</h3>
+              <p id="riskDetail"></p>
+              <p class="confidence-line" id="confidenceLine"></p>
+              <p class="confidence-note" id="confidenceNote"></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="live-col">
+          <h3>Simulación en vivo</h3>
+          <div class="instrument-wrap">
+            <canvas id="instrument" width="192" height="128" style="width:100%; max-width:420px; height:260px;"></canvas>
+            <div class="instrument-stats">
+              <div>ΔT detectado: <b id="deltaStat">–</b></div>
+              <div>Área del punto caliente: <b id="areaStat">–</b> px</div>
+            </div>
+          </div>
+
+          <div class="gauge-wrap">
+            <div class="gauge-label">ΔT sobre la conexión de referencia (0-50°C)</div>
+            <div class="gauge-bar"><div class="gauge-fill" id="gaugeFill"></div></div>
+            <div class="gauge-value"><b id="gaugeValue">0</b>°C</div>
+          </div>
+
+          <p class="sim-note">Simulación ilustrativa: la imagen térmica se genera a partir de los mismos valores de los sliders — no proviene de una cámara termográfica real.</p>
+        </div>
+      </div>
+
+      <div class="analyst" id="analystPanel">
+        <h3 style="font-size:18px; text-transform:none; letter-spacing:0; margin-bottom:8px; color:var(--text);">Ajustar el umbral de segmentación en vivo</h3>
+        <p style="font-size:15px; color:var(--muted); margin-bottom:18px; text-align:justify;">El umbral (ΔT sobre la referencia) decide qué tan caliente debe estar un píxel para considerarse parte de un punto caliente. Con un umbral muy bajo, el ruido normal del sensor térmico —variaciones de menos de un grado— puede confundirse con puntos calientes reales y aparecer como regiones falsas adicionales. Con un umbral muy alto, el algoritmo deja de distinguir la falla real del fondo, y en casos sutiles puede no encontrar ninguna región en absoluto — es decir, no detectar una falla que sí existía.</p>
+
+        <div class="dataset-wrap">
+          <div class="dataset-label">Casos históricos de inspección (usados solo para validar el criterio ΔT, no entrenan el algoritmo)</div>
+          <div class="dataset-scroll">
+            <table class="dataset-table">
+              <thead><tr><th>#</th><th>Fecha de inspección</th><th>Carga</th><th>Severidad inyectada</th><th>ΔT real</th><th>Clasificación esperada</th><th>Resultado con umbral actual</th></tr></thead>
+              <tbody id="datasetBody"></tbody>
+            </table>
+          </div>
+          <p class="dataset-note" id="datasetNote"></p>
+        </div>
+
+        <div class="degree-row" id="thRow"></div>
+        <div class="dataset-label">Imagen térmica con la región detectada resaltada</div>
+        <canvas id="chart" width="192" height="128"></canvas>
+        <div class="dataset-label" style="margin-top:18px;">Detecciones correctas vs. falsas alarmas según el umbral (sobre los 10 casos históricos)</div>
+        <canvas id="residuals" width="800" height="190"></canvas>
+        <div class="metrics">
+          <span>Umbral (ΔT): <b id="mTh">3</b>°C</span>
+          <span>Regiones encontradas: <b id="mRegions">–</b></span>
+          <span>ΔT medido: <b id="mDelta">–</b></span>
+          <span>Área detectada: <b id="mArea">–</b> px</span>
+        </div>
+        <div class="fit-badge" id="mFitBadge">–</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="business">
+    <h2>¿Qué significa para tu planta?</h2>
+    <div class="business-grid">
+      <div>
+        <p>Con la condición actual, la conexión inspeccionada se clasifica como <span class="stat" id="bizLevelInline">Normal</span>. Automatizar la primera lectura de una inspección termográfica —encontrar el punto más caliente y medir su ΔT real contra una referencia— no reemplaza al termógrafo certificado, pero sí ayuda a priorizar qué imágenes de cientos de fotos térmicas por ronda de inspección merecen revisión humana inmediata, en vez de esperar a que alguien las revise una por una.</p>
+        <div class="biz-action" id="bizAction">
+          <div class="biz-title" id="bizTitle">Calculando…</div>
+          <div class="biz-detail" id="bizDetail"></div>
+        </div>
+      </div>
+      <div>
+        <div class="gauge-label">Urgencia de reparación estimada por nivel</div>
+        <canvas id="projection" width="480" height="230"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <section id="cta">
+    <h2>De esta demo a tu planta</h2>
+    <p style="color:var(--muted); max-width:640px; margin-bottom:20px; text-align:justify;">La imagen y la segmentación de este demo son de ejemplo, ajustadas sobre datos sintéticos — sirven para explicar la idea, no para reemplazar una inspección termográfica real. Llevarlo a tu planta implica procesar tus propias imágenes térmicas reales, calibrar el umbral de segmentación a la resolución y el ruido de tu cámara específica, y automatizar la identificación de las conexiones de referencia según tu propio panel — ahí es donde entra nuestro motor AutoML. Se adapta al tipo de equipo y a la industria —minería, manufactura, energía, alimentos— cuando la calibramos con tus datos. Con este módulo se completan las 15 demos planeadas para esta primera etapa pública; si quieres ver cómo se aplica cualquiera de ellas —o esta— a tu planta, conversemos.</p>
+    <div class="cta-row">
+      <a class="btn primary" href="https://chat.whatsapp.com/GvBz1tuUeNZ0xwTkjsuE3z" target="_blank" rel="noopener">Unirme a la comunidad de WhatsApp</a>
+      <a class="btn ghost" href="https://www.linkedin.com/company/reliabilit-ia/" target="_blank" rel="noopener">Seguir en LinkedIn</a>
+      <a class="btn ghost" href="https://www.youtube.com/@miguelangelcayllahuaquispe998" target="_blank" rel="noopener">Ver en YouTube</a>
+    </div>
+
+    <div class="contact-card">
+      <div>
+        <h3>¿Hablamos de tus inspecciones termográficas?</h3>
+        <p>Si haces rondas de termografía en tu planta y quieres validar este análisis con tus propias imágenes, escríbeme directamente.</p>
+      </div>
+      <div class="contact-links">
+        <a class="contact-row" href="https://wa.me/51997610310?text=Hola%20Miguel%2C%20vi%20el%20demo%20Ojo%20Termico%20y%20quiero%20conversar%20sobre%20la%20calibracion%20para%20mi%20planta" target="_blank" rel="noopener">
+          <span class="contact-icon">💬</span>
+          <span class="contact-text"><b>WhatsApp</b>+51 997 610 310</span>
+        </a>
+        <a class="contact-row" href="https://www.linkedin.com/in/miguelcayllahua/" target="_blank" rel="noopener">
+          <span class="contact-icon">in</span>
+          <span class="contact-text"><b>LinkedIn</b>Miguel Angel Cayllahua Quispe</span>
+        </a>
+        <a class="contact-row" href="mailto:miguelcquispe@gmail.com">
+          <span class="contact-icon">✉</span>
+          <span class="contact-text"><b>Correo</b>miguelcquispe@gmail.com</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-links">
+      <a href="https://chat.whatsapp.com/GvBz1tuUeNZ0xwTkjsuE3z" target="_blank" rel="noopener">WhatsApp</a>
+      <a href="https://www.youtube.com/@miguelangelcayllahuaquispe998" target="_blank" rel="noopener">YouTube</a>
+      <a href="https://www.linkedin.com/company/reliabilit-ia/" target="_blank" rel="noopener">LinkedIn empresa</a>
+      <a href="https://www.linkedin.com/in/miguelcayllahua/" target="_blank" rel="noopener">LinkedIn personal</a>
+      <a href="mailto:miguelcquispe@gmail.com">Correo</a>
+    </div>
+    <p style="text-align:justify;">Contenido con fines educativos. La metodología es real; los datos y la simulación de esta demo son sintéticos para poder compartirlos públicamente. Se calibra con tus propios datos —sin importar el tipo de equipo o la industria— cuando trabajamos juntos. Modelo de ejemplo, no una fórmula fija.</p>
+  </footer>
+</div>
+
+<script>
+/* =========================================================
+   Generación de la imagen térmica sintética: un panel con
+   3 conexiones bajo la misma carga; la conexión central puede
+   tener una severidad adicional (falla simulada).
+   ========================================================= */
+function seededRandom(seed){
+  let s = seed;
+  return function(){ s = (s*9301+49297) % 233280; return s/233280; };
+}
+function gaussian(rnd){
+  const u1 = Math.max(1e-9, rnd()), u2 = rnd();
+  return Math.sqrt(-2*Math.log(u1))*Math.cos(2*Math.PI*u2);
+}
+const GW = 48, GH = 32, AMBIENT = 28;
+const CONN = [ {cx:12, cy:16, r:3.2}, {cx:24, cy:16, r:3.2}, {cx:36, cy:16, r:3.2} ];
+
+function gaussianBump(x,y,cx,cy,r,amp){
+  const d2 = (x-cx)**2 + (y-cy)**2;
+  return amp*Math.exp(-d2/(2*r*r));
+}
+function generateThermalGrid(load, severity, seed){
+  const rnd = seededRandom(seed);
+  const grid = [];
+  const loadRise = 0.15*load;
+  for(let y=0;y<GH;y++){
+    const row = [];
+    for(let x=0;x<GW;x++){
+      let temp = AMBIENT;
+      CONN.forEach((c,i)=>{
+        const extra = i===1 ? severity : 0;
+        temp += gaussianBump(x,y,c.cx,c.cy,c.r, loadRise+extra);
+      });
+      temp += gaussian(rnd)*0.3;
+      row.push(temp);
+    }
+    grid.push(row);
+  }
+  return grid;
+}
+function peakNear(grid, cx, cy, r){
+  let best = -Infinity;
+  for(let y=Math.max(0,cy-r); y<Math.min(GH,cy+r); y++){
+    for(let x=Math.max(0,cx-r); x<Math.min(GW,cx+r); x++){
+      if(grid[y][x]>best) best = grid[y][x];
+    }
+  }
+  return best;
+}
+function referenceTemp(grid){
+  return (peakNear(grid,CONN[0].cx,CONN[0].cy,4) + peakNear(grid,CONN[2].cx,CONN[2].cy,4)) / 2;
+}
+
+/* =========================================================
+   Segmentación por crecimiento de regiones (flood fill / BFS)
+   implementada desde cero.
+   ========================================================= */
+function floodFillRegions(grid, threshold){
+  const visited = Array.from({length:GH},()=>new Array(GW).fill(false));
+  const regions = [];
+  for(let y=0;y<GH;y++){
+    for(let x=0;x<GW;x++){
+      if(visited[y][x] || grid[y][x] < threshold) continue;
+      const queue = [[x,y]];
+      visited[y][x] = true;
+      const cells = [];
+      while(queue.length){
+        const [cx,cy] = queue.pop();
+        cells.push([cx,cy]);
+        [[cx+1,cy],[cx-1,cy],[cx,cy+1],[cx,cy-1]].forEach(([nx,ny])=>{
+          if(nx>=0&&nx<GW&&ny>=0&&ny<GH&&!visited[ny][nx]&&grid[ny][nx]>=threshold){
+            visited[ny][nx]=true;
+            queue.push([nx,ny]);
+          }
+        });
+      }
+      const maxT = Math.max(...cells.map(([cx,cy])=>grid[cy][cx]));
+      regions.push({ cells, size:cells.length, maxT });
+    }
+  }
+  return regions.sort((a,b)=>b.size-a.size);
+}
+
+/* =========================================================
+   Paleta de calor (negro-morado-rojo-amarillo-blanco), estilo
+   cámara termográfica.
+   ========================================================= */
+function heatColor(t, tMin, tMax){
+  const x = Math.min(1, Math.max(0, (t-tMin)/(tMax-tMin)));
+  const stops = [
+    [0.00, [8,8,20]], [0.25, [70,10,90]], [0.5, [200,30,40]],
+    [0.75, [250,160,20]], [1.00, [255,250,220]]
+  ];
+  let i=0;
+  while(i<stops.length-2 && x>stops[i+1][0]) i++;
+  const [t0,c0] = stops[i], [t1,c1] = stops[i+1];
+  const f = (x-t0)/(t1-t0||1);
+  const r = Math.round(c0[0]+(c1[0]-c0[0])*f);
+  const g = Math.round(c0[1]+(c1[1]-c0[1])*f);
+  const b = Math.round(c0[2]+(c1[2]-c0[2])*f);
+  return [r,g,b];
+}
+
+/* =========================================================
+   MODELO DE PRODUCCIÓN fijo (umbral ΔT=3°C, validado como el
+   punto que aísla bien la región real sin ruido ni pérdidas).
+   ========================================================= */
+const PROD_DELTA = 3;
+const LEVELS = ['Normal','Atención','Crítico'];
+const LEVEL_COLORS = ['#3ecfa0','#e8c547','#f4722e'];
+const LEVEL_DETAIL = [
+  'La diferencia de temperatura frente a la conexión de referencia está dentro de lo esperable entre conexiones similares.',
+  'La diferencia de temperatura ya es notable — según criterios termográficos habituales, esto amerita programar una revisión, aunque no es una urgencia inmediata.',
+  'La diferencia de temperatura es alta y sostenida — esto suele indicar una conexión floja, corroída o sobrecargada. Amerita reparación programada o inmediata según la magnitud.'
+];
+function levelOf(deltaT){
+  if(deltaT < 10) return 0;
+  if(deltaT < 25) return 1;
+  return 2;
+}
+
+function analyze(load, severity, seed, threshold){
+  const grid = generateThermalGrid(load, severity, seed);
+  const ref = referenceTemp(grid);
+  const regions = floodFillRegions(grid, ref+threshold);
+  const biggest = regions[0] || null;
+  const deltaT = biggest ? (biggest.maxT - ref) : 0;
+  return { grid, ref, regions, biggest, deltaT };
+}
+
+/* =========================================================
+   MODO BÁSICO
+   ========================================================= */
+const loadSlider = document.getElementById('loadSlider');
+const sevSlider = document.getElementById('sevSlider');
+const loadVal = document.getElementById('loadVal');
+const sevVal = document.getElementById('sevVal');
+const riskDot = document.getElementById('riskDot');
+const riskTitle = document.getElementById('riskTitle');
+const riskDetail = document.getElementById('riskDetail');
+const confidenceLine = document.getElementById('confidenceLine');
+const confidenceNote = document.getElementById('confidenceNote');
+const deltaStat = document.getElementById('deltaStat');
+const areaStat = document.getElementById('areaStat');
+const gaugeFill = document.getElementById('gaugeFill');
+const gaugeValue = document.getElementById('gaugeValue');
+const bizLevelInline = document.getElementById('bizLevelInline');
+const bizAction = document.getElementById('bizAction');
+const bizTitle = document.getElementById('bizTitle');
+const bizDetail = document.getElementById('bizDetail');
+const projectionCanvas = document.getElementById('projection');
+const pctx = projectionCanvas.getContext('2d');
+
+function drawProjection(activeIdx, realDeltaT){
+  const W = projectionCanvas.width, H = projectionCanvas.height;
+  pctx.clearRect(0,0,W,H);
+  const padL = 56, padR = 20, padT = 20, padB = 46;
+  const labels = ['Próxima ronda','Programar','Inmediata'];
+  const days = [90, 21, 2];
+  const maxDays = days[0]*1.15;
+  const bw = (W-padL-padR)/days.length;
+  pctx.strokeStyle = '#22222c';
+  pctx.lineWidth = 1;
+  pctx.beginPath();
+  pctx.moveTo(padL, padT); pctx.lineTo(padL, H-padB); pctx.lineTo(W-padR, H-padB);
+  pctx.stroke();
+  days.forEach((d,i)=>{
+    const barH = Math.max(2,(d/maxDays)*(H-padT-padB));
+    const x = padL + i*bw + bw*0.18;
+    const y = H-padB-barH;
+    const w = bw*0.64;
+    pctx.fillStyle = i===activeIdx ? LEVEL_COLORS[i] : 'rgba(244,244,247,0.14)';
+    pctx.fillRect(x,y,w,barH);
+    pctx.fillStyle = '#a8a8b4';
+    pctx.font = '11px DM Mono, monospace';
+    pctx.fillText(labels[i], x-6, H-padB+16);
+    if(i===activeIdx){
+      pctx.fillStyle = '#f4f4f7';
+      pctx.font = '12px DM Mono, monospace';
+      pctx.fillText('~'+d+' días', x-4, y-8);
+    }
+  });
+  pctx.fillStyle = '#8a8a98';
+  pctx.font = '11px DM Mono, monospace';
+  pctx.fillText('plazo sugerido de reparación por nivel (ilustrativo)', padL, 14);
+
+  // Indicador continuo: el ΔT real medido por segmentación en esta imagen
+  // térmica (no solo a qué nivel discreto pertenece).
+  if(typeof realDeltaT === 'number'){
+    const pctReal = Math.min(100, Math.max(0, (realDeltaT/50)*100));
+    const by = H-12, bh = 5;
+    pctx.fillStyle = 'rgba(244,244,247,0.10)';
+    pctx.fillRect(padL, by, W-padL-padR, bh);
+    const fw = (pctReal/100)*(W-padL-padR);
+    pctx.fillStyle = LEVEL_COLORS[activeIdx];
+    pctx.fillRect(padL, by, fw, bh);
+    pctx.fillStyle = '#c9c9d4';
+    pctx.font = '10px DM Mono, monospace';
+    pctx.fillText('ΔT real medido: '+realDeltaT.toFixed(1)+'°C', padL, by-4);
+  }
+}
+
+function updateBasic(){
+  const load = parseFloat(loadSlider.value);
+  const sev = parseFloat(sevSlider.value);
+  loadVal.textContent = load.toFixed(0) + ' %';
+  sevVal.textContent = '+' + sev.toFixed(0) + ' °C';
+
+  const { grid, ref, biggest, deltaT } = analyze(load, sev, 501, PROD_DELTA);
+  const idx = levelOf(deltaT);
+  const color = LEVEL_COLORS[idx];
+
+  riskDot.style.background = color;
+  riskTitle.style.color = color;
+  riskTitle.textContent = LEVELS[idx];
+  riskDetail.textContent = LEVEL_DETAIL[idx];
+
+  const distToThresh = Math.min(Math.abs(deltaT-10), Math.abs(deltaT-25));
+  let confLevel, confColor, confNote;
+  if(distToThresh > 4){
+    confLevel = 'Alta'; confColor = 'var(--success)';
+    confNote = 'El ΔT medido está lejos de cualquier umbral entre niveles.';
+  } else if(distToThresh > 1.5){
+    confLevel = 'Media'; confColor = '#e8c547';
+    confNote = 'Cerca de un umbral — el nivel vecino también es plausible.';
+  } else {
+    confLevel = 'Baja'; confColor = 'var(--cta)';
+    confNote = 'Justo en el borde entre dos niveles — confirma con otra toma antes de decidir.';
+  }
+  confidenceLine.textContent = 'Confianza de la clasificación: ' + confLevel;
+  confidenceLine.style.color = confColor;
+  confidenceNote.textContent = confNote;
+
+  deltaStat.textContent = deltaT.toFixed(1) + ' °C';
+  areaStat.textContent = biggest ? biggest.size : 0;
+
+  const pct = Math.min(100, Math.max(0, (deltaT/50)*100));
+  gaugeFill.style.width = pct.toFixed(1) + '%';
+  gaugeFill.style.background = color;
+  gaugeValue.textContent = deltaT.toFixed(0);
+
+  bizLevelInline.textContent = LEVELS[idx];
+  bizLevelInline.style.color = color;
+  bizAction.style.borderColor = color;
+  bizTitle.style.color = color;
+  bizTitle.textContent = LEVELS[idx];
+  bizDetail.textContent = LEVEL_DETAIL[idx];
+
+  drawProjection(idx, deltaT);
+  drawThermalImage(document.getElementById('instrument'), grid, biggest, false);
+}
+loadSlider.addEventListener('input', updateBasic);
+sevSlider.addEventListener('input', updateBasic);
+
+/* =========================================================
+   Render de la imagen térmica en canvas (paleta de calor).
+   ========================================================= */
+function drawThermalImage(canvas, grid, region, showContour){
+  const ctx = canvas.getContext('2d');
+  canvas.width = GW; canvas.height = GH;
+  const imgData = ctx.createImageData(GW, GH);
+  let tMin=Infinity, tMax=-Infinity;
+  grid.forEach(row=>row.forEach(t=>{ if(t<tMin)tMin=t; if(t>tMax)tMax=t; }));
+  for(let y=0;y<GH;y++){
+    for(let x=0;x<GW;x++){
+      const [r,g,b] = heatColor(grid[y][x], tMin, tMax);
+      const idx = (y*GW+x)*4;
+      imgData.data[idx]=r; imgData.data[idx+1]=g; imgData.data[idx+2]=b; imgData.data[idx+3]=255;
+    }
+  }
+  ctx.putImageData(imgData, 0, 0);
+
+  if(showContour && region){
+    const cellSet = new Set(region.cells.map(([x,y])=>x+','+y));
+    ctx.strokeStyle = '#f4f4f7';
+    ctx.lineWidth = 0.4;
+    region.cells.forEach(([x,y])=>{
+      const isEdge = [[x+1,y],[x-1,y],[x,y+1],[x,y-1]].some(([nx,ny])=>!cellSet.has(nx+','+ny));
+      if(isEdge){ ctx.strokeRect(x,y,1,1); }
+    });
+  }
+}
+
+/* =========================================================
+   MODO ANALISTA — umbral ΔT ajustable
+   ========================================================= */
+let currentTh = PROD_DELTA;
+
+const REF_DATE = new Date('2026-07-15');
+const MESES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+function fmtDate(d){ return String(d.getDate()).padStart(2,'0')+' '+MESES[d.getMonth()]+' '+d.getFullYear(); }
+
+// Fechas fijas: cada caso es una inspección termográfica documentada,
+// espaciadas a lo largo de ~2 años (no derivadas de un rnd — son
+// eventos discretos de campo, como en los demás módulos de incidentes).
+const HISTORICAL_CASES = [
+  {load:80, sev:0,  label:'Inspección de rutina, sin anomalías', date:new Date('2024-08-05')},
+  {load:50, sev:2,  label:'Diferencia menor entre conexiones', date:new Date('2024-10-14')},
+  {load:65, sev:6,  label:'Variación leve, dentro de lo esperable', date:new Date('2024-12-20')},
+  {load:70, sev:12, label:'Conexión con calentamiento inicial', date:new Date('2025-02-27')},
+  {load:55, sev:18, label:'Posible deficiencia — monitorear', date:new Date('2025-05-08')},
+  {load:90, sev:22, label:'Conexión con calentamiento notable', date:new Date('2025-07-16')},
+  {load:60, sev:28, label:'Deficiencia probable — programar reparación', date:new Date('2025-10-01')},
+  {load:45, sev:35, label:'Conexión con sobrecalentamiento serio', date:new Date('2025-12-11')},
+  {load:75, sev:42, label:'Deficiencia grave — reparación inmediata', date:new Date('2026-03-19')},
+  {load:85, sev:48, label:'Falla severa de contacto', date:new Date('2026-06-02')}
+];
+
+function renderHistoricalTable(threshold){
+  const tbody = document.getElementById('datasetBody');
+  const note = document.getElementById('datasetNote');
+  if(!tbody) return;
+  let matches = 0;
+  tbody.innerHTML = HISTORICAL_CASES.map((c,i)=>{
+    const seed = 800+i;
+    const grid = generateThermalGrid(c.load, c.sev, seed);
+    const ref = referenceTemp(grid);
+    const trueDeltaT = peakNear(grid,CONN[1].cx,CONN[1].cy,4) - ref;
+    const expected = LEVELS[levelOf(trueDeltaT)];
+    const regions = floodFillRegions(grid, ref+threshold);
+    const biggest = regions[0];
+    const measuredDeltaT = biggest ? (biggest.maxT-ref) : 0;
+    const got = biggest ? LEVELS[levelOf(measuredDeltaT)] : 'No detectado';
+    const ok = got===expected;
+    if(ok) matches++;
+    return `<tr><td>${i+1}</td><td>${fmtDate(c.date)}</td><td>${c.load}%</td><td>+${c.sev}°C</td><td>${trueDeltaT.toFixed(1)}°C</td><td>${expected}</td><td class="${ok?'hit':'miss'}">${got}${ok?' ✓':' ✗'}</td></tr>`;
+  }).join('');
+  const sortedDates = HISTORICAL_CASES.map(c=>c.date).sort((a,b)=>a-b);
+  note.textContent = `${matches} de ${HISTORICAL_CASES.length} casos clasificados correctamente con este umbral. Inspecciones entre ${fmtDate(sortedDates[0])} y ${fmtDate(sortedDates[sortedDates.length-1])}.`;
+}
+
+const TH_OPTIONS = [0.5,1,2,3,5,8,12,18];
+const residualCanvas = document.getElementById('residuals');
+const rctx = residualCanvas.getContext('2d');
+
+function evalThreshold(th){
+  let correct=0, falseAlarms=0, missed=0;
+  HISTORICAL_CASES.forEach((c,i)=>{
+    const seed = 800+i;
+    const grid = generateThermalGrid(c.load, c.sev, seed);
+    const ref = referenceTemp(grid);
+    const trueDeltaT = peakNear(grid,CONN[1].cx,CONN[1].cy,4) - ref;
+    const expectedIdx = levelOf(trueDeltaT);
+    const regions = floodFillRegions(grid, ref+th);
+    const biggest = regions[0];
+    const measuredDeltaT = biggest ? (biggest.maxT-ref) : 0;
+    const gotIdx = biggest ? levelOf(measuredDeltaT) : -1;
+    if(gotIdx===expectedIdx) correct++;
+    else if(expectedIdx===0 && gotIdx>0) falseAlarms++;
+    else if(expectedIdx>0 && (gotIdx===0 || gotIdx===-1)) missed++;
+  });
+  return {correct, falseAlarms, missed};
+}
+
+function drawThresholdCurve(activeTh){
+  const W = residualCanvas.width, H = residualCanvas.height;
+  rctx.clearRect(0,0,W,H);
+  const padL = 40, padR = 140, padT = 24, padB = 30;
+  const rows = TH_OPTIONS.map(th=> ({ th, ...evalThreshold(th) }));
+  const maxN = HISTORICAL_CASES.length;
+
+  rctx.fillStyle = '#c9c9d4';
+  rctx.font = '13px DM Mono, monospace';
+  rctx.fillText('de 10 casos históricos: correctos, falsas alarmas y fallas perdidas', padL, 16);
+
+  rctx.strokeStyle = '#3a3a48';
+  rctx.lineWidth = 1;
+  rctx.beginPath();
+  rctx.moveTo(padL, H-padB); rctx.lineTo(W-padR, H-padB); rctx.stroke();
+
+  function toPx(i, v){
+    const x = padL + (i/(rows.length-1))*(W-padL-padR);
+    const y = H-padB - (v/maxN)*(H-padT-padB);
+    return [x,y];
+  }
+  function drawSeries(key, color){
+    rctx.strokeStyle = color;
+    rctx.lineWidth = 2;
+    rctx.beginPath();
+    rows.forEach((r,i)=>{ const [x,y]=toPx(i,r[key]); if(i===0) rctx.moveTo(x,y); else rctx.lineTo(x,y); });
+    rctx.stroke();
+    rows.forEach((r,i)=>{
+      const [x,y]=toPx(i,r[key]);
+      rctx.beginPath();
+      rctx.fillStyle = r.th===activeTh ? color : rgbaHex(color,0.5);
+      rctx.arc(x,y, r.th===activeTh?4:2.5, 0, Math.PI*2);
+      rctx.fill();
+    });
+  }
+  function rgbaHex(hex,a){ const v=hex.replace('#',''); const n=[parseInt(v.slice(0,2),16),parseInt(v.slice(2,4),16),parseInt(v.slice(4,6),16)]; return `rgba(${n[0]},${n[1]},${n[2]},${a})`; }
+
+  drawSeries('correct', '#3ecfa0');
+  drawSeries('falseAlarms', '#f4722e');
+  drawSeries('missed', '#e8c547');
+
+  rows.forEach((r,i)=>{
+    const x = padL + (i/(rows.length-1))*(W-padL-padR);
+    rctx.fillStyle = '#8a8a98';
+    rctx.font = '10px DM Mono, monospace';
+    rctx.fillText(String(r.th), x-6, H-padB+14);
+  });
+
+  const legend = [
+    {c:'#3ecfa0', t:'correctos'},
+    {c:'#f4722e', t:'falsas alarmas'},
+    {c:'#e8c547', t:'fallas perdidas'}
+  ];
+  legend.forEach((l,i)=>{
+    const ly = padT + i*18;
+    rctx.fillStyle = l.c;
+    rctx.fillRect(W-padR+16, ly-8, 10, 10);
+    rctx.fillStyle = '#a8a8b4';
+    rctx.font = '11px DM Mono, monospace';
+    rctx.fillText(l.t, W-padR+32, ly+1);
+  });
+}
+
+function setThreshold(th){
+  currentTh = th;
+  const load = parseFloat(loadSlider.value) || 60;
+  const sev = parseFloat(sevSlider.value) || 15;
+  const { grid, ref, regions, biggest, deltaT } = analyze(load, sev, 501, th);
+
+  document.getElementById('mTh').textContent = th;
+  document.getElementById('mRegions').textContent = regions.length;
+  document.getElementById('mDelta').textContent = deltaT.toFixed(1)+' °C';
+  document.getElementById('mArea').textContent = biggest ? biggest.size : 0;
+
+  const badge = document.getElementById('mFitBadge');
+  if(regions.length === 0){
+    badge.textContent = '⚠ Umbral demasiado alto — el algoritmo no encuentra ninguna región: si hubiera una falla sutil, se perdería por completo.';
+    badge.style.color = 'var(--cta)';
+  } else if(regions.length > 1){
+    badge.textContent = '⚠ Umbral demasiado bajo — el ruido normal del sensor térmico aparece como regiones falsas adicionales, además de la región real.';
+    badge.style.color = '#e8c547';
+  } else {
+    badge.textContent = '✓ Aísla bien la región caliente real, con área y ΔT consistentes con la falla simulada.';
+    badge.style.color = 'var(--success)';
+  }
+
+  drawThermalImage(document.getElementById('chart'), grid, biggest, true);
+  renderHistoricalTable(th);
+  drawThresholdCurve(th);
+}
+
+const thRow = document.getElementById('thRow');
+[0.5,1,2,3,5,8,12,18].forEach(th=>{
+  const btn = document.createElement('button');
+  btn.className = 'degree-btn' + (th===currentTh ? ' active':'');
+  btn.textContent = 'ΔT=' + th + '°C';
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.degree-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    setThreshold(th);
+  });
+  thRow.appendChild(btn);
+});
+
+const analystToggle = document.getElementById('analystToggle');
+const analystPanel = document.getElementById('analystPanel');
+analystToggle.addEventListener('change', ()=>{
+  analystPanel.classList.toggle('show', analystToggle.checked);
+  if(analystToggle.checked) setThreshold(currentTh);
+});
+
+updateBasic();
+</script>
+
+</body>
+</html>

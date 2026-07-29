@@ -1,0 +1,833 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Familias de Turbinas — RELIABILIT-IA</title>
+<meta name="description" content="Agrupa turbinas en familias operativas reales usando clustering jerárquico, sin decirle al modelo cuántos grupos existen de antemano.">
+
+<meta property="og:title" content="Familias de Turbinas — RELIABILIT-IA">
+<meta property="og:description" content="Mueve potencia nominal y eficiencia térmica y mira en vivo a qué familia de turbinas pertenece esa combinación.">
+<meta property="og:image" content="../../assets/og-image.png">
+<meta property="og:type" content="website">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#0a0a0f;
+    --panel:#121218;
+    --panel2:#181820;
+    --border:#22222c;
+    --text:#f4f4f7;
+    --muted:#9a9aa8;
+    --success:#3ecfa0;
+    --cta:#f4722e;
+    --accent:#7b5ea7;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    background:var(--bg); color:var(--text); font-family:'DM Mono', monospace;
+    line-height:1.6; -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:'Syne', sans-serif; font-weight:800; letter-spacing:-0.02em;}
+  a{color:var(--success);}
+  .wrap{max-width:960px;margin:0 auto;padding:0 24px;}
+  .back{display:inline-block; font-size:13px; color:var(--muted); text-decoration:none; padding-top:20px;}
+  .back:hover{color:var(--success);}
+
+  header.hero{padding:24px 0 40px; border-bottom:1px solid var(--border);}
+  .badge{
+    display:inline-block; font-size:12px; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--success); border:1px solid var(--success); border-radius:999px;
+    padding:5px 14px; margin-bottom:18px;
+  }
+  h1{font-size:clamp(28px,5vw,44px); line-height:1.1; margin-bottom:14px;}
+  .lead{font-family:'Instrument Serif', serif; font-style:italic; font-size:20px; color:var(--muted); max-width:640px;}
+
+  section{padding:40px 0; border-bottom:1px solid var(--border);}
+  section h2{font-size:22px; margin-bottom:14px;}
+  .context p{color:var(--muted); max-width:640px; font-size:15px; text-align:justify;}
+  .context p + p{margin-top:12px;}
+
+  .panel{
+    background:var(--panel); border:1px solid var(--border); border-radius:16px; padding:28px;
+  }
+
+  .toggle-row{display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; flex-wrap:wrap; gap:12px;}
+  .toggle-row .label{font-size:15px; color:var(--muted);}
+  .switch{
+    display:inline-flex; align-items:center; gap:10px; cursor:pointer; user-select:none;
+    font-size:14px; color:var(--text);
+  }
+  .switch input{display:none;}
+  .track{
+    width:42px; height:24px; background:var(--border); border-radius:999px; position:relative; transition:.2s;
+    flex-shrink:0;
+  }
+  .track::after{
+    content:''; position:absolute; top:3px; left:3px; width:18px; height:18px; border-radius:50%;
+    background:var(--muted); transition:.2s;
+  }
+  .switch input:checked + .track{background:var(--accent);}
+  .switch input:checked + .track::after{transform:translateX(18px); background:#fff;}
+
+  .demo-grid{display:grid; grid-template-columns:1.05fr 1fr; gap:32px;}
+  @media (max-width:760px){ .demo-grid{grid-template-columns:1fr;} }
+
+  .slider-group{margin-bottom:22px;}
+  .slider-group label{display:flex; justify-content:space-between; font-size:16px; margin-bottom:8px;}
+  .slider-group label .val{color:var(--success); font-weight:500;}
+  input[type=range]{
+    width:100%; -webkit-appearance:none; height:6px; border-radius:999px; background:var(--border); outline:none;
+  }
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none; width:20px; height:20px; border-radius:50%;
+    background:var(--success); cursor:pointer; border:3px solid var(--bg);
+  }
+  input[type=range]::-moz-range-thumb{
+    width:20px; height:20px; border-radius:50%; background:var(--success); cursor:pointer; border:3px solid var(--bg);
+  }
+  .hint{font-size:13px; color:var(--muted); display:flex; justify-content:space-between; margin-top:4px;}
+
+  .result{
+    margin-top:26px; padding:22px; border-radius:14px; background:var(--panel2); border:1px solid var(--border);
+    display:flex; align-items:center; gap:20px; flex-wrap:wrap;
+  }
+  .result .risk-dot{width:16px; height:16px; border-radius:50%; flex-shrink:0;}
+  .result .risk-text h3{font-size:23px; margin-bottom:6px;}
+  .result .risk-text p{font-size:15px; color:var(--muted);}
+  .confidence-line{font-size:14px !important; font-weight:600; margin-top:10px !important; color:var(--text) !important;}
+  .confidence-note{font-size:13px !important; color:var(--muted); margin-top:2px !important;}
+
+  .live-col h3{font-size:14px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:14px; font-family:'DM Mono',monospace; font-weight:500;}
+  .instrument-wrap{margin-bottom:18px;}
+  #instrument{width:100%; max-width:420px; height:260px; background:var(--bg); border:1px solid var(--border); border-radius:12px; display:block;}
+  .instrument-stats{font-size:13px; color:var(--muted); line-height:1.9; margin-top:10px; display:flex; gap:22px; flex-wrap:wrap;}
+  .instrument-stats b{color:var(--text); font-size:15px;}
+  .gauge-wrap{margin-bottom:16px;}
+  .gauge-label{font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:8px;}
+  .gauge-bar{height:12px; background:var(--border); border-radius:999px; overflow:hidden; margin:8px 0; position:relative;}
+  .gauge-fill{height:100%; width:0%; transition:background .35s ease, width .3s ease;}
+  .gauge-value{font-size:16px; color:var(--text);}
+  .gauge-value b{font-size:20px;}
+  .gauge-note{font-size:13px; color:var(--muted);}
+  .sim-note{font-size:13px; color:var(--muted); line-height:1.7; margin-top:6px;}
+
+  .analyst{margin-top:32px; padding-top:26px; border-top:1px dashed var(--border); display:none;}
+  .analyst.show{display:block;}
+  .degree-row{display:flex; gap:8px; margin-bottom:18px; flex-wrap:wrap;}
+  .degree-btn{
+    font-family:'DM Mono', monospace; font-size:14px; padding:9px 18px; border-radius:8px;
+    border:1px solid var(--border); background:transparent; color:var(--text); cursor:pointer;
+    transition:background .15s, border-color .15s;
+  }
+  .degree-btn.active{background:var(--accent); border-color:var(--accent); color:#fff;}
+  #dendro{width:100%; height:220px; background:var(--bg); border:1px solid var(--border); border-radius:12px; display:block;}
+  #chart{width:100%; height:320px; background:var(--bg); border:1px solid var(--border); border-radius:12px; display:block; margin-top:18px;}
+  .metrics{display:flex; gap:24px; margin-top:16px; flex-wrap:wrap; font-size:14px; color:var(--muted);}
+  .metrics b{color:var(--text);}
+  .fit-badge{margin-top:14px; font-size:15px; font-weight:600; padding:10px 14px; border-radius:10px; background:var(--panel2); display:inline-block;}
+
+  .dataset-wrap{margin-top:24px;}
+  .dataset-label{font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:8px;}
+  .dataset-scroll{max-height:260px; overflow-y:auto; border:1px solid var(--border); border-radius:12px;}
+  .dataset-table{width:100%; border-collapse:collapse; font-size:13px;}
+  .dataset-table th{position:sticky; top:0; background:var(--panel2); color:var(--muted); text-align:left; font-weight:500; padding:8px 12px; border-bottom:1px solid var(--border); text-transform:uppercase; letter-spacing:.04em; font-size:11px;}
+  .dataset-table td{padding:7px 12px; border-bottom:1px solid var(--border); color:var(--text);}
+  .dataset-table tr:last-child td{border-bottom:none;}
+  .dataset-note{font-size:12px; color:var(--muted); margin-top:8px;}
+
+  .business p{color:var(--muted); font-size:16px; max-width:640px; text-align:justify;}
+  .business .stat{color:var(--success); font-weight:500;}
+  .business-grid{display:grid; grid-template-columns:1.1fr 1fr; gap:32px; align-items:start; margin-top:8px;}
+  @media (max-width:760px){ .business-grid{grid-template-columns:1fr;} }
+  .biz-action{margin-top:18px; padding:18px; border-radius:12px; background:var(--panel2); border:1px solid var(--border); transition:border-color .3s;}
+  .biz-action .biz-title{font-size:17px; font-weight:600;}
+  .biz-action .biz-detail{font-size:14px; color:var(--muted); margin-top:6px;}
+  #projection{width:100%; height:230px; background:var(--bg); border:1px solid var(--border); border-radius:12px; display:block;}
+
+  .cta-row{display:flex; gap:14px; flex-wrap:wrap; margin-top:8px;}
+  .btn{
+    font-family:'DM Mono', monospace; font-size:14px; padding:12px 22px; border-radius:10px;
+    text-decoration:none; border:1px solid var(--border); color:var(--text); display:inline-block;
+  }
+  .btn.primary{background:var(--cta); border-color:var(--cta); color:#0a0a0f; font-weight:600;}
+  .btn.ghost:hover{border-color:var(--accent);}
+
+  .contact-card{
+    display:grid; grid-template-columns:1.1fr 1fr; gap:28px;
+    background:var(--panel2); border:1px solid var(--border); border-radius:16px;
+    padding:28px; margin-top:28px;
+  }
+  @media (max-width:700px){ .contact-card{grid-template-columns:1fr;} }
+  .contact-card h3{font-size:19px; margin-bottom:8px;}
+  .contact-card p{font-size:14px; color:var(--muted); max-width:420px; text-align:justify;}
+  .contact-links{display:flex; flex-direction:column; gap:12px;}
+  .contact-row{
+    display:flex; align-items:center; gap:14px; padding:12px 16px; border-radius:12px;
+    background:var(--panel); border:1px solid var(--border); text-decoration:none; color:var(--text);
+    transition:border-color .2s;
+  }
+  .contact-row:hover{border-color:var(--success);}
+  .contact-icon{font-size:20px; width:32px; text-align:center; flex-shrink:0;}
+  .contact-text{font-size:14px; line-height:1.5;}
+  .contact-text b{display:block; font-size:15px;}
+
+  footer{padding:36px 0; text-align:center;}
+  footer p{font-size:13px; color:var(--muted); max-width:560px; margin:0 auto;}
+  .footer-links{display:flex; justify-content:center; gap:18px; flex-wrap:wrap; margin-bottom:16px; font-size:13px;}
+  .footer-links a{color:var(--muted); text-decoration:none;}
+  .footer-links a:hover{color:var(--success);}
+
+  @media (max-width:520px){
+    .result{flex-direction:column; align-items:flex-start;}
+  }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <a class="back" href="../../">← Volver al catálogo RELIABILIT-IA</a>
+
+  <header class="hero">
+    <div class="badge">Clustering · Turbina</div>
+    <span class="badge" style="border-color:var(--accent); color:var(--accent); margin-left:8px;">No supervisado · Clustering jerárquico</span>
+    <h1>Familias de Turbinas</h1>
+    <p class="lead">¿Cuántas familias reales de turbinas hay en tu parque, sin decírselo al modelo de antemano?</p>
+  </header>
+
+  <section class="context">
+    <h2>El problema</h2>
+    <p>La <a href="../radiografia-de-planta/">Radiografía de Planta</a> ya usó agrupamiento (k-means) sobre datos reducidos con PCA — pero ahí el número de grupos (k) se elegía de antemano. Este módulo resuelve un problema distinto: agrupar turbinas sin fijar cuántas familias existen, dejando que la propia estructura de los datos lo sugiera. Para eso usa clustering jerárquico aglomerativo: empieza tratando cada turbina como su propio grupo, y va fusionando los dos grupos más parecidos entre sí, uno a la vez, hasta que todo queda en un solo grupo. Ese historial de fusiones —el dendrograma— se puede "cortar" a distintas alturas para obtener 2, 3, 4 o más familias, y es al analista a quien le toca decidir dónde cortar con criterio.</p>
+    <p>Las dos variables que usa este demo —potencia nominal y eficiencia térmica— son datos de placa que cualquier operador de planta ya tiene. En la práctica, turbinas de potencias muy distintas (una microturbina de 2 MW y una de ciclo combinado de 200 MW) casi nunca deberían tratarse con la misma estrategia de mantenimiento — agruparlas correctamente es el primer paso para diferenciar esas estrategias.</p>
+  </section>
+
+  <section id="demo">
+    <h2>Demo interactivo</h2>
+    <div class="panel">
+      <div class="toggle-row">
+        <span class="label">Clustering jerárquico aglomerativo (enlace promedio) — mueve los sliders para ubicar una turbina.</span>
+        <label class="switch">
+          <span>Modo Analista</span>
+          <input type="checkbox" id="analystToggle">
+          <span class="track"></span>
+        </label>
+      </div>
+
+      <div class="demo-grid">
+        <div class="controls-col">
+          <div class="slider-group">
+            <label>Potencia nominal <span class="val" id="mwVal">2 MW</span></label>
+            <input type="range" id="mwSlider" min="1" max="300" step="1" value="2">
+            <div class="hint"><span>1 MW</span><span>300 MW</span></div>
+          </div>
+
+          <div class="slider-group">
+            <label>Eficiencia térmica <span class="val" id="effVal">29 %</span></label>
+            <input type="range" id="effSlider" min="24" max="48" step="0.5" value="29">
+            <div class="hint"><span>24%</span><span>48%</span></div>
+          </div>
+
+          <div class="result" id="resultBox">
+            <div class="risk-dot" id="riskDot"></div>
+            <div class="risk-text">
+              <h3 id="riskTitle">Calculando…</h3>
+              <p id="riskDetail"></p>
+              <p class="confidence-line" id="confidenceLine"></p>
+              <p class="confidence-note" id="confidenceNote"></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="live-col">
+          <h3>Simulación en vivo</h3>
+          <div class="instrument-wrap">
+            <canvas id="instrument" width="420" height="260"></canvas>
+            <div class="instrument-stats">
+              <div>Distancia a su centroide: <b id="distStat">–</b></div>
+              <div>Distancia a la familia más cercana: <b id="distOtherStat">–</b></div>
+            </div>
+          </div>
+
+          <div class="gauge-wrap">
+            <div class="gauge-label">Cercanía a otra familia (0-100)</div>
+            <div class="gauge-bar"><div class="gauge-fill" id="gaugeFill"></div></div>
+            <div class="gauge-value"><b id="gaugeValue">0</b> <span class="gauge-note">0 = muy dentro de su familia, 100 = a medio camino de otra familia</span></div>
+          </div>
+
+          <p class="sim-note">Simulación ilustrativa: el mapa y el punto se dibujan a partir de los mismos valores de los sliders — no provienen de un parque de turbinas real.</p>
+        </div>
+      </div>
+
+      <div class="analyst" id="analystPanel">
+        <h3 style="font-size:18px; text-transform:none; letter-spacing:0; margin-bottom:8px; color:var(--text);">Cortar el dendrograma en vivo</h3>
+        <p style="font-size:15px; color:var(--muted); margin-bottom:18px; text-align:justify;">Elige en cuántos grupos (k) cortar el árbol de fusiones. Con muy pocos grupos, familias realmente distintas quedan mezcladas en una sola. Con demasiados, una familia cohesionada se fragmenta en subgrupos artificiales de un puñado de turbinas, sin que eso refleje ninguna diferencia real de fondo. El silhouette score —qué tan bien encaja cada turbina en su propio grupo frente a los demás— ayuda a detectar el punto razonable.</p>
+
+        <div class="dataset-wrap">
+          <div class="dataset-label">Vista del dataset (72 turbinas simuladas, 3 familias reales usadas solo para validar)</div>
+          <div class="dataset-scroll">
+            <table class="dataset-table">
+              <thead><tr><th>#</th><th>Fecha</th><th>Potencia (MW)</th><th>Eficiencia (%)</th><th>Familia real</th></tr></thead>
+              <tbody id="datasetBody"></tbody>
+            </table>
+          </div>
+          <p class="dataset-note" id="datasetNote"></p>
+        </div>
+
+        <div class="degree-row" id="kRow"></div>
+        <div class="dataset-label">Dendrograma (árbol de fusiones)</div>
+        <canvas id="dendro" width="800" height="220"></canvas>
+        <div class="dataset-label" style="margin-top:18px;">Mapa de grupos resultante al cortar en k</div>
+        <canvas id="chart" width="800" height="320"></canvas>
+        <div class="metrics">
+          <span>k: <b id="mK">3</b></span>
+          <span>Pureza vs. familias reales: <b id="mPurity">–</b></span>
+          <span>Silhouette score: <b id="mSil">–</b></span>
+          <span>Tamaños de grupo: <b id="mSizes">–</b></span>
+        </div>
+        <div class="fit-badge" id="mFitBadge">–</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="business">
+    <h2>¿Qué significa para tu planta?</h2>
+    <div class="business-grid">
+      <div>
+        <p>Con la combinación actual, esta turbina se agrupa en la familia <span class="stat" id="bizLevelInline">Pequeñas</span>. Agrupar bien tu parque de turbinas antes de definir políticas de mantenimiento evita dos errores comunes: tratar turbinas muy distintas con la misma frecuencia de inspección, o crear demasiadas políticas a la medida cuando en realidad el parque solo tiene un puñado de perfiles operativos genuinamente distintos.</p>
+        <div class="biz-action" id="bizAction">
+          <div class="biz-title" id="bizTitle">Calculando…</div>
+          <div class="biz-detail" id="bizDetail"></div>
+        </div>
+      </div>
+      <div>
+        <div class="gauge-label">Turbinas típicas por familia (ejemplo ilustrativo)</div>
+        <canvas id="projection" width="480" height="230"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <section id="cta">
+    <h2>De esta demo a tu planta</h2>
+    <p style="color:var(--muted); max-width:640px; margin-bottom:20px; text-align:justify;">El dataset y el agrupamiento de este demo son de ejemplo, ajustados sobre datos sintéticos — sirven para explicar la idea, no para clasificar tu parque real. Llevarlo a tu planta implica correr este mismo algoritmo sobre el historial real de tus equipos, decidir junto contigo dónde cortar el dendrograma según cuántas políticas de mantenimiento distintas tiene sentido operar, y sumar las variables que tú ya registras (horas de operación, tipo de combustible, año de fabricación, etc.) — ahí es donde entra nuestro motor AutoML. Se adapta al tipo de equipo y a la industria —minería, manufactura, energía, alimentos— cuando la calibramos con tus datos. Si quieres recorrer ese proceso, conversemos.</p>
+    <div class="cta-row">
+      <a class="btn primary" href="https://chat.whatsapp.com/GvBz1tuUeNZ0xwTkjsuE3z" target="_blank" rel="noopener">Unirme a la comunidad de WhatsApp</a>
+      <a class="btn ghost" href="https://www.linkedin.com/company/reliabilit-ia/" target="_blank" rel="noopener">Seguir en LinkedIn</a>
+      <a class="btn ghost" href="https://www.youtube.com/@miguelangelcayllahuaquispe998" target="_blank" rel="noopener">Ver en YouTube</a>
+    </div>
+
+    <div class="contact-card">
+      <div>
+        <h3>¿Hablamos de agrupar tu parque de turbinas?</h3>
+        <p>Si administras varias turbinas o equipos rotativos y quieres validar este análisis con tu propio parque, escríbeme directamente.</p>
+      </div>
+      <div class="contact-links">
+        <a class="contact-row" href="https://wa.me/51997610310?text=Hola%20Miguel%2C%20vi%20el%20demo%20Familias%20de%20Turbinas%20y%20quiero%20conversar%20sobre%20la%20calibracion%20para%20mi%20planta" target="_blank" rel="noopener">
+          <span class="contact-icon">💬</span>
+          <span class="contact-text"><b>WhatsApp</b>+51 997 610 310</span>
+        </a>
+        <a class="contact-row" href="https://www.linkedin.com/in/miguelcayllahua/" target="_blank" rel="noopener">
+          <span class="contact-icon">in</span>
+          <span class="contact-text"><b>LinkedIn</b>Miguel Angel Cayllahua Quispe</span>
+        </a>
+        <a class="contact-row" href="mailto:miguelcquispe@gmail.com">
+          <span class="contact-icon">✉</span>
+          <span class="contact-text"><b>Correo</b>miguelcquispe@gmail.com</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-links">
+      <a href="https://chat.whatsapp.com/GvBz1tuUeNZ0xwTkjsuE3z" target="_blank" rel="noopener">WhatsApp</a>
+      <a href="https://www.youtube.com/@miguelangelcayllahuaquispe998" target="_blank" rel="noopener">YouTube</a>
+      <a href="https://www.linkedin.com/company/reliabilit-ia/" target="_blank" rel="noopener">LinkedIn empresa</a>
+      <a href="https://www.linkedin.com/in/miguelcayllahua/" target="_blank" rel="noopener">LinkedIn personal</a>
+      <a href="mailto:miguelcquispe@gmail.com">Correo</a>
+    </div>
+    <p style="text-align:justify;">Contenido con fines educativos. La metodología es real; los datos y la simulación de esta demo son sintéticos para poder compartirlos públicamente. Se calibra con tus propios datos —sin importar el tipo de equipo o la industria— cuando trabajamos juntos. Modelo de ejemplo, no una fórmula fija.</p>
+  </footer>
+</div>
+
+<script>
+/* =========================================================
+   Generación del dataset sintético: 3 familias reales de
+   turbinas (usadas solo para validar, nunca para agrupar).
+   ========================================================= */
+function seededRandom(seed){
+  let s = seed;
+  return function(){ s = (s*9301+49297) % 233280; return s/233280; };
+}
+function gaussian(rnd){
+  const u1 = Math.max(1e-9, rnd()), u2 = rnd();
+  return Math.sqrt(-2*Math.log(u1))*Math.cos(2*Math.PI*u2);
+}
+const REF_DATE = new Date('2026-07-15');
+const MESES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+function fmtDate(d){ return String(d.getDate()).padStart(2,'0')+' '+MESES[d.getMonth()]+' '+d.getFullYear(); }
+function dateFromDaysAgo(daysAgo){ const d = new Date(REF_DATE); d.setDate(d.getDate()-Math.round(daysAgo)); return d; }
+
+const rnd = seededRandom(131);
+const N_PER = 24;
+const FAMILY_NAMES = ['Pequeñas','Medianas','Ciclo combinado / grandes'];
+const FAMILY_COLORS = ['#3ecfa0','#e8c547','#f4722e'];
+const FAMILY_DETAIL = [
+  'Turbinas industriales pequeñas (aprox. 1-15 MW). Suelen justificar inspecciones más frecuentes por unidad de energía producida.',
+  'Turbinas industriales medianas (aprox. 20-90 MW). Punto intermedio entre frecuencia de inspección y costo por parada.',
+  'Turbinas de ciclo combinado o de gran escala (150+ MW). Cada parada no programada tiene un costo mucho mayor — justifican monitoreo más intensivo.'
+];
+
+const points = [];
+for(let i=0;i<N_PER;i++){ const logP=0.3+gaussian(rnd)*0.22, eff=29+gaussian(rnd)*1.8; points.push({logP, eff, fam:0, mw:Math.pow(10,logP), date:dateFromDaysAgo(rnd()*400)}); }
+for(let i=0;i<N_PER;i++){ const logP=1.5+gaussian(rnd)*0.22, eff=35.5+gaussian(rnd)*1.6; points.push({logP, eff, fam:1, mw:Math.pow(10,logP), date:dateFromDaysAgo(rnd()*400)}); }
+for(let i=0;i<N_PER;i++){ const logP=2.25+gaussian(rnd)*0.14, eff=41.5+gaussian(rnd)*1.9; points.push({logP, eff, fam:2, mw:Math.pow(10,logP), date:dateFromDaysAgo(rnd()*400)}); }
+for(let i=points.length-1;i>0;i--){ const j=Math.floor(rnd()*(i+1)); [points[i],points[j]]=[points[j],points[i]]; }
+
+function stats(arr,key){
+  const v = arr.map(p=>p[key]);
+  const m = v.reduce((a,b)=>a+b,0)/v.length;
+  const sd = Math.sqrt(v.reduce((a,x)=>a+(x-m)**2,0)/v.length);
+  return {m,sd};
+}
+const SP = stats(points,'logP'), SE = stats(points,'eff');
+function toZ(p){ return [(p.logP-SP.m)/SP.sd, (p.eff-SE.m)/SE.sd]; }
+const Z = points.map(toZ);
+function dist(a,b){ return Math.sqrt((a[0]-b[0])**2+(a[1]-b[1])**2); }
+
+function renderDatasetPreview(){
+  const tbody = document.getElementById('datasetBody');
+  const note = document.getElementById('datasetNote');
+  if(!tbody) return;
+  tbody.innerHTML = points.map((p,i)=>`<tr><td>${i+1}</td><td>${fmtDate(p.date)}</td><td>${p.mw.toFixed(1)}</td><td>${p.eff.toFixed(1)}</td><td>${FAMILY_NAMES[p.fam]}</td></tr>`).join('');
+  const sortedDates = points.map(p=>p.date).sort((a,b)=>a-b);
+  note.textContent = `${points.length} turbinas simuladas, registradas entre ${fmtDate(sortedDates[0])} y ${fmtDate(sortedDates[sortedDates.length-1])}. La columna "familia real" solo se usa para validar la calidad del agrupamiento — el algoritmo nunca la ve.`;
+}
+renderDatasetPreview();
+
+/* =========================================================
+   Clustering jerárquico aglomerativo (enlace promedio),
+   implementado desde cero como un árbol binario explícito.
+   ========================================================= */
+function buildTree(Z){
+  let nodes = Z.map((z,i)=>({isLeaf:true, idx:i, height:0, leaves:[i]}));
+  while(nodes.length>1){
+    let best=Infinity, bi=-1, bj=-1;
+    for(let i=0;i<nodes.length;i++){
+      for(let j=i+1;j<nodes.length;j++){
+        let sum=0,n=0;
+        nodes[i].leaves.forEach(a=>nodes[j].leaves.forEach(b=>{ sum+=dist(Z[a],Z[b]); n++; }));
+        const d = sum/n;
+        if(d<best){ best=d; bi=i; bj=j; }
+      }
+    }
+    const merged = { isLeaf:false, height:best, left:nodes[bi], right:nodes[bj], leaves:nodes[bi].leaves.concat(nodes[bj].leaves) };
+    nodes = nodes.filter((_,idx)=>idx!==bi && idx!==bj);
+    nodes.push(merged);
+  }
+  return nodes[0];
+}
+const ROOT = buildTree(Z);
+
+function cutTreeToK(root, k){
+  let active = [root];
+  while(active.length < k){
+    let maxH=-1, mi=-1;
+    active.forEach((n,i)=>{ if(!n.isLeaf && n.height>maxH){ maxH=n.height; mi=i; } });
+    if(mi===-1) break;
+    const node = active[mi];
+    active.splice(mi,1,node.left,node.right);
+  }
+  return active.map(n=>n.leaves);
+}
+function purity(clusters){
+  let correct=0;
+  clusters.forEach(c=>{ const counts={0:0,1:0,2:0}; c.forEach(i=>counts[points[i].fam]++); correct+=Math.max(counts[0],counts[1],counts[2]); });
+  return correct/points.length;
+}
+function silhouette(clusters){
+  const clusterOf = {};
+  clusters.forEach((c,ci)=>c.forEach(i=>clusterOf[i]=ci));
+  let total=0;
+  Z.forEach((zi,i)=>{
+    const own = clusters[clusterOf[i]];
+    const a = own.length>1 ? own.filter(j=>j!==i).reduce((s,j)=>s+dist(zi,Z[j]),0)/(own.length-1) : 0;
+    let b = Infinity;
+    clusters.forEach((c,ci)=>{ if(ci===clusterOf[i]) return; const davg = c.reduce((s,j)=>s+dist(zi,Z[j]),0)/c.length; if(davg<b) b=davg; });
+    total += own.length>1 ? (b-a)/Math.max(a,b) : 0;
+  });
+  return total/Z.length;
+}
+function leafOrder(node){
+  if(node.isLeaf) return [node.idx];
+  return leafOrder(node.left).concat(leafOrder(node.right));
+}
+
+/* =========================================================
+   MODELO DE PRODUCCIÓN fijo: corte en k=3 (validado como el
+   punto de mayor silhouette y pureza sin fragmentar).
+   ========================================================= */
+const PROD_K = 3;
+const prodClusters = cutTreeToK(ROOT, PROD_K);
+const prodCentroids = prodClusters.map(c=>{
+  const mx = c.reduce((s,i)=>s+Z[i][0],0)/c.length;
+  const my = c.reduce((s,i)=>s+Z[i][1],0)/c.length;
+  return [mx,my];
+});
+const prodClusterFamily = prodClusters.map(c=>{
+  const counts={0:0,1:0,2:0}; c.forEach(i=>counts[points[i].fam]++);
+  return Number(Object.keys(counts).reduce((a,b)=>counts[a]>counts[b]?a:b));
+});
+
+function nearestCentroids(zpoint, centroids){
+  const d = centroids.map(c=>dist(zpoint,c));
+  const order = d.map((v,i)=>i).sort((a,b)=>d[a]-d[b]);
+  return { order, dists:d };
+}
+function classifyProd(mw, eff){
+  const logP = Math.log10(mw);
+  const zp = [(logP-SP.m)/SP.sd, (eff-SE.m)/SE.sd];
+  const {order, dists} = nearestCentroids(zp, prodCentroids);
+  const clusterIdx = order[0];
+  const fam = prodClusterFamily[clusterIdx];
+  return { fam, d1: dists[order[0]], d2: dists[order[1]], zp };
+}
+
+/* =========================================================
+   MODO BÁSICO
+   ========================================================= */
+const mwSlider = document.getElementById('mwSlider');
+const effSlider = document.getElementById('effSlider');
+const mwVal = document.getElementById('mwVal');
+const effVal = document.getElementById('effVal');
+const riskDot = document.getElementById('riskDot');
+const riskTitle = document.getElementById('riskTitle');
+const riskDetail = document.getElementById('riskDetail');
+const confidenceLine = document.getElementById('confidenceLine');
+const confidenceNote = document.getElementById('confidenceNote');
+const distStat = document.getElementById('distStat');
+const distOtherStat = document.getElementById('distOtherStat');
+const gaugeFill = document.getElementById('gaugeFill');
+const gaugeValue = document.getElementById('gaugeValue');
+const bizLevelInline = document.getElementById('bizLevelInline');
+const bizAction = document.getElementById('bizAction');
+const bizTitle = document.getElementById('bizTitle');
+const bizDetail = document.getElementById('bizDetail');
+const projectionCanvas = document.getElementById('projection');
+const pctx = projectionCanvas.getContext('2d');
+
+function drawProjection(activeIdx){
+  const W = projectionCanvas.width, H = projectionCanvas.height;
+  pctx.clearRect(0,0,W,H);
+  const padL = 56, padR = 20, padT = 20, padB = 46;
+  const sizes = prodClusters.map(c=>c.length);
+  const maxSize = Math.max(...sizes)*1.15;
+  const bw = (W-padL-padR)/sizes.length;
+
+  pctx.strokeStyle = '#22222c';
+  pctx.lineWidth = 1;
+  pctx.beginPath();
+  pctx.moveTo(padL, padT); pctx.lineTo(padL, H-padB); pctx.lineTo(W-padR, H-padB);
+  pctx.stroke();
+
+  sizes.forEach((n,i)=>{
+    const barH = Math.max(2,(n/maxSize)*(H-padT-padB));
+    const x = padL + i*bw + bw*0.18;
+    const y = H-padB-barH;
+    const w = bw*0.64;
+    pctx.fillStyle = i===activeIdx ? FAMILY_COLORS[prodClusterFamily[i]] : 'rgba(244,244,247,0.14)';
+    pctx.fillRect(x,y,w,barH);
+    pctx.fillStyle = '#a8a8b4';
+    pctx.font = '11px DM Mono, monospace';
+    pctx.fillText(FAMILY_NAMES[prodClusterFamily[i]].split(' ')[0], x-4, H-padB+16);
+    if(i===activeIdx){
+      pctx.fillStyle = '#f4f4f7';
+      pctx.font = '12px DM Mono, monospace';
+      pctx.fillText(n+' turbinas', x-6, y-8);
+    }
+  });
+  pctx.fillStyle = '#8a8a98';
+  pctx.font = '11px DM Mono, monospace';
+  pctx.fillText('turbinas por familia en el dataset de ejemplo', padL, 14);
+}
+
+function updateBasic(){
+  const mw = parseFloat(mwSlider.value);
+  const eff = parseFloat(effSlider.value);
+  mwVal.textContent = mw.toFixed(0) + ' MW';
+  effVal.textContent = eff.toFixed(1) + ' %';
+
+  const { fam, d1, d2 } = classifyProd(mw, eff);
+  const color = FAMILY_COLORS[fam];
+
+  riskDot.style.background = color;
+  riskTitle.style.color = color;
+  riskTitle.textContent = FAMILY_NAMES[fam];
+  riskDetail.textContent = FAMILY_DETAIL[fam];
+
+  const ratio = d1/(d2||1);
+  let confLevel, confColor, confNote;
+  if(ratio < 0.4){
+    confLevel = 'Alta'; confColor = 'var(--success)';
+    confNote = 'Está claramente dentro del núcleo de esta familia.';
+  } else if(ratio < 0.75){
+    confLevel = 'Media'; confColor = '#e8c547';
+    confNote = 'Está en una zona intermedia entre dos familias.';
+  } else {
+    confLevel = 'Baja'; confColor = 'var(--cta)';
+    confNote = 'Está casi a medio camino entre dos familias — la etiqueta es la más cercana, pero por poco margen.';
+  }
+  confidenceLine.textContent = 'Confianza de la asignación: ' + confLevel;
+  confidenceLine.style.color = confColor;
+  confidenceNote.textContent = confNote;
+
+  distStat.textContent = d1.toFixed(2);
+  distOtherStat.textContent = d2.toFixed(2);
+
+  const pct = Math.min(100, Math.max(0, (1-ratio)*0));
+  const closeness = Math.min(100, Math.max(0, (d1/(d1+d2))*100));
+  gaugeFill.style.width = closeness.toFixed(1) + '%';
+  gaugeFill.style.background = color;
+  gaugeValue.textContent = Math.round(closeness);
+
+  bizLevelInline.textContent = FAMILY_NAMES[fam];
+  bizLevelInline.style.color = color;
+  bizAction.style.borderColor = color;
+  bizTitle.style.color = color;
+  bizTitle.textContent = FAMILY_NAMES[fam];
+  bizDetail.textContent = FAMILY_DETAIL[fam];
+
+  const clusterIdxForFam = prodClusterFamily.indexOf(fam);
+  drawProjection(clusterIdxForFam);
+  drawInstrument(mw, eff, fam);
+}
+mwSlider.addEventListener('input', updateBasic);
+effSlider.addEventListener('input', updateBasic);
+
+/* =========================================================
+   SIMULACIÓN EN VIVO — mapa de familias con el punto actual.
+   ========================================================= */
+const instrumentCanvas = document.getElementById('instrument');
+const ictx = instrumentCanvas.getContext('2d');
+function hexToRgb(hex){ const v=hex.replace('#',''); return [parseInt(v.slice(0,2),16),parseInt(v.slice(2,4),16),parseInt(v.slice(4,6),16)]; }
+function rgba(c,a){ return `rgba(${c[0]},${c[1]},${c[2]},${a})`; }
+const MW_MIN=1, MW_MAX=300, EFF_MIN=24, EFF_MAX=48;
+function mwToLogPx(mw){ return Math.log10(mw); }
+const LOG_MIN = Math.log10(MW_MIN), LOG_MAX = Math.log10(MW_MAX);
+
+function drawInstrument(mw, eff, fam){
+  const W = instrumentCanvas.width, H = instrumentCanvas.height;
+  const pad = 36;
+  ictx.clearRect(0,0,W,H);
+  function toPx(mwv,effv){
+    const lx = (Math.log10(mwv)-LOG_MIN)/(LOG_MAX-LOG_MIN);
+    return [ pad+lx*(W-2*pad), H-pad-(effv-EFF_MIN)/(EFF_MAX-EFF_MIN)*(H-2*pad) ];
+  }
+
+  const cell = 8;
+  for(let px=pad; px<W-pad; px+=cell){
+    for(let py=pad; py<H-pad; py+=cell){
+      const lx = (px-pad)/(W-2*pad);
+      const mwv = Math.pow(10, LOG_MIN + lx*(LOG_MAX-LOG_MIN));
+      const effv = EFF_MIN + (1-(py-pad)/(H-2*pad))*(EFF_MAX-EFF_MIN);
+      const { fam:f } = classifyProd(mwv, effv);
+      ictx.fillStyle = rgba(hexToRgb(FAMILY_COLORS[f]), 0.14);
+      ictx.fillRect(px,py,cell,cell);
+    }
+  }
+
+  ictx.strokeStyle = '#22222c';
+  ictx.lineWidth = 1;
+  ictx.beginPath();
+  ictx.moveTo(pad, pad); ictx.lineTo(pad, H-pad); ictx.lineTo(W-pad, H-pad);
+  ictx.stroke();
+  ictx.fillStyle = '#8a8a98';
+  ictx.font = '10px DM Mono, monospace';
+  ictx.fillText('potencia nominal (MW, escala log)', pad, H-10);
+  ictx.save();
+  ictx.translate(12, H/2+40);
+  ictx.rotate(-Math.PI/2);
+  ictx.fillText('eficiencia térmica (%)', 0, 0);
+  ictx.restore();
+
+  points.forEach(p=>{
+    const [x,y] = toPx(p.mw, p.eff);
+    ictx.beginPath();
+    ictx.fillStyle = rgba(hexToRgb(FAMILY_COLORS[p.fam]), 0.55);
+    ictx.arc(x,y,2.4,0,Math.PI*2);
+    ictx.fill();
+  });
+
+  const color = FAMILY_COLORS[fam];
+  const [cx,cy] = toPx(mw,eff);
+  ictx.beginPath();
+  ictx.fillStyle = rgba(hexToRgb(color),0.25);
+  ictx.arc(cx,cy,13,0,Math.PI*2);
+  ictx.fill();
+  ictx.beginPath();
+  ictx.fillStyle = color;
+  ictx.arc(cx,cy,6,0,Math.PI*2);
+  ictx.fill();
+  ictx.strokeStyle = '#f4f4f7';
+  ictx.lineWidth = 1.3;
+  ictx.stroke();
+}
+
+/* =========================================================
+   MODO ANALISTA — cortar el dendrograma en k grupos
+   ========================================================= */
+const dendroCanvas = document.getElementById('dendro');
+const dctx = dendroCanvas.getContext('2d');
+const chartCanvas = document.getElementById('chart');
+const cctx = chartCanvas.getContext('2d');
+let currentK = 3;
+
+const LEAF_ORDER = leafOrder(ROOT);
+const LEAF_POS = {};
+LEAF_ORDER.forEach((idx,i)=>{ LEAF_POS[idx] = i; });
+
+function nodeX(node){
+  if(node.isLeaf) return LEAF_POS[node.idx];
+  return (nodeX(node.left) + nodeX(node.right)) / 2;
+}
+
+function drawDendrogram(cutHeight){
+  const W = dendroCanvas.width, H = dendroCanvas.height;
+  const pad = 30;
+  dctx.clearRect(0,0,W,H);
+  const maxH = ROOT.height * 1.08;
+  const n = LEAF_ORDER.length;
+  function xOf(pos){ return pad + (pos/(n-1))*(W-2*pad); }
+  function yOf(h){ return H-pad - (h/maxH)*(H-2*pad); }
+
+  dctx.strokeStyle = 'rgba(244,244,247,0.35)';
+  dctx.lineWidth = 1.2;
+  function drawNode(node){
+    if(node.isLeaf) return { x:xOf(LEAF_POS[node.idx]), y:yOf(0) };
+    const L = drawNode(node.left);
+    const R = drawNode(node.right);
+    const y = yOf(node.height);
+    dctx.beginPath();
+    dctx.moveTo(L.x, L.y); dctx.lineTo(L.x, y); dctx.lineTo(R.x, y); dctx.lineTo(R.x, R.y);
+    dctx.stroke();
+    return { x:(L.x+R.x)/2, y };
+  }
+  drawNode(ROOT);
+
+  if(cutHeight!==null){
+    const y = yOf(cutHeight);
+    dctx.strokeStyle = '#f4722e';
+    dctx.setLineDash([6,4]);
+    dctx.lineWidth = 1.4;
+    dctx.beginPath();
+    dctx.moveTo(pad, y); dctx.lineTo(W-pad, y);
+    dctx.stroke();
+    dctx.setLineDash([]);
+  }
+  dctx.fillStyle = '#8a8a98';
+  dctx.font = '11px DM Mono, monospace';
+  dctx.fillText('cada hoja = una turbina · altura = qué tan distintos son los grupos fusionados', pad, 16);
+}
+
+function toPxChart(logP,eff,W,H,pad){
+  const lx = (logP-LOG_MIN)/(LOG_MAX-LOG_MIN);
+  return [ pad+lx*(W-2*pad), H-pad-(eff-EFF_MIN)/(EFF_MAX-EFF_MIN)*(H-2*pad) ];
+}
+const CLUSTER_PALETTE = ['#3ecfa0','#e8c547','#f4722e','#7b5ea7','#4a9de0','#e05f9e'];
+
+function drawClusterMap(clusters){
+  const W = chartCanvas.width, H = chartCanvas.height;
+  const pad = 40;
+  cctx.clearRect(0,0,W,H);
+  cctx.strokeStyle = '#22222c';
+  cctx.lineWidth = 1;
+  cctx.beginPath();
+  cctx.moveTo(pad, pad); cctx.lineTo(pad, H-pad); cctx.lineTo(W-pad, H-pad);
+  cctx.stroke();
+  cctx.fillStyle = '#a8a8b4';
+  cctx.font = '13px DM Mono, monospace';
+  cctx.fillText('potencia nominal (MW, escala log)', W/2-90, H-10);
+  cctx.save();
+  cctx.translate(16, H/2+70);
+  cctx.rotate(-Math.PI/2);
+  cctx.fillText('eficiencia térmica (%)', 0, 0);
+  cctx.restore();
+
+  const clusterOf = {};
+  clusters.forEach((c,ci)=>c.forEach(i=>clusterOf[i]=ci));
+  points.forEach((p,i)=>{
+    const [x,y] = toPxChart(p.logP, p.eff, W, H, pad);
+    cctx.beginPath();
+    cctx.fillStyle = CLUSTER_PALETTE[clusterOf[i] % CLUSTER_PALETTE.length];
+    cctx.arc(x,y,4,0,Math.PI*2);
+    cctx.fill();
+  });
+
+  cctx.fillStyle = '#a8a8b4';
+  cctx.font = '12px DM Mono, monospace';
+  cctx.fillText('cada color = un grupo resultante al cortar el dendrograma en k='+clusters.length, pad, pad-16);
+}
+
+function setK(k){
+  currentK = k;
+  const clusters = cutTreeToK(ROOT, k);
+  const p = purity(clusters);
+  const s = silhouette(clusters);
+  const sizes = clusters.map(c=>c.length);
+  const minSize = Math.min(...sizes);
+
+  document.getElementById('mK').textContent = k;
+  document.getElementById('mPurity').textContent = (p*100).toFixed(1)+'%';
+  document.getElementById('mSil').textContent = s.toFixed(3);
+  document.getElementById('mSizes').textContent = sizes.join(' / ');
+
+  const badge = document.getElementById('mFitBadge');
+  if(minSize <= 2){
+    badge.textContent = '⚠ Sobre-fragmentación — al menos un grupo es un puñado de turbinas: probablemente estás dividiendo una familia real en pedazos artificiales.';
+    badge.style.color = '#e8c547';
+  } else if(p < 0.85){
+    badge.textContent = '⚠ Muy pocos grupos — familias con perfiles operativos distintos están mezcladas en un mismo grupo.';
+    badge.style.color = 'var(--cta)';
+  } else {
+    badge.textContent = '✓ Número de familias razonable — buena separación entre grupos (silhouette alto) sin fragmentar en exceso.';
+    badge.style.color = 'var(--success)';
+  }
+
+  // altura de corte: el punto medio entre la altura del merge k-1 y el merge k (aprox)
+  const sortedHeights = [];
+  (function collect(node){ if(!node.isLeaf){ sortedHeights.push(node.height); collect(node.left); collect(node.right); } })(ROOT);
+  sortedHeights.sort((a,b)=>b-a);
+  const cutHeight = k<=sortedHeights.length ? (sortedHeights[k-2]!==undefined ? (sortedHeights[k-2]+ (sortedHeights[k-1]||0))/2 : sortedHeights[k-1]) : 0;
+
+  drawDendrogram(cutHeight);
+  drawClusterMap(clusters);
+}
+
+const kRow = document.getElementById('kRow');
+[2,3,4,5,6].forEach(k=>{
+  const btn = document.createElement('button');
+  btn.className = 'degree-btn' + (k===currentK ? ' active':'');
+  btn.textContent = 'k=' + k;
+  btn.addEventListener('click', ()=>{
+    document.querySelectorAll('.degree-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    setK(k);
+  });
+  kRow.appendChild(btn);
+});
+
+const analystToggle = document.getElementById('analystToggle');
+const analystPanel = document.getElementById('analystPanel');
+analystToggle.addEventListener('change', ()=>{
+  analystPanel.classList.toggle('show', analystToggle.checked);
+  if(analystToggle.checked) setK(currentK);
+});
+
+updateBasic();
+</script>
+
+</body>
+</html>
