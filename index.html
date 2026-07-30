@@ -70,8 +70,25 @@
   }
   .card:hover{border-color:var(--success); transform:translateY(-2px);}
   .card .tag{font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--accent);}
+  .card .tag::before{margin-right:6px;}
+  .card[data-sector="rodamientos"] .tag::before{content:"⚙️";}
+  .card[data-sector="energia"] .tag::before{content:"⚡";}
+  .card[data-sector="motores"] .tag::before{content:"🔧";}
+  .card[data-sector="aire-comprimido"] .tag::before{content:"💨";}
+  .card[data-sector="compresores"] .tag::before{content:"🌀";}
+  .card[data-sector="planta"] .tag::before{content:"🏭";}
+  .card[data-sector="bombas"] .tag::before{content:"🚰";}
+  .card[data-sector="vibracion"] .tag::before{content:"📳";}
+  .card[data-sector="turbinas"] .tag::before{content:"🌬️";}
+  .card[data-sector="sensores"] .tag::before{content:"📡";}
+  .card[data-sector="termografia"] .tag::before{content:"🌡️";}
+  .card[data-sector="correas"] .tag::before{content:"🎢";}
   .card h3{font-size:20px; margin:10px 0 8px;}
-  .card p{font-size:14px; color:var(--muted);}
+  .card p{
+    font-size:14px; color:var(--muted);
+    display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;
+    overflow:hidden; line-height:1.4; min-height:calc(1.4em * 2);
+  }
   .status{font-size:11px; color:var(--success); margin-top:auto; padding-top:14px; display:inline-block;}
   .cta-row{display:flex; gap:14px; flex-wrap:wrap; margin-top:28px;}
   .btn{
@@ -148,6 +165,7 @@
         <button class="chip" data-value="sensores">Sensores</button>
         <button class="chip" data-value="vibracion">Vibración</button>
         <button class="chip" data-value="termografia">Termografía</button>
+        <button class="chip" data-value="correas">Correas transportadoras</button>
       </div>
       <button class="filter-reset" id="filterReset">Limpiar filtros</button>
     </div>
@@ -242,6 +260,18 @@
         <div class="tag">Visión · Termografía</div>
         <h3>Ojo Térmico</h3>
         <p>Clasifica imágenes térmicas para detectar puntos calientes en equipos.</p>
+        <span class="status">● Disponible</span>
+      </a>
+      <a class="card" data-paradigm="clasificacion" data-sector="correas" href="./modelos/correas-transportadoras/">
+        <div class="tag">Clasificación · Correas transportadoras</div>
+        <h3>Rastreador de Correas</h3>
+        <p>Clasifica el desvío lateral de una correa transportadora antes de que desgaste el borde o derrame material.</p>
+        <span class="status">● Disponible</span>
+      </a>
+      <a class="card" data-paradigm="series-tiempo" data-sector="motores" href="./modelos/memoria-del-motor/">
+        <div class="tag">Series de tiempo · Motor</div>
+        <h3>Memoria del Motor</h3>
+        <p>Una LSTM entrenada desde cero compara contra un modelo sin memoria para detectar cuándo una subida reciente es más urgente que el mismo valor alcanzado gradualmente.</p>
         <span class="status">● Disponible</span>
       </a>
     </div>

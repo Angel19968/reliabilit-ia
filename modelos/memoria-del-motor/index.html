@@ -1,0 +1,996 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Memoria del Motor — RELIABILIT-IA</title>
+<meta name="description" content="Compara un modelo sin memoria (solo la lectura actual) contra una LSTM entrenada desde cero que ve toda la secuencia de lecturas, para estimar días hasta falla.">
+
+<meta property="og:title" content="Memoria del Motor — RELIABILIT-IA">
+<meta property="og:description" content="Mueve la vibración final y qué tan brusca fue la subida reciente, y mira cómo un modelo con memoria (LSTM) corrige la estimación de un modelo que solo ve el valor actual.">
+<meta property="og:image" content="../../assets/og-image.png">
+<meta property="og:type" content="website">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root{
+    --bg:#0a0a0f;
+    --panel:#121218;
+    --panel2:#181820;
+    --border:#22222c;
+    --text:#f4f4f7;
+    --muted:#9a9aa8;
+    --success:#3ecfa0;
+    --cta:#f4722e;
+    --accent:#7b5ea7;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    background:var(--bg); color:var(--text); font-family:'DM Mono', monospace;
+    line-height:1.6; -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:'Syne', sans-serif; font-weight:800; letter-spacing:-0.02em;}
+  a{color:var(--success);}
+  .wrap{max-width:960px;margin:0 auto;padding:0 24px;}
+  .back{display:inline-block; font-size:13px; color:var(--muted); text-decoration:none;}
+  .nav-row{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; position:sticky; top:0; z-index:30; background:var(--bg); padding:14px 0; margin:0 -24px; padding-left:24px; padding-right:24px; border-bottom:1px solid transparent;}
+  .nav-row.is-stuck{border-bottom-color:var(--border);}
+  .quick-nav{font-family:'DM Mono',monospace; font-size:13px; background:var(--panel); color:var(--text); border:1px solid var(--border); border-radius:8px; padding:6px 10px; max-width:230px;}
+  .back:hover{color:var(--success);}
+
+  header.hero{padding:24px 0 40px; border-bottom:1px solid var(--border);}
+  .badge{
+    display:inline-block; font-size:12px; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--success); border:1px solid var(--success); border-radius:999px;
+    padding:5px 14px; margin-bottom:18px;
+  }
+  h1{font-size:clamp(28px,5vw,44px); line-height:1.1; margin-bottom:14px;}
+  .lead{font-family:'Instrument Serif', serif; font-style:italic; font-size:20px; color:var(--muted); max-width:640px;}
+
+  section{padding:40px 0; border-bottom:1px solid var(--border);}
+  section h2{font-size:22px; margin-bottom:14px;}
+  .context p{color:var(--muted); max-width:640px; font-size:15px; text-align:justify;}
+  .context p + p{margin-top:12px;}
+
+  .panel{
+    background:var(--panel); border:1px solid var(--border); border-radius:16px; padding:28px;
+  }
+
+  .toggle-row{display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; flex-wrap:wrap; gap:12px;}
+  .toggle-row .label{font-size:15px; color:var(--muted);}
+  .switch{
+    display:inline-flex; align-items:center; gap:10px; cursor:pointer; user-select:none;
+    font-size:14px; color:var(--text);
+  }
+  .switch input{display:none;}
+  .track{
+    width:42px; height:24px; background:var(--border); border-radius:999px; position:relative; transition:.2s;
+    flex-shrink:0;
+  }
+  .track::after{
+    content:''; position:absolute; top:3px; left:3px; width:18px; height:18px; border-radius:50%;
+    background:var(--muted); transition:.2s;
+  }
+  .switch input:checked + .track{background:var(--accent);}
+  .switch input:checked + .track::after{transform:translateX(18px); background:#fff;}
+
+  .demo-grid{display:grid; grid-template-columns:1.05fr 1fr; gap:32px;}
+  @media (max-width:760px){ .demo-grid{grid-template-columns:1fr;} }
+
+  .slider-group{margin-bottom:22px;}
+  .slider-group label{display:flex; justify-content:space-between; font-size:16px; margin-bottom:8px;}
+  .slider-group label .val{color:var(--success); font-weight:500;}
+  input[type=range]{
+    width:100%; -webkit-appearance:none; height:6px; border-radius:999px; background:var(--border); outline:none;
+  }
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none; width:20px; height:20px; border-radius:50%;
+    background:var(--success); cursor:pointer; border:3px solid var(--bg);
+  }
+  input[type=range]::-moz-range-thumb{
+    width:20px; height:20px; border-radius:50%; background:var(--success); cursor:pointer; border:3px solid var(--bg);
+  }
+  .hint{font-size:13px; color:var(--muted); display:flex; justify-content:space-between; margin-top:4px;}
+
+  .compare-grid{display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-top:22px;}
+  @media (max-width:520px){ .compare-grid{grid-template-columns:1fr;} }
+  .compare-card{
+    padding:18px; border-radius:14px; background:var(--panel2); border:1px solid var(--border);
+  }
+  .compare-card .compare-label{font-size:12px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:8px;}
+  .compare-card .compare-value{font-size:28px; font-family:'Syne',sans-serif; font-weight:800;}
+  .compare-card .compare-value span{font-size:15px; font-weight:500; color:var(--muted); font-family:'DM Mono',monospace;}
+  .compare-card.lstm{border-color:var(--accent);}
+  .verdict{
+    margin-top:16px; padding:16px 18px; border-radius:12px; background:var(--panel2);
+    border:1px solid var(--border); font-size:14px; color:var(--text);
+  }
+  .simple-summary{font-size:14px !important; margin-top:12px !important; padding-top:12px !important; border-top:1px dashed var(--border); color:var(--text) !important;}
+
+  .live-col h3{font-size:14px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:14px; font-family:'DM Mono',monospace; font-weight:500;}
+  #trajectory{width:100%; height:220px; background:var(--bg); border:1px solid var(--border); border-radius:12px; display:block;}
+  .sim-note{font-size:13px; color:var(--muted); line-height:1.7; margin-top:10px;}
+
+  .analyst{margin-top:32px; padding-top:26px; border-top:1px dashed var(--border); display:none;}
+  .analyst.show{display:block;}
+  .dataset-wrap{margin-bottom:24px;}
+  .dataset-label{font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:8px;}
+  .dataset-scroll{max-height:260px; overflow-y:auto; border:1px solid var(--border); border-radius:12px;}
+  .dataset-table{width:100%; border-collapse:collapse; font-size:13px;}
+  .dataset-table th{position:sticky; top:0; background:var(--panel2); color:var(--muted); text-align:left; font-weight:500; padding:8px 12px; border-bottom:1px solid var(--border); text-transform:uppercase; letter-spacing:.04em; font-size:11px;}
+  .dataset-table td{padding:7px 12px; border-bottom:1px solid var(--border); color:var(--text);}
+  .dataset-table tr:last-child td{border-bottom:none;}
+  .dataset-table td.set-train{color:var(--accent);}
+  .dataset-table td.set-test{color:var(--muted);}
+  .dataset-table tr.is-current td{background:rgba(123,94,167,0.18);}
+  .dataset-note{font-size:12px; color:var(--muted); margin-top:8px;}
+  #scatter{width:100%; height:320px; background:var(--bg); border:1px solid var(--border); border-radius:12px; display:block;}
+  #r2bars{width:100%; height:180px; background:var(--bg); border:1px solid var(--border); border-radius:12px; display:block; margin-top:18px;}
+  .metrics{display:flex; gap:24px; margin-top:16px; flex-wrap:wrap; font-size:14px; color:var(--muted);}
+  .metrics b{color:var(--text);}
+  .fit-badge{margin-top:14px; font-size:15px; font-weight:600; padding:10px 14px; border-radius:10px; background:var(--panel2); display:inline-block;}
+  .arch-note{font-size:13px; color:var(--muted); margin-top:14px; line-height:1.7;}
+
+  .business p{color:var(--muted); font-size:16px; max-width:640px; text-align:justify;}
+  .business .stat{color:var(--success); font-weight:500;}
+  .business-grid{display:grid; grid-template-columns:1.1fr 1fr; gap:32px; align-items:start; margin-top:8px;}
+  @media (max-width:760px){ .business-grid{grid-template-columns:1fr;} }
+  .biz-action{margin-top:18px; padding:18px; border-radius:12px; background:var(--panel2); border:1px solid var(--border); transition:border-color .3s;}
+  .biz-action .biz-title{font-size:17px; font-weight:600;}
+  .biz-action .biz-detail{font-size:14px; color:var(--muted); margin-top:6px;}
+  #projection{width:100%; height:230px; background:var(--bg); border:1px solid var(--border); border-radius:12px; display:block;}
+
+  .cta-row{display:flex; gap:14px; flex-wrap:wrap; margin-top:8px;}
+  .btn{
+    font-family:'DM Mono', monospace; font-size:14px; padding:12px 22px; border-radius:10px;
+    text-decoration:none; border:1px solid var(--border); color:var(--text); display:inline-block;
+  }
+  .btn.primary{background:var(--cta); border-color:var(--cta); color:#0a0a0f; font-weight:600;}
+  .btn.ghost:hover{border-color:var(--accent);}
+
+  .contact-card{
+    display:grid; grid-template-columns:1.1fr 1fr; gap:28px;
+    background:var(--panel2); border:1px solid var(--border); border-radius:16px;
+    padding:28px; margin-top:28px;
+  }
+  @media (max-width:700px){ .contact-card{grid-template-columns:1fr;} }
+  .contact-card h3{font-size:19px; margin-bottom:8px;}
+  .contact-card p{font-size:14px; color:var(--muted); max-width:420px; text-align:justify;}
+  .contact-links{display:flex; flex-direction:column; gap:12px;}
+  .contact-row{
+    display:flex; align-items:center; gap:14px; padding:12px 16px; border-radius:12px;
+    background:var(--panel); border:1px solid var(--border); text-decoration:none; color:var(--text);
+    transition:border-color .2s;
+  }
+  .contact-row:hover{border-color:var(--success);}
+  .contact-icon{font-size:20px; width:32px; text-align:center; flex-shrink:0;}
+  .contact-text{font-size:14px; line-height:1.5;}
+  .contact-text b{display:block; font-size:15px;}
+
+  footer{padding:36px 0; text-align:center;}
+  footer p{font-size:13px; color:var(--muted); max-width:560px; margin:0 auto;}
+  .footer-links{display:flex; justify-content:center; gap:18px; flex-wrap:wrap; margin-bottom:16px; font-size:13px;}
+  .footer-links a{color:var(--muted); text-decoration:none;}
+  .footer-links a:hover{color:var(--success);}
+
+  .glossary-term{border-bottom:1px dotted var(--muted); cursor:help;}
+
+  .training-note{font-size:13px; color:var(--muted); margin-top:10px;}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="nav-row">
+    <a class="back" href="../../">← Volver al catálogo RELIABILIT-IA</a>
+    <select class="quick-nav" onchange="if(this.value) location.href=this.value;">
+      <option value="">Ir a otro modelo →</option>
+      <option value="../radar-de-rodamientos/">Radar de Rodamientos</option>
+      <option value="../pulso-energetico/">Pulso Energético</option>
+      <option value="../diagnostico-del-motor/">Diagnóstico del Motor</option>
+      <option value="../pulso-del-motor/">Pulso del Motor</option>
+      <option value="../oido-industrial/">Oído Industrial</option>
+      <option value="../detector-anomalias-compresor/">Detector de Anomalías del Compresor</option>
+      <option value="../radiografia-de-planta/">Radiografía de Planta</option>
+      <option value="../semaforo-de-bombas/">Semáforo de Bombas</option>
+      <option value="../guardian-de-la-bomba/">Guardián de la Bomba</option>
+      <option value="../frontera-de-vibracion/">Frontera de Vibración</option>
+      <option value="../familias-de-turbinas/">Familias de Turbinas</option>
+      <option value="../nubes-de-sensores/">Nubes de Sensores</option>
+      <option value="../termometro-del-motor/">Termómetro del Motor</option>
+      <option value="../mapa-de-anomalias/">Mapa de Anomalías</option>
+      <option value="../ojo-termico/">Ojo Térmico</option>
+      <option value="../correas-transportadoras/">Rastreador de Correas</option>
+    </select>
+  </div>
+
+<script>
+  (function(){
+    var nav = document.querySelector('.nav-row');
+    if(!nav) return;
+    function onScroll(){ nav.classList.toggle('is-stuck', window.scrollY > 4); }
+    window.addEventListener('scroll', onScroll, {passive:true});
+    onScroll();
+  })();
+  </script>
+
+  <header class="hero">
+    <div class="badge">Series de tiempo · Motor</div>
+    <span class="badge" style="border-color:var(--accent); color:var(--accent); margin-left:8px;">Aprendizaje supervisado · Secuencial (LSTM)</span>
+    <h1>Memoria del Motor</h1>
+    <p class="lead">Dos rodamientos llegan a la misma vibración final. Uno subió despacio durante meses; el otro se disparó en las últimas dos semanas. ¿Es el mismo riesgo?</p>
+  </header>
+
+  <section class="context">
+    <h2>El problema</h2>
+    <p>Todos los modelos de este catálogo, hasta ahora, deciden con la lectura del momento — el valor actual de vibración, temperatura o corriente. Eso funciona bien la mayor parte del tiempo, pero ignora algo que cualquier técnico experimentado sabe de memoria: la <span class="glossary-term" title="Trayectoria: la forma en que un valor cambió a lo largo del tiempo, no solo su nivel actual.">trayectoria</span> importa tanto como el valor. Una vibración de 8 mm/s alcanzada en una subida lenta y estable durante 6 meses no es la misma alerta que la misma vibración alcanzada con un salto brusco en las últimas dos semanas — aunque el sensor reporte exactamente el mismo número hoy.</p>
+    <p>Este demo entrena, desde cero en JavaScript y con <span class="glossary-term" title="Backpropagation Through Time: el algoritmo que permite entrenar redes recurrentes propagando el error hacia atrás a través de cada paso de tiempo de la secuencia.">BPTT</span>, una LSTM de una capa que procesa las últimas 12 lecturas completas (en vez de solo la última), y la compara en vivo contra un modelo sin memoria que solo ve el valor actual — el mismo tipo de modelo que ya viste en Radar de Rodamientos.</p>
+  </section>
+
+  <section id="demo">
+    <h2>Demo interactivo</h2>
+    <div class="panel">
+      <div class="toggle-row">
+        <span class="label">Ambos modelos ya están entrenados sobre 260 secuencias sintéticas — mueve los sliders para simular una lectura de campo.</span>
+        <label class="switch">
+          <span>Modo Analista</span>
+          <input type="checkbox" id="analystToggle">
+          <span class="track"></span>
+        </label>
+      </div>
+
+      <div id="trainingNote" class="training-note">Entrenando ambos modelos en tu navegador (una sola vez, ~1-3 segundos)…</div>
+
+      <div class="demo-grid">
+        <div class="controls-col">
+          <div class="slider-group">
+            <label>Vibración final (última lectura) <span class="val" id="finalVal">8.0 mm/s</span></label>
+            <input type="range" id="finalSlider" min="1" max="11" step="0.1" value="8.0">
+            <div class="hint"><span>1 mm/s</span><span>11 mm/s</span></div>
+          </div>
+
+          <div class="slider-group">
+            <label>Aceleración reciente (últimas 3 lecturas) <span class="val" id="accelVal">0.0</span></label>
+            <input type="range" id="accelSlider" min="0" max="5" step="0.1" value="0">
+            <div class="hint"><span>0 (subida gradual y estable)</span><span>5 (salto brusco reciente)</span></div>
+          </div>
+
+          <div class="compare-grid">
+            <div class="compare-card">
+              <div class="compare-label">Sin memoria (solo lectura actual)</div>
+              <div class="compare-value" id="baselineDays">–<span> días</span></div>
+            </div>
+            <div class="compare-card lstm">
+              <div class="compare-label">Con memoria (LSTM, ve las 12 lecturas)</div>
+              <div class="compare-value" id="lstmDays">–<span> días</span></div>
+            </div>
+          </div>
+          <div class="verdict" id="verdict"></div>
+          <p class="simple-summary" id="simpleSummary"></p>
+        </div>
+
+        <div class="live-col">
+          <h3>Secuencia de las últimas 12 lecturas</h3>
+          <canvas id="trajectory" width="440" height="220"></canvas>
+          <p class="sim-note">La curva muestra las 12 lecturas sintéticas que ambos modelos reciben (la LSTM ve las 12; el modelo sin memoria solo usa el último punto). Sube "aceleración reciente" y mira cómo el tramo final se empina sin cambiar el punto final.</p>
+        </div>
+      </div>
+
+      <div class="analyst" id="analystPanel">
+        <h3 style="font-size:18px; text-transform:none; letter-spacing:0; margin-bottom:8px; color:var(--text);">Cómo se entrenaron ambos modelos</h3>
+        <p style="font-size:15px; color:var(--muted); margin-bottom:18px; text-align:justify;">260 secuencias sintéticas de 12 lecturas, generadas con un nivel base y una aceleración reciente independientes entre sí (para que ningún modelo pueda "hacer trampa" adivinando la aceleración a partir del promedio de la secuencia). El objetivo real (días hasta falla) depende del valor final <b>y</b> de la aceleración reciente. El modelo sin memoria solo puede ver el valor final, así que estructuralmente no puede capturar la parte de aceleración — por diseño, no por estar mal entrenado.</p>
+
+        <div class="dataset-wrap">
+          <div class="dataset-label">Vista del dataset de entrenamiento</div>
+          <div class="dataset-scroll">
+            <table class="dataset-table">
+              <thead><tr><th>#</th><th>Fecha</th><th>Nivel base (mm/s)</th><th>Aceleración reciente</th><th>Vibración final (mm/s)</th><th>Días reales</th><th>Set</th></tr></thead>
+              <tbody id="datasetBody"></tbody>
+            </table>
+          </div>
+          <p class="dataset-note" id="datasetNote"></p>
+        </div>
+
+        <div class="dataset-label">Dispersión: vibración final vs. aceleración reciente</div>
+        <canvas id="scatter" width="800" height="320"></canvas>
+        <p class="sim-note" id="scatterHint">El punto blanco grande marca la combinación que tienes seleccionada ahora mismo en los sliders — muévelos para ver dónde cae tu lectura dentro del dataset de entrenamiento.</p>
+        <canvas id="r2bars" width="800" height="180"></canvas>
+        <div class="metrics">
+          <span>R² sin memoria (prueba): <b id="mR2Base">–</b></span>
+          <span>R² con memoria — LSTM (prueba): <b id="mR2Lstm">–</b></span>
+          <span>Correlación aceleración↔error del sin-memoria: <b id="mCorr">–</b></span>
+        </div>
+        <div class="fit-badge" id="mFitBadge">–</div>
+        <p class="arch-note">Arquitectura: LSTM de 1 capa, 8 unidades ocultas, puertas forget/input/candidato/salida completas, entrenada con <span class="glossary-term" title="Backpropagation Through Time: el algoritmo que permite entrenar redes recurrentes propagando el error hacia atrás a través de cada paso de tiempo de la secuencia.">BPTT</span> + optimizador Adam durante 220 épocas sobre las 195 secuencias de entrenamiento (65 reservadas para prueba). Hiperparámetros (tamaño oculto, tasa de aprendizaje, épocas) validados por simulación externa en Node.js antes de fijarlos en este demo — con menos épocas o sin normalizar las lecturas de entrada, el modelo no convergía de forma confiable.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="business">
+    <h2>¿Qué significa para tu planta?</h2>
+    <div class="business-grid">
+      <div>
+        <p>Con la lectura actual, el modelo sin memoria estima <span class="stat" id="bizBaseInline">– días</span> y la LSTM estima <span class="stat" id="bizLstmInline">– días</span>. Cuando ambos coinciden, no cambia nada en tu decisión. Cuando difieren —como cuando la subida reciente fue brusca—, la LSTM es la que vio la señal de alerta real: dos equipos con la misma lectura de hoy pueden estar en momentos de vida útil muy distintos, y priorizar solo por el valor actual puede hacer que atiendas primero al equipo equivocado.</p>
+        <div class="biz-action" id="bizAction">
+          <div class="biz-title" id="bizTitle">Calculando…</div>
+          <div class="biz-detail" id="bizDetail"></div>
+        </div>
+      </div>
+      <div>
+        <div class="training-note" style="margin-top:0;">Proyección de vida útil restante (ambos modelos)</div>
+        <canvas id="projection" width="480" height="230"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <section id="cta">
+    <h2>De esta demo a tu planta</h2>
+    <p style="color:var(--muted); max-width:640px; margin-bottom:20px; text-align:justify;">La arquitectura y el entrenamiento de este demo son reales; los datos son sintéticos para poder compartirlos públicamente. Llevar un modelo con memoria temporal a tu planta implica tener un historial real de lecturas secuenciales por equipo (no solo la última medición), suficientes casos de falla para validar que el patrón de aceleración realmente predice mejor que el valor puntual, y calibrar la arquitectura (tamaño de la memoria, cuántos pasos hacia atrás importan) con tus propios datos — ahí es donde entra nuestro motor AutoML. Se adapta al tipo de equipo y a la industria —minería, manufactura, energía, alimentos— cuando la calibramos con tus datos. Si quieres recorrer ese proceso, conversemos.</p>
+    <div class="cta-row">
+      <a class="btn primary" href="https://chat.whatsapp.com/GvBz1tuUeNZ0xwTkjsuE3z" target="_blank" rel="noopener">Unirme a la comunidad de WhatsApp</a>
+      <a class="btn ghost" href="https://www.linkedin.com/company/reliabilit-ia/" target="_blank" rel="noopener">Seguir en LinkedIn</a>
+      <a class="btn ghost" href="https://www.youtube.com/@miguelangelcayllahuaquispe998" target="_blank" rel="noopener">Ver en YouTube</a>
+    </div>
+
+    <div class="contact-card">
+      <div>
+        <h3>¿Tienes historiales de lecturas por equipo?</h3>
+        <p>Si registras lecturas periódicas (no solo la última) de tus equipos y quieres explorar un modelo con memoria temporal para tu planta, escríbeme directamente.</p>
+      </div>
+      <div class="contact-links">
+        <a class="contact-row" href="https://wa.me/51997610310?text=Hola%20Miguel%2C%20vi%20el%20demo%20Memoria%20del%20Motor%20y%20quiero%20conversar%20sobre%20la%20calibracion%20para%20mi%20planta" target="_blank" rel="noopener">
+          <span class="contact-icon">💬</span>
+          <span class="contact-text"><b>WhatsApp</b>+51 997 610 310</span>
+        </a>
+        <a class="contact-row" href="https://www.linkedin.com/in/miguelcayllahua/" target="_blank" rel="noopener">
+          <span class="contact-icon">in</span>
+          <span class="contact-text"><b>LinkedIn</b>Miguel Angel Cayllahua Quispe</span>
+        </a>
+        <a class="contact-row" href="mailto:miguelcquispe@gmail.com">
+          <span class="contact-icon">✉</span>
+          <span class="contact-text"><b>Correo</b>miguelcquispe@gmail.com</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-links">
+      <a href="https://chat.whatsapp.com/GvBz1tuUeNZ0xwTkjsuE3z" target="_blank" rel="noopener">WhatsApp</a>
+      <a href="https://www.youtube.com/@miguelangelcayllahuaquispe998" target="_blank" rel="noopener">YouTube</a>
+      <a href="https://www.linkedin.com/company/reliabilit-ia/" target="_blank" rel="noopener">LinkedIn empresa</a>
+      <a href="https://www.linkedin.com/in/miguelcayllahua/" target="_blank" rel="noopener">LinkedIn personal</a>
+      <a href="mailto:miguelcquispe@gmail.com">Correo</a>
+    </div>
+    <p style="text-align:justify;">Contenido con fines educativos. La metodología (LSTM entrenada desde cero con BPTT) es real; los datos y las secuencias de esta demo son sintéticos para poder compartirlos públicamente. Se calibra con tus propios datos —sin importar el tipo de equipo o la industria— cuando trabajamos juntos. Modelo de ejemplo, no una fórmula fija.</p>
+  </footer>
+</div>
+
+<script>
+/* =========================================================
+   Generación de datos sintéticos: nivel base y aceleración
+   reciente se sortean de forma INDEPENDIENTE (no correlacionadas)
+   para que ningún modelo pueda "adivinar" la aceleración a partir
+   del promedio de la secuencia. Validado externamente en Node
+   antes de fijar esta arquitectura: con una versión anterior donde
+   el nivel y la aceleración compartían la misma curva de forma,
+   el modelo con memoria aprendía la relación EN SENTIDO CONTRARIO
+   (por una correlación espuria entre el promedio de la secuencia
+   y la aceleración real) — este diseño la elimina.
+   ========================================================= */
+const T = 12;
+function baseLifeDays(vib){ const a=0.42,b=-11.2,c=78; return Math.max(2, a*vib*vib+b*vib+c); }
+
+function seededRandom(seed){ let s=seed; return function(){ s=(s*9301+49297)%233280; return s/233280; }; }
+function gaussian(rnd){ const u1=Math.max(1e-9,rnd()), u2=rnd(); return Math.sqrt(-2*Math.log(u1))*Math.cos(2*Math.PI*u2); }
+
+function makeSequence(level, accel, rnd){
+  const seq = [];
+  for(let t=0;t<9;t++) seq.push(Math.max(0.05, level + gaussian(rnd)*0.25));
+  for(let t=1;t<=3;t++){
+    const frac = t/3;
+    seq.push(Math.max(0.05, level + accel*frac + gaussian(rnd)*0.2));
+  }
+  return seq;
+}
+function recentAcceleration(seq){
+  const last3avg = (seq[9]+seq[10]+seq[11])/3;
+  const first9avg = seq.slice(0,9).reduce((a,b)=>a+b,0)/9;
+  return last3avg - first9avg;
+}
+function trueDays(seq){
+  const finalVib = seq[T-1];
+  const accel = Math.max(0, recentAcceleration(seq));
+  const penaltyFrac = Math.min(0.6, accel*0.13);
+  return Math.max(2, baseLifeDays(finalVib) * (1-penaltyFrac));
+}
+
+const REF_DATE = new Date('2026-07-15');
+const MESES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+function fmtDate(d){ return String(d.getDate()).padStart(2,'0')+' '+MESES[d.getMonth()]+' '+d.getFullYear(); }
+function dateFromDaysAgo(daysAgo){ const d = new Date(REF_DATE); d.setDate(d.getDate()-Math.round(daysAgo)); return d; }
+
+const genRnd = seededRandom(303);
+const N = 260;
+const dataset = [];
+for(let i=0;i<N;i++){
+  const level = 0.5 + genRnd()*10;
+  const accel = genRnd()*7 - 1;
+  const seq = makeSequence(level, accel, genRnd);
+  const y = trueDays(seq) + (genRnd()-0.5)*2;
+  const date = dateFromDaysAgo(genRnd()*450);
+  dataset.push({seq, y: Math.max(2,y), level, accel, date});
+}
+const trainSet = dataset.filter((_,i)=>i%4!==0); // 195
+const testSet = dataset.filter((_,i)=>i%4===0);  // 65
+
+function renderDatasetPreview(){
+  const tbody = document.getElementById('datasetBody');
+  const note = document.getElementById('datasetNote');
+  if(!tbody) return;
+  tbody.innerHTML = dataset.map((d,i)=>{
+    const isTrain = i%4!==0;
+    return `<tr><td>${i+1}</td><td>${fmtDate(d.date)}</td><td>${d.level.toFixed(2)}</td><td>${d.accel.toFixed(2)}</td><td>${d.seq[T-1].toFixed(2)}</td><td>${d.y.toFixed(1)}</td><td class="${isTrain?'set-train':'set-test'}">${isTrain?'Entrenamiento':'Prueba'}</td></tr>`;
+  }).join('');
+  const sortedDates = dataset.map(d=>d.date).sort((a,b)=>a-b);
+  note.textContent = `${dataset.length} secuencias sintéticas, registradas entre ${fmtDate(sortedDates[0])} y ${fmtDate(sortedDates[sortedDates.length-1])} — ${trainSet.length} de entrenamiento, ${testSet.length} de prueba.`;
+}
+renderDatasetPreview();
+
+/* =========================================================
+   MODELO SIN MEMORIA: regresión cuadrática sobre el valor final
+   únicamente (mismo espíritu que Radar de Rodamientos)
+   ========================================================= */
+function fitQuadratic(points){
+  const n=points.length; let Sx=0,Sx2=0,Sx3=0,Sx4=0,Sy=0,Sxy=0,Sx2y=0;
+  points.forEach(p=>{const x=p.x,y=p.y;Sx+=x;Sx2+=x*x;Sx3+=x**3;Sx4+=x**4;Sy+=y;Sxy+=x*y;Sx2y+=x*x*y;});
+  const A=[[n,Sx,Sx2,Sy],[Sx,Sx2,Sx3,Sxy],[Sx2,Sx3,Sx4,Sx2y]];
+  for(let col=0;col<3;col++){
+    let piv=col; for(let r=col+1;r<3;r++) if(Math.abs(A[r][col])>Math.abs(A[piv][col])) piv=r;
+    [A[col],A[piv]]=[A[piv],A[col]];
+    for(let r=0;r<3;r++){ if(r===col) continue; const f=A[r][col]/A[col][col]; for(let c=col;c<4;c++) A[r][c]-=f*A[col][c]; }
+  }
+  return {c:A[0][3]/A[0][0], b:A[1][3]/A[1][1], a:A[2][3]/A[2][2]};
+}
+const {a:BA,b:BB,c:BC} = fitQuadratic(trainSet.map(d=>({x:d.seq[T-1], y:d.y})));
+function baselinePredict(seq){ const x=seq[T-1]; return Math.max(2, BA*x*x+BB*x+BC); }
+
+function r2(points, predictFn){
+  const yMean = points.reduce((s,p)=>s+p.y,0)/points.length;
+  let ssRes=0, ssTot=0;
+  points.forEach(p=>{ const pred=predictFn(p.seq); ssRes+=(p.y-pred)**2; ssTot+=(p.y-yMean)**2; });
+  return 1-ssRes/ssTot;
+}
+
+/* =========================================================
+   LSTM (1 capa, 8 unidades) entrenada con BPTT + Adam.
+   Hiperparámetros validados externamente en Node antes de
+   fijarlos: H=8, 220 épocas, lr=0.015, l2=1e-4.
+   ========================================================= */
+const VIB_SCALE = 14;
+const yMeanTr = trainSet.reduce((s,d)=>s+d.y,0)/trainSet.length;
+const yStdTr = Math.sqrt(trainSet.reduce((s,d)=>s+(d.y-yMeanTr)**2,0)/trainSet.length);
+function normSeq(seq){ return seq.map(v=>v/VIB_SCALE); }
+function normY(y){ return (y-yMeanTr)/yStdTr; }
+function denormY(yn){ return yn*yStdTr+yMeanTr; }
+
+function randInit(rnd, n, scale){ const out=[]; for(let i=0;i<n;i++) out.push((rnd()*2-1)*scale); return out; }
+function makeLSTM(H, rnd){
+  const scale = 1/Math.sqrt(H+1);
+  function gate(bi){ return { Wx: randInit(rnd,H,scale), Wh: Array.from({length:H},()=>randInit(rnd,H,scale)), b: new Array(H).fill(bi||0) }; }
+  return { H, f:gate(1.0), i:gate(0), g:gate(0), o:gate(0), Wy: randInit(rnd,H,scale), by:0 };
+}
+function sigmoid(x){ return 1/(1+Math.exp(-x)); }
+function lstmForward(model, seq){
+  const H = model.H;
+  let h = new Array(H).fill(0), c = new Array(H).fill(0);
+  const cache = [];
+  for(let t=0;t<seq.length;t++){
+    const x = seq[t];
+    const f=new Array(H), ig=new Array(H), g=new Array(H), o=new Array(H), cNew=new Array(H), hNew=new Array(H);
+    for(let j=0;j<H;j++){
+      let zf=model.f.Wx[j]*x+model.f.b[j], zi=model.i.Wx[j]*x+model.i.b[j], zg=model.g.Wx[j]*x+model.g.b[j], zo=model.o.Wx[j]*x+model.o.b[j];
+      for(let k=0;k<H;k++){ zf+=model.f.Wh[j][k]*h[k]; zi+=model.i.Wh[j][k]*h[k]; zg+=model.g.Wh[j][k]*h[k]; zo+=model.o.Wh[j][k]*h[k]; }
+      f[j]=sigmoid(zf); ig[j]=sigmoid(zi); g[j]=Math.tanh(zg); o[j]=sigmoid(zo);
+      cNew[j]=f[j]*c[j]+ig[j]*g[j]; hNew[j]=o[j]*Math.tanh(cNew[j]);
+    }
+    cache.push({x,hPrev:h.slice(),cPrev:c.slice(),f:f.slice(),i:ig.slice(),g:g.slice(),o:o.slice(),c:cNew.slice(),h:hNew.slice()});
+    h=hNew; c=cNew;
+  }
+  let yhat = model.by;
+  for(let j=0;j<H;j++) yhat += model.Wy[j]*h[j];
+  return {yhat, cache};
+}
+function zerosLike(model){
+  const H=model.H;
+  function gg(){ return {Wx:new Array(H).fill(0), Wh:Array.from({length:H},()=>new Array(H).fill(0)), b:new Array(H).fill(0)}; }
+  return {f:gg(),i:gg(),g:gg(),o:gg(),Wy:new Array(H).fill(0),by:0};
+}
+function lstmBackward(model, seq, targetNorm){
+  const H=model.H;
+  const {yhat,cache} = lstmForward(model,seq);
+  const dY = (yhat-targetNorm);
+  const grad = zerosLike(model);
+  for(let j=0;j<H;j++) grad.Wy[j]=dY*cache[cache.length-1].h[j];
+  grad.by=dY;
+  let dhNext=new Array(H).fill(0), dcNext=new Array(H).fill(0);
+  for(let j=0;j<H;j++) dhNext[j]=dY*model.Wy[j];
+  for(let t=seq.length-1;t>=0;t--){
+    const cc=cache[t];
+    const dh=dhNext.slice();
+    const dc=new Array(H).fill(0);
+    const df=new Array(H), di=new Array(H), dg=new Array(H), doArr=new Array(H);
+    for(let j=0;j<H;j++){
+      const tanhC=Math.tanh(cc.c[j]);
+      doArr[j]=dh[j]*tanhC*cc.o[j]*(1-cc.o[j]);
+      const dcTotal=dh[j]*cc.o[j]*(1-tanhC*tanhC)+dcNext[j];
+      dc[j]=dcTotal;
+      df[j]=dcTotal*cc.cPrev[j]*cc.f[j]*(1-cc.f[j]);
+      di[j]=dcTotal*cc.g[j]*cc.i[j]*(1-cc.i[j]);
+      dg[j]=dcTotal*cc.i[j]*(1-cc.g[j]*cc.g[j]);
+    }
+    for(let j=0;j<H;j++){
+      grad.f.Wx[j]+=df[j]*cc.x; grad.f.b[j]+=df[j];
+      grad.i.Wx[j]+=di[j]*cc.x; grad.i.b[j]+=di[j];
+      grad.g.Wx[j]+=dg[j]*cc.x; grad.g.b[j]+=dg[j];
+      grad.o.Wx[j]+=doArr[j]*cc.x; grad.o.b[j]+=doArr[j];
+      for(let k=0;k<H;k++){
+        grad.f.Wh[j][k]+=df[j]*cc.hPrev[k];
+        grad.i.Wh[j][k]+=di[j]*cc.hPrev[k];
+        grad.g.Wh[j][k]+=dg[j]*cc.hPrev[k];
+        grad.o.Wh[j][k]+=doArr[j]*cc.hPrev[k];
+      }
+    }
+    const dhPrev=new Array(H).fill(0), dcPrev=new Array(H).fill(0);
+    for(let k=0;k<H;k++){
+      for(let j=0;j<H;j++){
+        dhPrev[k]+=df[j]*model.f.Wh[j][k]+di[j]*model.i.Wh[j][k]+dg[j]*model.g.Wh[j][k]+doArr[j]*model.o.Wh[j][k];
+      }
+      dcPrev[k]+=dc[k]*cc.f[k];
+    }
+    dhNext=dhPrev; dcNext=dcPrev;
+  }
+  return grad;
+}
+function makeAdamState(model){
+  const H=model.H;
+  function gg(){ return {Wx:new Array(H).fill(0), Wh:Array.from({length:H},()=>new Array(H).fill(0)), b:new Array(H).fill(0)}; }
+  return { m:{f:gg(),i:gg(),g:gg(),o:gg(),Wy:new Array(H).fill(0),by:0},
+           v:{f:gg(),i:gg(),g:gg(),o:gg(),Wy:new Array(H).fill(0),by:0}, t:0 };
+}
+function adamStep(model, grad, state, lr, l2){
+  state.t++;
+  const b1=0.9,b2=0.999,eps=1e-8;
+  const H=model.H;
+  ['f','i','g','o'].forEach(gt=>{
+    for(let j=0;j<H;j++){
+      let gr = grad[gt].Wx[j] + l2*model[gt].Wx[j];
+      state.m[gt].Wx[j] = b1*state.m[gt].Wx[j] + (1-b1)*gr;
+      state.v[gt].Wx[j] = b2*state.v[gt].Wx[j] + (1-b2)*gr*gr;
+      let mhat = state.m[gt].Wx[j]/(1-Math.pow(b1,state.t));
+      let vhat = state.v[gt].Wx[j]/(1-Math.pow(b2,state.t));
+      model[gt].Wx[j] -= lr*mhat/(Math.sqrt(vhat)+eps);
+      gr = grad[gt].b[j];
+      state.m[gt].b[j] = b1*state.m[gt].b[j] + (1-b1)*gr;
+      state.v[gt].b[j] = b2*state.v[gt].b[j] + (1-b2)*gr*gr;
+      mhat = state.m[gt].b[j]/(1-Math.pow(b1,state.t));
+      vhat = state.v[gt].b[j]/(1-Math.pow(b2,state.t));
+      model[gt].b[j] -= lr*mhat/(Math.sqrt(vhat)+eps);
+      for(let k=0;k<H;k++){
+        let grw = grad[gt].Wh[j][k] + l2*model[gt].Wh[j][k];
+        state.m[gt].Wh[j][k] = b1*state.m[gt].Wh[j][k] + (1-b1)*grw;
+        state.v[gt].Wh[j][k] = b2*state.v[gt].Wh[j][k] + (1-b2)*grw*grw;
+        const mhw = state.m[gt].Wh[j][k]/(1-Math.pow(b1,state.t));
+        const vhw = state.v[gt].Wh[j][k]/(1-Math.pow(b2,state.t));
+        model[gt].Wh[j][k] -= lr*mhw/(Math.sqrt(vhw)+eps);
+      }
+    }
+  });
+  for(let j=0;j<H;j++){
+    let gr = grad.Wy[j] + l2*model.Wy[j];
+    state.m.Wy[j] = b1*state.m.Wy[j] + (1-b1)*gr;
+    state.v.Wy[j] = b2*state.v.Wy[j] + (1-b2)*gr*gr;
+    const mh = state.m.Wy[j]/(1-Math.pow(b1,state.t));
+    const vh = state.v.Wy[j]/(1-Math.pow(b2,state.t));
+    model.Wy[j] -= lr*mh/(Math.sqrt(vh)+eps);
+  }
+  {
+    let gr = grad.by;
+    state.m.by = b1*state.m.by + (1-b1)*gr;
+    state.v.by = b2*state.v.by + (1-b2)*gr*gr;
+    const mh = state.m.by/(1-Math.pow(b1,state.t));
+    const vh = state.v.by/(1-Math.pow(b2,state.t));
+    model.by -= lr*mh/(Math.sqrt(vh)+eps);
+  }
+}
+function trainLSTMAdam(model, points, epochs, lr, l2){
+  const H = model.H;
+  const state = makeAdamState(model);
+  for(let ep=0; ep<epochs; ep++){
+    const tg = zerosLike(model);
+    points.forEach(p=>{
+      const g = lstmBackward(model, normSeq(p.seq), normY(p.y));
+      ['f','i','g','o'].forEach(gt=>{
+        for(let j=0;j<H;j++){ tg[gt].Wx[j]+=g[gt].Wx[j]; tg[gt].b[j]+=g[gt].b[j]; for(let k=0;k<H;k++) tg[gt].Wh[j][k]+=g[gt].Wh[j][k]; }
+      });
+      for(let j=0;j<H;j++) tg.Wy[j]+=g.Wy[j];
+      tg.by+=g.by;
+    });
+    const n = points.length;
+    ['f','i','g','o'].forEach(gt=>{
+      for(let j=0;j<H;j++){ tg[gt].Wx[j]/=n; tg[gt].b[j]/=n; for(let k=0;k<H;k++) tg[gt].Wh[j][k]/=n; }
+    });
+    for(let j=0;j<H;j++) tg.Wy[j]/=n;
+    tg.by/=n;
+    adamStep(model, tg, state, lr, l2);
+  }
+}
+
+const modelRnd = seededRandom(404);
+const lstm = makeLSTM(8, modelRnd);
+function lstmPredict(seq){ return Math.max(2, denormY(lstmForward(lstm, normSeq(seq)).yhat)); }
+
+// Entrenamos de forma asíncrona (setTimeout 0) para no bloquear el primer
+// render de la página con ~1-3 segundos de cómputo síncrono.
+let modelsReady = false;
+function trainModels(){
+  trainLSTMAdam(lstm, trainSet, 220, 0.015, 1e-4);
+  modelsReady = true;
+  document.getElementById('trainingNote').style.display = 'none';
+  updateBasic();
+  if(document.getElementById('analystToggle').checked) renderAnalyst();
+}
+
+/* =========================================================
+   MODO BÁSICO — sliders controlan una secuencia sintética
+   (nivel = final - aceleración, aceleración = slider)
+   ========================================================= */
+const finalSlider = document.getElementById('finalSlider');
+const accelSlider = document.getElementById('accelSlider');
+const finalVal = document.getElementById('finalVal');
+const accelVal = document.getElementById('accelVal');
+const baselineDaysEl = document.getElementById('baselineDays');
+const lstmDaysEl = document.getElementById('lstmDays');
+const verdictEl = document.getElementById('verdict');
+const simpleSummaryEl = document.getElementById('simpleSummary');
+const bizBaseInline = document.getElementById('bizBaseInline');
+const bizLstmInline = document.getElementById('bizLstmInline');
+const bizAction = document.getElementById('bizAction');
+const bizTitle = document.getElementById('bizTitle');
+const bizDetail = document.getElementById('bizDetail');
+
+const trajCanvas = document.getElementById('trajectory');
+const tctx = trajCanvas.getContext('2d');
+const projectionCanvas = document.getElementById('projection');
+const pctx = projectionCanvas.getContext('2d');
+
+function currentSequence(){
+  const finalVib = parseFloat(finalSlider.value);
+  const accel = parseFloat(accelSlider.value);
+  const level = finalVib - accel;
+  const demoRnd = seededRandom(Math.round(finalVib*10)*1000 + Math.round(accel*10) + 5000);
+  return makeSequence(level, accel, demoRnd);
+}
+
+function drawTrajectory(seq){
+  const W = trajCanvas.width, H = trajCanvas.height;
+  const padL=40, padR=16, padT=16, padB=30;
+  tctx.clearRect(0,0,W,H);
+  const yMin = 0, yMax = 14;
+  function toPx(t,v){ return [ padL+(t/(T-1))*(W-padL-padR), H-padB-((v-yMin)/(yMax-yMin))*(H-padT-padB) ]; }
+
+  tctx.strokeStyle = '#22222c';
+  tctx.lineWidth = 1;
+  tctx.beginPath();
+  tctx.moveTo(padL,padT); tctx.lineTo(padL,H-padB); tctx.lineTo(W-padR,H-padB);
+  tctx.stroke();
+  tctx.fillStyle = '#8a8a98';
+  tctx.font = '11px DM Mono, monospace';
+  tctx.fillText('semana', W/2-16, H-8);
+  tctx.save();
+  tctx.translate(12, H/2+30);
+  tctx.rotate(-Math.PI/2);
+  tctx.fillText('vibración (mm/s)', 0, 0);
+  tctx.restore();
+
+  // shade the last-3-step "recent" window
+  const [x9] = toPx(8, 0);
+  tctx.fillStyle = 'rgba(244,114,46,0.06)';
+  tctx.fillRect(x9, padT, (W-padR)-x9, H-padT-padB);
+
+  tctx.strokeStyle = '#7b5ea7';
+  tctx.lineWidth = 2.2;
+  tctx.beginPath();
+  seq.forEach((v,t)=>{
+    const [x,y] = toPx(t,v);
+    if(t===0) tctx.moveTo(x,y); else tctx.lineTo(x,y);
+  });
+  tctx.stroke();
+  seq.forEach((v,t)=>{
+    const [x,y] = toPx(t,v);
+    tctx.beginPath();
+    tctx.fillStyle = t>=9 ? '#f4722e' : '#7b5ea7';
+    tctx.arc(x,y,3,0,Math.PI*2);
+    tctx.fill();
+  });
+}
+
+function drawProjection(baseDays, lstmDaysVal){
+  const W = projectionCanvas.width, H = projectionCanvas.height;
+  pctx.clearRect(0,0,W,H);
+  const padL=50, padR=20, padT=20, padB=40;
+  const maxDays = Math.max(30, Math.ceil((Math.max(baseDays,lstmDaysVal)+10)/10)*10);
+  function barGeom(i,val,color,label){
+    const bw = (W-padL-padR)/2;
+    const barH = Math.max(2,(val/maxDays)*(H-padT-padB));
+    const x = padL + i*bw + bw*0.2;
+    const y = H-padB-barH;
+    const w = bw*0.6;
+    pctx.fillStyle = color;
+    pctx.fillRect(x,y,w,barH);
+    pctx.fillStyle = '#f4f4f7';
+    pctx.font = '13px DM Mono, monospace';
+    pctx.fillText(val.toFixed(0)+'d', x, y-8);
+    pctx.fillStyle = '#a8a8b4';
+    pctx.font = '11px DM Mono, monospace';
+    pctx.fillText(label, x-4, H-padB+16);
+  }
+  pctx.strokeStyle = '#22222c';
+  pctx.lineWidth = 1;
+  pctx.beginPath();
+  pctx.moveTo(padL,padT); pctx.lineTo(padL,H-padB); pctx.lineTo(W-padR,H-padB);
+  pctx.stroke();
+  barGeom(0, baseDays, 'rgba(244,244,247,0.35)', 'sin memoria');
+  barGeom(1, lstmDaysVal, '#7b5ea7', 'con memoria');
+}
+
+function updateBasic(){
+  const finalVib = parseFloat(finalSlider.value);
+  const accel = parseFloat(accelSlider.value);
+  finalVal.textContent = finalVib.toFixed(1) + ' mm/s';
+  accelVal.textContent = accel.toFixed(1);
+
+  const seq = currentSequence();
+  drawTrajectory(seq);
+
+  if(!modelsReady) return;
+
+  const base = baselinePredict(seq);
+  const lstmP = lstmPredict(seq);
+  baselineDaysEl.innerHTML = base.toFixed(0) + '<span> días</span>';
+  lstmDaysEl.innerHTML = lstmP.toFixed(0) + '<span> días</span>';
+
+  const gap = base - lstmP;
+  let verdict, simple;
+  if(accel < 0.5){
+    verdict = 'Subida gradual: ambos modelos coinciden — no hay señal de aceleración reciente que capturar.';
+    simple = 'ambos modelos están de acuerdo, no hay urgencia extra.';
+  } else if(gap > 8){
+    verdict = `La LSTM detecta la subida brusca reciente y recorta ${gap.toFixed(0)} días respecto al modelo sin memoria — trátalo como más urgente de lo que sugiere el valor actual por sí solo.`;
+    simple = 'la subida reciente es la señal de alerta real — prioriza este equipo antes de lo que sugiere el valor actual.';
+  } else if(gap > 2){
+    verdict = `La LSTM ya nota cierta aceleración reciente y ajusta ${gap.toFixed(0)} días a la baja frente al modelo sin memoria.`;
+    simple = 'hay algo de aceleración reciente, vale la pena vigilar más de cerca.';
+  } else {
+    verdict = 'Ambos modelos están razonablemente de acuerdo con esta combinación de valores.';
+    simple = 'sin gran diferencia entre los dos modelos por ahora.';
+  }
+  verdictEl.textContent = verdict;
+  simpleSummaryEl.textContent = '💬 En palabras simples: ' + simple;
+
+  bizBaseInline.textContent = base.toFixed(0) + ' días';
+  bizLstmInline.textContent = lstmP.toFixed(0) + ' días';
+  bizAction.style.borderColor = gap > 8 ? 'var(--cta)' : (gap > 2 ? '#e8c547' : 'var(--border)');
+  bizTitle.textContent = gap > 8 ? 'Prioriza según la LSTM, no según el valor actual' : (gap > 2 ? 'Vigila de cerca — aceleración moderada' : 'Ambos modelos coinciden');
+  bizDetail.textContent = verdict;
+
+  drawProjection(base, lstmP);
+
+  // si el panel de analista está abierto, mantener el marcador en vivo
+  // del scatter sincronizado con los sliders sin tener que reentrenar nada.
+  // (usamos getElementById en vez de la constante analystPanel porque esta
+  // función se invoca antes de que esa constante se declare más abajo.)
+  const analystPanelEl = document.getElementById('analystPanel');
+  if(analystPanelEl && analystPanelEl.classList.contains('show')) drawScatter(finalVib, accel);
+}
+finalSlider.addEventListener('input', updateBasic);
+accelSlider.addEventListener('input', updateBasic);
+updateBasic();
+setTimeout(trainModels, 30);
+
+/* =========================================================
+   MODO ANALISTA
+   ========================================================= */
+const scatterCanvas = document.getElementById('scatter');
+const sctx = scatterCanvas.getContext('2d');
+const barsCanvas = document.getElementById('r2bars');
+const brctx = barsCanvas.getContext('2d');
+
+function drawScatter(currentFinal, currentAccel){
+  const W = scatterCanvas.width, H = scatterCanvas.height;
+  const padL=56, padR=20, padT=20, padB=40;
+  sctx.clearRect(0,0,W,H);
+  const X_MIN=1, X_MAX=13, Y_MIN=-1, Y_MAX=6;
+  function toPx(x,y){ return [ padL+(x-X_MIN)/(X_MAX-X_MIN)*(W-padL-padR), H-padB-(y-Y_MIN)/(Y_MAX-Y_MIN)*(H-padT-padB) ]; }
+  sctx.strokeStyle = '#22222c';
+  sctx.lineWidth = 1;
+  sctx.beginPath();
+  sctx.moveTo(padL,padT); sctx.lineTo(padL,H-padB); sctx.lineTo(W-padR,H-padB);
+  sctx.stroke();
+  sctx.fillStyle = '#a8a8b4';
+  sctx.font = '12px DM Mono, monospace';
+  sctx.fillText('vibración final (mm/s)', W/2-60, H-10);
+  sctx.save();
+  sctx.translate(16, H/2+70);
+  sctx.rotate(-Math.PI/2);
+  sctx.fillText('aceleración reciente', 0, 0);
+  sctx.restore();
+
+  dataset.forEach(d=>{
+    const x = d.seq[T-1];
+    const y = recentAcceleration(d.seq);
+    const [px,py] = toPx(x,y);
+    const t = Math.min(1, Math.max(0, d.y/90));
+    const col = [Math.round(244-t*182), Math.round(114+t*93), Math.round(46+t*114)];
+    sctx.beginPath();
+    sctx.fillStyle = `rgba(${col[0]},${col[1]},${col[2]},0.75)`;
+    sctx.arc(px,py,3.2,0,Math.PI*2);
+    sctx.fill();
+  });
+  sctx.fillStyle = '#a8a8b4';
+  sctx.font = '11px DM Mono, monospace';
+  sctx.fillText('color: más verde = más días de vida útil restante', padL, padT-6);
+
+  // marcador en vivo: dónde cae la combinación seleccionada ahora mismo
+  // en los sliders, para que el usuario vea en tiempo real su posición
+  // relativa al dataset de entrenamiento.
+  if(typeof currentFinal === 'number' && typeof currentAccel === 'number'){
+    const [cx,cy] = toPx(Math.max(X_MIN,Math.min(X_MAX,currentFinal)), Math.max(Y_MIN,Math.min(Y_MAX,currentAccel)));
+    sctx.beginPath();
+    sctx.fillStyle = 'rgba(244,244,247,0.18)';
+    sctx.arc(cx,cy,11,0,Math.PI*2);
+    sctx.fill();
+    sctx.beginPath();
+    sctx.fillStyle = '#f4f4f7';
+    sctx.arc(cx,cy,6,0,Math.PI*2);
+    sctx.fill();
+    sctx.strokeStyle = '#7b5ea7';
+    sctx.lineWidth = 2;
+    sctx.stroke();
+    sctx.fillStyle = '#f4f4f7';
+    sctx.font = '11px DM Mono, monospace';
+    sctx.fillText('tu lectura actual', cx+10, cy-10);
+  }
+}
+
+function drawR2Bars(r2Base, r2Lstm){
+  const W = barsCanvas.width, H = barsCanvas.height;
+  brctx.clearRect(0,0,W,H);
+  const padL=56, padR=20, padT=20, padB=34;
+  const maxV = 1.0;
+  function bar(i,val,color,label){
+    const bw=(W-padL-padR)/2;
+    const barH = Math.max(2, Math.max(0,val)/maxV*(H-padT-padB));
+    const x = padL+i*bw+bw*0.22;
+    const y = H-padB-barH;
+    const w = bw*0.56;
+    brctx.fillStyle = color;
+    brctx.fillRect(x,y,w,barH);
+    brctx.fillStyle = '#f4f4f7';
+    brctx.font='13px DM Mono, monospace';
+    brctx.fillText(val.toFixed(3), x-4, y-8);
+    brctx.fillStyle = '#a8a8b4';
+    brctx.font='11px DM Mono, monospace';
+    brctx.fillText(label, x-6, H-padB+16);
+  }
+  brctx.strokeStyle = '#22222c';
+  brctx.lineWidth = 1;
+  brctx.beginPath();
+  brctx.moveTo(padL,padT); brctx.lineTo(padL,H-padB); brctx.lineTo(W-padR,H-padB);
+  brctx.stroke();
+  brctx.fillStyle = '#a8a8b4';
+  brctx.font='11px DM Mono, monospace';
+  brctx.fillText('R² en el set de prueba (65 secuencias)', padL, padT-6);
+  bar(0, r2Base, 'rgba(244,244,247,0.35)', 'sin memoria');
+  bar(1, r2Lstm, '#7b5ea7', 'con memoria (LSTM)');
+}
+
+function renderAnalyst(){
+  if(!modelsReady) return;
+  drawScatter(parseFloat(finalSlider.value), parseFloat(accelSlider.value));
+  const r2Base = r2(testSet, p=>baselinePredict(p));
+  const r2Lstm = r2(testSet, p=>lstmPredict(p));
+  drawR2Bars(r2Base, r2Lstm);
+  document.getElementById('mR2Base').textContent = r2Base.toFixed(3);
+  document.getElementById('mR2Lstm').textContent = r2Lstm.toFixed(3);
+
+  const xs=[], ys=[];
+  testSet.forEach(d=>{
+    xs.push(recentAcceleration(d.seq));
+    ys.push(baselinePredict(d.seq) - d.y);
+  });
+  const mx=xs.reduce((a,b)=>a+b,0)/xs.length, my=ys.reduce((a,b)=>a+b,0)/ys.length;
+  let sxy=0,sxx=0,syy=0;
+  for(let i=0;i<xs.length;i++){ sxy+=(xs[i]-mx)*(ys[i]-my); sxx+=(xs[i]-mx)**2; syy+=(ys[i]-my)**2; }
+  const corr = sxy/Math.sqrt(sxx*syy);
+  document.getElementById('mCorr').textContent = corr.toFixed(3);
+
+  const badge = document.getElementById('mFitBadge');
+  if(r2Lstm > r2Base + 0.02){
+    badge.textContent = '✓ La LSTM generaliza mejor que el modelo sin memoria en el set de prueba — capturó parte de la señal de aceleración.';
+    badge.style.color = 'var(--success)';
+  } else {
+    badge.textContent = '≈ Ambos modelos generalizan de forma similar en R² global — la diferencia real se ve caso por caso, sobre todo cuando la aceleración reciente es alta.';
+    badge.style.color = '#e8c547';
+  }
+}
+
+const analystToggle = document.getElementById('analystToggle');
+const analystPanel = document.getElementById('analystPanel');
+analystToggle.addEventListener('change', ()=>{
+  analystPanel.classList.toggle('show', analystToggle.checked);
+  if(analystToggle.checked) renderAnalyst();
+});
+</script>
+
+<script>
+(function(){
+  var GLOSSARY = [
+    {term:'MCSA', def:'Análisis de firma de corriente del motor (Motor Current Signature Analysis): detecta fallas mecánicas y eléctricas midiendo variaciones en la corriente, sin abrir el equipo.'},
+    {term:'RMS', def:'Valor cuadrático medio (Root Mean Square): resume la energía de una señal de vibración en un solo número comparable.'},
+    {term:'dB', def:'Decibel: unidad logarítmica de intensidad sonora — cada +10 dB representa aprox. 10 veces más energía acústica.'},
+    {term:'ΔT', def:'Delta T: diferencia de temperatura entre dos puntos de medición.'},
+    {term:'deslizamiento', def:'Slip: diferencia entre la velocidad del campo magnético del motor y la velocidad real del rotor; crece con más carga o daño mecánico.'},
+    {term:'R²', def:'Coeficiente de determinación: qué tan bien el modelo explica la variación de los datos reales (1.0 = ajuste perfecto).'}
+  ];
+  var SKIP_TAGS = {SCRIPT:1, STYLE:1, SELECT:1, OPTION:1, TITLE:1};
+  var wrapped = {};
+
+  function wrapInNode(root){
+    var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false);
+    var textNodes = [];
+    var node;
+    while((node = walker.nextNode())){
+      if(node.parentNode && SKIP_TAGS[node.parentNode.tagName]) continue;
+      if(node.parentNode && node.parentNode.classList && node.parentNode.classList.contains('glossary-term')) continue;
+      textNodes.push(node);
+    }
+    textNodes.forEach(function(textNode){
+      var text = textNode.nodeValue;
+      var frag = null;
+      for(var i=0; i<GLOSSARY.length; i++){
+        var entry = GLOSSARY[i];
+        if(wrapped[entry.term]) continue;
+        var idx = text.indexOf(entry.term);
+        if(idx === -1) continue;
+        var before = text.slice(0, idx);
+        var match = text.slice(idx, idx + entry.term.length);
+        var after = text.slice(idx + entry.term.length);
+        frag = document.createDocumentFragment();
+        if(before) frag.appendChild(document.createTextNode(before));
+        var span = document.createElement('span');
+        span.className = 'glossary-term';
+        span.title = entry.def;
+        span.textContent = match;
+        frag.appendChild(span);
+        if(after) frag.appendChild(document.createTextNode(after));
+        wrapped[entry.term] = true;
+        break;
+      }
+      if(frag){
+        textNode.parentNode.replaceChild(frag, textNode);
+      }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', function(){
+    wrapInNode(document.body);
+  });
+})();
+</script>
+
+</body>
+</html>

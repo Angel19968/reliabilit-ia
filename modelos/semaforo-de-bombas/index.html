@@ -36,7 +36,8 @@
   a{color:var(--success);}
   .wrap{max-width:960px;margin:0 auto;padding:0 24px;}
   .back{display:inline-block; font-size:13px; color:var(--muted); text-decoration:none;}
-  .nav-row{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; padding-top:20px;}
+  .nav-row{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; position:sticky; top:0; z-index:30; background:var(--bg); padding:14px 0; margin:0 -24px; padding-left:24px; padding-right:24px; border-bottom:1px solid transparent;}
+  .nav-row.is-stuck{border-bottom-color:var(--border);}
   .quick-nav{font-family:'DM Mono',monospace; font-size:13px; background:var(--panel); color:var(--text); border:1px solid var(--border); border-radius:8px; padding:6px 10px; max-width:230px;}
   .back:hover{color:var(--success);}
 
@@ -103,6 +104,7 @@
   .result .risk-text p{font-size:15px; color:var(--muted);}
   .confidence-line{font-size:14px !important; font-weight:600; margin-top:10px !important; color:var(--text) !important;}
   .confidence-note{font-size:13px !important; color:var(--muted); margin-top:2px !important;}
+  .simple-summary{font-size:14px !important; margin-top:12px !important; padding-top:12px !important; border-top:1px dashed var(--border); color:var(--text) !important;}
 
   .live-col h3{font-size:14px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:14px; font-family:'DM Mono',monospace; font-weight:500;}
   .instrument-wrap{margin-bottom:18px;}
@@ -213,8 +215,20 @@
       <option value="../termometro-del-motor/">Termómetro del Motor</option>
       <option value="../mapa-de-anomalias/">Mapa de Anomalías</option>
       <option value="../ojo-termico/">Ojo Térmico</option>
+      <option value="../correas-transportadoras/">Rastreador de Correas</option>
+      <option value="../memoria-del-motor/">Memoria del Motor</option>
     </select>
   </div>
+
+<script>
+  (function(){
+    var nav = document.querySelector('.nav-row');
+    if(!nav) return;
+    function onScroll(){ nav.classList.toggle('is-stuck', window.scrollY > 4); }
+    window.addEventListener('scroll', onScroll, {passive:true});
+    onScroll();
+  })();
+  </script>
 
   <header class="hero">
     <div class="badge">Clasificación · Bomba centrífuga</div>
@@ -262,6 +276,7 @@
               <p id="riskDetail"></p>
               <p class="confidence-line" id="confidenceLine"></p>
               <p class="confidence-note" id="confidenceNote"></p>
+              <p class="simple-summary" id="simpleSummary"></p>
             </div>
           </div>
         </div>
@@ -381,6 +396,11 @@ const LEVEL_DETAIL = [
   'La bomba se aleja del punto óptimo o su vibración empieza a subir. Vale la pena revisar el punto de operación en la próxima ronda.',
   'La bomba opera lejos de su punto óptimo, con riesgo de cavitación o recirculación, o su vibración ya es alta. Priorizar inspección y ajuste del punto de operación.'
 ];
+const LEVEL_SIMPLE = [
+  'la bomba está bien, no hagas nada por ahora.',
+  'revisa el punto de operación en tu próxima ronda.',
+  'ajusta la bomba pronto — riesgo de cavitación o daño.'
+];
 const SCORE_THRESHOLDS = [35, 65];
 
 function severityIndex(flowPct, vib){
@@ -478,6 +498,8 @@ function updateBasic(){
   riskTitle.style.color = color;
   riskTitle.textContent = LEVELS[idx] + ' — índice ' + Math.round(score) + '/100';
   riskDetail.textContent = LEVEL_DETAIL[idx];
+  const simpleEl = document.getElementById('simpleSummary');
+  if(simpleEl) simpleEl.textContent = '💬 En palabras simples: ' + LEVEL_SIMPLE[idx];
 
   const distToThresh = Math.min(...SCORE_THRESHOLDS.map(t=>Math.abs(score-t)), score, 100-score);
   let confLevel, confColor, confNote;
@@ -875,6 +897,66 @@ analystToggle.addEventListener('change', ()=>{
 });
 
 updateBasic();
+</script>
+
+
+<style>
+  .glossary-term{border-bottom:1px dotted var(--muted); cursor:help;}
+</style>
+<script>
+(function(){
+  var GLOSSARY = [
+    {term:'MCSA', def:'Análisis de firma de corriente del motor (Motor Current Signature Analysis): detecta fallas mecánicas y eléctricas midiendo variaciones en la corriente, sin abrir el equipo.'},
+    {term:'RMS', def:'Valor cuadrático medio (Root Mean Square): resume la energía de una señal de vibración en un solo número comparable.'},
+    {term:'dB', def:'Decibel: unidad logarítmica de intensidad sonora — cada +10 dB representa aprox. 10 veces más energía acústica.'},
+    {term:'ΔT', def:'Delta T: diferencia de temperatura entre dos puntos de medición.'},
+    {term:'deslizamiento', def:'Slip: diferencia entre la velocidad del campo magnético del motor y la velocidad real del rotor; crece con más carga o daño mecánico.'},
+    {term:'R²', def:'Coeficiente de determinación: qué tan bien el modelo explica la variación de los datos reales (1.0 = ajuste perfecto).'}
+  ];
+  var SKIP_TAGS = {SCRIPT:1, STYLE:1, SELECT:1, OPTION:1, TITLE:1};
+  var wrapped = {};
+
+  function wrapInNode(root){
+    var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false);
+    var textNodes = [];
+    var node;
+    while((node = walker.nextNode())){
+      if(node.parentNode && SKIP_TAGS[node.parentNode.tagName]) continue;
+      if(node.parentNode && node.parentNode.classList && node.parentNode.classList.contains('glossary-term')) continue;
+      textNodes.push(node);
+    }
+    textNodes.forEach(function(textNode){
+      var text = textNode.nodeValue;
+      var frag = null;
+      for(var i=0; i<GLOSSARY.length; i++){
+        var entry = GLOSSARY[i];
+        if(wrapped[entry.term]) continue;
+        var idx = text.indexOf(entry.term);
+        if(idx === -1) continue;
+        var before = text.slice(0, idx);
+        var match = text.slice(idx, idx + entry.term.length);
+        var after = text.slice(idx + entry.term.length);
+        frag = document.createDocumentFragment();
+        if(before) frag.appendChild(document.createTextNode(before));
+        var span = document.createElement('span');
+        span.className = 'glossary-term';
+        span.title = entry.def;
+        span.textContent = match;
+        frag.appendChild(span);
+        if(after) frag.appendChild(document.createTextNode(after));
+        wrapped[entry.term] = true;
+        break;
+      }
+      if(frag){
+        textNode.parentNode.replaceChild(frag, textNode);
+      }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', function(){
+    wrapInNode(document.body);
+  });
+})();
 </script>
 
 </body>

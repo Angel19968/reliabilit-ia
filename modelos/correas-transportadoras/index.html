@@ -3,11 +3,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Guardián de la Bomba — RELIABILIT-IA</title>
-<meta name="description" content="Detecta anomalías en una bomba con apenas un puñado de lecturas históricas, usando distancia a los vecinos más cercanos y validación honesta de qué tan estable es el resultado.">
+<title>Rastreador de Correas — RELIABILIT-IA</title>
+<meta name="description" content="Clasifica el desvío lateral de una correa transportadora en alineada, desalineación leve o crítica, con regresión logística polinomial ajustable.">
 
-<meta property="og:title" content="Guardián de la Bomba — RELIABILIT-IA">
-<meta property="og:description" content="Mueve vibración y temperatura de rodamiento y mira en vivo qué tan lejos está esa lectura de las pocas lecturas históricas que tienes.">
+<meta property="og:title" content="Rastreador de Correas — RELIABILIT-IA">
+<meta property="og:description" content="Mueve el desvío lateral y la temperatura del rodillo y mira en vivo en qué estado cae tu correa transportadora.">
 <meta property="og:image" content="../../assets/og-image.png">
 <meta property="og:type" content="website">
 
@@ -108,7 +108,7 @@
 
   .live-col h3{font-size:14px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:14px; font-family:'DM Mono',monospace; font-weight:500;}
   .instrument-wrap{margin-bottom:18px;}
-  #instrument{width:100%; max-width:420px; height:240px; background:var(--bg); border:1px solid var(--border); border-radius:12px; display:block;}
+  #instrument{width:100%; max-width:420px; height:220px; background:radial-gradient(circle at 50% 45%, #15151e, var(--bg)); border:1px solid var(--border); border-radius:12px; display:block;}
   .instrument-stats{font-size:13px; color:var(--muted); line-height:1.9; margin-top:10px; display:flex; gap:22px; flex-wrap:wrap;}
   .instrument-stats b{color:var(--text); font-size:15px;}
   .gauge-wrap{margin-bottom:16px;}
@@ -131,7 +131,7 @@
   }
   .degree-btn.active{background:var(--accent); border-color:var(--accent); color:#fff;}
   #chart{width:100%; height:340px; background:var(--bg); border:1px solid var(--border); border-radius:12px; display:block;}
-  #residuals{width:100%; height:190px; background:var(--bg); border:1px solid var(--border); border-radius:12px; display:block; margin-top:18px;}
+  #residuals{width:100%; height:200px; background:var(--bg); border:1px solid var(--border); border-radius:12px; display:block; margin-top:18px;}
   .metrics{display:flex; gap:24px; margin-top:16px; flex-wrap:wrap; font-size:14px; color:var(--muted);}
   .metrics b{color:var(--text);}
   .fit-badge{margin-top:14px; font-size:15px; font-weight:600; padding:10px 14px; border-radius:10px; background:var(--panel2); display:inline-block;}
@@ -143,8 +143,8 @@
   .dataset-table th{position:sticky; top:0; background:var(--panel2); color:var(--muted); text-align:left; font-weight:500; padding:8px 12px; border-bottom:1px solid var(--border); text-transform:uppercase; letter-spacing:.04em; font-size:11px;}
   .dataset-table td{padding:7px 12px; border-bottom:1px solid var(--border); color:var(--text);}
   .dataset-table tr:last-child td{border-bottom:none;}
-  .dataset-table td.hit{color:var(--cta); font-weight:600;}
-  .dataset-table td.miss{color:var(--muted);}
+  .dataset-table td.set-train{color:var(--accent);}
+  .dataset-table td.set-test{color:var(--muted);}
   .dataset-note{font-size:12px; color:var(--muted); margin-top:8px;}
 
   .business p{color:var(--muted); font-size:16px; max-width:640px; text-align:justify;}
@@ -189,6 +189,8 @@
   .footer-links a{color:var(--muted); text-decoration:none;}
   .footer-links a:hover{color:var(--success);}
 
+  .glossary-term{border-bottom:1px dotted var(--muted); cursor:help;}
+
   @media (max-width:520px){
     .result{flex-direction:column; align-items:flex-start;}
   }
@@ -209,13 +211,13 @@
       <option value="../detector-anomalias-compresor/">Detector de Anomalías del Compresor</option>
       <option value="../radiografia-de-planta/">Radiografía de Planta</option>
       <option value="../semaforo-de-bombas/">Semáforo de Bombas</option>
+      <option value="../guardian-de-la-bomba/">Guardián de la Bomba</option>
       <option value="../frontera-de-vibracion/">Frontera de Vibración</option>
       <option value="../familias-de-turbinas/">Familias de Turbinas</option>
       <option value="../nubes-de-sensores/">Nubes de Sensores</option>
       <option value="../termometro-del-motor/">Termómetro del Motor</option>
       <option value="../mapa-de-anomalias/">Mapa de Anomalías</option>
       <option value="../ojo-termico/">Ojo Térmico</option>
-      <option value="../correas-transportadoras/">Rastreador de Correas</option>
       <option value="../memoria-del-motor/">Memoria del Motor</option>
     </select>
   </div>
@@ -231,23 +233,23 @@
   </script>
 
   <header class="hero">
-    <div class="badge">Anomalías · Bomba</div>
-    <span class="badge" style="border-color:var(--accent); color:var(--accent); margin-left:8px;">No supervisado · k-NN anomalías</span>
-    <h1>Guardián de la Bomba</h1>
-    <p class="lead">¿Puedes vigilar una bomba que recién empezaste a monitorear, con apenas un puñado de lecturas históricas?</p>
+    <div class="badge">Clasificación · Correas transportadoras</div>
+    <span class="badge" style="border-color:var(--accent); color:var(--accent); margin-left:8px;">Aprendizaje supervisado · Clasificación</span>
+    <h1>Rastreador de Correas</h1>
+    <p class="lead">¿Tu correa transportadora sigue centrada en el bastidor, o ya se está saliendo lo suficiente como para desgastar el borde o derramar material?</p>
   </header>
 
   <section class="context">
     <h2>El problema</h2>
-    <p>El <a href="../detector-anomalias-compresor/">Detector de Anomalías del Compresor</a> funciona bien cuando hay un historial amplio —100 lecturas o más— para ajustar una distribución completa de "operación normal". Pero muchas bombas, sobre todo las no críticas o las recién instrumentadas, apenas tienen un puñado de lecturas históricas: 15, 20, tal vez 25. Ajustar una distribución completa con tan pocos datos es arriesgado — la variabilidad estimada puede ser inestable y dar una falsa sensación de precisión. Este modelo usa un enfoque distinto, pensado justamente para esa situación: en vez de asumir una forma para "normal", mide qué tan lejos está cada lectura nueva de sus vecinos más cercanos dentro del historial disponible, y es honesto sobre cuánto varía esa medida cuando el historial es tan chico.</p>
-    <p>Este demo simula esa lectura: mueve la vibración y la temperatura de rodamiento, y mira en vivo qué tan lejos está esa combinación de las lecturas históricas de esta bomba en particular.</p>
+    <p>Una correa transportadora bien alineada dura años; una que se desvía unos centímetros del centro empieza a rozar contra la estructura, desgasta el borde de forma irregular y, en los casos más avanzados, derrama material o se corta sola por el interruptor de emergencia de desvío (switch de desalineación). El desvío casi nunca aparece solo: suele venir acompañado de fricción extra en los rodillos, que se traduce en temperatura — dos señales que, combinadas, cuentan la historia mejor que cualquiera por separado.</p>
+    <p>Este demo simula esa lectura: mueve el desvío lateral de la banda y la temperatura del rodillo, y mira en vivo en qué estado —alineada, leve o crítica— cae la correa.</p>
   </section>
 
   <section id="demo">
     <h2>Demo interactivo</h2>
     <div class="panel">
       <div class="toggle-row">
-        <span class="label">Clasificación por distancia a los vecinos más cercanos — mueve los sliders para simular una lectura de campo.</span>
+        <span class="label">Clasificación por umbrales de referencia — mueve los sliders para simular una lectura de campo.</span>
         <label class="switch">
           <span>Modo Analista</span>
           <input type="checkbox" id="analystToggle">
@@ -258,15 +260,15 @@
       <div class="demo-grid">
         <div class="controls-col">
           <div class="slider-group">
-            <label>Vibración RMS <span class="val" id="vibVal">3.2 mm/s</span></label>
-            <input type="range" id="vibSlider" min="0.5" max="9" step="0.1" value="3.2">
-            <div class="hint"><span>0.5 mm/s</span><span>9 mm/s</span></div>
+            <label>Desvío lateral de la banda <span class="val" id="desvioVal">20 mm</span></label>
+            <input type="range" id="desvioSlider" min="0" max="120" step="1" value="20">
+            <div class="hint"><span>0 mm (centrada)</span><span>120 mm (fuera de límite)</span></div>
           </div>
 
           <div class="slider-group">
-            <label>Temperatura de rodamiento <span class="val" id="tempVal">52 °C</span></label>
-            <input type="range" id="tempSlider" min="35" max="75" step="1" value="52">
-            <div class="hint"><span>35 °C</span><span>75 °C</span></div>
+            <label>Temperatura del rodillo <span class="val" id="tempVal">35 °C</span></label>
+            <input type="range" id="tempSlider" min="20" max="90" step="1" value="35">
+            <div class="hint"><span>20 °C</span><span>90 °C</span></div>
           </div>
 
           <div class="result" id="resultBox">
@@ -284,57 +286,41 @@
         <div class="live-col">
           <h3>Simulación en vivo</h3>
           <div class="instrument-wrap">
-            <canvas id="instrument" width="420" height="240"></canvas>
-            <div class="instrument-stats">
-              <div>Puntaje de anomalía (k=10): <b id="scoreStat">–</b></div>
-              <div>Umbral de referencia: <b id="threshStat">–</b></div>
-            </div>
+            <canvas id="instrument" width="420" height="220"></canvas>
           </div>
 
           <div class="gauge-wrap">
-            <div class="gauge-label">Índice de anomalía (0-100)</div>
-            <div class="gauge-bar"><div class="gauge-fill" id="gaugeFill"></div><span class="gauge-tick" style="left:65%"></span></div>
-            <div class="gauge-value"><b id="gaugeValue">0</b> <span class="gauge-note">0 = idéntico al historial, 100 = en el umbral de "Anómalo" o más allá</span></div>
+            <div class="gauge-label">Índice de riesgo (0-100)</div>
+            <div class="gauge-bar"><div class="gauge-fill" id="gaugeFill"></div><span class="gauge-tick" style="left:35%"></span><span class="gauge-tick" style="left:65%"></span></div>
+            <div class="gauge-value"><b id="gaugeValue">0</b> <span class="gauge-note">combina desvío lateral (60%) y temperatura de rodillo (40%)</span></div>
           </div>
 
-          <p class="sim-note">Simulación ilustrativa: el mapa y el punto de operación se dibujan a partir de los mismos valores de los sliders — no provienen de un sensor real.</p>
+          <p class="sim-note">Simulación ilustrativa: la posición de la banda, el desgaste de borde y el derrame de material se dibujan a partir de los mismos valores de los sliders — no provienen de un sensor real.</p>
         </div>
       </div>
 
       <div class="analyst" id="analystPanel">
         <h3 style="font-size:18px; text-transform:none; letter-spacing:0; margin-bottom:8px; color:var(--text);">Reentrenar en vivo</h3>
-        <p style="font-size:15px; color:var(--muted); margin-bottom:18px; text-align:justify;">Con solo 20 lecturas históricas, no alcanza para separar un set de entrenamiento y otro de prueba como en los demás módulos. En su lugar, repetimos el cálculo 150 veces quitando al azar algunas lecturas del historial (una técnica llamada bootstrap), para medir qué tan estable es el resultado según el número de vecinos (k) que elijas. Un k muy chico hace que el puntaje de cualquier lectura dependa casi por completo de un solo vecino — y con tan pocos datos, cuál es "el vecino más cercano" puede cambiar mucho según qué lecturas exactas hayas registrado. Un k más grande promedia más vecinos y estabiliza el resultado.</p>
+        <p style="font-size:15px; color:var(--muted); margin-bottom:18px; text-align:justify;">Elige el grado de expansión polinomial de la regresión logística (softmax) y observa cómo cambian las regiones de decisión. El set de 160 lecturas se divide en 106 para entrenar (●) y 54 reservadas para probar qué tan bien generaliza (○). El desvío y la temperatura están correlacionados (más desvío suele calentar más el rodillo por fricción), así que grado 1 ya captura bastante bien la tendencia — pero grados más altos ayudan a afinar la frontera cerca de los umbrales.</p>
 
         <div class="dataset-wrap">
-          <div class="dataset-label">Vista del historial completo (sin separar entrenamiento/prueba — son muy pocos datos)</div>
+          <div class="dataset-label">Vista del dataset de entrenamiento</div>
           <div class="dataset-scroll">
             <table class="dataset-table">
-              <thead><tr><th>#</th><th>Fecha</th><th>Vibración (mm/s)</th><th>Temperatura (°C)</th></tr></thead>
+              <thead><tr><th>#</th><th>Fecha</th><th>Desvío (mm)</th><th>Temp. rodillo (°C)</th><th>Estado real</th><th>Set</th></tr></thead>
               <tbody id="datasetBody"></tbody>
             </table>
           </div>
           <p class="dataset-note" id="datasetNote"></p>
         </div>
 
-        <div class="dataset-wrap">
-          <div class="dataset-label">Incidentes históricos usados solo para validar (no entrenan el modelo)</div>
-          <div class="dataset-scroll">
-            <table class="dataset-table">
-              <thead><tr><th>#</th><th>Fecha del incidente</th><th>Vibración</th><th>Temperatura</th><th>Descripción</th><th>Resultado con k actual</th></tr></thead>
-              <tbody id="incidentBody"></tbody>
-            </table>
-          </div>
-          <p class="dataset-note" id="incidentNote"></p>
-        </div>
-
         <div class="degree-row" id="degreeRow"></div>
         <canvas id="chart" width="800" height="340"></canvas>
-        <canvas id="residuals" width="800" height="190"></canvas>
+        <canvas id="residuals" width="800" height="200"></canvas>
         <div class="metrics">
-          <span>k: <b id="mK">10</b></span>
-          <span>Variabilidad (CV) en lectura normal típica: <b id="mCvNormal">–</b></span>
-          <span>Variabilidad (CV) en incidente sutil: <b id="mCvBorderline">–</b></span>
-          <span>Incidentes detectados: <b id="mRecall">–</b></span>
+          <span>Grado: <b id="mDegree">2</b></span>
+          <span>Exactitud entrenamiento: <b id="mAccTrain">–</b></span>
+          <span>Exactitud prueba: <b id="mAccTest">–</b></span>
         </div>
         <div class="fit-badge" id="mFitBadge">–</div>
       </div>
@@ -345,14 +331,14 @@
     <h2>¿Qué significa para tu planta?</h2>
     <div class="business-grid">
       <div>
-        <p>Con la lectura actual, esta bomba se clasifica como <span class="stat" id="bizLevelInline">Normal</span>. La ventaja de este enfoque es que puedes empezar a vigilar un equipo desde su primera semana de operación, en vez de esperar meses a acumular suficiente historial para un modelo más sofisticado — a cambio, hay que ser honesto con uno mismo sobre cuánto puede variar el resultado mientras el historial siga siendo tan chico, y confirmar cualquier alerta con una inspección antes de actuar.</p>
+        <p>Con la lectura actual, la correa se clasifica como <span class="stat" id="bizLevelInline">Alineada</span>. Operar sostenidamente en desalineación leve o crítica acelera el desgaste del borde de la banda y de los rodillos guía mucho más rápido que operar centrada — detectarlo a tiempo suele ser la diferencia entre un ajuste de rodillos guía en la próxima ronda o el cambio de una banda completa, además del material derramado y las horas de limpieza que eso implica.</p>
         <div class="biz-action" id="bizAction">
           <div class="biz-title" id="bizTitle">Calculando…</div>
           <div class="biz-detail" id="bizDetail"></div>
         </div>
       </div>
       <div>
-        <div class="gauge-label">Costo evitado estimado por nivel de alerta</div>
+        <div class="gauge-label">Costo estimado de intervención por nivel</div>
         <canvas id="projection" width="480" height="230"></canvas>
       </div>
     </div>
@@ -360,7 +346,7 @@
 
   <section id="cta">
     <h2>De esta demo a tu planta</h2>
-    <p style="color:var(--muted); max-width:640px; margin-bottom:20px; text-align:justify;">El historial, los umbrales y la simulación de este demo son de ejemplo, ajustados sobre datos sintéticos — sirven para explicar la idea, no para vigilar tu bomba real. Llevarlo a tu planta implica estandarizar cómo capturas tus primeras lecturas, elegir un número de vecinos (k) adecuado al tamaño real de tu historial, y decidir con qué margen de duda es razonable actuar mientras el historial sigue siendo chico — ahí es donde entra nuestro motor AutoML, calibrando el modelo con tu patrón real y creciendo en sofisticación a medida que se acumulan más datos. Se adapta al tipo de equipo y a la industria —minería, manufactura, energía, alimentos— cuando la calibramos con tus datos. Si quieres recorrer ese proceso, conversemos.</p>
+    <p style="color:var(--muted); max-width:640px; margin-bottom:20px; text-align:justify;">Los umbrales, los estados y la simulación de este demo son de ejemplo, ajustados sobre datos sintéticos — sirven para explicar la idea, no para diagnosticar tu correa real. Llevarlo a tu planta implica estandarizar cómo capturas tus datos de desvío (sensores de tracking) y temperatura de rodillos, mapear los puntos críticos propios de tu layout (curvas, transferencias, tensores), y calibrar el modelo con tu propio histórico — ahí es donde entra nuestro motor AutoML, ajustando el modelo correcto para tu caso y evitando tanto falsas alarmas como correas operando desalineadas sin ninguna alerta. Se adapta al tipo de correa y a la industria —minería, cemento, agroindustria, puertos— cuando la calibramos con tus datos. Si quieres recorrer ese proceso, conversemos.</p>
     <div class="cta-row">
       <a class="btn primary" href="https://chat.whatsapp.com/GvBz1tuUeNZ0xwTkjsuE3z" target="_blank" rel="noopener">Unirme a la comunidad de WhatsApp</a>
       <a class="btn ghost" href="https://www.linkedin.com/company/reliabilit-ia/" target="_blank" rel="noopener">Seguir en LinkedIn</a>
@@ -369,11 +355,11 @@
 
     <div class="contact-card">
       <div>
-        <h3>¿Hablamos de un equipo con poco historial?</h3>
-        <p>Si tienes un equipo recién instrumentado o con pocos datos y quieres validar este análisis con tu planta, escríbeme directamente.</p>
+        <h3>¿Hablamos del estado de tus correas?</h3>
+        <p>Si tienes datos de desvío o temperatura de tus correas transportadoras y quieres validar este análisis con tu planta, escríbeme directamente.</p>
       </div>
       <div class="contact-links">
-        <a class="contact-row" href="https://wa.me/51997610310?text=Hola%20Miguel%2C%20vi%20el%20demo%20Guardian%20de%20la%20Bomba%20y%20quiero%20conversar%20sobre%20la%20calibracion%20para%20mi%20planta" target="_blank" rel="noopener">
+        <a class="contact-row" href="https://wa.me/51997610310?text=Hola%20Miguel%2C%20vi%20el%20demo%20Rastreador%20de%20Correas%20y%20quiero%20conversar%20sobre%20la%20calibracion%20para%20mi%20planta" target="_blank" rel="noopener">
           <span class="contact-icon">💬</span>
           <span class="contact-text"><b>WhatsApp</b>+51 997 610 310</span>
         </a>
@@ -397,138 +383,56 @@
       <a href="https://www.linkedin.com/in/miguelcayllahua/" target="_blank" rel="noopener">LinkedIn personal</a>
       <a href="mailto:miguelcquispe@gmail.com">Correo</a>
     </div>
-    <p style="text-align:justify;">Contenido con fines educativos. La metodología es real; los datos y la simulación de esta demo son sintéticos para poder compartirlos públicamente. Se calibra con tus propios datos —sin importar el tipo de equipo o la industria— cuando trabajamos juntos. Modelo de ejemplo, no una fórmula fija.</p>
+    <p style="text-align:justify;">Contenido con fines educativos. La metodología es real; los datos y la simulación de esta demo son sintéticos para poder compartirlos públicamente. Se calibra con tus propios datos —sin importar el tipo de correa o la industria— cuando trabajamos juntos. Modelo de ejemplo, no una fórmula fija.</p>
   </footer>
 </div>
 
 <script>
 /* =========================================================
-   Generación del dataset sintético: solo 20 lecturas históricas
-   de ESTA bomba en particular (a propósito, pocos datos).
+   Definición de niveles (compartido por Modo Básico y Analista)
+   Umbrales validados por simulación externa en Node (seed=202)
+   antes de fijarlos: con SCORE_THRESHOLDS=[35,65] la distribución
+   resultante es ~41% alineada / ~42% leve / ~17% crítica sobre
+   160 lecturas sintéticas — balance razonable, ninguna clase vacía
+   ni dominante.
    ========================================================= */
-function seededRandom(seed){
-  let s = seed;
-  return function(){ s = (s*9301+49297) % 233280; return s/233280; };
-}
-function gaussian(rnd){
-  const u1 = Math.max(1e-9, rnd()), u2 = rnd();
-  return Math.sqrt(-2*Math.log(u1))*Math.cos(2*Math.PI*u2);
-}
-const REF_DATE = new Date('2026-07-15');
-const MESES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
-function fmtDate(d){ return String(d.getDate()).padStart(2,'0')+' '+MESES[d.getMonth()]+' '+d.getFullYear(); }
-function dateFromDaysAgo(daysAgo){ const d = new Date(REF_DATE); d.setDate(d.getDate()-Math.round(daysAgo)); return d; }
-
-const rnd = seededRandom(41);
-const N = 20;
-const normal = [];
-for(let i=0;i<N;i++){
-  const vib = Math.max(0.5, 3.2 + gaussian(rnd)*0.6);
-  const temp = Math.max(35, 52 + gaussian(rnd)*3 + (vib-3.2)*1.5);
-  const date = dateFromDaysAgo(rnd()*180);
-  normal.push({x: vib, y: temp, date});
-}
-
-// Incidentes históricos documentados — se usan solo para EVALUAR,
-// nunca para entrenar el modelo (no hay "entrenamiento" supervisado
-// aquí: el modelo solo aprende la forma del historial normal).
-// Fechas fijas (no derivadas del rnd del historial) porque son eventos
-// discretos documentados a lo largo de ~2 años, no parte del muestreo.
-const incidents = [
-  {x:6.5, y:60, label:'Desgaste avanzado de rodamiento', date:new Date('2024-09-12')},
-  {x:3.8, y:68, label:'Falla de lubricación', date:new Date('2025-01-22')},
-  {x:5.5, y:54, label:'Desalineación de eje', date:new Date('2025-04-08')},
-  {x:3.4, y:53, label:'Degradación temprana sutil', date:new Date('2025-08-30')},
-  {x:4.6, y:56, label:'Inicio de cavitación', date:new Date('2025-12-05')},
-  {x:7.8, y:65, label:'Desbalance severo', date:new Date('2026-05-18')}
-];
-
-function stats(points,key){
-  const vals = points.map(p=>p[key]);
-  const m = vals.reduce((a,b)=>a+b,0)/vals.length;
-  const sd = Math.sqrt(vals.reduce((a,v)=>a+(v-m)**2,0)/vals.length);
-  return {m,sd};
-}
-const SX = stats(normal,'x'), SY = stats(normal,'y');
-function toZ(p){ return {x:(p.x-SX.m)/SX.sd, y:(p.y-SY.m)/SY.sd}; }
-const normalZ = normal.map(toZ);
-const incidentsZ = incidents.map(toZ);
-
-function dist(a,b){ return Math.sqrt((a.x-b.x)**2+(a.y-b.y)**2); }
-function knnScore(point, refSet, k){
-  const dists = refSet.map(p=>dist(point,p)).sort((a,b)=>a-b);
-  const top = dists.slice(0, Math.min(k, dists.length));
-  return top.reduce((a,b)=>a+b,0)/top.length;
-}
-function looScores(k){
-  return normalZ.map((p,i)=>{
-    const others = normalZ.filter((_,j)=>j!==i);
-    return knnScore(p, others, Math.min(k, others.length));
-  });
-}
-function median(arr){
-  const s = arr.slice().sort((a,b)=>a-b);
-  return s[Math.floor(s.length/2)];
-}
-const MULT_ATENCION = 1.3, MULT_ANOMALO = 2.0;
-
-function renderDatasetPreview(){
-  const tbody = document.getElementById('datasetBody');
-  const note = document.getElementById('datasetNote');
-  if(!tbody) return;
-  tbody.innerHTML = normal.map((p,i)=>`<tr><td>${i+1}</td><td>${fmtDate(p.date)}</td><td>${p.x.toFixed(2)}</td><td>${p.y.toFixed(1)}</td></tr>`).join('');
-  const sortedDates = normal.map(p=>p.date).sort((a,b)=>a-b);
-  note.textContent = `${normal.length} lecturas, entre ${fmtDate(sortedDates[0])} y ${fmtDate(sortedDates[sortedDates.length-1])} — todo el historial disponible de esta bomba. Sin separación entrenamiento/prueba: son muy pocos datos para eso.`;
-}
-renderDatasetPreview();
-
-/* =========================================================
-   MODELO "DE PRODUCCIÓN" fijo (k=10, validado por simulación
-   externa como un punto estable) — es el que usa el Modo Básico.
-   ========================================================= */
-const PROD_K = 10;
-const prodLOO = looScores(PROD_K);
-const prodMedian = median(prodLOO);
-const PROD_T1 = prodMedian*MULT_ATENCION;
-const PROD_T2 = prodMedian*MULT_ANOMALO;
-
-const LEVELS = ['Normal','Atención','Anómalo'];
+const LEVELS = ['Alineada','Desalineación leve','Desalineación crítica'];
 const LEVEL_COLORS = ['#3ecfa0','#e8c547','#f4722e'];
 const LEVEL_DETAIL = [
-  'La lectura está cerca del historial conocido de esta bomba. Sin acción requerida.',
-  'La lectura se aleja del historial conocido, aunque no de forma extrema. Vale la pena anotarla y confirmar en la siguiente ronda.',
-  'La lectura se aleja fuertemente de todo lo registrado antes en esta bomba. Con historial tan chico, confirma con una inspección antes de actuar — pero no lo ignores.'
+  'La correa opera cerca del centro del bastidor. Sin acción requerida.',
+  'La correa se desvía del centro o el rodillo empieza a calentarse. Vale la pena revisar los rodillos guía en la próxima ronda.',
+  'La correa está lejos del centro, con riesgo de desgaste de borde, derrame de material o corte por el switch de desalineación. Priorizar ajuste de rodillos guía e inspección de tensores.'
 ];
 const LEVEL_SIMPLE = [
-  'todo normal, no hagas nada por ahora.',
-  'anótalo y confirma en tu siguiente ronda.',
-  'esto es raro para esta bomba — confírmalo con una inspección, no lo ignores.'
+  'la correa está centrada, no hagas nada por ahora.',
+  'revisa los rodillos guía en tu próxima ronda.',
+  'ajusta la correa pronto — riesgo de desgaste, derrame o corte.'
 ];
+const SCORE_THRESHOLDS = [35, 65];
 
-function classifyProd(vib, temp){
-  const z = toZ({x:vib, y:temp});
-  const score = knnScore(z, normalZ, PROD_K);
-  let idx;
-  if(score < PROD_T1) idx = 0;
-  else if(score < PROD_T2) idx = 1;
-  else idx = 2;
-  return {score, idx};
+function severityIndex(desvio, temp){
+  const desvioN = Math.min(1, desvio/120);
+  const tempN = Math.min(1, Math.max(0, temp-20)/70);
+  return 100*(0.6*desvioN + 0.4*tempN);
+}
+function classify(score){
+  if(score < SCORE_THRESHOLDS[0]) return 0;
+  if(score < SCORE_THRESHOLDS[1]) return 1;
+  return 2;
 }
 
 /* =========================================================
    MODO BÁSICO
    ========================================================= */
-const vibSlider = document.getElementById('vibSlider');
+const desvioSlider = document.getElementById('desvioSlider');
 const tempSlider = document.getElementById('tempSlider');
-const vibVal = document.getElementById('vibVal');
+const desvioVal = document.getElementById('desvioVal');
 const tempVal = document.getElementById('tempVal');
 const riskDot = document.getElementById('riskDot');
 const riskTitle = document.getElementById('riskTitle');
 const riskDetail = document.getElementById('riskDetail');
 const confidenceLine = document.getElementById('confidenceLine');
 const confidenceNote = document.getElementById('confidenceNote');
-const scoreStat = document.getElementById('scoreStat');
-const threshStat = document.getElementById('threshStat');
 const gaugeFill = document.getElementById('gaugeFill');
 const gaugeValue = document.getElementById('gaugeValue');
 const bizLevelInline = document.getElementById('bizLevelInline');
@@ -542,7 +446,7 @@ function drawProjection(activeIdx, scorePct){
   const W = projectionCanvas.width, H = projectionCanvas.height;
   pctx.clearRect(0,0,W,H);
   const padL = 56, padR = 20, padT = 20, padB = 46;
-  const costs = [0, 600, 9000];
+  const costs = [0, 3000, 25000];
   const maxCost = costs[costs.length-1]*1.1;
   const bw = (W-padL-padR)/costs.length;
 
@@ -570,10 +474,8 @@ function drawProjection(activeIdx, scorePct){
   });
   pctx.fillStyle = '#8a8a98';
   pctx.font = '11px DM Mono, monospace';
-  pctx.fillText('costo de intervención evitado con detección temprana (ilustrativo)', padL, 14);
+  pctx.fillText('costo estimado de intervención en cada nivel (ilustrativo)', padL, 14);
 
-  // Indicador continuo: el puntaje k-NN real de esta lectura respecto
-  // al umbral de "Anómalo" (no solo el nivel discreto).
   if(typeof scorePct === 'number'){
     const by = H-12, bh = 5;
     pctx.fillStyle = 'rgba(244,244,247,0.10)';
@@ -583,140 +485,282 @@ function drawProjection(activeIdx, scorePct){
     pctx.fillRect(padL, by, fw, bh);
     pctx.fillStyle = '#c9c9d4';
     pctx.font = '10px DM Mono, monospace';
-    pctx.fillText('puntaje k-NN real vs. umbral: '+scorePct.toFixed(0)+'/100', padL, by-4);
+    pctx.fillText('índice de severidad real: '+scorePct.toFixed(0)+'/100', padL, by-4);
   }
 }
 
 function updateBasic(){
-  const vib = parseFloat(vibSlider.value);
+  const desvio = parseFloat(desvioSlider.value);
   const temp = parseFloat(tempSlider.value);
-  vibVal.textContent = vib.toFixed(1) + ' mm/s';
+  desvioVal.textContent = desvio.toFixed(0) + ' mm';
   tempVal.textContent = temp.toFixed(0) + ' °C';
 
-  const {score, idx} = classifyProd(vib, temp);
+  const score = severityIndex(desvio, temp);
+  const idx = classify(score);
   const color = LEVEL_COLORS[idx];
 
   riskDot.style.background = color;
   riskTitle.style.color = color;
-  riskTitle.textContent = LEVELS[idx];
+  riskTitle.textContent = LEVELS[idx] + ' — índice ' + Math.round(score) + '/100';
   riskDetail.textContent = LEVEL_DETAIL[idx];
   const simpleEl = document.getElementById('simpleSummary');
   if(simpleEl) simpleEl.textContent = '💬 En palabras simples: ' + LEVEL_SIMPLE[idx];
 
-  const distToThresh = Math.min(Math.abs(score-PROD_T1), Math.abs(score-PROD_T2)) / prodMedian;
+  const distToThresh = Math.min(...SCORE_THRESHOLDS.map(t=>Math.abs(score-t)), score, 100-score);
   let confLevel, confColor, confNote;
-  if(distToThresh > 0.35){
+  if(distToThresh > 9){
     confLevel = 'Alta'; confColor = 'var(--success)';
     confNote = 'La lectura está lejos de cualquier umbral entre niveles.';
-  } else if(distToThresh > 0.15){
+  } else if(distToThresh > 4){
     confLevel = 'Media'; confColor = '#e8c547';
     confNote = 'Cerca de un umbral — el nivel vecino también es plausible.';
   } else {
     confLevel = 'Baja'; confColor = 'var(--cta)';
-    confNote = 'Justo en el borde entre dos niveles — con tan poco historial, repite la medición antes de decidir.';
+    confNote = 'Justo en el borde entre dos niveles — trátalo como referencia, repite la medición.';
   }
   confidenceLine.textContent = 'Confianza de la clasificación: ' + confLevel;
   confidenceLine.style.color = confColor;
   confidenceNote.textContent = confNote;
 
-  scoreStat.textContent = score.toFixed(2);
-  threshStat.textContent = PROD_T2.toFixed(2) + ' (Anómalo)';
-
-  const pct = (score/PROD_T2)*100;
-  gaugeFill.style.width = Math.min(100,Math.max(0,pct)).toFixed(1) + '%';
+  gaugeFill.style.width = Math.min(100,Math.max(0,score)).toFixed(1) + '%';
   gaugeFill.style.background = color;
-  gaugeValue.textContent = Math.round(Math.min(100,Math.max(0,pct)));
+  gaugeValue.textContent = Math.round(score);
 
   bizLevelInline.textContent = LEVELS[idx];
   bizLevelInline.style.color = color;
   bizAction.style.borderColor = color;
   bizTitle.style.color = color;
-  bizTitle.textContent = LEVELS[idx];
+  bizTitle.textContent = LEVELS[idx] + ' — ' + Math.round(score) + '/100';
   bizDetail.textContent = LEVEL_DETAIL[idx];
 
-  drawProjection(idx, Math.min(100,Math.max(0,pct)));
-  drawInstrument(vib, temp, idx);
+  drawProjection(idx, Math.min(100,Math.max(0,score)));
+  drawInstrument(desvio, temp, idx);
 }
-vibSlider.addEventListener('input', updateBasic);
+desvioSlider.addEventListener('input', updateBasic);
 tempSlider.addEventListener('input', updateBasic);
 
 /* =========================================================
-   SIMULACIÓN EN VIVO — mapa con el historial y los k=10 vecinos
-   más cercanos al punto actual resaltados.
+   SIMULACIÓN EN VIVO — vista superior del tramo de correa,
+   con el desvío lateral y el calor del rodillo (100% cliente)
    ========================================================= */
 const instrumentCanvas = document.getElementById('instrument');
 const ictx = instrumentCanvas.getContext('2d');
-function hexToRgb(hex){ const v=hex.replace('#',''); return [parseInt(v.slice(0,2),16),parseInt(v.slice(2,4),16),parseInt(v.slice(4,6),16)]; }
+function lerpColorRgb(c1,c2,t){ return c1.map((v,i)=>Math.round(v+(c2[i]-v)*Math.min(1,Math.max(0,t)))); }
 function rgba(c,a){ return `rgba(${c[0]},${c[1]},${c[2]},${a})`; }
-const VIB_MIN=0.5, VIB_MAX=9, TEMP_MIN=35, TEMP_MAX=75;
+function hexToRgb(hex){ const v=hex.replace('#',''); return [parseInt(v.slice(0,2),16),parseInt(v.slice(2,4),16),parseInt(v.slice(4,6),16)]; }
+const COLOR_SUCCESS=[62,207,160], COLOR_CTA=[244,114,46];
+let simTime = 0;
+let spillParticles = [];
 
-function drawInstrument(vib, temp, idx){
+function drawInstrument(desvio, temp, idx){
   const W = instrumentCanvas.width, H = instrumentCanvas.height;
-  const pad = 34;
+  const padL=30, padR=30, padT=40, padB=40;
   ictx.clearRect(0,0,W,H);
-  function toPx(v,t){ return [ pad+(v-VIB_MIN)/(VIB_MAX-VIB_MIN)*(W-2*pad), H-pad-(t-TEMP_MIN)/(TEMP_MAX-TEMP_MIN)*(H-2*pad) ]; }
+  simTime += 1;
 
-  ictx.strokeStyle = '#22222c';
+  // thermal glow behind everything, from cool (success) to hot (cta)
+  const tempT = (temp-20)/(90-20);
+  const glowColor = lerpColorRgb(COLOR_SUCCESS, COLOR_CTA, tempT);
+  const grad = ictx.createRadialGradient(W-70,H/2,10,W-70,H/2,90);
+  grad.addColorStop(0, rgba(glowColor, 0.30));
+  grad.addColorStop(1, rgba(glowColor, 0));
+  ictx.fillStyle = grad;
+  ictx.fillRect(0,0,W,H);
+
+  const frameTop = padT, frameBot = H-padB;
+  const centerY = (frameTop+frameBot)/2;
+  const maxOffset = (frameBot-frameTop)/2 - 14;
+
+  // bastidor (guías fijas)
+  ictx.strokeStyle = '#3a3a48';
+  ictx.lineWidth = 2;
+  ictx.beginPath();
+  ictx.moveTo(padL, frameTop); ictx.lineTo(W-padR, frameTop);
+  ictx.moveTo(padL, frameBot); ictx.lineTo(W-padR, frameBot);
+  ictx.stroke();
+
+  // línea central de referencia (punteada)
+  ictx.strokeStyle = 'rgba(122,122,140,0.5)';
+  ictx.setLineDash([4,5]);
   ictx.lineWidth = 1;
   ictx.beginPath();
-  ictx.moveTo(pad, pad); ictx.lineTo(pad, H-pad); ictx.lineTo(W-pad, H-pad);
+  ictx.moveTo(padL, centerY); ictx.lineTo(W-padR, centerY);
   ictx.stroke();
+  ictx.setLineDash([]);
   ictx.fillStyle = '#8a8a98';
   ictx.font = '10px DM Mono, monospace';
-  ictx.fillText('vibración (mm/s)', pad, H-8);
-  ictx.save();
-  ictx.translate(12, H/2+40);
-  ictx.rotate(-Math.PI/2);
-  ictx.fillText('temperatura de rodamiento (°C)', 0, 0);
-  ictx.restore();
+  ictx.fillText('centro del bastidor', padL, frameTop-10);
 
-  // vecinos más cercanos resaltados
-  const z = toZ({x:vib, y:temp});
-  const withDist = normal.map((p,i)=>({p, i, d: dist(z, normalZ[i])})).sort((a,b)=>a.d-b.d);
-  const neighborIdx = new Set(withDist.slice(0,PROD_K).map(o=>o.i));
-
-  normal.forEach((p,i)=>{
-    const [x,y] = toPx(p.x,p.y);
-    const isNeighbor = neighborIdx.has(i);
+  // rodillos (izquierda = motriz, derecha = de cola)
+  [padL+18, W-padR-18].forEach(cx=>{
     ictx.beginPath();
-    ictx.fillStyle = isNeighbor ? 'rgba(123,94,167,0.9)' : 'rgba(122,122,140,0.4)';
-    ictx.arc(x,y, isNeighbor?3.5:2.2, 0, Math.PI*2);
+    ictx.fillStyle = '#2a2a34';
+    ictx.strokeStyle = '#5a5a6a';
+    ictx.lineWidth = 2;
+    ictx.arc(cx, centerY, 16, 0, Math.PI*2);
+    ictx.fill();
+    ictx.stroke();
+  });
+
+  // posición real de la banda, con jitter proporcional al desvío
+  const offsetFrac = Math.min(1, desvio/120);
+  const jitterMag = Math.min(1, desvio/120);
+  const jitter = (Math.random()-0.5) * jitterMag * 4;
+  const beltY = centerY - offsetFrac*maxOffset + jitter;
+  const color = LEVEL_COLORS[idx];
+
+  // banda (línea gruesa desde un rodillo a otro)
+  ictx.strokeStyle = color;
+  ictx.lineWidth = 8;
+  ictx.lineCap = 'round';
+  ictx.beginPath();
+  ictx.moveTo(padL+18, beltY);
+  ictx.lineTo(W-padR-18, beltY);
+  ictx.stroke();
+
+  // marcas de desgaste de borde si el desvío roza el bastidor
+  if(offsetFrac > 0.55){
+    ictx.fillStyle = rgba(hexToRgb(color), 0.7);
+    for(let i=0;i<5;i++){
+      const x = padL + 50 + i*60;
+      ictx.beginPath();
+      ictx.arc(x, beltY-9, 2.2, 0, Math.PI*2);
+      ictx.fill();
+    }
+  }
+
+  // partículas de derrame de material si el desvío es crítico
+  if(offsetFrac > 0.78){
+    if(Math.random() < 0.5){
+      spillParticles.push({x: padL+70+Math.random()*(W-padL-padR-140), y: beltY-8, vy: 0.6+Math.random()*0.8});
+    }
+  }
+  spillParticles = spillParticles.filter(p=>p.y < frameBot+20);
+  ictx.fillStyle = 'rgba(122,90,60,0.85)';
+  spillParticles.forEach(p=>{
+    p.y += p.vy;
+    ictx.beginPath();
+    ictx.arc(p.x, p.y, 2, 0, Math.PI*2);
     ictx.fill();
   });
 
-  const color = LEVEL_COLORS[idx];
-  const [cx,cy] = toPx(vib,temp);
-  ictx.beginPath();
-  ictx.fillStyle = rgba(hexToRgb(color),0.25);
-  ictx.arc(cx,cy,13,0,Math.PI*2);
-  ictx.fill();
-  ictx.beginPath();
-  ictx.fillStyle = color;
-  ictx.arc(cx,cy,6,0,Math.PI*2);
-  ictx.fill();
-  ictx.strokeStyle = '#f4f4f7';
-  ictx.lineWidth = 1.3;
-  ictx.stroke();
-
   ictx.fillStyle = '#8a8a98';
-  ictx.font = '10px DM Mono, monospace';
-  ictx.fillText('● historial · ● resaltado = entre los 10 vecinos más cercanos', pad, pad-14);
+  ictx.font = '11px DM Mono, monospace';
+  ictx.fillText('rodillo motriz', padL-6, frameBot+18);
+  ictx.fillText('rodillo de cola', W-padR-70, frameBot+18);
 }
 
 /* =========================================================
-   MODO ANALISTA — k ajustable + validación por bootstrap
+   MODO ANALISTA — dataset sintético + regresión logística
+   multinomial (softmax) con expansión polinomial de grado d
    ========================================================= */
+function seededRandom(seed){ let s=seed; return function(){ s=(s*9301+49297)%233280; return s/233280; }; }
+function gaussian(rnd){ const u1=Math.max(1e-9,rnd()), u2=rnd(); return Math.sqrt(-2*Math.log(u1))*Math.cos(2*Math.PI*u2); }
+
+// Ruido de etiqueta realista: suficiente para que grado 1 ya funcione
+// razonablemente (desvío y temperatura están correlacionados por
+// fricción), pero grados más altos afinen la frontera cerca de los
+// umbrales. Validado por simulación externa (seed=202) antes de fijar
+// SCORE_THRESHOLDS.
+const REF_DATE = new Date('2026-07-15');
+const MESES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+function fmtDate(d){ return String(d.getDate()).padStart(2,'0')+' '+MESES[d.getMonth()]+' '+d.getFullYear(); }
+function dateFromDaysAgo(daysAgo){ const d = new Date(REF_DATE); d.setDate(d.getDate()-Math.round(daysAgo)); return d; }
+
+const rnd = seededRandom(202);
+const dataset = [];
+for(let i=0;i<160;i++){
+  const desvio = rnd()*120;
+  const temp = Math.max(20, 30 + gaussian(rnd)*10 + desvio*0.25);
+  const score = severityIndex(desvio, temp) + (rnd()-0.5)*18;
+  const label = classify(Math.max(0, Math.min(100, score)));
+  const date = dateFromDaysAgo(rnd()*365);
+  dataset.push({x1: desvio, x2: temp, label, date});
+}
+const trainPoints = dataset.filter((_,i)=> i%3 !== 0); // 106
+const testPoints = dataset.filter((_,i)=> i%3 === 0);  // 54
+
+function renderDatasetPreview(){
+  const tbody = document.getElementById('datasetBody');
+  const note = document.getElementById('datasetNote');
+  if(!tbody) return;
+  tbody.innerHTML = dataset.map((d,i)=>{
+    const isTrain = i%3 !== 0;
+    return `<tr><td>${i+1}</td><td>${fmtDate(d.date)}</td><td>${d.x1.toFixed(1)}</td><td>${d.x2.toFixed(1)}</td><td>${LEVELS[d.label]}</td><td class="${isTrain?'set-train':'set-test'}">${isTrain?'Entrenamiento':'Prueba'}</td></tr>`;
+  }).join('');
+  const sortedDates = dataset.map(d=>d.date).sort((a,b)=>a-b);
+  note.textContent = `${dataset.length} lecturas de correa, entre ${fmtDate(sortedDates[0])} y ${fmtDate(sortedDates[sortedDates.length-1])} — ${trainPoints.length} de entrenamiento, ${testPoints.length} de prueba.`;
+}
+renderDatasetPreview();
+
+const m1 = trainPoints.reduce((a,d)=>a+d.x1,0)/trainPoints.length;
+const m2 = trainPoints.reduce((a,d)=>a+d.x2,0)/trainPoints.length;
+const s1 = Math.sqrt(trainPoints.reduce((a,d)=>a+(d.x1-m1)**2,0)/trainPoints.length);
+const s2 = Math.sqrt(trainPoints.reduce((a,d)=>a+(d.x2-m2)**2,0)/trainPoints.length);
+function stdize(d){ return [(d.x1-m1)/s1, (d.x2-m2)/s2]; }
+
+function polyFeatures(z1,z2,degree){
+  const feats=[1];
+  for(let total=1; total<=degree; total++){
+    for(let i=total;i>=0;i--){
+      const j = total-i;
+      feats.push(Math.pow(z1,i)*Math.pow(z2,j));
+    }
+  }
+  return feats;
+}
+
+function trainSoftmax(points, degree, epochs=400, lr=0.4, l2=1e-3){
+  const X = points.map(d=>{ const [z1,z2]=stdize(d); return polyFeatures(z1,z2,degree); });
+  const y = points.map(d=>d.label);
+  const nFeat = X[0].length, K=3;
+  let W = Array.from({length:K},()=>new Array(nFeat).fill(0));
+  for(let ep=0; ep<epochs; ep++){
+    const grad = Array.from({length:K},()=>new Array(nFeat).fill(0));
+    for(let i=0;i<X.length;i++){
+      const logits = W.map(w => w.reduce((a,wj,j)=>a+wj*X[i][j],0));
+      const maxL = Math.max(...logits);
+      const exps = logits.map(l=>Math.exp(l-maxL));
+      const sumE = exps.reduce((a,b)=>a+b,0);
+      const probs = exps.map(e=>e/sumE);
+      for(let k=0;k<K;k++){
+        const err = probs[k] - (y[i]===k?1:0);
+        for(let j=0;j<nFeat;j++) grad[k][j] += err*X[i][j];
+      }
+    }
+    for(let k=0;k<K;k++) for(let j=0;j<nFeat;j++){
+      grad[k][j] = grad[k][j]/X.length + l2*W[k][j];
+      W[k][j] -= lr*grad[k][j];
+    }
+  }
+  return W;
+}
+function predictClass(W, z1,z2, degree){
+  const feats = polyFeatures(z1,z2,degree);
+  const logits = W.map(w=>w.reduce((a,wj,j)=>a+wj*feats[j],0));
+  let bi=0,bl=-Infinity;
+  logits.forEach((l,i)=>{ if(l>bl){bl=l;bi=i;} });
+  return bi;
+}
+function accuracy(W, points, degree){
+  let c=0;
+  points.forEach(d=>{ const [z1,z2]=stdize(d); if(predictClass(W,z1,z2,degree)===d.label) c++; });
+  return c/points.length;
+}
+
 const chartCanvas = document.getElementById('chart');
 const cctx = chartCanvas.getContext('2d');
 const residualCanvas = document.getElementById('residuals');
 const rctx = residualCanvas.getContext('2d');
-let currentK = 10;
+let currentDegree = 2;
 
-function toPxChart(v,t,W,H,pad){
-  return [ pad+(v-VIB_MIN)/(VIB_MAX-VIB_MIN)*(W-2*pad), H-pad-(t-TEMP_MIN)/(TEMP_MAX-TEMP_MIN)*(H-2*pad) ];
+const X1_MIN=0, X1_MAX=120, X2_MIN=20, X2_MAX=90;
+function toPxChart(x1,x2,W,H,pad){
+  return [ pad+(x1-X1_MIN)/(X1_MAX-X1_MIN)*(W-2*pad), H-pad-(x2-X2_MIN)/(X2_MAX-X2_MIN)*(H-2*pad) ];
 }
+function hexToRgbT(hex){ const v=hex.replace('#',''); return [parseInt(v.slice(0,2),16),parseInt(v.slice(2,4),16),parseInt(v.slice(4,6),16)]; }
 
-function drawDecisionMap(k, T1, T2){
+function drawDecisionMap(W_model, degree){
   const W = chartCanvas.width, H = chartCanvas.height;
   const pad = 40;
   cctx.clearRect(0,0,W,H);
@@ -724,13 +768,12 @@ function drawDecisionMap(k, T1, T2){
   const cell = 8;
   for(let px=pad; px<W-pad; px+=cell){
     for(let py=pad; py<H-pad; py+=cell){
-      const v = VIB_MIN + (px-pad)/(W-2*pad)*(VIB_MAX-VIB_MIN);
-      const t = TEMP_MIN + (1-(py-pad)/(H-2*pad))*(TEMP_MAX-TEMP_MIN);
-      const z = toZ({x:v,y:t});
-      const score = knnScore(z, normalZ, k);
-      const idx = score<T1 ? 0 : score<T2 ? 1 : 2;
-      cctx.fillStyle = rgba(hexToRgb(LEVEL_COLORS[idx]), 0.16);
-      cctx.fillRect(px,py,cell,cell);
+      const x1 = X1_MIN + (px-pad)/(W-2*pad)*(X1_MAX-X1_MIN);
+      const x2 = X2_MIN + (1-(py-pad)/(H-2*pad))*(X2_MAX-X2_MIN);
+      const z1=(x1-m1)/s1, z2=(x2-m2)/s2;
+      const label = predictClass(W_model, z1, z2, degree);
+      cctx.fillStyle = rgba(hexToRgbT(LEVEL_COLORS[label]), 0.16);
+      cctx.fillRect(px, py, cell, cell);
     }
   }
 
@@ -741,142 +784,111 @@ function drawDecisionMap(k, T1, T2){
   cctx.stroke();
   cctx.fillStyle = '#a8a8b4';
   cctx.font = '13px DM Mono, monospace';
-  cctx.fillText('vibración RMS (mm/s)', W/2-70, H-10);
+  cctx.fillText('desvío lateral (mm)', W/2-60, H-10);
   cctx.save();
   cctx.translate(16, H/2+60);
   cctx.rotate(-Math.PI/2);
-  cctx.fillText('temperatura de rodamiento (°C)', 0, 0);
+  cctx.fillText('temperatura de rodillo (°C)', 0, 0);
   cctx.restore();
 
-  normal.forEach(p=>{
-    const [x,y] = toPxChart(p.x,p.y,W,H,pad);
+  trainPoints.forEach(d=>{
+    const [x,y] = toPxChart(d.x1,d.x2,W,H,pad);
     cctx.beginPath();
-    cctx.fillStyle = '#7b5ea7';
+    cctx.fillStyle = LEVEL_COLORS[d.label];
     cctx.arc(x,y,4,0,Math.PI*2);
     cctx.fill();
   });
-  incidents.forEach((inc,i)=>{
-    const z = incidentsZ[i];
-    const score = knnScore(z, normalZ, k);
-    const flagged = score > T2;
-    const [x,y] = toPxChart(inc.x,inc.y,W,H,pad);
+  testPoints.forEach(d=>{
+    const [x,y] = toPxChart(d.x1,d.x2,W,H,pad);
     cctx.beginPath();
-    cctx.strokeStyle = flagged ? '#3ecfa0' : '#f4722e';
-    cctx.lineWidth = 2;
-    cctx.arc(x,y,7,0,Math.PI*2);
-    cctx.stroke();
-    cctx.beginPath();
-    cctx.fillStyle = '#f4f4f7';
-    cctx.arc(x,y,2.5,0,Math.PI*2);
+    cctx.fillStyle = LEVEL_COLORS[d.label];
+    cctx.globalAlpha = 0.35;
+    cctx.arc(x,y,5,0,Math.PI*2);
     cctx.fill();
+    cctx.globalAlpha = 1;
+    cctx.strokeStyle = '#f4f4f7';
+    cctx.lineWidth = 1.3;
+    cctx.stroke();
   });
 
   cctx.fillStyle = '#a8a8b4';
   cctx.font = '12px DM Mono, monospace';
-  cctx.fillText('● historial (20) · ◯ incidente real (verde=detectado, naranja=no detectado)', pad, pad-16);
+  cctx.fillText('● entrenamiento · ○ prueba · color = estado real', pad, pad-16);
 }
 
-function bootstrapCV(point, k, B, seed){
-  const rndB = seededRandom(seed);
-  const scores = [];
-  for(let b=0;b<B;b++){
-    const idxs = normalZ.map((_,i)=>i);
-    for(let i=idxs.length-1;i>0;i--){ const j=Math.floor(rndB()*(i+1)); [idxs[i],idxs[j]]=[idxs[j],idxs[i]]; }
-    const subset = idxs.slice(0,16).map(i=>normalZ[i]);
-    scores.push(knnScore(point, subset, Math.min(k, subset.length)));
-  }
-  const m = scores.reduce((a,b)=>a+b,0)/scores.length;
-  const sd = Math.sqrt(scores.reduce((a,v)=>a+(v-m)**2,0)/scores.length);
-  return { mean: m, sd, cv: sd/m, scores };
-}
+function drawConfusion(W_model, degree){
+  const N = LEVELS.length;
+  const conf = Array.from({length:N},()=>new Array(N).fill(0));
+  testPoints.forEach(d=>{ const [z1,z2]=stdize(d); conf[d.label][predictClass(W_model,z1,z2,degree)]++; });
 
-function drawStabilityBars(cvNormal, cvBorderline, cvAnomaly){
   const W = residualCanvas.width, H = residualCanvas.height;
   rctx.clearRect(0,0,W,H);
-  const padL = 190, padR = 60, padT = 24, padB = 20;
-  const rows = [
-    {label:'Variabilidad — lectura normal típica', value: cvNormal, color:'#3ecfa0'},
-    {label:'Variabilidad — incidente sutil', value: cvBorderline, color:'#e8c547'},
-    {label:'Variabilidad — incidente claro', value: cvAnomaly, color:'#f4722e'}
-  ];
-  const maxV = Math.max(0.5, cvNormal, cvBorderline, cvAnomaly);
-  const rowH = (H-padT-padB)/rows.length;
+  const padL = 90, padT = 30, cellW = (W-padL-10)/N, cellH = (H-padT-6)/N;
+
   rctx.fillStyle = '#c9c9d4';
-  rctx.font = '13px DM Mono, monospace';
-  rctx.fillText('¿Qué tanto cambia el puntaje si el historial hubiera sido ligeramente distinto?', padL, 14);
-  rows.forEach((r,i)=>{
-    const y = padT + i*rowH + rowH*0.22;
-    const barW = Math.min(1,r.value/maxV)*(W-padL-padR);
+  rctx.font = '12px DM Mono, monospace';
+  rctx.fillText('Matriz de confusión (prueba) — filas = estado real, columnas = predicho', padL-70, 14);
+
+  LEVELS.forEach((name,j)=>{
     rctx.fillStyle = '#8a8a98';
-    rctx.font = '12px DM Mono, monospace';
-    rctx.fillText(r.label, 8, y+rowH*0.36);
-    rctx.fillStyle = 'rgba(244,244,247,0.08)';
-    rctx.fillRect(padL, y, W-padL-padR, rowH*0.44);
-    rctx.fillStyle = r.color;
-    rctx.fillRect(padL, y, Math.max(2,barW), rowH*0.44);
-    rctx.fillStyle = '#f4f4f7';
-    rctx.fillText((r.value*100).toFixed(1)+'%', W-padR+8, y+rowH*0.36);
+    rctx.font = '10px DM Mono, monospace';
+    rctx.fillText(name, padL + j*cellW + 6, padT-6);
+  });
+  LEVELS.forEach((name,i)=>{
+    const y = padT + i*cellH;
+    rctx.fillStyle = '#8a8a98';
+    rctx.font = '10px DM Mono, monospace';
+    rctx.fillText(name, 4, y+cellH*0.6);
+    LEVELS.forEach((_,j)=>{
+      const x = padL + j*cellW;
+      const val = conf[i][j];
+      const total = conf[i].reduce((a,b)=>a+b,0);
+      const intensity = total ? val/total : 0;
+      rctx.fillStyle = i===j ? rgba(hexToRgbT(LEVEL_COLORS[i]), 0.15+intensity*0.6) : rgba([244,244,247], 0.04+intensity*0.22);
+      rctx.fillRect(x, y, cellW-4, cellH-4);
+      rctx.fillStyle = '#f4f4f7';
+      rctx.font = '14px DM Mono, monospace';
+      rctx.fillText(String(val), x+cellW/2-6, y+cellH*0.6);
+    });
   });
 }
 
-function renderIncidentTable(k, T2){
-  const tbody = document.getElementById('incidentBody');
-  const note = document.getElementById('incidentNote');
-  if(!tbody) return;
-  let detected = 0;
-  tbody.innerHTML = incidents.map((inc,i)=>{
-    const score = knnScore(incidentsZ[i], normalZ, k);
-    const flagged = score > T2;
-    if(flagged) detected++;
-    return `<tr><td>${i+1}</td><td>${fmtDate(inc.date)}</td><td>${inc.x.toFixed(1)}</td><td>${inc.y.toFixed(1)}</td><td>${inc.label}</td><td class="${flagged?'hit':'miss'}">${flagged?'✓ Detectado':'✗ No detectado'}</td></tr>`;
-  }).join('');
-  note.textContent = `${detected} de ${incidents.length} incidentes históricos habrían sido detectados con k=${k}.`;
-}
+function setDegree(degree){
+  currentDegree = degree;
+  const W_model = trainSoftmax(trainPoints, degree);
+  const accTrain = accuracy(W_model, trainPoints, degree);
+  const accTest = accuracy(W_model, testPoints, degree);
+  const gapPP = (accTrain-accTest)*100;
 
-function setK(k){
-  currentK = k;
-  const loo = looScores(k);
-  const med = median(loo);
-  const T1 = med*MULT_ATENCION, T2 = med*MULT_ANOMALO;
-
-  let detected = 0;
-  incidents.forEach((inc,i)=>{ if(knnScore(incidentsZ[i], normalZ, k) > T2) detected++; });
-
-  const cvN = bootstrapCV(normalZ[0], k, 150, 501).cv;
-  const cvB = bootstrapCV(incidentsZ[3], k, 150, 502).cv;
-  const cvA = bootstrapCV(incidentsZ[5], k, 150, 503).cv;
-
-  document.getElementById('mK').textContent = k;
-  document.getElementById('mCvNormal').textContent = (cvN*100).toFixed(1)+'%';
-  document.getElementById('mCvBorderline').textContent = (cvB*100).toFixed(1)+'%';
-  document.getElementById('mRecall').textContent = detected+'/'+incidents.length;
+  document.getElementById('mDegree').textContent = degree;
+  document.getElementById('mAccTrain').textContent = (accTrain*100).toFixed(1)+'%';
+  document.getElementById('mAccTest').textContent = (accTest*100).toFixed(1)+'%';
 
   const badge = document.getElementById('mFitBadge');
-  if(cvN > 0.25){
-    badge.textContent = '⚠ Inestable — con tan pocos datos, el resultado depende demasiado de qué lecturas exactas tengas en el historial.';
-    badge.style.color = 'var(--cta)';
-  } else if(cvN > 0.08){
-    badge.textContent = '~ Aceptable, pero aún sensible — mejora con más historial acumulado.';
+  if(accTrain < 0.75){
+    badge.textContent = '⚠ Subajuste — el modelo es demasiado simple para el patrón de los datos.';
     badge.style.color = '#e8c547';
+  } else if(gapPP > 15){
+    badge.textContent = '⚠ Sobreajuste — memoriza el entrenamiento pero generaliza peor a datos nuevos.';
+    badge.style.color = 'var(--cta)';
   } else {
-    badge.textContent = '✓ Estable — el resultado ya no depende tanto de la muestra exacta del historial.';
+    badge.textContent = '✓ Ajuste razonable — generaliza bien a los datos de prueba.';
     badge.style.color = 'var(--success)';
   }
 
-  renderIncidentTable(k, T2);
-  drawDecisionMap(k, T1, T2);
-  drawStabilityBars(cvN, cvB, cvA);
+  drawDecisionMap(W_model, degree);
+  drawConfusion(W_model, degree);
 }
 
 const degreeRow = document.getElementById('degreeRow');
-[1,2,3,5,7,10,15].forEach(k=>{
+[1,2,3,4].forEach(d=>{
   const btn = document.createElement('button');
-  btn.className = 'degree-btn' + (k===currentK ? ' active':'');
-  btn.textContent = 'k=' + k;
+  btn.className = 'degree-btn' + (d===currentDegree ? ' active':'');
+  btn.textContent = 'Grado ' + d;
   btn.addEventListener('click', ()=>{
     document.querySelectorAll('.degree-btn').forEach(b=>b.classList.remove('active'));
     btn.classList.add('active');
-    setK(k);
+    setDegree(d);
   });
   degreeRow.appendChild(btn);
 });
@@ -885,16 +897,12 @@ const analystToggle = document.getElementById('analystToggle');
 const analystPanel = document.getElementById('analystPanel');
 analystToggle.addEventListener('change', ()=>{
   analystPanel.classList.toggle('show', analystToggle.checked);
-  if(analystToggle.checked) setK(currentK);
+  if(analystToggle.checked) setDegree(currentDegree);
 });
 
 updateBasic();
 </script>
 
-
-<style>
-  .glossary-term{border-bottom:1px dotted var(--muted); cursor:help;}
-</style>
 <script>
 (function(){
   var GLOSSARY = [
