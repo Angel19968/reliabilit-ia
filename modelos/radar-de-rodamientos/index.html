@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<script>(function(){try{var t=localStorage.getItem('ria-theme');if(t==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Radar de Rodamientos — RELIABILIT-IA</title>
 <meta name="description" content="Estima días hasta falla de un rodamiento a partir de vibración RMS y temperatura, con simulación en vivo de la señal de vibración y consumo de corriente.">
@@ -26,6 +27,14 @@
     --success:#3ecfa0;
     --cta:#f4722e;
     --accent:#7b5ea7;
+  }
+  [data-theme="light"]{
+    --bg:#FFFFFF;
+    --panel:#FAFBFC;
+    --panel2:#EEF0F3;
+    --border:#E4E7EB;
+    --text:#141822;
+    --muted:#5B6472;
   }
   *{box-sizing:border-box;margin:0;padding:0;}
   body{
@@ -109,12 +118,12 @@
   /* ---- live simulation column ---- */
   .live-col h3{font-size:14px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:14px; font-family:'DM Mono',monospace; font-weight:500;}
   .instrument-wrap{display:flex; gap:18px; align-items:center; flex-wrap:wrap; margin-bottom:18px;}
-  #instrument{width:240px; height:220px; background:radial-gradient(circle at 50% 45%, #15151e, var(--bg)); border:1px solid var(--border); border-radius:12px; flex-shrink:0;}
+  #instrument{width:240px; height:220px; background:radial-gradient(circle at 50% 45%, #15151e, #0a0a0f); border:1px solid #22222c; border-radius:12px; flex-shrink:0;}
   .instrument-stats{font-size:14px; color:var(--muted); line-height:1.9;}
   .instrument-stats b{color:var(--text); font-size:18px;}
   .scope-wrap{margin-bottom:18px;}
   .scope-label, .gauge-label{font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:8px;}
-  #scope{width:100%; height:140px; background:var(--bg); border:1px solid var(--border); border-radius:10px; display:block;}
+  #scope{width:100%; height:140px; background:#0a0a0f; border:1px solid #22222c; border-radius:10px; display:block;}
   .gauge-wrap{margin-bottom:16px;}
   .gauge-bar{height:12px; background:var(--border); border-radius:999px; overflow:hidden; margin:8px 0;}
   .gauge-fill{height:100%; width:0%; background:var(--success); transition:background .35s ease;}
@@ -132,8 +141,8 @@
     transition:background .15s, border-color .15s;
   }
   .degree-btn.active{background:var(--accent); border-color:var(--accent); color:#fff;}
-  #chart{width:100%; height:340px; background:var(--bg); border:1px solid var(--border); border-radius:12px; display:block;}
-  #residuals{width:100%; height:210px; background:var(--bg); border:1px solid var(--border); border-radius:12px; display:block; margin-top:18px;}
+  #chart{width:100%; height:340px; background:#0a0a0f; border:1px solid #22222c; border-radius:12px; display:block;}
+  #residuals{width:100%; height:210px; background:#0a0a0f; border:1px solid #22222c; border-radius:12px; display:block; margin-top:18px;}
   .metrics{display:flex; gap:24px; margin-top:16px; flex-wrap:wrap; font-size:14px; color:var(--muted);}
   .metrics b{color:var(--text);}
   .fit-badge{margin-top:14px; font-size:15px; font-weight:600; padding:10px 14px; border-radius:10px; background:var(--panel2); display:inline-block;}
@@ -156,7 +165,7 @@
   .biz-action{margin-top:18px; padding:18px; border-radius:12px; background:var(--panel2); border:1px solid var(--border); transition:border-color .3s;}
   .biz-action .biz-title{font-size:17px; font-weight:600;}
   .biz-action .biz-detail{font-size:14px; color:var(--muted); margin-top:6px;}
-  #projection{width:100%; height:230px; background:var(--bg); border:1px solid var(--border); border-radius:12px; display:block;}
+  #projection{width:100%; height:230px; background:#0a0a0f; border:1px solid #22222c; border-radius:12px; display:block;}
 
   .cta-row{display:flex; gap:14px; flex-wrap:wrap; margin-top:8px;}
   .btn{
@@ -195,6 +204,13 @@
     .result{flex-direction:column; align-items:flex-start;}
     .instrument-wrap{justify-content:center;}
   }
+  .thermbar{height:4px; background:linear-gradient(90deg,#2C3E75,#6A3A93,#C43D73,#E86A33,#F5B942); border-radius:0 0 3px 3px;}
+  .theme-toggle{
+    font-family:'DM Mono', monospace; font-size:12px; padding:7px 12px; border-radius:8px;
+    border:1px solid var(--border); background:transparent; color:var(--text); cursor:pointer;
+    display:inline-flex; align-items:center; gap:6px; transition:border-color .15s;
+  }
+  .theme-toggle:hover{border-color:var(--accent);}
 </style>
 </head>
 <body>
@@ -221,7 +237,9 @@
       <option value="../correas-transportadoras/">Rastreador de Correas</option>
       <option value="../memoria-del-motor/">Memoria del Motor</option>
     </select>
+    <button class="theme-toggle" id="themeToggle" type="button"><span id="themeIcon">🌙</span><span id="themeLabel">Oscuro</span></button>
   </div>
+  <div class="thermbar"></div>
 
 <script>
   (function(){
@@ -230,6 +248,31 @@
     function onScroll(){ nav.classList.toggle('is-stuck', window.scrollY > 4); }
     window.addEventListener('scroll', onScroll, {passive:true});
     onScroll();
+  })();
+  </script>
+
+<script>
+  (function(){
+    var btn = document.getElementById('themeToggle');
+    var icon = document.getElementById('themeIcon');
+    var label = document.getElementById('themeLabel');
+    function sync(){
+      var isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      icon.textContent = isLight ? '☀️' : '🌙';
+      label.textContent = isLight ? 'Claro' : 'Oscuro';
+    }
+    btn.addEventListener('click', function(){
+      var isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      if(isLight){
+        document.documentElement.removeAttribute('data-theme');
+        try{ localStorage.setItem('ria-theme','dark'); }catch(e){}
+      } else {
+        document.documentElement.setAttribute('data-theme','light');
+        try{ localStorage.setItem('ria-theme','light'); }catch(e){}
+      }
+      sync();
+    });
+    sync();
   })();
   </script>
 
