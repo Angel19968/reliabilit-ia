@@ -163,17 +163,8 @@
   .method-step .m-title{font-size:15.5px; font-weight:700; margin-bottom:6px;}
   .method-step .m-std{font-size:12px; color:var(--accent); font-weight:600; display:block; margin-bottom:6px;}
   .method-step .m-desc{font-size:14px; color:var(--muted); line-height:1.55;}
-  @media (max-width:760px){ .method-pipeline{grid-template-columns:repeat(2, 1fr);} }
-  @media (max-width:520px){ .method-pipeline{grid-template-columns:1fr;} }
-
-  .method-loop{
-    margin-top:16px; padding:18px 22px; border-radius:12px; background:var(--panel);
-    border:1px dashed var(--accent); display:flex; gap:16px; align-items:flex-start;
-  }
-  .method-loop .loop-icon{font-size:22px; flex-shrink:0; line-height:1;}
-  .method-loop .m-title{font-size:15.5px; font-weight:700; margin-bottom:6px;}
-  .method-loop .m-std{font-size:12px; color:var(--accent); font-weight:600; display:block; margin-bottom:6px;}
-  .method-loop .m-desc{font-size:14px; color:var(--muted); line-height:1.55;}
+  .method-step.method-loop-step{border:1px dashed var(--accent); background:var(--panel2, var(--panel));}
+  @media (max-width:820px){ .method-pipeline{grid-template-columns:1fr;} }
 </style>
 </head>
 <body>
@@ -364,8 +355,8 @@
       </div>
       <div class="team-card">
         <span class="team-role-icon">🛠️</span>
-        <div class="team-role">Técnicos predictivos multitécnica</div>
-        <div class="team-desc">Especialistas en las técnicas de campo que alimentan cada modelo: análisis de vibración, termografía infrarroja, análisis de aceite, ultrasonido e inspección basada en riesgo — la que aplique según tu industria y tus activos.</div>
+        <div class="team-role">Técnico Predictivo Especializado</div>
+        <div class="team-desc">Certificado por técnica —análisis de vibración, termografía infrarroja, análisis de aceite, ultrasonido o inspección basada en riesgo (RBI)— toma en campo la lectura que alimenta cada modelo, la que aplique según tu industria y tus activos.</div>
       </div>
     </div>
 
@@ -374,44 +365,56 @@
       <div class="method-step">
         <span class="num">1</span>
         <div class="m-title">Estandarización de datos</div>
+        <span class="m-std">Ingeniero de Datos</span>
         <div class="m-desc">Unificamos criterios de captura y nomenclatura entre plantas y equipos, para que el dato sea comparable de una planta a otra.</div>
       </div>
       <div class="method-step">
         <span class="num">2</span>
         <div class="m-title">Mapeo de activos y taxonomía</div>
-        <span class="m-std">Basado en ISO 14224</span>
-        <div class="m-desc">Jerarquizamos planta → sistema → equipo → componente siguiendo un esquema de clasificación reconocido internacionalmente, base de todo análisis de confiabilidad posterior.</div>
+        <span class="m-std">ISO 14224 · Ingeniero / Analista de Datos</span>
+        <div class="m-desc">Jerarquizamos planta → sistema → equipo → componente siguiendo un esquema reconocido internacionalmente, base de todo análisis posterior.</div>
       </div>
       <div class="method-step">
         <span class="num">3</span>
-        <div class="m-title">FMECA</div>
-        <span class="m-std">Basado en MIL-STD-1629A / SAE ARP5580</span>
-        <div class="m-desc">Análisis de Modos de Falla, Efectos y Criticidad: identificamos y priorizamos qué modo de falla atacar primero, según su severidad y probabilidad.</div>
+        <div class="m-title">Análisis exploratorio de variables</div>
+        <span class="m-std">Científico de Datos</span>
+        <div class="m-desc">Valida supuestos estadísticos y aísla qué variables explican realmente cada modo de falla, antes de comprometerse con un modelo.</div>
       </div>
       <div class="method-step">
         <span class="num">4</span>
-        <div class="m-title">RCM</div>
-        <span class="m-std">Basado en SAE JA1011 / JA1012</span>
-        <div class="m-desc">Con esos modos de falla ya identificados, el Mantenimiento Centrado en Confiabilidad define la estrategia correcta por función: inspección, reemplazo programado o rediseño.</div>
+        <div class="m-title">FMECA</div>
+        <span class="m-std">MIL-STD-1629A / SAE ARP5580 · Ing. de Confiabilidad</span>
+        <div class="m-desc">Identifica y prioriza qué modo de falla atacar primero, según severidad y probabilidad — y qué debe aprender a predecir el modelo.</div>
       </div>
       <div class="method-step">
         <span class="num">5</span>
-        <div class="m-title">PMO</div>
-        <div class="m-desc">Optimización del Plan de Mantenimiento: ajustamos frecuencias y tareas del plan resultante con base en el historial real de fallas, no en el calendario.</div>
+        <div class="m-title">Modelado predictivo (ML / IA / DL)</div>
+        <span class="m-std">Ingeniero de Machine Learning</span>
+        <div class="m-desc">Aquí viven las demos de este catálogo: regresión, clasificación, clustering, detección de anomalías y redes neuronales entrenadas sobre los modos de falla del FMECA.</div>
       </div>
       <div class="method-step">
         <span class="num">6</span>
+        <div class="m-title">RCM</div>
+        <span class="m-std">SAE JA1011 / JA1012 · Ing. de Confiabilidad</span>
+        <div class="m-desc">Con la predicción del modelo y los modos de falla, define la estrategia correcta por función: inspección, reemplazo o rediseño.</div>
+      </div>
+      <div class="method-step">
+        <span class="num">7</span>
+        <div class="m-title">PMO</div>
+        <span class="m-std">Ing. de Confiabilidad · Técnico Predictivo</span>
+        <div class="m-desc">Ajusta frecuencias y tareas del plan con base en el historial real de fallas y en las lecturas de campo (vibración, termografía, aceite, ultrasonido, RBI).</div>
+      </div>
+      <div class="method-step">
+        <span class="num">8</span>
         <div class="m-title">RCA</div>
+        <span class="m-std">Técnico Predictivo · Ing. de Confiabilidad</span>
         <div class="m-desc">Cuando ocurre una falla no anticipada, el Análisis de Causa Raíz (Ishikawa, 5 porqués) encuentra el origen.</div>
       </div>
-    </div>
-
-    <div class="method-loop">
-      <span class="loop-icon">🔄</span>
-      <div>
-        <div class="m-title">7. Retroalimentación y mejora continua</div>
-        <span class="m-std">Basado en el ciclo PDCA (Deming) e ISO 55000</span>
-        <div class="m-desc">Los hallazgos del RCA y el desempeño real de las tareas del PMO no se archivan: regresan a la taxonomía y al FMECA para actualizarlos. Así el RCM se mantiene como un programa vivo que se revisa periódicamente, no un análisis de una sola vez.</div>
+      <div class="method-step method-loop-step">
+        <span class="num">9</span>
+        <div class="m-title">🔄 Retroalimentación y mejora continua</div>
+        <span class="m-std">PDCA (Deming) / ISO 55000</span>
+        <div class="m-desc">Los hallazgos del RCA y el desempeño real del PMO no solo actualizan la taxonomía y el FMECA: también re-entrenan y recalibran los modelos de ML/IA/DL, cerrando el ciclo hacia el paso 3.</div>
       </div>
     </div>
   </section>
