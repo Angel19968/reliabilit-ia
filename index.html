@@ -151,10 +151,10 @@
   .team-desc{font-size:15px; color:var(--muted); line-height:1.6; text-align:justify;}
 
   .method-label{font-size:13.5px; font-weight:600; letter-spacing:.02em; color:var(--text); margin:36px 0 14px;}
-  .method-pipeline{display:flex; flex-wrap:wrap; gap:0; align-items:stretch;}
+  .method-pipeline{display:grid; grid-template-columns:repeat(3, 1fr); gap:16px;}
   .method-step{
     background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:16px 18px;
-    flex:1 1 150px; min-width:150px; position:relative;
+    position:relative;
   }
   .method-step .num{
     display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px;
@@ -163,8 +163,8 @@
   .method-step .m-title{font-size:15.5px; font-weight:700; margin-bottom:6px;}
   .method-step .m-std{font-size:12px; color:var(--accent); font-weight:600; display:block; margin-bottom:6px;}
   .method-step .m-desc{font-size:14px; color:var(--muted); line-height:1.55;}
-  .method-arrow{display:flex; align-items:center; justify-content:center; color:var(--muted); font-size:16px; padding:0 6px; flex:0 0 auto;}
-  @media (max-width:760px){ .method-arrow{display:none;} .method-pipeline{gap:12px;} }
+  @media (max-width:760px){ .method-pipeline{grid-template-columns:repeat(2, 1fr);} }
+  @media (max-width:520px){ .method-pipeline{grid-template-columns:1fr;} }
 </style>
 </head>
 <body>
@@ -330,12 +330,17 @@
     <div class="team-grid">
       <div class="team-card">
         <span class="team-role-icon">🗄️</span>
-        <div class="team-role">Ingeniero de datos</div>
+        <div class="team-role">Ingeniero de Datos</div>
         <div class="team-desc">Diseña el pipeline de captura, limpieza y estructuración de las señales de planta (vibración, temperatura, corriente, presión) para que lleguen consistentes y listas para el modelado.</div>
       </div>
       <div class="team-card">
+        <span class="team-role-icon">📈</span>
+        <div class="team-role">Analista de Datos</div>
+        <div class="team-desc">Construye los reportes, tableros e indicadores que traducen el histórico de planta en tendencias legibles para mantenimiento y operaciones, antes y después de cada modelo.</div>
+      </div>
+      <div class="team-card">
         <span class="team-role-icon">📊</span>
-        <div class="team-role">Científico de datos</div>
+        <div class="team-role">Científico de Datos</div>
         <div class="team-desc">Explora las variables, valida supuestos estadísticos y aísla las características que realmente explican el modo de falla, antes de comprometerse con un algoritmo.</div>
       </div>
       <div class="team-card">
@@ -348,6 +353,11 @@
         <div class="team-role">Ingeniero de Confiabilidad</div>
         <div class="team-desc">Traduce la salida del modelo en una acción de mantenimiento con sentido operativo: qué inspeccionar, con qué prioridad y bajo qué criterio de riesgo aceptable.</div>
       </div>
+      <div class="team-card">
+        <span class="team-role-icon">🛠️</span>
+        <div class="team-role">Técnicos predictivos multitécnica</div>
+        <div class="team-desc">Especialistas en las técnicas de campo que alimentan cada modelo: análisis de vibración, termografía infrarroja, análisis de aceite, ultrasonido e inspección basada en riesgo — la que aplique según tu industria y tus activos.</div>
+      </div>
     </div>
 
     <p class="method-label">Cómo asesoramos tu planta, de la estandarización a la causa raíz</p>
@@ -357,34 +367,29 @@
         <div class="m-title">Estandarización de datos</div>
         <div class="m-desc">Unificamos criterios de captura y nomenclatura entre plantas y equipos, para que el dato sea comparable de una planta a otra.</div>
       </div>
-      <div class="method-arrow">→</div>
       <div class="method-step">
         <span class="num">2</span>
         <div class="m-title">Mapeo de activos y taxonomía</div>
         <span class="m-std">Basado en ISO 14224</span>
         <div class="m-desc">Jerarquizamos planta → sistema → equipo → componente siguiendo un esquema de clasificación reconocido internacionalmente, base de todo análisis de confiabilidad posterior.</div>
       </div>
-      <div class="method-arrow">→</div>
       <div class="method-step">
         <span class="num">3</span>
         <div class="m-title">FMECA</div>
         <span class="m-std">Basado en MIL-STD-1629A / SAE ARP5580</span>
         <div class="m-desc">Análisis de Modos de Falla, Efectos y Criticidad: identificamos y priorizamos qué modo de falla atacar primero, según su severidad y probabilidad.</div>
       </div>
-      <div class="method-arrow">→</div>
       <div class="method-step">
         <span class="num">4</span>
         <div class="m-title">RCM</div>
         <span class="m-std">Basado en SAE JA1011 / JA1012</span>
         <div class="m-desc">Con esos modos de falla ya identificados, el Mantenimiento Centrado en Confiabilidad define la estrategia correcta por función: inspección, reemplazo programado o rediseño.</div>
       </div>
-      <div class="method-arrow">→</div>
       <div class="method-step">
         <span class="num">5</span>
         <div class="m-title">PMO</div>
         <div class="m-desc">Optimización del Plan de Mantenimiento: ajustamos frecuencias y tareas del plan resultante con base en el historial real de fallas, no en el calendario.</div>
       </div>
-      <div class="method-arrow">→</div>
       <div class="method-step">
         <span class="num">6</span>
         <div class="m-title">RCA</div>
