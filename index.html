@@ -143,14 +143,14 @@
   }
   .theme-toggle:hover{border-color:var(--accent);}
 
-  .team-intro{color:var(--muted); max-width:680px; margin-top:10px; font-size:15px; text-align:justify;}
+  .team-intro{color:var(--muted); max-width:680px; margin-top:10px; font-size:16px; text-align:justify;}
   .team-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:18px; margin-top:28px;}
   .team-card{background:var(--panel); border:1px solid var(--border); border-radius:14px; padding:22px;}
-  .team-role-icon{font-size:22px; margin-bottom:10px; display:block;}
-  .team-role{font-family:'Syne', sans-serif; font-weight:700; font-size:16px; margin-bottom:8px;}
-  .team-desc{font-size:13.5px; color:var(--muted); line-height:1.55; text-align:justify;}
+  .team-role-icon{font-size:24px; margin-bottom:10px; display:block;}
+  .team-role{font-family:'Syne', sans-serif; font-weight:700; font-size:17.5px; margin-bottom:9px;}
+  .team-desc{font-size:15px; color:var(--muted); line-height:1.6; text-align:justify;}
 
-  .method-label{font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin:36px 0 14px;}
+  .method-label{font-size:13.5px; font-weight:600; letter-spacing:.02em; color:var(--text); margin:36px 0 14px;}
   .method-pipeline{display:flex; flex-wrap:wrap; gap:0; align-items:stretch;}
   .method-step{
     background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:16px 18px;
@@ -160,8 +160,9 @@
     display:inline-flex; align-items:center; justify-content:center; width:22px; height:22px;
     border-radius:50%; background:var(--accent); color:#fff; font-size:12px; font-weight:600; margin-bottom:10px;
   }
-  .method-step .m-title{font-size:14px; font-weight:600; margin-bottom:6px;}
-  .method-step .m-desc{font-size:12.5px; color:var(--muted); line-height:1.5;}
+  .method-step .m-title{font-size:15.5px; font-weight:700; margin-bottom:6px;}
+  .method-step .m-std{font-size:12px; color:var(--accent); font-weight:600; display:block; margin-bottom:6px;}
+  .method-step .m-desc{font-size:14px; color:var(--muted); line-height:1.55;}
   .method-arrow{display:flex; align-items:center; justify-content:center; color:var(--muted); font-size:16px; padding:0 6px; flex:0 0 auto;}
   @media (max-width:760px){ .method-arrow{display:none;} .method-pipeline{gap:12px;} }
 </style>
@@ -353,38 +354,41 @@
     <div class="method-pipeline">
       <div class="method-step">
         <span class="num">1</span>
-        <div class="m-title">Estandarización</div>
-        <div class="m-desc">Unificamos criterios de captura y nomenclatura entre plantas y equipos, para que el dato sea comparable.</div>
+        <div class="m-title">Estandarización de datos</div>
+        <div class="m-desc">Unificamos criterios de captura y nomenclatura entre plantas y equipos, para que el dato sea comparable de una planta a otra.</div>
       </div>
       <div class="method-arrow">→</div>
       <div class="method-step">
         <span class="num">2</span>
         <div class="m-title">Mapeo de activos y taxonomía</div>
-        <div class="m-desc">Jerarquizamos planta → sistema → equipo → componente, base de todo análisis de confiabilidad posterior.</div>
+        <span class="m-std">Basado en ISO 14224</span>
+        <div class="m-desc">Jerarquizamos planta → sistema → equipo → componente siguiendo un esquema de clasificación reconocido internacionalmente, base de todo análisis de confiabilidad posterior.</div>
       </div>
       <div class="method-arrow">→</div>
       <div class="method-step">
         <span class="num">3</span>
-        <div class="m-title">RCM</div>
-        <div class="m-desc">Mantenimiento Centrado en Confiabilidad: definimos la estrategia de mantenimiento por función y modo de falla.</div>
+        <div class="m-title">FMECA</div>
+        <span class="m-std">Basado en MIL-STD-1629A / SAE ARP5580</span>
+        <div class="m-desc">Análisis de Modos de Falla, Efectos y Criticidad: identificamos y priorizamos qué modo de falla atacar primero, según su severidad y probabilidad.</div>
       </div>
       <div class="method-arrow">→</div>
       <div class="method-step">
         <span class="num">4</span>
-        <div class="m-title">FMECA</div>
-        <div class="m-desc">Análisis de modos de falla, efectos y criticidad, para priorizar qué falla atacar primero.</div>
+        <div class="m-title">RCM</div>
+        <span class="m-std">Basado en SAE JA1011 / JA1012</span>
+        <div class="m-desc">Con esos modos de falla ya identificados, el Mantenimiento Centrado en Confiabilidad define la estrategia correcta por función: inspección, reemplazo programado o rediseño.</div>
       </div>
       <div class="method-arrow">→</div>
       <div class="method-step">
         <span class="num">5</span>
         <div class="m-title">PMO</div>
-        <div class="m-desc">Optimización del plan de mantenimiento: ajustamos frecuencias y tareas con base en el riesgo real, no en el calendario.</div>
+        <div class="m-desc">Optimización del Plan de Mantenimiento: ajustamos frecuencias y tareas del plan resultante con base en el historial real de fallas, no en el calendario.</div>
       </div>
       <div class="method-arrow">→</div>
       <div class="method-step">
         <span class="num">6</span>
         <div class="m-title">RCA</div>
-        <div class="m-desc">Cuando la falla ya ocurrió, el Análisis de Causa Raíz encuentra el origen para que no se repita.</div>
+        <div class="m-desc">Cuando ocurre una falla no anticipada, el Análisis de Causa Raíz (Ishikawa, 5 porqués) encuentra el origen y retroalimenta el FMECA para que no se repita.</div>
       </div>
     </div>
   </section>
