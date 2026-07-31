@@ -34,7 +34,7 @@
   "@type": "WebSite",
   "name": "RELIABILIT-IA",
   "url": "https://angel19968.github.io/reliabilit-ia/",
-  "description": "Catálogo de 17 demos interactivas de mantenimiento predictivo con modelos de Machine Learning y Deep Learning entrenados desde cero, aplicados a rodamientos, motores, bombas, compresores, turbinas y más.",
+  "description": "Catálogo de 19 demos interactivas de mantenimiento predictivo con modelos de Machine Learning y Deep Learning entrenados desde cero, aplicados a rodamientos, motores, bombas, compresores, turbinas, calderas y más.",
   "publisher": {
     "@type": "Organization",
     "name": "RELIABILIT-IA",
@@ -124,6 +124,7 @@
   .card[data-sector="termografia"] .tag::before{content:"🌡️";}
   .card[data-sector="correas"] .tag::before{content:"🎢";}
   .card[data-sector="transformadores"] .tag::before{content:"🔌";}
+  .card[data-sector="calderas"] .tag::before{content:"🔥";}
   .card h3{font-size:20px; margin:10px 0 8px;}
   .card p{
     font-size:14px; color:var(--muted);
@@ -274,6 +275,7 @@
         <button class="chip" data-value="termografia">Termografía</button>
         <button class="chip" data-value="correas">Correas transportadoras</button>
         <button class="chip" data-value="transformadores">Transformadores</button>
+        <button class="chip" data-value="calderas">Calderas</button>
       </div>
       <button class="filter-reset" id="filterReset">Limpiar filtros</button>
     </div>
@@ -364,6 +366,12 @@
         <div class="tag">Clasificación · Transformadores</div>
         <h3>Transformadores (DGA)</h3>
         <p>Clasifica el tipo de falla de un transformador en las 7 zonas del Triángulo de Duval a partir del análisis de gases disueltos.</p>
+        <span class="status">● Disponible</span>
+      </a>
+      <a class="card" data-paradigm="series-tiempo" data-sector="calderas" href="./modelos/pulso-de-la-caldera/">
+        <div class="tag">Series de tiempo · Calderas</div>
+        <h3>Pulso de la Caldera</h3>
+        <p>Sigue la eficiencia térmica de una caldera y detecta cuándo la incrustación avanza más rápido de lo normal.</p>
         <span class="status">● Disponible</span>
       </a>
       </div>

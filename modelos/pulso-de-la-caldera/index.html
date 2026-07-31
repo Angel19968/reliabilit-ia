@@ -15,11 +15,11 @@
 <link rel="icon" href="../../assets/favicon.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
 <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
-<title>Pulso Energético — RELIABILIT-IA</title>
-<meta name="description" content="Proyecta el consumo energético esperado de tu planta y detecta desvíos anómalos antes de que se conviertan en sobrecostos.">
+<title>Pulso de la Caldera — RELIABILIT-IA</title>
+<meta name="description" content="Sigue la eficiencia térmica de tu caldera día a día y detecta cuándo la incrustación avanza más rápido de lo normal, antes de que se note en la factura de combustible.">
 
-<meta property="og:title" content="Pulso Energético — RELIABILIT-IA">
-<meta property="og:description" content="Mueve producción y consumo y mira en vivo si el gasto energético de hoy es normal o un desvío que vale la pena revisar.">
+<meta property="og:title" content="Pulso de la Caldera — RELIABILIT-IA">
+<meta property="og:description" content="Mueve el TDS del agua y la eficiencia medida y mira en vivo si tu caldera envejece dentro de lo normal o necesita limpieza química antes de lo previsto.">
 <meta property="og:image" content="../../assets/og-image.png">
 <meta property="og:type" content="website">
 
@@ -46,8 +46,8 @@
     {
       "@type": "ListItem",
       "position": 3,
-      "name": "Pulso Energético",
-      "item": "https://angel19968.github.io/reliabilit-ia/modelos/pulso-energetico/"
+      "name": "Pulso de la Caldera",
+      "item": "https://angel19968.github.io/reliabilit-ia/modelos/pulso-de-la-caldera/"
     }
   ]
 }
@@ -56,11 +56,11 @@
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "Pulso Energético — RELIABILIT-IA",
+  "name": "Pulso de la Caldera — RELIABILIT-IA",
   "applicationCategory": "BusinessApplication",
   "operatingSystem": "Web",
-  "url": "https://angel19968.github.io/reliabilit-ia/modelos/pulso-energetico/",
-  "description": "Proyecta el consumo energético esperado de tu planta y detecta desvíos anómalos antes de que se conviertan en sobrecostos.",
+  "url": "https://angel19968.github.io/reliabilit-ia/modelos/pulso-de-la-caldera/",
+  "description": "Sigue la eficiencia térmica de tu caldera día a día y detecta cuándo la incrustación avanza más rápido de lo normal, antes de que se note en la factura de combustible.",
   "isAccessibleForFree": true,
   "offers": {
     "@type": "Offer",
@@ -287,8 +287,7 @@
     display:inline-flex; align-items:center; gap:6px; transition:border-color .15s;
   }
   .share-btn:hover{border-color:var(--accent);}
-</style>
-</head>
+</style></head>
 <body>
 
 <div class="wrap">
@@ -297,6 +296,7 @@
     <select class="quick-nav" onchange="if(this.value) location.href=this.value;">
       <option value="">Ir a otro modelo →</option>
       <option value="../radar-de-rodamientos/">Radar de Rodamientos</option>
+      <option value="../pulso-energetico/">Pulso Energético</option>
       <option value="../diagnostico-del-motor/">Diagnóstico del Motor</option>
       <option value="../pulso-del-motor/">Pulso del Motor</option>
       <option value="../oido-industrial/">Oído Industrial</option>
@@ -313,7 +313,6 @@
       <option value="../correas-transportadoras/">Rastreador de Correas</option>
       <option value="../memoria-del-motor/">Memoria del Motor</option>
       <option value="../transformadores-dga/">Transformadores (DGA)</option>
-      <option value="../pulso-de-la-caldera/">Pulso de la Caldera</option>
     </select>
     <button class="theme-toggle" id="themeToggle" type="button"><span id="themeIcon">🌙</span><span id="themeLabel">Oscuro</span></button>
   </div>
@@ -353,24 +352,23 @@
     sync();
   })();
   </script>
-
   <header class="hero">
-    <div class="badge">Ingeniería aplicada a Energía</div>
+    <div class="badge">Ingeniería aplicada a Calderas / Generación de vapor</div>
     <span class="badge" style="border-color:var(--accent); color:var(--accent); margin-left:8px;">Serie de tiempo · Estadístico</span>
-    <h1>Pulso Energético</h1>
-    <p class="lead">¿El consumo eléctrico de hoy es el normal para lo que produjiste, o hay algo consumiendo de más?</p>
+    <h1>Pulso de la Caldera</h1>
+    <p class="lead">¿La eficiencia térmica de hoy es la normal para el nivel de sólidos disueltos del agua, o la incrustación está avanzando más rápido de lo esperado?</p>
   </header>
 
   <section class="context">
     <h2>El problema</h2>
-    <p>El consumo de una planta sube y baja con la producción — eso es normal. Lo que no es normal es cuando el consumo se desacopla de la producción: una fuga de aire comprimido, un motor que quedó encendido, un compresor perdiendo eficiencia. Este modelo aprende la relación esperada entre producción y consumo, y avisa cuándo el gasto de hoy se sale de ese patrón.</p>
+    <p>Toda caldera pierde eficiencia con el tiempo: el agua de alimentación siempre trae sólidos disueltos (TDS) que, si la purga (blowdown) no los controla bien, se depositan como incrustación sobre las superficies de intercambio de calor. Menos calor pasa al agua, más se escapa por la chimenea, y se quema más combustible para producir el mismo vapor. El deterioro es esperable entre limpiezas químicas — lo que este modelo detecta es cuándo la eficiencia cae más rápido de lo que el nivel de TDS explicaría, señal de que la incrustación se está acelerando o de que la purga dejó de estar bien calibrada.</p>
   </section>
 
   <section id="demo">
     <h2>Demo interactivo</h2>
     <div class="panel">
       <div class="toggle-row">
-        <span class="label">Modelo entrenado con datos sintéticos (Serie de tiempo, tipo ARIMA) — mueve los sliders para simular una lectura de hoy.</span>
+        <span class="label">Modelo entrenado con datos sintéticos (Serie de tiempo, promedio móvil) — mueve los sliders para simular una lectura de hoy.</span>
         <label class="switch">
           <span>Modo Analista</span>
           <input type="checkbox" id="analystToggle">
@@ -381,15 +379,15 @@
       <div class="demo-grid">
         <div class="controls-col">
           <div class="slider-group">
-            <label>Producción de hoy <span class="val" id="prodVal">65 %</span></label>
-            <input type="range" id="prodSlider" min="0" max="100" step="1" value="65">
-            <div class="hint"><span>0 % (parada)</span><span>100 % (capacidad plena)</span></div>
+            <label>TDS del agua de caldera hoy <span class="val" id="tdsVal">1400 ppm</span></label>
+            <input type="range" id="tdsSlider" min="500" max="3500" step="10" value="1400">
+            <div class="hint"><span>500 ppm (agua muy pura)</span><span>3500 ppm (límite de control típico)</span></div>
           </div>
 
           <div class="slider-group">
-            <label>Consumo medido hoy <span class="val" id="consVal">595 kWh</span></label>
-            <input type="range" id="consSlider" min="250" max="900" step="5" value="595">
-            <div class="hint"><span>250 kWh</span><span>900 kWh</span></div>
+            <label>Eficiencia térmica medida hoy <span class="val" id="effVal">86.5 %</span></label>
+            <input type="range" id="effSlider" min="65" max="90" step="0.1" value="86.5">
+            <div class="hint"><span>65 % (muy incrustada)</span><span>90 % (diseño, recién limpiada)</span></div>
           </div>
 
           <div class="result" id="resultBox">
@@ -406,22 +404,22 @@
         <div class="live-col">
           <h3>Simulación en vivo</h3>
           <div class="ts-wrap">
-            <div class="ts-label">Consumo diario (últimos 24 días) + hoy</div>
+            <div class="ts-label">Eficiencia térmica diaria (últimos 24 días) + hoy</div>
             <canvas id="tsChart" width="560" height="190"></canvas>
           </div>
 
           <div class="gauge-wrap">
-            <div class="gauge-label">Desviación vs. consumo esperado</div>
+            <div class="gauge-label">Desviación vs. eficiencia esperada para este TDS</div>
             <div class="gauge-bar"><div class="gauge-mid"></div><div class="gauge-fill" id="gaugeFill"></div></div>
-            <div class="gauge-value"><b id="gaugeValue">0</b> kWh <span class="gauge-note">respecto a lo esperado para esta producción</span></div>
+            <div class="gauge-value"><b id="gaugeValue">0</b> pp <span class="gauge-note">respecto a lo esperado para este TDS</span></div>
           </div>
 
           <div class="cost-card">
-            <div class="cc-label">Sobrecosto mensual proyectado si se mantiene</div>
+            <div class="cc-label">Sobrecosto de combustible mensual proyectado si se mantiene</div>
             <div class="cc-value" id="costMonthly">S/. 0</div>
           </div>
 
-          <p class="sim-note">Simulación ilustrativa: la serie histórica y la tarifa (S/. 0.62/kWh) son de ejemplo — no provienen del medidor real de ninguna planta.</p>
+          <p class="sim-note">Simulación ilustrativa: la serie histórica, la relación TDS-eficiencia y el costo de combustible (S/. 340/día por punto porcentual de déficit) son de ejemplo — no provienen del panel de control real de ninguna caldera.</p>
         </div>
       </div>
 
@@ -433,7 +431,7 @@
           <div class="dataset-label">Vista del dataset histórico</div>
           <div class="dataset-scroll">
             <table class="dataset-table">
-              <thead><tr><th>Fecha</th><th>Producción (%)</th><th>Consumo (kWh)</th><th>Set</th></tr></thead>
+              <thead><tr><th>Fecha</th><th>TDS (ppm)</th><th>Eficiencia (%)</th><th>Set</th></tr></thead>
               <tbody id="datasetBody"></tbody>
             </table>
           </div>
@@ -457,7 +455,7 @@
     <h2>¿Qué significa para tu planta?</h2>
     <div class="business-grid">
       <div>
-        <p>Con la lectura actual, este desvío proyectado a un mes representa <span class="stat" id="bizCostInline">S/. 0</span> en sobrecosto energético. Detectarlo el mismo día que aparece — en vez de notarlo recién en la factura del mes — es la diferencia entre una corrección de 10 minutos y semanas de dinero perdido.</p>
+        <p>Con la lectura actual, este déficit de eficiencia proyectado a un mes representa <span class="stat" id="bizCostInline">S/. 0</span> en sobrecosto de combustible. Detectarlo el mismo día que aparece — en vez de notarlo recién en la próxima factura de gas o diésel — es la diferencia entre adelantar una purga o una limpieza química programada, y perder semanas quemando más combustible del necesario para el mismo vapor.</p>
         <div class="biz-action" id="bizAction">
           <div class="biz-title" id="bizTitle">Calculando…</div>
           <div class="biz-detail" id="bizDetail"></div>
@@ -472,7 +470,7 @@
 
   <section id="cta">
     <h2>De esta demo a tu planta</h2>
-    <p style="color:var(--muted); max-width:640px; margin-bottom:20px;">La serie histórica, la relación producción-consumo y la tarifa de este demo están calibrados sobre datos sintéticos para poder compartir esta demo abiertamente — la metodología es la misma que aplicamos en campo para auditar tu planilla eléctrica real. Llevarlo a tu planta implica estandarizar cómo capturas tus lecturas de medidor y producción, analizarlas, y calibrar el modelo de pronóstico con tu propio histórico — ahí es donde entra nuestro motor AutoML, ajustando el modelo correcto y evitando falsas alarmas o desvíos reales que pasen desapercibidos. Se adapta al rubro de tu planta —manufactura, minería, alimentos, textil— cuando la calibramos con tu histórico real. Si quieres recorrer ese proceso, conversemos.</p>
+    <p style="color:var(--muted); max-width:640px; margin-bottom:20px;">La serie histórica, la relación TDS-eficiencia y el costo de combustible de este demo están calibrados sobre datos sintéticos para poder compartir esta demo abiertamente — la metodología es la misma que aplicamos en campo para auditar la eficiencia térmica real de tu sala de calderas. Llevarlo a tu planta implica estandarizar cómo capturas tus lecturas de TDS, purga, temperatura de chimenea y consumo de combustible, analizarlas, y calibrar el modelo de pronóstico con tu propio histórico — ahí es donde entra nuestro motor AutoML, ajustando el modelo correcto y evitando falsas alarmas o desvíos reales que pasen desapercibidos. Se adapta al tipo de caldera y combustible de tu planta —pirotubular, acuotubular, gas, diésel, biomasa— cuando la calibramos con tu histórico real. Si quieres recorrer ese proceso, conversemos.</p>
     <div class="cta-row">
       <a class="btn primary" href="https://chat.whatsapp.com/GvBz1tuUeNZ0xwTkjsuE3z" target="_blank" rel="noopener">Unirme a la comunidad de WhatsApp</a>
       <a class="btn ghost" href="https://www.linkedin.com/company/reliabilit-ia/" target="_blank" rel="noopener">Seguir en LinkedIn</a>
@@ -481,11 +479,11 @@
 
     <div class="contact-card">
       <div>
-        <h3>¿Hablamos de tu consumo energético?</h3>
-        <p>Si tienes datos de medidor y producción y quieres validar este análisis con tu planta, escríbeme directamente.</p>
+        <h3>¿Hablamos de la eficiencia de tu caldera?</h3>
+        <p>Si tienes datos de TDS, purga o consumo de combustible y quieres validar este análisis con tu planta, escríbeme directamente.</p>
       </div>
       <div class="contact-links">
-        <a class="contact-row" href="https://wa.me/51997610310?text=Hola%20Miguel%2C%20vi%20el%20demo%20Pulso%20Energetico%20y%20quiero%20conversar%20sobre%20la%20calibracion%20para%20mi%20planta" target="_blank" rel="noopener">
+        <a class="contact-row" href="https://wa.me/51997610310?text=Hola%20Miguel%2C%20vi%20el%20demo%20Pulso%20de%20la%20Caldera%20y%20quiero%20conversar%20sobre%20la%20calibracion%20para%20mi%20planta" target="_blank" rel="noopener">
           <span class="contact-icon">💬</span>
           <span class="contact-text"><b>WhatsApp</b>+51 997 610 310</span>
         </a>
@@ -504,14 +502,14 @@
   <section class="related-section">
     <div class="share-row">
       <span style="font-size:13px; color:var(--muted); align-self:center;">Compartir esta demo:</span>
-      <a class="share-btn" href="https://wa.me/?text=Mira%20esta%20demo%20de%20Pulso%20Energ%C3%A9tico%20%E2%80%94%20mantenimiento%20predictivo%20con%20IA%2C%20en%20vivo%3A%20https%3A//angel19968.github.io/reliabilit-ia/modelos/pulso-energetico/" target="_blank" rel="noopener">💬 WhatsApp</a>
-      <a class="share-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A//angel19968.github.io/reliabilit-ia/modelos/pulso-energetico/" target="_blank" rel="noopener">in LinkedIn</a>
+      <a class="share-btn" href="https://wa.me/?text=Mira%20esta%20demo%20de%20Pulso%20de%20la%20Caldera%20%E2%80%94%20mantenimiento%20predictivo%20con%20IA%2C%20en%20vivo%3A%20https%3A//angel19968.github.io/reliabilit-ia/modelos/pulso-de-la-caldera/" target="_blank" rel="noopener">💬 WhatsApp</a>
+      <a class="share-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A//angel19968.github.io/reliabilit-ia/modelos/pulso-de-la-caldera/" target="_blank" rel="noopener">in LinkedIn</a>
     </div>
     <h2 style="margin-top:32px;">Otros modelos que te pueden interesar</h2>
     <div class="related-grid">
-      <a class="related-card" href="../memoria-del-motor/"><span class="rc-icon">🔧</span><span class="rc-name">Memoria del Motor</span></a>
-      <a class="related-card" href="../mapa-de-anomalias/"><span class="rc-icon">📡</span><span class="rc-name">Mapa de Anomalías</span></a>
+      <a class="related-card" href="../pulso-energetico/"><span class="rc-icon">⚡</span><span class="rc-name">Pulso Energético</span></a>
       <a class="related-card" href="../transformadores-dga/"><span class="rc-icon">🔌</span><span class="rc-name">Transformadores (DGA)</span></a>
+      <a class="related-card" href="../detector-anomalias-compresor/"><span class="rc-icon">🌀</span><span class="rc-name">Detector de Anomalías del Compresor</span></a>
     </div>
   </section>
 
@@ -523,13 +521,13 @@
       <a href="https://www.linkedin.com/in/miguelcayllahua/" target="_blank" rel="noopener">LinkedIn personal</a>
       <a href="mailto:miguelcquispe@gmail.com">Correo</a>
     </div>
-    <p style="">La metodología es la misma que aplicamos en proyectos reales; los datos y la simulación de esta demo son sintéticos para poder compartirlos públicamente. Se calibra con tu propio histórico de consumo —sin importar el rubro de tu planta— cuando trabajamos juntos. Los parámetros de este demo son de referencia — se recalibran a la medida de cada equipo cuando trabajamos con tus datos.</p>
+    <p style="">La metodología es la misma que aplicamos en proyectos reales; los datos y la simulación de esta demo son sintéticos para poder compartirlos públicamente. Se calibra con tu propio histórico de TDS, purga y consumo de combustible —sin importar el tipo de caldera— cuando trabajamos juntos. Los parámetros de este demo son de referencia — se recalibran a la medida de cada equipo cuando trabajamos con tus datos.</p>
   </footer>
 </div>
 
 <script>
 /* =========================================================
-   Datos sintéticos base: 24 días de producción y consumo
+   Datos sintéticos base: 24 días de TDS y eficiencia térmica
    ========================================================= */
 function seededRandom(seed){
   let s = seed;
@@ -538,9 +536,10 @@ function seededRandom(seed){
     return s/233280;
   };
 }
-function baseConsumption(prod){
-  // relación de ejemplo: carga base de planta (320 kWh) + consumo proporcional a producción
-  return 320 + 4.2*prod;
+function baseEfficiency(tds){
+  // relación de ejemplo: 88% de diseño, con control de TDS hasta 800 ppm;
+  // sobre ese punto, cada 100 ppm extra cuesta ~0.25 pp de eficiencia por incrustación.
+  return 88 - 0.0025*Math.max(0, tds-800);
 }
 
 // Fechas reales: esta es una serie de tiempo consecutiva, así que cada día
@@ -551,33 +550,36 @@ const MESES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov'
 function fmtDate(d){ return String(d.getDate()).padStart(2,'0')+' '+MESES[d.getMonth()]+' '+d.getFullYear(); }
 function dateForDay(i, total){ const d = new Date(REF_DATE); d.setDate(d.getDate()-(total-i)); return d; }
 
-const rnd = seededRandom(7);
+const rnd = seededRandom(11);
 const N_HIST = 24;
-const production = [];
-const consumption = [];
+const tds = [];
+const eff = [];
+let tdsLevel = 850;
 for(let i=0;i<N_HIST;i++){
-  const wd = i%7;
-  const weekend = (wd===5 || wd===6);
-  const prod = weekend ? 30+rnd()*15 : 55+rnd()*35;
-  const noise = (rnd()-0.5)*70;
-  const cons = Math.max(150, baseConsumption(prod)+noise);
-  production.push(prod);
-  consumption.push(cons);
+  // tendencia de fondo: el TDS promedio sube poco a poco al acercarse la fecha
+  // de limpieza química, con variación operativa día a día (purgas parciales).
+  const trend = i*55;
+  const wobble = (rnd()-0.5)*220;
+  tdsLevel = Math.max(650, 850+trend+wobble);
+  const noise = (rnd()-0.5)*4.0;
+  const e = Math.max(60, Math.min(90, baseEfficiency(tdsLevel)+noise));
+  tds.push(tdsLevel);
+  eff.push(e);
 }
 // Desviación estándar de los residuos reales vs. la relación esperada —
 // de aquí sale la banda de confianza, no de un número inventado.
-const residuals0 = consumption.map((c,i)=> c - baseConsumption(production[i]));
+const residuals0 = eff.map((e,i)=> e - baseEfficiency(tds[i]));
 const stdResidual = Math.sqrt(residuals0.reduce((a,r)=>a+r*r,0)/residuals0.length);
 const BAND = 1.6*stdResidual;
-const TARIFA = 0.62; // soles/kWh, ilustrativo
+const FUEL_COST_PER_PP = 340; // soles/día por punto porcentual de déficit de eficiencia, ilustrativo
 
 /* =========================================================
    MODO BÁSICO
    ========================================================= */
-const prodSlider = document.getElementById('prodSlider');
-const consSlider = document.getElementById('consSlider');
-const prodVal = document.getElementById('prodVal');
-const consVal = document.getElementById('consVal');
+const tdsSlider = document.getElementById('tdsSlider');
+const effSlider = document.getElementById('effSlider');
+const tdsVal = document.getElementById('tdsVal');
+const effVal = document.getElementById('effVal');
 const riskDot = document.getElementById('riskDot');
 const riskTitle = document.getElementById('riskTitle');
 const riskDetail = document.getElementById('riskDetail');
@@ -642,30 +644,30 @@ function drawProjection(dailyExtraCost, colorCss){
   pctx.fillText(fmtSoles(dailyExtraCost*days), Math.max(padL, x1-70), y1-10);
 }
 
-function drawTsChart(todayCons, todayProd, status){
+function drawTsChart(todayEff, todayTds, status){
   const W = tsCanvas.width, H = tsCanvas.height;
   tctx.clearRect(0,0,W,H);
   const padL = 40, padR = 16, padT = 14, padB = 22;
   const totalDays = N_HIST+1;
-  const allVals = consumption.concat([todayCons]);
-  const yMin = Math.min(...allVals)*0.9, yMax = Math.max(...allVals)*1.08;
+  const allVals = eff.concat([todayEff]);
+  const yMin = Math.min(...allVals)*0.94, yMax = Math.max(...allVals)*1.03;
   function toPx(i,v){
     return [
       padL + i/(totalDays-1)*(W-padL-padR),
       H-padB - (v-yMin)/(yMax-yMin)*(H-padT-padB)
     ];
   }
-  // expected band across history + today
+  // banda esperada a lo largo del histórico + hoy
   tctx.beginPath();
   const bandPts = [];
   for(let i=0;i<N_HIST;i++){
-    const exp = baseConsumption(production[i]);
+    const exp = baseEfficiency(tds[i]);
     bandPts.push([i, exp+BAND]);
   }
-  bandPts.push([N_HIST, baseConsumption(todayProd)+BAND]);
+  bandPts.push([N_HIST, baseEfficiency(todayTds)+BAND]);
   bandPts.forEach((p,idx)=>{ const [x,y]=toPx(p[0],p[1]); if(idx===0) tctx.moveTo(x,y); else tctx.lineTo(x,y); });
   for(let i=N_HIST;i>=0;i--){
-    const exp = i<N_HIST ? baseConsumption(production[i]) : baseConsumption(todayProd);
+    const exp = i<N_HIST ? baseEfficiency(tds[i]) : baseEfficiency(todayTds);
     const [x,y] = toPx(i, exp-BAND);
     tctx.lineTo(x,y);
   }
@@ -673,18 +675,18 @@ function drawTsChart(todayCons, todayProd, status){
   tctx.fillStyle = 'rgba(62,207,160,0.08)';
   tctx.fill();
 
-  // historical line
+  // línea histórica
   tctx.strokeStyle = '#7b5ea7';
   tctx.lineWidth = 1.8;
   tctx.beginPath();
-  consumption.forEach((c,i)=>{ const [x,y]=toPx(i,c); if(i===0) tctx.moveTo(x,y); else tctx.lineTo(x,y); });
+  eff.forEach((e,i)=>{ const [x,y]=toPx(i,e); if(i===0) tctx.moveTo(x,y); else tctx.lineTo(x,y); });
   tctx.stroke();
   tctx.fillStyle = '#7b5ea7';
-  consumption.forEach((c,i)=>{ const [x,y]=toPx(i,c); tctx.beginPath(); tctx.arc(x,y,2,0,Math.PI*2); tctx.fill(); });
+  eff.forEach((e,i)=>{ const [x,y]=toPx(i,e); tctx.beginPath(); tctx.arc(x,y,2,0,Math.PI*2); tctx.fill(); });
 
-  // today marker
-  const [tx,ty] = toPx(N_HIST, todayCons);
-  const [lx,ly] = toPx(N_HIST-1, consumption[N_HIST-1]);
+  // marcador de hoy
+  const [tx,ty] = toPx(N_HIST, todayEff);
+  const [lx,ly] = toPx(N_HIST-1, eff[N_HIST-1]);
   tctx.strokeStyle = status.color;
   tctx.lineWidth = 2;
   tctx.beginPath(); tctx.moveTo(lx,ly); tctx.lineTo(tx,ty); tctx.stroke();
@@ -696,35 +698,35 @@ function drawTsChart(todayCons, todayProd, status){
 
   tctx.fillStyle = '#8a8a98';
   tctx.font = '11px DM Mono, monospace';
-  tctx.fillText('kWh/día · zona verde = rango esperado', padL, 12);
+  tctx.fillText('% eficiencia · zona verde = rango esperado', padL, 12);
 }
 
 function updateBasic(){
-  const prod = parseFloat(prodSlider.value);
-  const cons = parseFloat(consSlider.value);
-  prodVal.textContent = prod.toFixed(0) + ' %';
-  consVal.textContent = cons.toFixed(0) + ' kWh';
+  const t = parseFloat(tdsSlider.value);
+  const e = parseFloat(effSlider.value);
+  tdsVal.textContent = t.toFixed(0) + ' ppm';
+  effVal.textContent = e.toFixed(1) + ' %';
 
-  const expected = baseConsumption(prod);
-  const deviation = cons - expected;
+  const expected = baseEfficiency(t);
+  const deviation = e - expected; // negativo = peor de lo esperado
   const absDev = Math.abs(deviation);
 
   let color, title, detail, simple;
   if(absDev <= BAND){
     color = 'var(--success)';
-    title = 'Consumo normal';
-    detail = 'El gasto de hoy está dentro del rango esperado para este nivel de producción.';
-    simple = 'todo normal, no hay nada que revisar.';
+    title = 'Envejecimiento normal';
+    detail = 'La eficiencia de hoy está dentro del rango esperado para este nivel de TDS.';
+    simple = 'todo normal, la caldera envejece como se espera.';
   } else if(absDev <= BAND*2){
     color = '#e8c547';
     title = 'Desvío moderado';
-    detail = deviation>0 ? 'Se consume más de lo esperado. Vale la pena revisar en la próxima ronda.' : 'Se consume menos de lo esperado — probablemente algo positivo, pero confirma que no sea un sensor fallando.';
-    simple = deviation>0 ? 'revisa el consumo en tu próxima ronda.' : 'confirma que el medidor esté funcionando bien.';
+    detail = deviation<0 ? 'La eficiencia cae más rápido de lo esperado para este TDS. Vale la pena revisar la purga en la próxima ronda.' : 'Eficiencia mejor de lo esperado para este TDS — probablemente una purga reciente; confirma que el sensor esté bien calibrado.';
+    simple = deviation<0 ? 'revisa la purga en tu próxima ronda.' : 'confirma que el sensor de eficiencia esté bien calibrado.';
   } else {
     color = 'var(--cta)';
     title = 'Desvío alto — revisar hoy';
-    detail = deviation>0 ? 'Consumo muy por encima de lo esperado: posible fuga de aire, motor mal apagado o equipo funcionando fuera de horario.' : 'Consumo muy por debajo de lo esperado para esta producción — confirma que el medidor y la producción reportada sean correctos.';
-    simple = deviation>0 ? 'revisa hoy: puede haber una fuga o un equipo mal apagado.' : 'revisa hoy el medidor, el dato no cuadra.';
+    detail = deviation<0 ? 'Caída de eficiencia muy por encima de lo que explica el TDS: posible incrustación acelerada, fuga de vapor o purga mal calibrada. Programa una limpieza química si persiste.' : 'Eficiencia muy por encima de lo esperado para este TDS — confirma que la lectura del sensor sea correcta.';
+    simple = deviation<0 ? 'revisa hoy: puede haber incrustación acelerada o una fuga de vapor.' : 'revisa hoy el sensor, el dato no cuadra.';
   }
   riskDot.style.background = color;
   riskTitle.style.color = color;
@@ -733,15 +735,15 @@ function updateBasic(){
   const simpleEl = document.getElementById('simpleSummary');
   if(simpleEl) simpleEl.textContent = '💬 En palabras simples: ' + simple;
 
-  const dailyExtraCost = Math.max(0, deviation) * TARIFA;
-  costLine.textContent = deviation>0
+  const dailyExtraCost = Math.max(0, -deviation) * FUEL_COST_PER_PP;
+  costLine.textContent = deviation<0
     ? ('Sobrecosto de hoy: ' + fmtSoles(dailyExtraCost))
-    : 'Sin sobrecosto — consumo igual o menor al esperado.';
+    : 'Sin sobrecosto — eficiencia igual o mejor que la esperada.';
 
   const pct = Math.min(100, Math.max(0, 50 + (deviation/(BAND*2.5))*50));
   gaugeFill.style.width = pct.toFixed(1) + '%';
   gaugeFill.style.background = color;
-  gaugeValue.textContent = (deviation>=0?'+':'') + Math.round(deviation);
+  gaugeValue.textContent = (deviation>=0?'+':'') + deviation.toFixed(1);
 
   const monthly = dailyExtraCost*30;
   costMonthlyEl.textContent = fmtSoles(monthly);
@@ -753,10 +755,10 @@ function updateBasic(){
   bizDetail.textContent = detail;
 
   drawProjection(dailyExtraCost, color);
-  drawTsChart(cons, prod, {color: color.startsWith('var(') ? getComputedStyle(document.documentElement).getPropertyValue(color.slice(4,-1)).trim() : color});
+  drawTsChart(e, t, {color: color.startsWith('var(') ? getComputedStyle(document.documentElement).getPropertyValue(color.slice(4,-1)).trim() : color});
 }
-prodSlider.addEventListener('input', updateBasic);
-consSlider.addEventListener('input', updateBasic);
+tdsSlider.addEventListener('input', updateBasic);
+effSlider.addEventListener('input', updateBasic);
 updateBasic();
 
 /* =========================================================
@@ -767,8 +769,8 @@ function forecastSeries(window){
   const preds = [];
   for(let i=window;i<N_HIST;i++){
     let sum=0;
-    for(let k=1;k<=window;k++) sum += consumption[i-k];
-    preds.push({i, actual: consumption[i], pred: sum/window});
+    for(let k=1;k<=window;k++) sum += eff[i-k];
+    preds.push({i, actual: eff[i], pred: sum/window});
   }
   return preds;
 }
@@ -779,10 +781,10 @@ function renderDatasetPreview(){
   const tbody = document.getElementById('datasetBody');
   const note = document.getElementById('datasetNote');
   if(!tbody) return;
-  tbody.innerHTML = production.map((p,i)=>{
+  tbody.innerHTML = tds.map((t,i)=>{
     const isTrain = i < TRAIN_END;
     const date = dateForDay(i, N_HIST);
-    return `<tr><td>${fmtDate(date)}</td><td>${p.toFixed(1)}%</td><td>${consumption[i].toFixed(0)} kWh</td><td class="${isTrain?'set-train':'set-test'}">${isTrain?'Entrenamiento':'Prueba'}</td></tr>`;
+    return `<tr><td>${fmtDate(date)}</td><td>${t.toFixed(0)}</td><td>${eff[i].toFixed(1)}%</td><td class="${isTrain?'set-train':'set-test'}">${isTrain?'Entrenamiento':'Prueba'}</td></tr>`;
   }).join('');
   const firstDate = dateForDay(0, N_HIST), lastDate = dateForDay(N_HIST-1, N_HIST);
   note.textContent = `${N_HIST} días históricos (${fmtDate(firstDate)} — ${fmtDate(lastDate)}) — ${TRAIN_END} de entrenamiento, ${N_HIST-TRAIN_END} de prueba. "Hoy" en esta simulación es ${fmtDate(REF_DATE)}.`;
@@ -805,8 +807,6 @@ const cctx = chartCanvas.getContext('2d');
 const residualCanvas = document.getElementById('residuals');
 const rctx = residualCanvas.getContext('2d');
 let currentWindow = 5;
-let animFrame = null;
-let displayPreds = null;
 
 function toPxChart(i, v, W, H, pad, yMin, yMax){
   return [
@@ -819,7 +819,7 @@ function drawMainChart(preds){
   const W = chartCanvas.width, H = chartCanvas.height;
   const pad = 40;
   cctx.clearRect(0,0,W,H);
-  const yMin = Math.min(...consumption)*0.9, yMax = Math.max(...consumption)*1.08;
+  const yMin = Math.min(...eff)*0.94, yMax = Math.max(...eff)*1.03;
 
   cctx.strokeStyle = '#22222c';
   cctx.lineWidth = 1;
@@ -832,20 +832,20 @@ function drawMainChart(preds){
   cctx.save();
   cctx.translate(16, H/2+50);
   cctx.rotate(-Math.PI/2);
-  cctx.fillText('consumo (kWh)', 0, 0);
+  cctx.fillText('eficiencia (%)', 0, 0);
   cctx.restore();
 
-  // actual consumption line (all 24 days)
+  // línea de eficiencia real (24 días completos)
   cctx.strokeStyle = '#3ecfa0';
   cctx.lineWidth = 2;
   cctx.beginPath();
-  consumption.forEach((c,i)=>{
-    const [x,y] = toPxChart(i,c,W,H,pad,yMin,yMax);
+  eff.forEach((e,i)=>{
+    const [x,y] = toPxChart(i,e,W,H,pad,yMin,yMax);
     if(i===0) cctx.moveTo(x,y); else cctx.lineTo(x,y);
   });
   cctx.stroke();
 
-  // forecast points: train (violeta) vs test (blanco)
+  // puntos de pronóstico: entrenamiento (violeta) vs prueba (blanco)
   preds.forEach(p=>{
     const [x,y] = toPxChart(p.i, p.pred, W,H,pad,yMin,yMax);
     const isTrain = p.i < TRAIN_END;
@@ -865,24 +865,24 @@ function drawMainChart(preds){
 
   cctx.fillStyle = '#a8a8b4';
   cctx.font = '12px DM Mono, monospace';
-  cctx.fillText('línea verde = consumo real · ● pronóstico entrenamiento · ○ pronóstico prueba', pad, pad-16);
+  cctx.fillText('línea verde = eficiencia real · ● pronóstico entrenamiento · ○ pronóstico prueba', pad, pad-16);
 }
 
 function drawResiduals(preds){
   const W = residualCanvas.width, H = residualCanvas.height;
   rctx.clearRect(0,0,W,H);
   const padL = 56, padR = 20, padT = 30, padB = 34;
-  const maxErrPct = 30;
+  const maxErrPct = 6;
   function toPxX(i){ return padL + i/(N_HIST-1)*(W-padL-padR); }
   const midY = padT + (H-padT-padB)/2;
   const halfH = (H-padT-padB)/2 - 6;
 
   rctx.fillStyle = '#c9c9d4';
   rctx.font = '14px DM Mono, monospace';
-  rctx.fillText('Error de pronóstico por día (% del consumo real)', padL, 18);
+  rctx.fillText('Error de pronóstico por día (% de la eficiencia real)', padL, 18);
 
   rctx.font = '12px DM Mono, monospace';
-  [-30,-15,0,15,30].forEach(v=>{
+  [-6,-3,0,3,6].forEach(v=>{
     const y = midY - (v/maxErrPct)*halfH;
     rctx.strokeStyle = v===0 ? '#3a3a48' : '#1a1a22';
     rctx.lineWidth = 1;
@@ -913,18 +913,18 @@ function setWindow(w){
   const mapeTest = mape(test);
 
   document.getElementById('mWindow').textContent = w;
-  document.getElementById('mMapeTrain').textContent = mapeTrain.toFixed(1);
-  document.getElementById('mMapeTest').textContent = mapeTest.toFixed(1);
+  document.getElementById('mMapeTrain').textContent = mapeTrain.toFixed(2);
+  document.getElementById('mMapeTest').textContent = mapeTest.toFixed(2);
 
   const badge = document.getElementById('mFitBadge');
   if(w <= 3){
-    badge.textContent = '⚠ Ventana muy corta — reacciona a cada variación normal como si fuera una tendencia (ruidoso).';
+    badge.textContent = '⚠ Ventana muy corta — reacciona a cada variación normal de purga como si fuera una tendencia (ruidoso).';
     badge.style.color = 'var(--cta)';
   } else if(w >= 12){
-    badge.textContent = '⚠ Ventana muy larga — diluye el patrón semanal real y reacciona tarde a cambios genuinos.';
+    badge.textContent = '⚠ Ventana muy larga — diluye la tendencia de incrustación real y reacciona tarde a un desvío genuino.';
     badge.style.color = '#e8c547';
-  } else if(mapeTest < 12){
-    badge.textContent = '✓ Buen equilibrio — captura el patrón semanal sin perseguir el ruido diario.';
+  } else if(mapeTest < 1.3){
+    badge.textContent = '✓ Buen equilibrio — sigue la tendencia de incrustación sin perseguir el ruido diario de TDS.';
     badge.style.color = 'var(--success)';
   } else {
     badge.textContent = 'Ajuste aceptable, pero revisa otras ventanas para comparar el error de prueba.';
@@ -956,19 +956,17 @@ analystToggle.addEventListener('change', ()=>{
 });
 </script>
 
-
 <style>
   .glossary-term{border-bottom:1px dotted var(--muted); cursor:help;}
 </style>
 <script>
 (function(){
   var GLOSSARY = [
-    {term:'MCSA', def:'Análisis de firma de corriente del motor (Motor Current Signature Analysis): detecta fallas mecánicas y eléctricas midiendo variaciones en la corriente, sin abrir el equipo.'},
-    {term:'RMS', def:'Valor cuadrático medio (Root Mean Square): resume la energía de una señal de vibración en un solo número comparable.'},
-    {term:'dB', def:'Decibel: unidad logarítmica de intensidad sonora — cada +10 dB representa aprox. 10 veces más energía acústica.'},
-    {term:'ΔT', def:'Delta T: diferencia de temperatura entre dos puntos de medición.'},
-    {term:'deslizamiento', def:'Slip: diferencia entre la velocidad del campo magnético del motor y la velocidad real del rotor; crece con más carga o daño mecánico.'},
-    {term:'R²', def:'Coeficiente de determinación: qué tan bien el modelo explica la variación de los datos reales (1.0 = ajuste perfecto).'}
+    {term:'TDS', def:'Sólidos disueltos totales (Total Dissolved Solids): mide en ppm la concentración de minerales disueltos en el agua de caldera; en exceso, forman incrustación sobre las superficies de intercambio de calor.'},
+    {term:'ppm', def:'Partes por millón: unidad de concentración — 1 ppm equivale a 1 mg de soluto por litro de agua, aproximadamente.'},
+    {term:'purga', def:'Blowdown: extracción controlada de agua de la caldera para mantener el TDS dentro de un rango seguro y evitar arrastre o incrustación.'},
+    {term:'incrustación', def:'Scale: depósito mineral que se forma sobre las superficies de intercambio de calor cuando el TDS no se controla bien, reduciendo la transferencia de calor y la eficiencia.'},
+    {term:'MAPE', def:'Error porcentual absoluto medio (Mean Absolute Percentage Error): mide qué tan lejos está, en promedio, el pronóstico del valor real, como porcentaje.'}
   ];
   var SKIP_TAGS = {SCRIPT:1, STYLE:1, SELECT:1, OPTION:1, TITLE:1};
   var wrapped = {};
