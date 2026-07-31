@@ -119,6 +119,7 @@
   .card[data-sector="sensores"] .tag::before{content:"📡";}
   .card[data-sector="termografia"] .tag::before{content:"🌡️";}
   .card[data-sector="correas"] .tag::before{content:"🎢";}
+  .card[data-sector="transformadores"] .tag::before{content:"🔌";}
   .card h3{font-size:20px; margin:10px 0 8px;}
   .card p{
     font-size:14px; color:var(--muted);
@@ -268,6 +269,7 @@
         <button class="chip" data-value="vibracion">Vibración</button>
         <button class="chip" data-value="termografia">Termografía</button>
         <button class="chip" data-value="correas">Correas transportadoras</button>
+        <button class="chip" data-value="transformadores">Transformadores</button>
       </div>
       <button class="filter-reset" id="filterReset">Limpiar filtros</button>
     </div>
@@ -374,6 +376,12 @@
         <div class="tag">Series de tiempo · Motor</div>
         <h3>Memoria del Motor</h3>
         <p>Una LSTM entrenada desde cero compara contra un modelo sin memoria para detectar cuándo una subida reciente es más urgente que el mismo valor alcanzado gradualmente.</p>
+        <span class="status">● Disponible</span>
+      </a>
+      <a class="card" data-paradigm="clasificacion" data-sector="transformadores" href="./modelos/transformadores-dga/">
+        <div class="tag">Clasificación · Transformadores</div>
+        <h3>Transformadores (DGA)</h3>
+        <p>Clasifica el tipo de falla de un transformador en las 7 zonas del Triángulo de Duval a partir del análisis de gases disueltos.</p>
         <span class="status">● Disponible</span>
       </a>
     </div>

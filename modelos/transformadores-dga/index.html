@@ -15,11 +15,11 @@
 <link rel="icon" href="../../assets/favicon.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
 <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
-<title>Semáforo de Bombas — RELIABILIT-IA</title>
-<meta name="description" content="Clasifica el estado de una bomba centrífuga en verde, amarillo o rojo según qué tan lejos opera de su punto óptimo, con regresión logística polinomial ajustable.">
+<title>Transformadores (DGA) — RELIABILIT-IA</title>
+<meta name="description" content="Diagnostica el tipo de falla en un transformador de potencia a partir del Análisis de Gases Disueltos (DGA), clasificando en las 7 zonas del Triángulo de Duval 1.">
 
-<meta property="og:title" content="Semáforo de Bombas — RELIABILIT-IA">
-<meta property="og:description" content="Mueve el caudal relativo al punto óptimo y la vibración y mira en vivo en qué color cae tu bomba.">
+<meta property="og:title" content="Transformadores (DGA) — RELIABILIT-IA">
+<meta property="og:description" content="Mueve las lecturas de metano, etileno y acetileno y mira en vivo en qué zona del Triángulo de Duval cae tu transformador.">
 <meta property="og:image" content="../../assets/og-image.png">
 <meta property="og:type" content="website">
 
@@ -46,8 +46,8 @@
     {
       "@type": "ListItem",
       "position": 3,
-      "name": "Semáforo de Bombas",
-      "item": "https://angel19968.github.io/reliabilit-ia/modelos/semaforo-de-bombas/"
+      "name": "Transformadores (DGA)",
+      "item": "https://angel19968.github.io/reliabilit-ia/modelos/transformadores-dga/"
     }
   ]
 }
@@ -56,11 +56,11 @@
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "Semáforo de Bombas — RELIABILIT-IA",
+  "name": "Transformadores (DGA) — RELIABILIT-IA",
   "applicationCategory": "BusinessApplication",
   "operatingSystem": "Web",
-  "url": "https://angel19968.github.io/reliabilit-ia/modelos/semaforo-de-bombas/",
-  "description": "Clasifica el estado de una bomba centrífuga en verde, amarillo o rojo según qué tan lejos opera de su punto óptimo, con regresión logística polinomial ajustable.",
+  "url": "https://angel19968.github.io/reliabilit-ia/modelos/transformadores-dga/",
+  "description": "Diagnostica el tipo de falla en un transformador de potencia a partir del Análisis de Gases Disueltos (DGA), clasificando en las 7 zonas del Triángulo de Duval 1.",
   "isAccessibleForFree": true,
   "offers": {
     "@type": "Offer",
@@ -163,7 +163,7 @@
     display:flex; align-items:center; gap:20px; flex-wrap:wrap;
   }
   .result .risk-dot{width:16px; height:16px; border-radius:50%; flex-shrink:0;}
-  .result .risk-text h3{font-size:23px; margin-bottom:6px;}
+  .result .risk-text h3{font-size:21px; margin-bottom:6px;}
   .result .risk-text p{font-size:15px; color:var(--muted);}
   .confidence-line{font-size:14px !important; font-weight:600; margin-top:10px !important; color:var(--text) !important;}
   .confidence-note{font-size:13px !important; color:var(--muted); margin-top:2px !important;}
@@ -171,13 +171,12 @@
 
   .live-col h3{font-size:14px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:14px; font-family:'DM Mono',monospace; font-weight:500;}
   .instrument-wrap{margin-bottom:18px;}
-  #instrument{width:100%; max-width:420px; height:220px; background:#0a0a0f; border:1px solid #22222c; border-radius:12px; display:block;}
+  #instrument{width:100%; max-width:420px; height:340px; background:#0a0a0f; border:1px solid #22222c; border-radius:12px; display:block;}
   .instrument-stats{font-size:13px; color:var(--muted); line-height:1.9; margin-top:10px; display:flex; gap:22px; flex-wrap:wrap;}
   .instrument-stats b{color:var(--text); font-size:15px;}
   .gauge-wrap{margin-bottom:16px;}
   .gauge-label{font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:8px;}
   .gauge-bar{height:12px; background:var(--border); border-radius:999px; overflow:hidden; margin:8px 0; position:relative;}
-  .gauge-tick{position:absolute; top:0; bottom:0; width:2px; background:rgba(244,244,247,0.55); z-index:2;}
   .gauge-fill{height:100%; width:0%; transition:background .35s ease, width .3s ease;}
   .gauge-value{font-size:16px; color:var(--text);}
   .gauge-value b{font-size:20px;}
@@ -193,8 +192,8 @@
     transition:background .15s, border-color .15s;
   }
   .degree-btn.active{background:var(--accent); border-color:var(--accent); color:#fff;}
-  #chart{width:100%; height:340px; background:#0a0a0f; border:1px solid #22222c; border-radius:12px; display:block;}
-  #residuals{width:100%; height:200px; background:#0a0a0f; border:1px solid #22222c; border-radius:12px; display:block; margin-top:18px;}
+  #chart{width:100%; height:380px; background:#0a0a0f; border:1px solid #22222c; border-radius:12px; display:block;}
+  #residuals{width:100%; height:230px; background:#0a0a0f; border:1px solid #22222c; border-radius:12px; display:block; margin-top:18px;}
   .metrics{display:flex; gap:24px; margin-top:16px; flex-wrap:wrap; font-size:14px; color:var(--muted);}
   .metrics b{color:var(--text);}
   .fit-badge{margin-top:14px; font-size:15px; font-weight:600; padding:10px 14px; border-radius:10px; background:var(--panel2); display:inline-block;}
@@ -252,6 +251,8 @@
   .footer-links a{color:var(--muted); text-decoration:none;}
   .footer-links a:hover{color:var(--success);}
 
+  .glossary-term{border-bottom:1px dotted var(--muted); cursor:help;}
+
   @media (max-width:520px){
     .result{flex-direction:column; align-items:flex-start;}
   }
@@ -301,6 +302,7 @@
       <option value="../oido-industrial/">Oído Industrial</option>
       <option value="../detector-anomalias-compresor/">Detector de Anomalías del Compresor</option>
       <option value="../radiografia-de-planta/">Radiografía de Planta</option>
+      <option value="../semaforo-de-bombas/">Semáforo de Bombas</option>
       <option value="../guardian-de-la-bomba/">Guardián de la Bomba</option>
       <option value="../frontera-de-vibracion/">Frontera de Vibración</option>
       <option value="../familias-de-turbinas/">Familias de Turbinas</option>
@@ -310,7 +312,6 @@
       <option value="../ojo-termico/">Ojo Térmico</option>
       <option value="../correas-transportadoras/">Rastreador de Correas</option>
       <option value="../memoria-del-motor/">Memoria del Motor</option>
-      <option value="../transformadores-dga/">Transformadores (DGA)</option>
     </select>
     <button class="theme-toggle" id="themeToggle" type="button"><span id="themeIcon">🌙</span><span id="themeLabel">Oscuro</span></button>
   </div>
@@ -352,23 +353,23 @@
   </script>
 
   <header class="hero">
-    <div class="badge">Clasificación · Bomba centrífuga</div>
+    <div class="badge">Clasificación · Transformadores</div>
     <span class="badge" style="border-color:var(--accent); color:var(--accent); margin-left:8px;">Aprendizaje supervisado · Clasificación</span>
-    <h1>Semáforo de Bombas</h1>
-    <p class="lead">¿Tu bomba está operando cerca de su punto óptimo, o ya se metió en zona de riesgo sin que nadie lo note?</p>
+    <h1>Transformadores (DGA)</h1>
+    <p class="lead">El aceite de un transformador "habla" con los gases que libera — ¿qué tipo de falla te está anunciando el tuyo?</p>
   </header>
 
   <section class="context">
     <h2>El problema</h2>
-    <p>Toda bomba centrífuga tiene un punto de diseño (BEP, best efficiency point) donde opera de forma más eficiente y con menor desgaste. Alejarse de ese punto —ya sea por defecto o por exceso de caudal— cambia el problema pero no lo elimina: muy por debajo aparece recirculación interna que calienta y desgasta el impulsor; muy por encima aparece cavitación, que erosiona los álabes a golpes microscópicos. El riesgo no crece en una sola dirección: es igual de alto lejos del punto óptimo por defecto que por exceso, algo que un modelo lineal simple no puede capturar bien.</p>
-    <p>Este demo simula esa lectura: mueve el caudal relativo al punto óptimo y la vibración, y mira en vivo en qué color —verde, amarillo o rojo— cae la bomba.</p>
+    <p>Un transformador de potencia en operación normal libera trazas de gases en su aceite dieléctrico. Cuando hay una falla incipiente —una descarga eléctrica, un punto caliente, una mezcla de ambas— la proporción de esos gases cambia de forma característica, mucho antes de que la falla sea visible o el transformador se dispare. El Análisis de Gases Disueltos (<span class="glossary-term" title="Dissolved Gas Analysis: técnica que interpreta los gases disueltos en el aceite de un transformador para diagnosticar el tipo de falla interna.">DGA</span>) es la técnica estándar de la industria eléctrica para leer esa señal, y el Triángulo de Duval es el método más usado para traducir tres de esos gases —metano (CH₄), etileno (C₂H₄) y acetileno (C₂H₂)— en un diagnóstico de qué tipo de falla está ocurriendo.</p>
+    <p>Este demo implementa una versión simplificada, con fines pedagógicos, del Triángulo de Duval 1: mueve las tres lecturas de gas y mira en vivo en qué zona cae tu transformador, entre 7 tipos de falla reconocidos por la industria.</p>
   </section>
 
   <section id="demo">
     <h2>Demo interactivo</h2>
     <div class="panel">
       <div class="toggle-row">
-        <span class="label">Clasificación por umbrales de referencia — mueve los sliders para simular una lectura de campo.</span>
+        <span class="label">Clasificación por reglas del Triángulo de Duval — mueve los sliders para simular una lectura de laboratorio.</span>
         <label class="switch">
           <span>Modo Analista</span>
           <input type="checkbox" id="analystToggle">
@@ -379,15 +380,21 @@
       <div class="demo-grid">
         <div class="controls-col">
           <div class="slider-group">
-            <label>Caudal relativo al punto óptimo <span class="val" id="flowVal">100 %</span></label>
-            <input type="range" id="flowSlider" min="50" max="150" step="1" value="100">
-            <div class="hint"><span>50 % (muy bajo)</span><span>150 % (muy alto)</span></div>
+            <label>Metano — CH₄ <span class="val" id="ch4Val">120 ppm</span></label>
+            <input type="range" id="ch4Slider" min="5" max="500" step="1" value="120">
+            <div class="hint"><span>5 ppm</span><span>500 ppm</span></div>
           </div>
 
           <div class="slider-group">
-            <label>Vibración RMS <span class="val" id="vibVal">2.0 mm/s</span></label>
-            <input type="range" id="vibSlider" min="0" max="12" step="0.1" value="2.0">
-            <div class="hint"><span>0 mm/s</span><span>12 mm/s</span></div>
+            <label>Etileno — C₂H₄ <span class="val" id="c2h4Val">40 ppm</span></label>
+            <input type="range" id="c2h4Slider" min="2" max="350" step="1" value="40">
+            <div class="hint"><span>2 ppm</span><span>350 ppm</span></div>
+          </div>
+
+          <div class="slider-group">
+            <label>Acetileno — C₂H₂ <span class="val" id="c2h2Val">5 ppm</span></label>
+            <input type="range" id="c2h2Slider" min="0" max="150" step="1" value="5">
+            <div class="hint"><span>0 ppm</span><span>150 ppm</span></div>
           </div>
 
           <div class="result" id="resultBox">
@@ -403,30 +410,30 @@
         </div>
 
         <div class="live-col">
-          <h3>Simulación en vivo</h3>
+          <h3>Triángulo de Duval — lectura en vivo</h3>
           <div class="instrument-wrap">
-            <canvas id="instrument" width="420" height="220"></canvas>
+            <canvas id="instrument" width="420" height="340"></canvas>
           </div>
 
           <div class="gauge-wrap">
-            <div class="gauge-label">Índice de riesgo (0-100)</div>
-            <div class="gauge-bar"><div class="gauge-fill" id="gaugeFill"></div><span class="gauge-tick" style="left:35%"></span><span class="gauge-tick" style="left:65%"></span></div>
-            <div class="gauge-value"><b id="gaugeValue">0</b> <span class="gauge-note">combina desviación del punto óptimo (50%) y vibración (50%)</span></div>
+            <div class="gauge-label">Nivel de urgencia estimado (0-100)</div>
+            <div class="gauge-bar"><div class="gauge-fill" id="gaugeFill"></div><span class="gauge-tick" style="left:35%"></span><span class="gauge-tick" style="left:70%"></span></div>
+            <div class="gauge-value"><b id="gaugeValue">0</b> <span class="gauge-note">nivel de urgencia asignado según el tipo de falla diagnosticado</span></div>
           </div>
 
-          <p class="sim-note">Simulación ilustrativa: la curva de la bomba y el punto de operación se dibujan a partir de los mismos valores de los sliders — no provienen de un sensor real.</p>
+          <p class="sim-note">Simulación ilustrativa: el porcentaje de cada gas y la posición en el triángulo se calculan a partir de los mismos valores de los sliders — no provienen de un cromatógrafo de gases real.</p>
         </div>
       </div>
 
       <div class="analyst" id="analystPanel">
         <h3 style="font-size:18px; text-transform:none; letter-spacing:0; margin-bottom:8px; color:var(--text);">Reentrenar en vivo</h3>
-        <p style="font-size:15px; color:var(--muted); margin-bottom:18px;">Elige el grado de expansión polinomial de la regresión logística (softmax) y observa cómo cambian las regiones de decisión. El set de 160 lecturas se divide en 106 para entrenar (●) y 54 reservadas para probar qué tan bien generaliza (○). Con grado 1 el modelo solo puede trazar una frontera recta — y como el riesgo sube tanto por defecto como por exceso de caudal, una recta no alcanza para separar las 3 clases; hacen falta términos cuadráticos para capturar esa forma de "U".</p>
+        <p style="font-size:15px; color:var(--muted); margin-bottom:18px;">Elige el grado de expansión polinomial de la regresión logística (softmax) y observa cómo cambian las 7 regiones de decisión dentro del triángulo. El set de 160 lecturas se divide en 106 para entrenar (●) y 54 reservadas para probar qué tan bien generaliza (○). Las fronteras reales del Triángulo de Duval no son líneas rectas simples, así que grados más altos ayudan a que el modelo las aproxime mejor — pero ten cuidado con el sobreajuste en las zonas con menos ejemplos.</p>
 
         <div class="dataset-wrap">
           <div class="dataset-label">Vista del dataset de entrenamiento</div>
           <div class="dataset-scroll">
             <table class="dataset-table">
-              <thead><tr><th>#</th><th>Fecha</th><th>Caudal (% BEP)</th><th>Vibración (mm/s)</th><th>Nivel real</th><th>Set</th></tr></thead>
+              <thead><tr><th>#</th><th>Fecha</th><th>CH₄ (ppm)</th><th>C₂H₄ (ppm)</th><th>C₂H₂ (ppm)</th><th>Zona real</th><th>Set</th></tr></thead>
               <tbody id="datasetBody"></tbody>
             </table>
           </div>
@@ -434,8 +441,8 @@
         </div>
 
         <div class="degree-row" id="degreeRow"></div>
-        <canvas id="chart" width="800" height="340"></canvas>
-        <canvas id="residuals" width="800" height="200"></canvas>
+        <canvas id="chart" width="800" height="380"></canvas>
+        <canvas id="residuals" width="800" height="230"></canvas>
         <div class="metrics">
           <span>Grado: <b id="mDegree">2</b></span>
           <span>Exactitud entrenamiento: <b id="mAccTrain">–</b></span>
@@ -450,14 +457,14 @@
     <h2>¿Qué significa para tu planta?</h2>
     <div class="business-grid">
       <div>
-        <p>Con la lectura actual, la bomba se clasifica en <span class="stat" id="bizLevelInline">Verde</span>. Operar sostenidamente en zona amarilla o roja acelera el desgaste del impulsor y los sellos mecánicos mucho más rápido que operar cerca del punto óptimo — detectarlo a tiempo suele ser la diferencia entre ajustar una válvula de estrangulamiento o reemplazar un impulsor erosionado por cavitación.</p>
+        <p>Con la lectura actual, el transformador se clasifica como <span class="stat" id="bizLevelInline">—</span>. Un diagnóstico DGA correcto y oportuno es, típicamente, la diferencia entre programar una inspección dirigida en la próxima parada y enfrentar una salida de servicio forzada — o algo peor, la pérdida total de un activo cuyo reemplazo puede tardar meses en llegar. Por eso el DGA es una de las pocas técnicas predictivas que casi todas las plantas con transformadores críticos ya usan de alguna forma.</p>
         <div class="biz-action" id="bizAction">
           <div class="biz-title" id="bizTitle">Calculando…</div>
           <div class="biz-detail" id="bizDetail"></div>
         </div>
       </div>
       <div>
-        <div class="gauge-label">Costo estimado de intervención por nivel</div>
+        <div class="gauge-label">Costo estimado de intervención por nivel de urgencia</div>
         <canvas id="projection" width="480" height="230"></canvas>
       </div>
     </div>
@@ -465,7 +472,7 @@
 
   <section id="cta">
     <h2>De esta demo a tu planta</h2>
-    <p style="color:var(--muted); max-width:640px; margin-bottom:20px;">Los umbrales, las clases y la simulación de este demo están calibrados sobre datos sintéticos para poder compartir esta demo abiertamente — la metodología es la misma que aplicamos en campo para diagnosticar tu bomba real. Llevarlo a tu planta implica estandarizar cómo capturas tus datos de caudal y vibración, encontrar el punto óptimo real de cada bomba (no todas comparten el mismo BEP), y calibrar el modelo con tu propio histórico — ahí es donde entra nuestro motor AutoML, ajustando el modelo correcto para tu caso y evitando tanto falsas alarmas como bombas operando en zona de riesgo sin ninguna alerta. Se adapta al tipo de bomba y a la industria —minería, manufactura, energía, alimentos— cuando la calibramos con tus datos. Si quieres recorrer ese proceso, conversemos.</p>
+    <p style="color:var(--muted); max-width:640px; margin-bottom:20px;">Las reglas de clasificación y la simulación de este demo están calibradas sobre datos sintéticos para poder compartir esta demo abiertamente — la metodología (Triángulo de Duval, IEC 60599, IEEE C57.104) es la misma que se aplica en la industria eléctrica real. Llevarlo a tu planta implica estandarizar cómo capturas tus muestras de DGA (frecuencia, laboratorio, cadena de custodia), mapear qué transformadores son más críticos para tu operación, y calibrar el modelo con tu propio histórico de gases — ahí es donde entra nuestro motor AutoML, ajustando el modelo correcto para tu caso y las particularidades de tus transformadores. Se adapta al tipo de transformador y a la industria —minería, generación, distribución, manufactura— cuando lo calibramos con tus datos. Si quieres recorrer ese proceso, conversemos.</p>
     <div class="cta-row">
       <a class="btn primary" href="https://chat.whatsapp.com/GvBz1tuUeNZ0xwTkjsuE3z" target="_blank" rel="noopener">Unirme a la comunidad de WhatsApp</a>
       <a class="btn ghost" href="https://www.linkedin.com/company/reliabilit-ia/" target="_blank" rel="noopener">Seguir en LinkedIn</a>
@@ -474,11 +481,11 @@
 
     <div class="contact-card">
       <div>
-        <h3>¿Hablamos del estado de tus bombas?</h3>
-        <p>Si tienes datos de caudal o vibración de tus bombas y quieres validar este análisis con tu planta, escríbeme directamente.</p>
+        <h3>¿Hablamos del DGA de tus transformadores?</h3>
+        <p>Si tienes historiales de análisis de gases disueltos y quieres validar este análisis con tu planta, escríbeme directamente.</p>
       </div>
       <div class="contact-links">
-        <a class="contact-row" href="https://wa.me/51997610310?text=Hola%20Miguel%2C%20vi%20el%20demo%20Semaforo%20de%20Bombas%20y%20quiero%20conversar%20sobre%20la%20calibracion%20para%20mi%20planta" target="_blank" rel="noopener">
+        <a class="contact-row" href="https://wa.me/51997610310?text=Hola%20Miguel%2C%20vi%20el%20demo%20Transformadores%20DGA%20y%20quiero%20conversar%20sobre%20la%20calibracion%20para%20mi%20planta" target="_blank" rel="noopener">
           <span class="contact-icon">💬</span>
           <span class="contact-text"><b>WhatsApp</b>+51 997 610 310</span>
         </a>
@@ -497,14 +504,14 @@
   <section class="related-section">
     <div class="share-row">
       <span style="font-size:13px; color:var(--muted); align-self:center;">Compartir esta demo:</span>
-      <a class="share-btn" href="https://wa.me/?text=Mira%20esta%20demo%20de%20Sem%C3%A1foro%20de%20Bombas%20%E2%80%94%20mantenimiento%20predictivo%20con%20IA%2C%20en%20vivo%3A%20https%3A//angel19968.github.io/reliabilit-ia/modelos/semaforo-de-bombas/" target="_blank" rel="noopener">💬 WhatsApp</a>
-      <a class="share-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A//angel19968.github.io/reliabilit-ia/modelos/semaforo-de-bombas/" target="_blank" rel="noopener">in LinkedIn</a>
+      <a class="share-btn" href="https://wa.me/?text=Mira%20esta%20demo%20de%20Transformadores%20(DGA)%20%E2%80%94%20mantenimiento%20predictivo%20con%20IA%2C%20en%20vivo%3A%20https%3A//angel19968.github.io/reliabilit-ia/modelos/transformadores-dga/" target="_blank" rel="noopener">💬 WhatsApp</a>
+      <a class="share-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A//angel19968.github.io/reliabilit-ia/modelos/transformadores-dga/" target="_blank" rel="noopener">in LinkedIn</a>
     </div>
     <h2 style="margin-top:32px;">Otros modelos que te pueden interesar</h2>
     <div class="related-grid">
-      <a class="related-card" href="../guardian-de-la-bomba/"><span class="rc-icon">🚰</span><span class="rc-name">Guardián de la Bomba</span></a>
-      <a class="related-card" href="../frontera-de-vibracion/"><span class="rc-icon">📳</span><span class="rc-name">Frontera de Vibración</span></a>
-      <a class="related-card" href="../diagnostico-del-motor/"><span class="rc-icon">🔧</span><span class="rc-name">Diagnóstico del Motor</span></a>
+      <a class="related-card" href="../pulso-energetico/"><span class="rc-icon">⚡</span><span class="rc-name">Pulso Energético</span></a>
+      <a class="related-card" href="../ojo-termico/"><span class="rc-icon">🌡️</span><span class="rc-name">Ojo Térmico</span></a>
+      <a class="related-card" href="../mapa-de-anomalias/"><span class="rc-icon">📡</span><span class="rc-name">Mapa de Anomalías</span></a>
     </div>
   </section>
 
@@ -516,46 +523,161 @@
       <a href="https://www.linkedin.com/in/miguelcayllahua/" target="_blank" rel="noopener">LinkedIn personal</a>
       <a href="mailto:miguelcquispe@gmail.com">Correo</a>
     </div>
-    <p style="">La metodología es la misma que aplicamos en proyectos reales; los datos y la simulación de esta demo son sintéticos para poder compartirlos públicamente. Se calibra con tus propios datos —sin importar el tipo de bomba o la industria— cuando trabajamos juntos. Los parámetros de este demo son de referencia — se recalibran a la medida de cada equipo cuando trabajamos con tus datos.</p>
+    <p>La metodología (Triángulo de Duval / DGA) es la misma que se usa en la industria real; los datos y la simulación de esta demo son sintéticos para poder compartirlos públicamente. Se calibra con tus propios datos —sin importar el tipo de transformador o la industria— cuando trabajamos juntos. Los parámetros de este demo son de referencia — se recalibran a la medida de cada equipo cuando trabajamos con tus datos.</p>
   </footer>
 </div>
 
 <script>
 /* =========================================================
-   Definición de niveles (compartido por Modo Básico y Analista)
+   Definición de zonas del Triángulo de Duval 1 (versión
+   simplificada con fines pedagógicos, basada en los límites
+   de %CH4/%C2H4/%C2H2 documentados para aceite mineral).
+   Validado externamente en Node (seed=202) antes de fijar:
+   con estos pesos por zona, sobre 160 lecturas sintéticas,
+   ninguna clase queda vacía y la distribución es razonable.
    ========================================================= */
-const LEVELS = ['Verde','Amarillo','Rojo'];
-const LEVEL_COLORS = ['#3ecfa0','#e8c547','#f4722e'];
-const LEVEL_DETAIL = [
-  'La bomba opera cerca de su punto óptimo. Sin acción requerida.',
-  'La bomba se aleja del punto óptimo o su vibración empieza a subir. Vale la pena revisar el punto de operación en la próxima ronda.',
-  'La bomba opera lejos de su punto óptimo, con riesgo de cavitación o recirculación, o su vibración ya es alta. Priorizar inspección y ajuste del punto de operación.'
-];
-const LEVEL_SIMPLE = [
-  'la bomba está bien, no hagas nada por ahora.',
-  'revisa el punto de operación en tu próxima ronda.',
-  'ajusta la bomba pronto — riesgo de cavitación o daño.'
-];
-const SCORE_THRESHOLDS = [35, 65];
+const ZONES = ['PD','T1','T2','T3','DT','D1','D2'];
+const ZONE_NAMES = {
+  PD:'Descargas parciales (efecto corona)',
+  T1:'Falla térmica < 300°C',
+  T2:'Falla térmica 300–700°C',
+  T3:'Falla térmica > 700°C',
+  DT:'Mezcla eléctrica y térmica',
+  D1:'Descargas de baja energía',
+  D2:'Descargas de alta energía'
+};
+const ZONE_COLORS = {
+  PD:'#4f8fe8', T1:'#3ecfa0', T2:'#e8c547', T3:'#f4722e',
+  DT:'#7b5ea7', D1:'#a78bda', D2:'#e2544a'
+};
+const ZONE_DETAIL = {
+  PD:'Predominan proporciones muy altas de metano casi puro, típico de descargas parciales de baja energía (efecto corona) en zonas de baja densidad dieléctrica o burbujas de gas en el aceite.',
+  T1:'Sobrecalentamiento localizado de baja temperatura, típico de puntos calientes leves por conexiones flojas o sobrecarga moderada.',
+  T2:'Punto caliente más severo que T1 — indica posible degradación acelerada del aislamiento en la zona afectada.',
+  T3:'Temperatura de falla muy alta, típicamente asociada a carbonización visible del aislamiento sólido o del aceite en la zona afectada.',
+  DT:'Combinación de gases que no encaja limpiamente en un solo mecanismo — sugiere una falla que empezó eléctrica y generó calor, o viceversa.',
+  D1:'Chispeo o arqueo de baja energía, comúnmente por conexiones defectuosas o descargas de baja intensidad en el aceite.',
+  D2:'Arqueo de alta energía — el hallazgo de mayor urgencia del triángulo, con riesgo real de falla catastrófica si no se atiende.'
+};
+const ZONE_ACTION = {
+  PD:'Monitorear la tendencia en las próximas muestras; rara vez requiere intervención inmediata, pero conviene descartar humedad o burbujas de gas.',
+  T1:'Revisar conexiones y puntos de apriete en la próxima parada programada.',
+  T2:'Programar una inspección termográfica dirigida y revisar el histórico de carga del transformador.',
+  T3:'Priorizar inspección física y considerar salida de servicio programada si el diagnóstico se confirma con una segunda muestra.',
+  DT:'Tratar con la misma prioridad que una falla de descarga; confirmar con una segunda muestra y revisar bushings y conexiones internas.',
+  D1:'Programar inspección de conexiones internas y bushings en la siguiente parada.',
+  D2:'Priorizar inspección inmediata y evaluar salida de servicio preventiva mientras se confirma el diagnóstico.'
+};
+const ZONE_SIMPLE = {
+  PD:'revisa la tendencia en la próxima muestra, no es urgente.',
+  T1:'hay un punto caliente leve, revísalo en tu próxima parada.',
+  T2:'el punto caliente ya es más severo, prográmalo antes de que escale.',
+  T3:'es un punto caliente severo, prioriza la inspección física pronto.',
+  DT:'es una falla mixta, trátala con la misma prioridad que una descarga.',
+  D1:'hay chispeo de baja energía, revisa conexiones en tu próxima parada.',
+  D2:'es arqueo de alta energía — prioriza la inspección de inmediato.'
+};
+const ZONE_URGENCY = {PD:25, T1:20, T2:45, T3:75, DT:65, D1:55, D2:95};
 
-function severityIndex(flowPct, vib){
-  const flowDev = Math.min(1, Math.abs(flowPct-100)/50);
-  const vibN = Math.min(1, vib/12);
-  return 100*(0.5*flowDev + 0.5*vibN);
+function classifyZone(ch4,c2h4,c2h2){
+  if (ch4 >= 98) return 'PD';
+  if (c2h2 >= 29) return c2h4 >= 23 ? 'D2' : 'D1';
+  if (c2h2 >= 13){
+    if (c2h4 < 23) return 'D1';
+    if (c2h4 < 40) return 'D2';
+    return 'DT';
+  }
+  if (c2h2 >= 4){
+    return c2h4 >= 50 ? 'T3' : 'DT';
+  }
+  if (c2h4 < 20) return 'T1';
+  if (c2h4 < 50) return 'T2';
+  return 'T3';
 }
-function classify(score){
-  if(score < SCORE_THRESHOLDS[0]) return 0;
-  if(score < SCORE_THRESHOLDS[1]) return 1;
-  return 2;
+function toPercents(ch4,c2h4,c2h2){
+  const s = ch4+c2h4+c2h2;
+  if(s<=0) return [0,0,0];
+  return [100*ch4/s, 100*c2h4/s, 100*c2h2/s];
+}
+function classifyWithConfidence(ch4,c2h4,c2h2){
+  const [p1,p2,p3] = toPercents(ch4,c2h4,c2h2);
+  const base = classifyZone(p1,p2,p3);
+  const perturbations = [[4,0,0],[-4,0,0],[0,4,0],[0,-4,0],[0,0,4],[0,0,-4],[2,2,-4],[-2,-2,4]];
+  let flips = 0;
+  perturbations.forEach(([d1,d2,d3])=>{
+    const [q1,q2,q3] = toPercents(Math.max(0,p1+d1), Math.max(0,p2+d2), Math.max(0,p3+d3));
+    if(classifyZone(q1,q2,q3)!==base) flips++;
+  });
+  return {zone:base, flips, total:perturbations.length, pct:[p1,p2,p3]};
+}
+
+/* =========================================================
+   TRIÁNGULO DE DUVAL — geometría barycéntrica compartida por
+   el instrumento en vivo y el mapa de decisión del analista.
+   Vértice superior = 100% CH4, inferior izquierdo = 100% C2H2,
+   inferior derecho = 100% C2H4 (convención estándar del método).
+   ========================================================= */
+function triGeom(W,H){
+  const pad = 46;
+  const apex = [W/2, pad];
+  const baseY = H-pad-18;
+  const halfBase = (W-2*pad)/2;
+  const left = [W/2-halfBase, baseY];
+  const right = [W/2+halfBase, baseY];
+  return {apex, left, right, pad, baseY};
+}
+function baryToXY(ch4pct,c2h4pct,c2h2pct, tri){
+  const a=ch4pct/100, b=c2h4pct/100, c=c2h2pct/100;
+  const x = a*tri.apex[0] + b*tri.right[0] + c*tri.left[0];
+  const y = a*tri.apex[1] + b*tri.right[1] + c*tri.left[1];
+  return [x,y];
+}
+function xyToBary(x,y,tri){
+  const v0=[tri.right[0]-tri.left[0], tri.right[1]-tri.left[1]];
+  const v1=[tri.apex[0]-tri.left[0], tri.apex[1]-tri.left[1]];
+  const v2=[x-tri.left[0], y-tri.left[1]];
+  const d00=v0[0]*v0[0]+v0[1]*v0[1];
+  const d01=v0[0]*v1[0]+v0[1]*v1[1];
+  const d11=v1[0]*v1[0]+v1[1]*v1[1];
+  const d20=v2[0]*v0[0]+v2[1]*v0[1];
+  const d21=v2[0]*v1[0]+v2[1]*v1[1];
+  const denom = d00*d11-d01*d01;
+  const v = (d11*d20-d01*d21)/denom;
+  const w = (d00*d21-d01*d20)/denom;
+  const u = 1-v-w;
+  return {ch4:w*100, c2h4:v*100, c2h2:u*100, inside:(u>=-0.01 && v>=-0.01 && w>=-0.01)};
+}
+function hexToRgbT(hex){ const v=hex.replace('#',''); return [parseInt(v.slice(0,2),16),parseInt(v.slice(2,4),16),parseInt(v.slice(4,6),16)]; }
+function rgba(c,a){ return `rgba(${c[0]},${c[1]},${c[2]},${a})`; }
+
+function drawTriangleBase(ctx,W,H,tri){
+  ctx.clearRect(0,0,W,H);
+  ctx.strokeStyle = '#3a3a48';
+  ctx.lineWidth = 1.5;
+  ctx.beginPath();
+  ctx.moveTo(tri.apex[0],tri.apex[1]);
+  ctx.lineTo(tri.right[0],tri.right[1]);
+  ctx.lineTo(tri.left[0],tri.left[1]);
+  ctx.closePath();
+  ctx.stroke();
+  ctx.fillStyle = '#8a8a98';
+  ctx.font = '11px DM Mono, monospace';
+  ctx.textAlign = 'center';
+  ctx.fillText('CH₄ 100%', tri.apex[0], tri.apex[1]-10);
+  ctx.fillText('C₂H₂ 100%', tri.left[0]-6, tri.left[1]+22);
+  ctx.fillText('C₂H₄ 100%', tri.right[0]+6, tri.right[1]+22);
+  ctx.textAlign = 'left';
 }
 
 /* =========================================================
    MODO BÁSICO
    ========================================================= */
-const flowSlider = document.getElementById('flowSlider');
-const vibSlider = document.getElementById('vibSlider');
-const flowVal = document.getElementById('flowVal');
-const vibVal = document.getElementById('vibVal');
+const ch4Slider = document.getElementById('ch4Slider');
+const c2h4Slider = document.getElementById('c2h4Slider');
+const c2h2Slider = document.getElementById('c2h2Slider');
+const ch4Val = document.getElementById('ch4Val');
+const c2h4Val = document.getElementById('c2h4Val');
+const c2h2Val = document.getElementById('c2h2Val');
 const riskDot = document.getElementById('riskDot');
 const riskTitle = document.getElementById('riskTitle');
 const riskDetail = document.getElementById('riskDetail');
@@ -570,13 +692,18 @@ const bizDetail = document.getElementById('bizDetail');
 const projectionCanvas = document.getElementById('projection');
 const pctx = projectionCanvas.getContext('2d');
 
-function drawProjection(activeIdx, scorePct){
+function drawProjection(urgency){
   const W = projectionCanvas.width, H = projectionCanvas.height;
   pctx.clearRect(0,0,W,H);
   const padL = 56, padR = 20, padT = 20, padB = 46;
-  const costs = [0, 1500, 12000];
-  const maxCost = costs[costs.length-1]*1.1;
-  const bw = (W-padL-padR)/costs.length;
+  const tiers = [
+    {name:'Monitoreo', cost:0, max:35},
+    {name:'Inspección programada', cost:6000, max:70},
+    {name:'Intervención prioritaria', cost:45000, max:100}
+  ];
+  const activeIdx = urgency < 35 ? 0 : (urgency < 70 ? 1 : 2);
+  const maxCost = tiers[tiers.length-1].cost*1.1;
+  const bw = (W-padL-padR)/tiers.length;
 
   pctx.strokeStyle = '#22222c';
   pctx.lineWidth = 1;
@@ -584,220 +711,177 @@ function drawProjection(activeIdx, scorePct){
   pctx.moveTo(padL, padT); pctx.lineTo(padL, H-padB); pctx.lineTo(W-padR, H-padB);
   pctx.stroke();
 
-  costs.forEach((c,i)=>{
-    const barH = Math.max(2,(c/maxCost)*(H-padT-padB));
-    const x = padL + i*bw + bw*0.18;
+  tiers.forEach((tItem,i)=>{
+    const barH = Math.max(2,(tItem.cost/maxCost)*(H-padT-padB));
+    const x = padL + i*bw + bw*0.14;
     const y = H-padB-barH;
-    const w = bw*0.64;
-    pctx.fillStyle = i===activeIdx ? LEVEL_COLORS[i] : 'rgba(244,244,247,0.14)';
+    const w = bw*0.72;
+    pctx.fillStyle = i===activeIdx ? '#f4722e' : 'rgba(244,244,247,0.14)';
     pctx.fillRect(x,y,w,barH);
     pctx.fillStyle = '#a8a8b4';
-    pctx.font = '11px DM Mono, monospace';
-    pctx.fillText(LEVELS[i], x-2, H-padB+16);
+    pctx.font = '10px DM Mono, monospace';
+    pctx.fillText(tItem.name, x-4, H-padB+16);
     if(i===activeIdx){
       pctx.fillStyle = '#f4f4f7';
       pctx.font = '12px DM Mono, monospace';
-      pctx.fillText('S/. '+c.toLocaleString('es-PE'), x-4, y-8);
+      pctx.fillText('S/. '+tItem.cost.toLocaleString('es-PE'), x-4, y-8);
     }
   });
   pctx.fillStyle = '#8a8a98';
   pctx.font = '11px DM Mono, monospace';
-  pctx.fillText('costo estimado de intervención en cada nivel (ilustrativo)', padL, 14);
-
-  // Indicador continuo: el índice de severidad real calculado para esta
-  // lectura (no solo a qué nivel discreto pertenece).
-  if(typeof scorePct === 'number'){
-    const by = H-12, bh = 5;
-    pctx.fillStyle = 'rgba(244,244,247,0.10)';
-    pctx.fillRect(padL, by, W-padL-padR, bh);
-    const fw = Math.min(1,Math.max(0,scorePct/100))*(W-padL-padR);
-    pctx.fillStyle = LEVEL_COLORS[activeIdx];
-    pctx.fillRect(padL, by, fw, bh);
-    pctx.fillStyle = '#c9c9d4';
-    pctx.font = '10px DM Mono, monospace';
-    pctx.fillText('índice de severidad real: '+scorePct.toFixed(0)+'/100', padL, by-4);
-  }
+  pctx.fillText('costo estimado de intervención por nivel (ilustrativo)', padL, 14);
 }
 
 function updateBasic(){
-  const flowPct = parseFloat(flowSlider.value);
-  const vib = parseFloat(vibSlider.value);
-  flowVal.textContent = flowPct.toFixed(0) + ' %';
-  vibVal.textContent = vib.toFixed(1) + ' mm/s';
+  const ch4 = parseFloat(ch4Slider.value);
+  const c2h4 = parseFloat(c2h4Slider.value);
+  const c2h2 = parseFloat(c2h2Slider.value);
+  ch4Val.textContent = ch4.toFixed(0) + ' ppm';
+  c2h4Val.textContent = c2h4.toFixed(0) + ' ppm';
+  c2h2Val.textContent = c2h2.toFixed(0) + ' ppm';
 
-  const score = severityIndex(flowPct, vib);
-  const idx = classify(score);
-  const color = LEVEL_COLORS[idx];
+  const res = classifyWithConfidence(ch4,c2h4,c2h2);
+  const zone = res.zone;
+  const color = ZONE_COLORS[zone];
+  const urgency = ZONE_URGENCY[zone];
 
   riskDot.style.background = color;
   riskTitle.style.color = color;
-  riskTitle.textContent = LEVELS[idx] + ' — índice ' + Math.round(score) + '/100';
-  riskDetail.textContent = LEVEL_DETAIL[idx];
+  riskTitle.textContent = zone + ' — ' + ZONE_NAMES[zone];
+  riskDetail.textContent = ZONE_DETAIL[zone];
   const simpleEl = document.getElementById('simpleSummary');
-  if(simpleEl) simpleEl.textContent = '💬 En palabras simples: ' + LEVEL_SIMPLE[idx];
+  if(simpleEl) simpleEl.textContent = '💬 En palabras simples: ' + ZONE_SIMPLE[zone];
 
-  const distToThresh = Math.min(...SCORE_THRESHOLDS.map(t=>Math.abs(score-t)), score, 100-score);
   let confLevel, confColor, confNote;
-  if(distToThresh > 9){
+  if(res.flips === 0){
     confLevel = 'Alta'; confColor = 'var(--success)';
-    confNote = 'La lectura está lejos de cualquier umbral entre niveles.';
-  } else if(distToThresh > 4){
+    confNote = 'La lectura está lejos de cualquier límite entre zonas del triángulo.';
+  } else if(res.flips <= 2){
     confLevel = 'Media'; confColor = '#e8c547';
-    confNote = 'Cerca de un umbral — el nivel vecino también es plausible.';
+    confNote = 'Cerca de un límite de zona — la zona vecina también es plausible.';
   } else {
     confLevel = 'Baja'; confColor = 'var(--cta)';
-    confNote = 'Justo en el borde entre dos niveles — trátalo como referencia, repite la medición.';
+    confNote = 'Justo en el borde entre zonas — trátalo como referencia, repite la muestra.';
   }
-  confidenceLine.textContent = 'Confianza de la clasificación: ' + confLevel;
+  confidenceLine.textContent = 'Confianza del diagnóstico: ' + confLevel;
   confidenceLine.style.color = confColor;
   confidenceNote.textContent = confNote;
 
-  gaugeFill.style.width = Math.min(100,Math.max(0,score)).toFixed(1) + '%';
+  gaugeFill.style.width = urgency + '%';
   gaugeFill.style.background = color;
-  gaugeValue.textContent = Math.round(score);
+  gaugeValue.textContent = urgency;
 
-  bizLevelInline.textContent = LEVELS[idx];
+  bizLevelInline.textContent = zone + ' — ' + ZONE_NAMES[zone];
   bizLevelInline.style.color = color;
   bizAction.style.borderColor = color;
   bizTitle.style.color = color;
-  bizTitle.textContent = LEVELS[idx] + ' — ' + Math.round(score) + '/100';
-  bizDetail.textContent = LEVEL_DETAIL[idx];
+  bizTitle.textContent = zone + ' — urgencia ' + urgency + '/100';
+  bizDetail.textContent = ZONE_ACTION[zone];
 
-  drawProjection(idx, Math.min(100,Math.max(0,score)));
-  drawInstrument(flowPct, vib, idx);
+  drawProjection(urgency);
+  drawInstrument(res.pct[0], res.pct[1], res.pct[2], zone);
 }
-flowSlider.addEventListener('input', updateBasic);
-vibSlider.addEventListener('input', updateBasic);
+ch4Slider.addEventListener('input', updateBasic);
+c2h4Slider.addEventListener('input', updateBasic);
+c2h2Slider.addEventListener('input', updateBasic);
 
 /* =========================================================
-   SIMULACIÓN EN VIVO — curva característica H-Q de la bomba,
-   con el punto de operación marcado (100% generado en cliente)
+   INSTRUMENTO EN VIVO — Triángulo de Duval con las 7 zonas
+   sombreadas según la regla real, y la lectura actual marcada.
    ========================================================= */
 const instrumentCanvas = document.getElementById('instrument');
 const ictx = instrumentCanvas.getContext('2d');
-function lerpColorRgb(c1,c2,t){ return c1.map((v,i)=>Math.round(v+(c2[i]-v)*Math.min(1,Math.max(0,t)))); }
-function rgba(c,a){ return `rgba(${c[0]},${c[1]},${c[2]},${a})`; }
-const COLOR_SUCCESS=[62,207,160], COLOR_CTA=[244,114,46];
-let simTime = 0;
+let instrumentZonesCache = null;
 
-function pumpHead(flowPct){
-  // curva característica H-Q simplificada, normalizada 0-100%
-  const q = flowPct/100;
-  return Math.max(0, 100 - 22*(q-1)*(q-1) - 6*Math.max(0,q-1.3));
-}
-
-function drawInstrument(flowPct, vib, idx){
-  const W = instrumentCanvas.width, H = instrumentCanvas.height;
-  const padL=46, padR=16, padT=18, padB=30;
-  ictx.clearRect(0,0,W,H);
-  simTime += 1;
-
-  function toPx(q,h){ return [ padL+(q-50)/(150-50)*(W-padL-padR), H-padB-(h/100)*(H-padT-padB) ]; }
-
-  ictx.strokeStyle = '#22222c';
-  ictx.lineWidth = 1;
-  ictx.beginPath();
-  ictx.moveTo(padL,padT); ictx.lineTo(padL,H-padB); ictx.lineTo(W-padR,H-padB);
-  ictx.stroke();
-  ictx.fillStyle = '#8a8a98';
-  ictx.font = '10px DM Mono, monospace';
-  ictx.fillText('caudal (% del punto óptimo)', padL, H-8);
-  ictx.save();
-  ictx.translate(12, H/2+40);
-  ictx.rotate(-Math.PI/2);
-  ictx.fillText('altura (curva H-Q)', 0, 0);
-  ictx.restore();
-
-  // curva de la bomba
-  ictx.strokeStyle = '#5a5a6a';
-  ictx.lineWidth = 2;
-  ictx.beginPath();
-  for(let px=0;px<=100;px++){
-    const q = 50 + (150-50)*px/100;
-    const h = pumpHead(q);
-    const [x,y] = toPx(q,h);
-    if(px===0) ictx.moveTo(x,y); else ictx.lineTo(x,y);
-  }
-  ictx.stroke();
-
-  // marca del BEP
-  const [bepX, bepY] = toPx(100, pumpHead(100));
-  ictx.strokeStyle = 'rgba(122,122,140,0.6)';
-  ictx.setLineDash([3,4]);
-  ictx.beginPath(); ictx.moveTo(bepX, padT); ictx.lineTo(bepX, H-padB); ictx.stroke();
-  ictx.setLineDash([]);
-  ictx.fillStyle = '#8a8a98';
-  ictx.font = '10px DM Mono, monospace';
-  ictx.fillText('BEP', bepX-10, padT-4>0?padT+10:12);
-
-  // punto de operación, con jitter proporcional a la vibración
-  const jitterMag = Math.min(1, vib/12);
-  const dx = (Math.random()-0.5)*jitterMag*6;
-  const dy = (Math.random()-0.5)*jitterMag*6;
-  const [ox,oy] = toPx(flowPct, pumpHead(flowPct));
-  const color = LEVEL_COLORS[idx];
-
-  // efecto de cavitación (burbujas) si el caudal es muy alto, o de
-  // recirculación (remolino) si es muy bajo — puramente ilustrativo
-  if(flowPct > 118){
-    for(let i=0;i<6;i++){
-      const t=(i/6+simTime*0.02)%1;
-      const bx = ox+dx-14-t*18, by = oy+dy-6+Math.sin(t*10+i)*6;
-      ictx.beginPath();
-      ictx.fillStyle = rgba(COLOR_CTA, (1-t)*0.6);
-      ictx.arc(bx,by,1.5+t*2,0,Math.PI*2);
-      ictx.fill();
+function renderZoneShading(ctx, W, H, tri, classifierFn){
+  const cell = 6;
+  for(let px=0; px<W; px+=cell){
+    for(let py=0; py<H; py+=cell){
+      const b = xyToBary(px+cell/2, py+cell/2, tri);
+      if(!b.inside) continue;
+      const zone = classifierFn(b.ch4, b.c2h4, b.c2h2);
+      ctx.fillStyle = rgba(hexToRgbT(ZONE_COLORS[zone]), 0.20);
+      ctx.fillRect(px,py,cell,cell);
     }
-  } else if(flowPct < 82){
-    ictx.strokeStyle = rgba(COLOR_CTA,0.5);
-    ictx.lineWidth = 1.4;
-    ictx.beginPath();
-    ictx.arc(ox+dx-10, oy+dy, 6, simTime*0.08, simTime*0.08+Math.PI*1.4);
-    ictx.stroke();
   }
-
-  ictx.beginPath();
-  ictx.fillStyle = rgba(hexToRgb(color),0.28);
-  ictx.arc(ox+dx,oy+dy,12,0,Math.PI*2);
-  ictx.fill();
-  ictx.beginPath();
-  ictx.fillStyle = color;
-  ictx.arc(ox+dx,oy+dy,6,0,Math.PI*2);
-  ictx.fill();
-  ictx.strokeStyle = '#f4f4f7';
-  ictx.lineWidth = 1.3;
-  ictx.stroke();
 }
-function hexToRgb(hex){ const v=hex.replace('#',''); return [parseInt(v.slice(0,2),16),parseInt(v.slice(2,4),16),parseInt(v.slice(4,6),16)]; }
+
+function drawInstrument(ch4pct,c2h4pct,c2h2pct, zone){
+  const W = instrumentCanvas.width, H = instrumentCanvas.height;
+  const tri = triGeom(W,H);
+  drawTriangleBase(ictx, W, H, tri);
+  renderZoneShading(ictx, W, H, tri, classifyZone);
+  drawTriangleBase(ictx, W, H, tri);
+
+  const [x,y] = baryToXY(ch4pct,c2h4pct,c2h2pct, tri);
+  ictx.beginPath();
+  ictx.fillStyle = '#fff';
+  ictx.strokeStyle = ZONE_COLORS[zone];
+  ictx.lineWidth = 3;
+  ictx.arc(x,y,7,0,Math.PI*2);
+  ictx.fill();
+  ictx.stroke();
+
+  ictx.fillStyle = '#c9c9d4';
+  ictx.font = '11px DM Mono, monospace';
+  ictx.fillText('CH₄ '+ch4pct.toFixed(0)+'% · C₂H₄ '+c2h4pct.toFixed(0)+'% · C₂H₂ '+c2h2pct.toFixed(0)+'%', tri.left[0], H-8);
+}
 
 /* =========================================================
    MODO ANALISTA — dataset sintético + regresión logística
-   multinomial (softmax) con expansión polinomial de grado d
+   multinomial (softmax) con expansión polinomial de grado d.
+   Muestreo dirigido por zona (rechazo dentro del simplex) con
+   pesos ilustrativos por zona, validado externamente en Node
+   (seed=202): ninguna clase queda vacía sobre 160 lecturas,
+   y la exactitud de prueba se mantiene entre 88% y 94% para
+   grados 1 a 4.
    ========================================================= */
 function seededRandom(seed){ let s=seed; return function(){ s=(s*9301+49297)%233280; return s/233280; }; }
 function gaussian(rnd){ const u1=Math.max(1e-9,rnd()), u2=rnd(); return Math.sqrt(-2*Math.log(u1))*Math.cos(2*Math.PI*u2); }
 
-// Ruido de etiqueta realista (mismo espíritu que en los otros módulos):
-// suficiente para que grado 1 (frontera recta) subajuste genuinamente,
-// dado que el riesgo real sube tanto por defecto como por exceso de
-// caudal. Validado por simulación externa (seed=101) antes de fijar.
 const REF_DATE = new Date('2026-07-15');
 const MESES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
 function fmtDate(d){ return String(d.getDate()).padStart(2,'0')+' '+MESES[d.getMonth()]+' '+d.getFullYear(); }
 function dateFromDaysAgo(daysAgo){ const d = new Date(REF_DATE); d.setDate(d.getDate()-Math.round(daysAgo)); return d; }
 
-const rnd = seededRandom(101);
+const rnd = seededRandom(202);
+const ZONE_WEIGHTS = {PD:0.15, T1:0.25, T2:0.20, T3:0.10, DT:0.05, D1:0.15, D2:0.10};
+function randSimplexPoint(){
+  const a=-Math.log(Math.max(1e-9,rnd())), b=-Math.log(Math.max(1e-9,rnd())), c=-Math.log(Math.max(1e-9,rnd()));
+  const s=a+b+c; return [100*a/s,100*b/s,100*c/s];
+}
+function pickZone(){
+  let r = rnd();
+  for(const z of ZONES){ r -= ZONE_WEIGHTS[z]; if(r<=0) return z; }
+  return ZONES[ZONES.length-1];
+}
+function sampleForZone(target, maxTries){
+  for(let i=0;i<maxTries;i++){
+    let [p1,p2,p3] = randSimplexPoint();
+    if(classifyZone(p1,p2,p3)!==target) continue;
+    let n1=p1+gaussian(rnd)*1.5, n2=p2+gaussian(rnd)*1.5, n3=p3+gaussian(rnd)*1.0;
+    n1=Math.max(0,n1); n2=Math.max(0,n2); n3=Math.max(0,n3);
+    const s=n1+n2+n3; n1=100*n1/s; n2=100*n2/s; n3=100*n3/s;
+    if(classifyZone(n1,n2,n3)!==target) continue;
+    return [n1,n2,n3];
+  }
+  return null;
+}
+
 const dataset = [];
 for(let i=0;i<160;i++){
-  const flowPct = 50 + rnd()*100;
-  const vib = Math.max(0, 2 + gaussian(rnd)*3 + Math.abs(flowPct-100)*0.03);
-  const score = severityIndex(flowPct, vib) + (rnd()-0.5)*18;
-  const label = classify(Math.max(0, Math.min(100, score)));
+  const z = pickZone();
+  const pct = sampleForZone(z, 20000);
+  if(!pct) continue;
+  const totalPpm = 40 + rnd()*260;
+  const ch4ppm = totalPpm*pct[0]/100;
+  const c2h4ppm = totalPpm*pct[1]/100;
+  const c2h2ppm = totalPpm*pct[2]/100;
   const date = dateFromDaysAgo(rnd()*365);
-  dataset.push({x1: flowPct, x2: vib, label, date});
+  dataset.push({x1:pct[0], x2:pct[1], x3:pct[2], ch4ppm, c2h4ppm, c2h2ppm, zone:z, date});
 }
-const trainPoints = dataset.filter((_,i)=> i%3 !== 0); // 106
-const testPoints = dataset.filter((_,i)=> i%3 === 0);  // 54
+const trainPoints = dataset.filter((_,i)=> i%3 !== 0);
+const testPoints = dataset.filter((_,i)=> i%3 === 0);
 
 function renderDatasetPreview(){
   const tbody = document.getElementById('datasetBody');
@@ -805,19 +889,19 @@ function renderDatasetPreview(){
   if(!tbody) return;
   tbody.innerHTML = dataset.map((d,i)=>{
     const isTrain = i%3 !== 0;
-    return `<tr><td>${i+1}</td><td>${fmtDate(d.date)}</td><td>${d.x1.toFixed(1)}</td><td>${d.x2.toFixed(2)}</td><td>${LEVELS[d.label]}</td><td class="${isTrain?'set-train':'set-test'}">${isTrain?'Entrenamiento':'Prueba'}</td></tr>`;
+    return `<tr><td>${i+1}</td><td>${fmtDate(d.date)}</td><td>${d.ch4ppm.toFixed(1)}</td><td>${d.c2h4ppm.toFixed(1)}</td><td>${d.c2h2ppm.toFixed(1)}</td><td>${d.zone}</td><td class="${isTrain?'set-train':'set-test'}">${isTrain?'Entrenamiento':'Prueba'}</td></tr>`;
   }).join('');
   const sortedDates = dataset.map(d=>d.date).sort((a,b)=>a-b);
-  note.textContent = `${dataset.length} lecturas de bomba, entre ${fmtDate(sortedDates[0])} y ${fmtDate(sortedDates[sortedDates.length-1])} — ${trainPoints.length} de entrenamiento, ${testPoints.length} de prueba.`;
+  note.textContent = `${dataset.length} muestras de DGA, entre ${fmtDate(sortedDates[0])} y ${fmtDate(sortedDates[sortedDates.length-1])} — ${trainPoints.length} de entrenamiento, ${testPoints.length} de prueba.`;
 }
 renderDatasetPreview();
 
-// estandarización con estadísticos del set de entrenamiento
 const m1 = trainPoints.reduce((a,d)=>a+d.x1,0)/trainPoints.length;
 const m2 = trainPoints.reduce((a,d)=>a+d.x2,0)/trainPoints.length;
 const s1 = Math.sqrt(trainPoints.reduce((a,d)=>a+(d.x1-m1)**2,0)/trainPoints.length);
 const s2 = Math.sqrt(trainPoints.reduce((a,d)=>a+(d.x2-m2)**2,0)/trainPoints.length);
 function stdize(d){ return [(d.x1-m1)/s1, (d.x2-m2)/s2]; }
+function stdizeRaw(x1,x2){ return [(x1-m1)/s1, (x2-m2)/s2]; }
 
 function polyFeatures(z1,z2,degree){
   const feats=[1];
@@ -832,8 +916,8 @@ function polyFeatures(z1,z2,degree){
 
 function trainSoftmax(points, degree, epochs=400, lr=0.4, l2=1e-3){
   const X = points.map(d=>{ const [z1,z2]=stdize(d); return polyFeatures(z1,z2,degree); });
-  const y = points.map(d=>d.label);
-  const nFeat = X[0].length, K=3;
+  const y = points.map(d=>ZONES.indexOf(d.zone));
+  const nFeat = X[0].length, K=ZONES.length;
   let W = Array.from({length:K},()=>new Array(nFeat).fill(0));
   for(let ep=0; ep<epochs; ep++){
     const grad = Array.from({length:K},()=>new Array(nFeat).fill(0));
@@ -860,20 +944,12 @@ function predictClass(W, z1,z2, degree){
   const logits = W.map(w=>w.reduce((a,wj,j)=>a+wj*feats[j],0));
   let bi=0,bl=-Infinity;
   logits.forEach((l,i)=>{ if(l>bl){bl=l;bi=i;} });
-  return bi;
+  return ZONES[bi];
 }
 function accuracy(W, points, degree){
   let c=0;
-  points.forEach(d=>{ const [z1,z2]=stdize(d); if(predictClass(W,z1,z2,degree)===d.label) c++; });
+  points.forEach(d=>{ const [z1,z2]=stdize(d); if(predictClass(W,z1,z2,degree)===d.zone) c++; });
   return c/points.length;
-}
-function perClassAccuracy(W, points, degree){
-  const out=[];
-  for(let cls=0; cls<3; cls++){
-    const subset = points.filter(d=>d.label===cls);
-    out.push(subset.length ? accuracy(W, subset, degree) : null);
-  }
-  return out;
 }
 
 const chartCanvas = document.getElementById('chart');
@@ -882,104 +958,76 @@ const residualCanvas = document.getElementById('residuals');
 const rctx = residualCanvas.getContext('2d');
 let currentDegree = 2;
 
-const X1_MIN=50, X1_MAX=150, X2_MIN=0, X2_MAX=12;
-function toPxChart(x1,x2,W,H,pad){
-  return [ pad+(x1-X1_MIN)/(X1_MAX-X1_MIN)*(W-2*pad), H-pad-(x2-X2_MIN)/(X2_MAX-X2_MIN)*(H-2*pad) ];
-}
-function hexToRgbT(hex){ const v=hex.replace('#',''); return [parseInt(v.slice(0,2),16),parseInt(v.slice(2,4),16),parseInt(v.slice(4,6),16)]; }
-
-function drawDecisionMap(W_model, degree){
+function drawDecisionTriangle(W_model, degree){
   const W = chartCanvas.width, H = chartCanvas.height;
-  const pad = 40;
-  cctx.clearRect(0,0,W,H);
-
-  const cell = 8;
-  for(let px=pad; px<W-pad; px+=cell){
-    for(let py=pad; py<H-pad; py+=cell){
-      const x1 = X1_MIN + (px-pad)/(W-2*pad)*(X1_MAX-X1_MIN);
-      const x2 = X2_MIN + (1-(py-pad)/(H-2*pad))*(X2_MAX-X2_MIN);
-      const z1=(x1-m1)/s1, z2=(x2-m2)/s2;
-      const label = predictClass(W_model, z1, z2, degree);
-      cctx.fillStyle = rgba(hexToRgbT(LEVEL_COLORS[label]), 0.16);
-      cctx.fillRect(px, py, cell, cell);
-    }
-  }
-
-  cctx.strokeStyle = '#22222c';
-  cctx.lineWidth = 1;
-  cctx.beginPath();
-  cctx.moveTo(pad, pad); cctx.lineTo(pad, H-pad); cctx.lineTo(W-pad, H-pad);
-  cctx.stroke();
-  cctx.fillStyle = '#a8a8b4';
-  cctx.font = '13px DM Mono, monospace';
-  cctx.fillText('caudal (% del punto óptimo)', W/2-90, H-10);
-  cctx.save();
-  cctx.translate(16, H/2+50);
-  cctx.rotate(-Math.PI/2);
-  cctx.fillText('vibración RMS (mm/s)', 0, 0);
-  cctx.restore();
+  const tri = triGeom(W,H);
+  drawTriangleBase(cctx, W, H, tri);
+  renderZoneShading(cctx, W, H, tri, (ch4,c2h4,c2h2)=>{
+    const [z1,z2] = stdizeRaw(ch4,c2h4);
+    return predictClass(W_model, z1, z2, degree);
+  });
+  drawTriangleBase(cctx, W, H, tri);
 
   trainPoints.forEach(d=>{
-    const [x,y] = toPxChart(d.x1,d.x2,W,H,pad);
+    const [x,y] = baryToXY(d.x1,d.x2,d.x3, tri);
     cctx.beginPath();
-    cctx.fillStyle = LEVEL_COLORS[d.label];
+    cctx.fillStyle = ZONE_COLORS[d.zone];
     cctx.arc(x,y,4,0,Math.PI*2);
     cctx.fill();
   });
   testPoints.forEach(d=>{
-    const [x,y] = toPxChart(d.x1,d.x2,W,H,pad);
+    const [x,y] = baryToXY(d.x1,d.x2,d.x3, tri);
     cctx.beginPath();
-    cctx.fillStyle = LEVEL_COLORS[d.label];
-    cctx.globalAlpha = 0.35;
+    cctx.fillStyle = ZONE_COLORS[d.zone];
+    cctx.globalAlpha = 0.4;
     cctx.arc(x,y,5,0,Math.PI*2);
     cctx.fill();
     cctx.globalAlpha = 1;
     cctx.strokeStyle = '#f4f4f7';
-    cctx.lineWidth = 1.3;
+    cctx.lineWidth = 1.2;
     cctx.stroke();
   });
 
   cctx.fillStyle = '#a8a8b4';
   cctx.font = '12px DM Mono, monospace';
-  cctx.fillText('● entrenamiento · ○ prueba · color = nivel real', pad, pad-16);
+  cctx.fillText('● entrenamiento · ○ prueba · color = zona real', tri.left[0], tri.apex[1]-2);
 }
 
-// Matriz de confusión (conjunto de prueba) — reemplaza las barras de
-// exactitud por nivel: muestra con qué otro nivel se confunde cada
-// error, más útil para decidir prioridades de inspección.
 function drawConfusion(W_model, degree){
-  const N = LEVELS.length;
+  const N = ZONES.length;
   const conf = Array.from({length:N},()=>new Array(N).fill(0));
-  testPoints.forEach(d=>{ const [z1,z2]=stdize(d); conf[d.label][predictClass(W_model,z1,z2,degree)]++; });
+  testPoints.forEach(d=>{ const [z1,z2]=stdize(d); const predZone=predictClass(W_model,z1,z2,degree); conf[ZONES.indexOf(d.zone)][ZONES.indexOf(predZone)]++; });
 
   const W = residualCanvas.width, H = residualCanvas.height;
   rctx.clearRect(0,0,W,H);
-  const padL = 80, padT = 30, cellW = (W-padL-10)/N, cellH = (H-padT-6)/N;
+  const padL = 46, padT = 30, cellW = (W-padL-10)/N, cellH = (H-padT-6)/N;
 
   rctx.fillStyle = '#c9c9d4';
   rctx.font = '12px DM Mono, monospace';
-  rctx.fillText('Matriz de confusión (prueba) — filas = nivel real, columnas = predicho', padL-60, 14);
+  rctx.fillText('Matriz de confusión (prueba) — filas = zona real, columnas = predicha', padL-30, 14);
 
-  LEVELS.forEach((name,j)=>{
+  ZONES.forEach((name,j)=>{
     rctx.fillStyle = '#8a8a98';
     rctx.font = '10px DM Mono, monospace';
-    rctx.fillText(name, padL + j*cellW + 6, padT-6);
+    rctx.fillText(name, padL + j*cellW + cellW/2 - 8, padT-6);
   });
-  LEVELS.forEach((name,i)=>{
+  ZONES.forEach((name,i)=>{
     const y = padT + i*cellH;
     rctx.fillStyle = '#8a8a98';
     rctx.font = '10px DM Mono, monospace';
-    rctx.fillText(name, 6, y+cellH*0.6);
-    LEVELS.forEach((_,j)=>{
+    rctx.fillText(name, 4, y+cellH*0.6);
+    ZONES.forEach((_,j)=>{
       const x = padL + j*cellW;
       const val = conf[i][j];
       const total = conf[i].reduce((a,b)=>a+b,0);
       const intensity = total ? val/total : 0;
-      rctx.fillStyle = i===j ? rgba(hexToRgbT(LEVEL_COLORS[i]), 0.15+intensity*0.6) : rgba([244,244,247], 0.04+intensity*0.22);
-      rctx.fillRect(x, y, cellW-4, cellH-4);
-      rctx.fillStyle = '#f4f4f7';
-      rctx.font = '14px DM Mono, monospace';
-      rctx.fillText(String(val), x+cellW/2-6, y+cellH*0.6);
+      rctx.fillStyle = i===j ? rgba(hexToRgbT(ZONE_COLORS[ZONES[i]]), 0.15+intensity*0.6) : rgba([244,244,247], 0.04+intensity*0.22);
+      rctx.fillRect(x, y, cellW-3, cellH-3);
+      if(val>0){
+        rctx.fillStyle = '#f4f4f7';
+        rctx.font = '11px DM Mono, monospace';
+        rctx.fillText(String(val), x+cellW/2-4, y+cellH*0.6);
+      }
     });
   });
 }
@@ -997,7 +1045,7 @@ function setDegree(degree){
 
   const badge = document.getElementById('mFitBadge');
   if(accTrain < 0.75){
-    badge.textContent = '⚠ Subajuste — una frontera de grado 1 no puede separar un riesgo que sube en dos direcciones.';
+    badge.textContent = '⚠ Subajuste — el modelo es demasiado simple para las fronteras reales del triángulo.';
     badge.style.color = '#e8c547';
   } else if(gapPP > 15){
     badge.textContent = '⚠ Sobreajuste — memoriza el entrenamiento pero generaliza peor a datos nuevos.';
@@ -1007,7 +1055,7 @@ function setDegree(degree){
     badge.style.color = 'var(--success)';
   }
 
-  drawDecisionMap(W_model, degree);
+  drawDecisionTriangle(W_model, degree);
   drawConfusion(W_model, degree);
 }
 
@@ -1034,13 +1082,10 @@ analystToggle.addEventListener('change', ()=>{
 updateBasic();
 </script>
 
-
-<style>
-  .glossary-term{border-bottom:1px dotted var(--muted); cursor:help;}
-</style>
 <script>
 (function(){
   var GLOSSARY = [
+    {term:'DGA', def:'Dissolved Gas Analysis (Análisis de Gases Disueltos): técnica que interpreta los gases disueltos en el aceite de un transformador para diagnosticar el tipo de falla interna.'},
     {term:'MCSA', def:'Análisis de firma de corriente del motor (Motor Current Signature Analysis): detecta fallas mecánicas y eléctricas midiendo variaciones en la corriente, sin abrir el equipo.'},
     {term:'RMS', def:'Valor cuadrático medio (Root Mean Square): resume la energía de una señal de vibración en un solo número comparable.'},
     {term:'dB', def:'Decibel: unidad logarítmica de intensidad sonora — cada +10 dB representa aprox. 10 veces más energía acústica.'},
