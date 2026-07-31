@@ -14,7 +14,7 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
 <style>
   :root{
@@ -38,7 +38,7 @@
   }
   *{box-sizing:border-box;margin:0;padding:0;}
   body{
-    background:var(--bg); color:var(--text); font-family:'DM Mono', monospace;
+    background:var(--bg); color:var(--text); font-family:'Inter', sans-serif;
     line-height:1.6; -webkit-font-smoothing:antialiased;
   }
   h1,h2,h3{font-family:'Syne', sans-serif; font-weight:800; letter-spacing:-0.02em;}
@@ -61,7 +61,7 @@
 
   section{padding:40px 0; border-bottom:1px solid var(--border);}
   section h2{font-size:22px; margin-bottom:14px;}
-  .context p{color:var(--muted); max-width:640px; font-size:15px; text-align:justify;}
+  .context p{color:var(--muted); max-width:640px; font-size:15px;}
   .context p + p{margin-top:12px;}
 
   .panel{
@@ -143,7 +143,7 @@
   .fit-badge{margin-top:14px; font-size:15px; font-weight:600; padding:10px 14px; border-radius:10px; background:var(--panel2); display:inline-block;}
   .arch-note{font-size:13px; color:var(--muted); margin-top:14px; line-height:1.7;}
 
-  .business p{color:var(--muted); font-size:16px; max-width:640px; text-align:justify;}
+  .business p{color:var(--muted); font-size:16px; max-width:640px;}
   .business .stat{color:var(--success); font-weight:500;}
   .business-grid{display:grid; grid-template-columns:1.1fr 1fr; gap:32px; align-items:start; margin-top:8px;}
   @media (max-width:760px){ .business-grid{grid-template-columns:1fr;} }
@@ -167,7 +167,7 @@
   }
   @media (max-width:700px){ .contact-card{grid-template-columns:1fr;} }
   .contact-card h3{font-size:19px; margin-bottom:8px;}
-  .contact-card p{font-size:14px; color:var(--muted); max-width:420px; text-align:justify;}
+  .contact-card p{font-size:14px; color:var(--muted); max-width:420px;}
   .contact-links{display:flex; flex-direction:column; gap:12px;}
   .contact-row{
     display:flex; align-items:center; gap:14px; padding:12px 16px; border-radius:12px;
@@ -324,7 +324,7 @@
 
       <div class="analyst" id="analystPanel">
         <h3 style="font-size:18px; text-transform:none; letter-spacing:0; margin-bottom:8px; color:var(--text);">Cómo se entrenaron ambos modelos</h3>
-        <p style="font-size:15px; color:var(--muted); margin-bottom:18px; text-align:justify;">260 secuencias sintéticas de 12 lecturas, generadas con un nivel base y una aceleración reciente independientes entre sí (para que ningún modelo pueda "hacer trampa" adivinando la aceleración a partir del promedio de la secuencia). El objetivo real (días hasta falla) depende del valor final <b>y</b> de la aceleración reciente. El modelo sin memoria solo puede ver el valor final, así que estructuralmente no puede capturar la parte de aceleración — por diseño, no por estar mal entrenado.</p>
+        <p style="font-size:15px; color:var(--muted); margin-bottom:18px;">260 secuencias sintéticas de 12 lecturas, generadas con un nivel base y una aceleración reciente independientes entre sí (para que ningún modelo pueda "hacer trampa" adivinando la aceleración a partir del promedio de la secuencia). El objetivo real (días hasta falla) depende del valor final <b>y</b> de la aceleración reciente. El modelo sin memoria solo puede ver el valor final, así que estructuralmente no puede capturar la parte de aceleración — por diseño, no por estar mal entrenado.</p>
 
         <div class="dataset-wrap">
           <div class="dataset-label">Vista del dataset de entrenamiento</div>
@@ -371,7 +371,7 @@
 
   <section id="cta">
     <h2>De esta demo a tu planta</h2>
-    <p style="color:var(--muted); max-width:640px; margin-bottom:20px; text-align:justify;">La arquitectura y el entrenamiento de este demo son reales; los datos son sintéticos para poder compartirlos públicamente. Llevar un modelo con memoria temporal a tu planta implica tener un historial real de lecturas secuenciales por equipo (no solo la última medición), suficientes casos de falla para validar que el patrón de aceleración realmente predice mejor que el valor puntual, y calibrar la arquitectura (tamaño de la memoria, cuántos pasos hacia atrás importan) con tus propios datos — ahí es donde entra nuestro motor AutoML. Se adapta al tipo de equipo y a la industria —minería, manufactura, energía, alimentos— cuando la calibramos con tus datos. Si quieres recorrer ese proceso, conversemos.</p>
+    <p style="color:var(--muted); max-width:640px; margin-bottom:20px;">La arquitectura y el entrenamiento de este demo son reales; los datos son sintéticos para poder compartirlos públicamente. Llevar un modelo con memoria temporal a tu planta implica tener un historial real de lecturas secuenciales por equipo (no solo la última medición), suficientes casos de falla para validar que el patrón de aceleración realmente predice mejor que el valor puntual, y calibrar la arquitectura (tamaño de la memoria, cuántos pasos hacia atrás importan) con tus propios datos — ahí es donde entra nuestro motor AutoML. Se adapta al tipo de equipo y a la industria —minería, manufactura, energía, alimentos— cuando la calibramos con tus datos. Si quieres recorrer ese proceso, conversemos.</p>
     <div class="cta-row">
       <a class="btn primary" href="https://chat.whatsapp.com/GvBz1tuUeNZ0xwTkjsuE3z" target="_blank" rel="noopener">Unirme a la comunidad de WhatsApp</a>
       <a class="btn ghost" href="https://www.linkedin.com/company/reliabilit-ia/" target="_blank" rel="noopener">Seguir en LinkedIn</a>
@@ -408,7 +408,7 @@
       <a href="https://www.linkedin.com/in/miguelcayllahua/" target="_blank" rel="noopener">LinkedIn personal</a>
       <a href="mailto:miguelcquispe@gmail.com">Correo</a>
     </div>
-    <p style="text-align:justify;">La metodología (LSTM entrenada desde cero con BPTT) es la misma que aplicamos en proyectos reales; los datos y las secuencias de esta demo son sintéticos para poder compartirlos públicamente. Se calibra con tus propios datos —sin importar el tipo de equipo o la industria— cuando trabajamos juntos. Los parámetros de este demo son de referencia — se recalibran a la medida de cada equipo cuando trabajamos con tus datos.</p>
+    <p style="">La metodología (LSTM entrenada desde cero con BPTT) es la misma que aplicamos en proyectos reales; los datos y las secuencias de esta demo son sintéticos para poder compartirlos públicamente. Se calibra con tus propios datos —sin importar el tipo de equipo o la industria— cuando trabajamos juntos. Los parámetros de este demo son de referencia — se recalibran a la medida de cada equipo cuando trabajamos con tus datos.</p>
   </footer>
 </div>
 
