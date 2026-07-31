@@ -95,7 +95,11 @@
   .chip.active{background:var(--success); border-color:var(--success); color:#0a0a0f; font-weight:600;}
   .filter-reset{font-size:12px; color:var(--muted); background:none; border:none; text-decoration:underline; cursor:pointer; font-family:'DM Mono', monospace;}
   .filter-count{font-size:13px; color:var(--muted); margin-top:14px;}
-  .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:20px; margin-top:20px;}
+  #modelGrid{display:flex; flex-direction:column; gap:40px; margin-top:20px;}
+  .family-heading{font-family:'Syne', sans-serif; font-weight:700; font-size:18px; margin-bottom:14px; display:flex; align-items:center; gap:8px;}
+  .family-heading .family-icon{font-size:19px;}
+  .family-group.is-hidden{display:none;}
+  .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:20px;}
   .card.is-hidden{display:none;}
   .empty-state{color:var(--muted); font-size:14px; padding:32px 0; text-align:center; display:none;}
   .empty-state.show{display:block;}
@@ -275,17 +279,14 @@
     </div>
     <p class="filter-count" id="filterCount"></p>
 
-    <div class="grid" id="modelGrid">
+    <div id="modelGrid">
+    <div class="family-group" data-family="rotativos">
+      <h3 class="family-heading"><span class="family-icon">⚙️</span> Rotativos</h3>
+      <div class="grid">
       <a class="card" data-paradigm="regresion" data-sector="rodamientos" href="./modelos/radar-de-rodamientos/">
         <div class="tag">Regresión · Rodamientos</div>
         <h3>Radar de Rodamientos</h3>
         <p>Estima días hasta falla a partir de vibración RMS y temperatura.</p>
-        <span class="status">● Disponible</span>
-      </a>
-      <a class="card" data-paradigm="series-tiempo" data-sector="energia" href="./modelos/pulso-energetico/">
-        <div class="tag">Series de tiempo · Energía</div>
-        <h3>Pulso Energético</h3>
-        <p>Proyecta consumo energético y detecta desvíos anómalos.</p>
         <span class="status">● Disponible</span>
       </a>
       <a class="card" data-paradigm="clasificacion" data-sector="motores" href="./modelos/diagnostico-del-motor/">
@@ -300,22 +301,10 @@
         <p>Diagnóstico por firma de corriente (MCSA) con pinza amperimétrica.</p>
         <span class="status">● Disponible</span>
       </a>
-      <a class="card" data-paradigm="nuevas-tecnologias" data-sector="aire-comprimido" href="./modelos/oido-industrial/">
-        <div class="tag">Nuevas tecnologías · Aire comprimido</div>
-        <h3>Oído Industrial</h3>
-        <p>Traduce nivel ultrasónico en costo estimado de fuga.</p>
-        <span class="status">● Disponible</span>
-      </a>
       <a class="card" data-paradigm="anomalias" data-sector="compresores" href="./modelos/detector-anomalias-compresor/">
         <div class="tag">Anomalías · Compresor</div>
         <h3>Detector de Anomalías del Compresor</h3>
         <p>Detecta lecturas fuera de patrón sin necesitar ejemplos previos de falla.</p>
-        <span class="status">● Disponible</span>
-      </a>
-      <a class="card" data-paradigm="clustering" data-sector="planta" href="./modelos/radiografia-de-planta/">
-        <div class="tag">Clustering · Planta</div>
-        <h3>Radiografía de Planta</h3>
-        <p>Reduce 10 sensores a un mapa visual de 2 ejes para ver el estado general.</p>
         <span class="status">● Disponible</span>
       </a>
       <a class="card" data-paradigm="clasificacion" data-sector="bombas" href="./modelos/semaforo-de-bombas/">
@@ -342,34 +331,10 @@
         <p>Agrupa turbinas similares según su comportamiento operativo.</p>
         <span class="status">● Disponible</span>
       </a>
-      <a class="card" data-paradigm="clustering" data-sector="sensores" href="./modelos/nubes-de-sensores/">
-        <div class="tag">Clustering · Sensores</div>
-        <h3>Nubes de Sensores</h3>
-        <p>Descubre grupos naturales en una nube de datos de sensores.</p>
-        <span class="status">● Disponible</span>
-      </a>
       <a class="card" data-paradigm="regresion" data-sector="motores" href="./modelos/termometro-del-motor/">
         <div class="tag">Regresión · Motor eléctrico</div>
         <h3>Termómetro del Motor</h3>
         <p>Estima la temperatura de un motor eléctrico según su carga.</p>
-        <span class="status">● Disponible</span>
-      </a>
-      <a class="card" data-paradigm="anomalias" data-sector="sensores" href="./modelos/mapa-de-anomalias/">
-        <div class="tag">Anomalías · Sensores múltiples</div>
-        <h3>Mapa de Anomalías</h3>
-        <p>Ubica visualmente las lecturas que se salen del comportamiento normal.</p>
-        <span class="status">● Disponible</span>
-      </a>
-      <a class="card" data-paradigm="vision" data-sector="termografia" href="./modelos/ojo-termico/">
-        <div class="tag">Visión · Termografía</div>
-        <h3>Ojo Térmico</h3>
-        <p>Clasifica imágenes térmicas para detectar puntos calientes en equipos.</p>
-        <span class="status">● Disponible</span>
-      </a>
-      <a class="card" data-paradigm="clasificacion" data-sector="correas" href="./modelos/correas-transportadoras/">
-        <div class="tag">Clasificación · Correas transportadoras</div>
-        <h3>Rastreador de Correas</h3>
-        <p>Clasifica el desvío lateral de una correa transportadora antes de que desgaste el borde o derrame material.</p>
         <span class="status">● Disponible</span>
       </a>
       <a class="card" data-paradigm="series-tiempo" data-sector="motores" href="./modelos/memoria-del-motor/">
@@ -378,12 +343,71 @@
         <p>Una LSTM entrenada desde cero compara contra un modelo sin memoria para detectar cuándo una subida reciente es más urgente que el mismo valor alcanzado gradualmente.</p>
         <span class="status">● Disponible</span>
       </a>
+      </div>
+    </div>
+    <div class="family-group" data-family="estaticos">
+      <h3 class="family-heading"><span class="family-icon">🔌</span> Estáticos y energía</h3>
+      <div class="grid">
+      <a class="card" data-paradigm="series-tiempo" data-sector="energia" href="./modelos/pulso-energetico/">
+        <div class="tag">Series de tiempo · Energía</div>
+        <h3>Pulso Energético</h3>
+        <p>Proyecta consumo energético y detecta desvíos anómalos.</p>
+        <span class="status">● Disponible</span>
+      </a>
+      <a class="card" data-paradigm="clasificacion" data-sector="correas" href="./modelos/correas-transportadoras/">
+        <div class="tag">Clasificación · Correas transportadoras</div>
+        <h3>Rastreador de Correas</h3>
+        <p>Clasifica el desvío lateral de una correa transportadora antes de que desgaste el borde o derrame material.</p>
+        <span class="status">● Disponible</span>
+      </a>
       <a class="card" data-paradigm="clasificacion" data-sector="transformadores" href="./modelos/transformadores-dga/">
         <div class="tag">Clasificación · Transformadores</div>
         <h3>Transformadores (DGA)</h3>
         <p>Clasifica el tipo de falla de un transformador en las 7 zonas del Triángulo de Duval a partir del análisis de gases disueltos.</p>
         <span class="status">● Disponible</span>
       </a>
+      </div>
+    </div>
+    <div class="family-group" data-family="planta">
+      <h3 class="family-heading"><span class="family-icon">🏭</span> Planta y multi-sensor</h3>
+      <div class="grid">
+      <a class="card" data-paradigm="clustering" data-sector="planta" href="./modelos/radiografia-de-planta/">
+        <div class="tag">Clustering · Planta</div>
+        <h3>Radiografía de Planta</h3>
+        <p>Reduce 10 sensores a un mapa visual de 2 ejes para ver el estado general.</p>
+        <span class="status">● Disponible</span>
+      </a>
+      <a class="card" data-paradigm="clustering" data-sector="sensores" href="./modelos/nubes-de-sensores/">
+        <div class="tag">Clustering · Sensores</div>
+        <h3>Nubes de Sensores</h3>
+        <p>Descubre grupos naturales en una nube de datos de sensores.</p>
+        <span class="status">● Disponible</span>
+      </a>
+      <a class="card" data-paradigm="anomalias" data-sector="sensores" href="./modelos/mapa-de-anomalias/">
+        <div class="tag">Anomalías · Sensores múltiples</div>
+        <h3>Mapa de Anomalías</h3>
+        <p>Ubica visualmente las lecturas que se salen del comportamiento normal.</p>
+        <span class="status">● Disponible</span>
+      </a>
+      </div>
+    </div>
+    <div class="family-group" data-family="termo">
+      <h3 class="family-heading"><span class="family-icon">🌡️</span> Termografía y nuevas técnicas</h3>
+      <div class="grid">
+      <a class="card" data-paradigm="nuevas-tecnologias" data-sector="aire-comprimido" href="./modelos/oido-industrial/">
+        <div class="tag">Nuevas tecnologías · Aire comprimido</div>
+        <h3>Oído Industrial</h3>
+        <p>Traduce nivel ultrasónico en costo estimado de fuga.</p>
+        <span class="status">● Disponible</span>
+      </a>
+      <a class="card" data-paradigm="vision" data-sector="termografia" href="./modelos/ojo-termico/">
+        <div class="tag">Visión · Termografía</div>
+        <h3>Ojo Térmico</h3>
+        <p>Clasifica imágenes térmicas para detectar puntos calientes en equipos.</p>
+        <span class="status">● Disponible</span>
+      </a>
+      </div>
+    </div>
     </div>
     <p class="empty-state" id="emptyState">Ningún modelo coincide con esos filtros. Prueba quitando alguno.</p>
   </section>
@@ -536,6 +560,8 @@
   var emptyEl = document.getElementById('emptyState');
   var active = { paradigm: null, sector: null };
 
+  var familyGroups = Array.prototype.slice.call(grid.querySelectorAll('.family-group'));
+
   function apply(){
     var visible = 0;
     cards.forEach(function(card){
@@ -544,6 +570,10 @@
       var show = okP && okS;
       card.classList.toggle('is-hidden', !show);
       if(show) visible++;
+    });
+    familyGroups.forEach(function(fg){
+      var visibleInGroup = fg.querySelectorAll('.card:not(.is-hidden)').length;
+      fg.classList.toggle('is-hidden', visibleInGroup === 0);
     });
     emptyEl.classList.toggle('show', visible === 0);
     if(active.paradigm || active.sector){
