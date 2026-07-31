@@ -2,6 +2,14 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<!-- Google Analytics (GA4) — INACTIVO: reemplaza G-XXXXXXXXXX por tu Measurement ID real para activarlo -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXXXXX');
+</script>
 <script>(function(){try{var t=localStorage.getItem('ria-theme');if(t==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>RELIABILIT-IA — Demos de Mantenimiento Predictivo</title>
@@ -134,7 +142,11 @@
   .footer-links{display:flex; justify-content:center; gap:18px; flex-wrap:wrap; margin-bottom:18px; font-size:13px;}
   .footer-links a{color:var(--muted); text-decoration:none;}
   .footer-links a:hover{color:var(--success);}
-  .top-row{display:flex; justify-content:flex-end; padding-top:14px;}
+  .nav-row{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; position:sticky; top:0; z-index:30; background:var(--bg); padding:14px 0; margin:0 -24px; padding-left:24px; padding-right:24px; border-bottom:1px solid transparent;}
+  .nav-row.is-stuck{border-bottom-color:var(--border);}
+  .quick-links{display:flex; gap:18px; flex-wrap:wrap;}
+  .quick-links a{font-size:13px; color:var(--muted); text-decoration:none;}
+  .quick-links a:hover{color:var(--success);}
   .thermbar{height:4px; background:linear-gradient(90deg,#2C3E75,#6A3A93,#C43D73,#E86A33,#F5B942); border-radius:0 0 3px 3px;}
   .theme-toggle{
     font-family:'DM Mono', monospace; font-size:12px; padding:7px 12px; border-radius:8px;
@@ -165,15 +177,42 @@
   .method-step .m-desc{font-size:14px; color:var(--muted); line-height:1.55;}
   .method-step.method-loop-step{border:1px dashed var(--accent); background:var(--panel2, var(--panel));}
   @media (max-width:820px){ .method-pipeline{grid-template-columns:1fr;} }
+  .wa-float{
+    position:fixed; bottom:24px; right:24px; z-index:60;
+    width:56px; height:56px; border-radius:50%;
+    background:#25D366; color:#fff; text-decoration:none;
+    display:flex; align-items:center; justify-content:center;
+    font-size:26px; box-shadow:0 4px 14px rgba(0,0,0,.35);
+    transition:transform .15s;
+  }
+  .wa-float:hover{transform:scale(1.08);}
+  @media (max-width:520px){ .wa-float{width:50px; height:50px; font-size:22px; bottom:16px; right:16px;} }
 </style>
 </head>
 <body>
 
 <div class="wrap">
-  <div class="top-row">
+  <div class="nav-row" id="hubNav">
+    <nav class="quick-links">
+      <a href="#modelos">Catálogo</a>
+      <a href="#equipo">Equipo</a>
+      <a href="#metodologia">Metodología</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
     <button class="theme-toggle" id="themeToggle" type="button"><span id="themeIcon">🌙</span><span id="themeLabel">Oscuro</span></button>
   </div>
   <div class="thermbar"></div>
+
+<script>
+  (function(){
+    var nav = document.getElementById('hubNav');
+    if(!nav) return;
+    function onScroll(){ nav.classList.toggle('is-stuck', window.scrollY > 4); }
+    window.addEventListener('scroll', onScroll, {passive:true});
+    onScroll();
+  })();
+  </script>
+
   <header class="hero">
     <img class="logo" src="./assets/logo.svg" alt="RELIABILIT-IA" width="200">
     <div class="badge">Ingeniería aplicada al mantenimiento predictivo</div>
@@ -360,7 +399,7 @@
       </div>
     </div>
 
-    <p class="method-label">Cómo asesoramos tu planta: un ciclo de mejora continua, no un proceso lineal</p>
+    <p class="method-label" id="metodologia">Cómo asesoramos tu planta: un ciclo de mejora continua, no un proceso lineal</p>
     <div class="method-pipeline">
       <div class="method-step">
         <span class="num">1</span>
@@ -419,7 +458,7 @@
     </div>
   </section>
 
-  <section>
+  <section id="contacto">
     <h2>¿Quieres el modelo real, calibrado con tus datos?</h2>
     <p style="color:var(--muted); max-width:640px; margin-top:10px;">Estas demos corren sobre datos sintéticos para poder compartirlas abiertamente; la metodología es la misma que aplicamos en proyectos reales. Para tu planta, el proceso empieza por estandarizar cómo capturas los datos de tus equipos, sigue con un análisis y una preparación cuidadosos, y construye las variables que de verdad explican una falla. Con eso, nuestro motor AutoML elige y ajusta el modelo correcto para tu caso, calibra sus parámetros para que aprenda el patrón real —sin memorizar de más ni de menos— y afina las predicciones para minimizar falsas alarmas y, sobre todo, fallas que el modelo no vio venir. Se adapta a distintos equipos, procesos e industrias —minería, manufactura, energía, alimentos y más— cuando la calibramos con tus datos. Conversemos sobre tu caso.</p>
     <div class="cta-row">
@@ -541,5 +580,6 @@
   })();
 </script>
 
+<a class="wa-float" href="https://chat.whatsapp.com/GvBz1tuUeNZ0xwTkjsuE3z" target="_blank" rel="noopener" aria-label="Unirme a la comunidad de WhatsApp">💬</a>
 </body>
 </html>

@@ -2,6 +2,14 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
+<!-- Google Analytics (GA4) — INACTIVO: reemplaza G-XXXXXXXXXX por tu Measurement ID real para activarlo -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXXXXX');
+</script>
 <script>(function(){try{var t=localStorage.getItem('ria-theme');if(t==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Pulso Energético — RELIABILIT-IA</title>
@@ -210,6 +218,16 @@
     display:inline-flex; align-items:center; gap:6px; transition:border-color .15s;
   }
   .theme-toggle:hover{border-color:var(--accent);}
+  .wa-float{
+    position:fixed; bottom:24px; right:24px; z-index:60;
+    width:56px; height:56px; border-radius:50%;
+    background:#25D366; color:#fff; text-decoration:none;
+    display:flex; align-items:center; justify-content:center;
+    font-size:26px; box-shadow:0 4px 14px rgba(0,0,0,.35);
+    transition:transform .15s;
+  }
+  .wa-float:hover{transform:scale(1.08);}
+  @media (max-width:520px){ .wa-float{width:50px; height:50px; font-size:22px; bottom:16px; right:16px;} }
 </style>
 </head>
 <body>
@@ -923,5 +941,6 @@ analystToggle.addEventListener('change', ()=>{
 })();
 </script>
 
+<a class="wa-float" href="https://chat.whatsapp.com/GvBz1tuUeNZ0xwTkjsuE3z" target="_blank" rel="noopener" aria-label="Unirme a la comunidad de WhatsApp">💬</a>
 </body>
 </html>
