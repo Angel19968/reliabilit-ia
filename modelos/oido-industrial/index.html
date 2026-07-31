@@ -228,6 +228,19 @@
   }
   .wa-float:hover{transform:scale(1.08);}
   @media (max-width:520px){ .wa-float{width:50px; height:50px; font-size:22px; bottom:16px; right:16px;} }
+  .related-section h2{margin-bottom:14px;}
+  .related-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:16px; margin-top:6px;}
+  .related-card{background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:16px 18px; text-decoration:none; color:var(--text); transition:border-color .2s, transform .2s; display:block;}
+  .related-card:hover{border-color:var(--success); transform:translateY(-2px);}
+  .related-card .rc-icon{font-size:18px; margin-right:6px;}
+  .related-card .rc-name{font-weight:600; font-size:15px;}
+  .share-row{display:flex; gap:10px; flex-wrap:wrap; margin:18px 0 0;}
+  .share-btn{
+    font-family:'DM Mono', monospace; font-size:13px; padding:8px 16px; border-radius:999px;
+    border:1px solid var(--border); background:transparent; color:var(--text); text-decoration:none;
+    display:inline-flex; align-items:center; gap:6px; transition:border-color .15s;
+  }
+  .share-btn:hover{border-color:var(--accent);}
 </style>
 </head>
 <body>
@@ -438,6 +451,20 @@
           <span class="contact-text"><b>Correo</b>miguelcquispe@gmail.com</span>
         </a>
       </div>
+    </div>
+  </section>
+
+  <section class="related-section">
+    <div class="share-row">
+      <span style="font-size:13px; color:var(--muted); align-self:center;">Compartir esta demo:</span>
+      <a class="share-btn" href="https://wa.me/?text=Mira%20esta%20demo%20de%20O%C3%ADdo%20Industrial%20%E2%80%94%20mantenimiento%20predictivo%20con%20IA%2C%20en%20vivo%3A%20https%3A//angel19968.github.io/reliabilit-ia/modelos/oido-industrial/" target="_blank" rel="noopener">💬 WhatsApp</a>
+      <a class="share-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A//angel19968.github.io/reliabilit-ia/modelos/oido-industrial/" target="_blank" rel="noopener">in LinkedIn</a>
+    </div>
+    <h2 style="margin-top:32px;">Otros modelos que te pueden interesar</h2>
+    <div class="related-grid">
+      <a class="related-card" href="../pulso-del-motor/"><span class="rc-icon">🔧</span><span class="rc-name">Pulso del Motor</span></a>
+      <a class="related-card" href="../detector-anomalias-compresor/"><span class="rc-icon">🌀</span><span class="rc-name">Detector de Anomalías del Compresor</span></a>
+      <a class="related-card" href="../frontera-de-vibracion/"><span class="rc-icon">📳</span><span class="rc-name">Frontera de Vibración</span></a>
     </div>
   </section>
 
