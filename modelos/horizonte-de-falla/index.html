@@ -15,11 +15,11 @@
 <link rel="icon" href="../../assets/favicon.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
 <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
-<title>Pulso de la Caldera — RELIABILIT-IA</title>
-<meta name="description" content="Sigue la eficiencia térmica de tu caldera día a día y detecta cuándo la incrustación avanza más rápido de lo normal, antes de que se note en la factura de combustible.">
+<title>Horizonte de Falla — RELIABILIT-IA</title>
+<meta name="description" content="Proyecta cuándo la vibración de un equipo cruzará alerta y alarma, con un rango de confianza del 90% en vez de una sola fecha exacta.">
 
-<meta property="og:title" content="Pulso de la Caldera — RELIABILIT-IA">
-<meta property="og:description" content="Mueve el TDS del agua y la eficiencia medida y mira en vivo si tu caldera envejece dentro de lo normal o necesita limpieza química antes de lo previsto.">
+<meta property="og:title" content="Horizonte de Falla — RELIABILIT-IA">
+<meta property="og:description" content="Mueve la vibración de hoy y su tendencia de crecimiento y mira en vivo la ventana de fechas en la que el equipo entrará en alerta o alarma.">
 <meta property="og:image" content="../../assets/og-image.png">
 <meta property="og:type" content="website">
 
@@ -46,8 +46,8 @@
     {
       "@type": "ListItem",
       "position": 3,
-      "name": "Pulso de la Caldera",
-      "item": "https://angel19968.github.io/reliabilit-ia/modelos/pulso-de-la-caldera/"
+      "name": "Horizonte de Falla",
+      "item": "https://angel19968.github.io/reliabilit-ia/modelos/horizonte-de-falla/"
     }
   ]
 }
@@ -56,11 +56,11 @@
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "Pulso de la Caldera — RELIABILIT-IA",
+  "name": "Horizonte de Falla — RELIABILIT-IA",
   "applicationCategory": "BusinessApplication",
   "operatingSystem": "Web",
-  "url": "https://angel19968.github.io/reliabilit-ia/modelos/pulso-de-la-caldera/",
-  "description": "Sigue la eficiencia térmica de tu caldera día a día y detecta cuándo la incrustación avanza más rápido de lo normal, antes de que se note en la factura de combustible.",
+  "url": "https://angel19968.github.io/reliabilit-ia/modelos/horizonte-de-falla/",
+  "description": "Proyecta cuándo la vibración de un equipo cruzará alerta y alarma, con un rango de confianza del 90% en vez de una sola fecha exacta.",
   "isAccessibleForFree": true,
   "offers": {
     "@type": "Offer",
@@ -176,6 +176,7 @@
   .gauge-bar{height:12px; background:var(--border); border-radius:999px; overflow:hidden; margin:8px 0; position:relative;}
   .gauge-fill{height:100%; width:0%; background:var(--success); transition:background .35s ease, width .3s ease;}
   .gauge-mid{position:absolute; left:50%; top:-3px; width:2px; height:18px; background:var(--muted); opacity:.6;}
+  .gauge-tick{position:absolute; top:0; bottom:0; width:2px; background:rgba(244,244,247,0.55); z-index:2;}
   .gauge-value{font-size:16px; color:var(--text);}
   .gauge-value b{font-size:20px;}
   .gauge-note{font-size:13px; color:var(--muted);}
@@ -297,6 +298,7 @@
       <option value="">Ir a otro modelo →</option>
       <option value="../radar-de-rodamientos/">Radar de Rodamientos</option>
       <option value="../pulso-energetico/">Pulso Energético</option>
+      <option value="../pulso-de-la-caldera/">Pulso de la Caldera</option>
       <option value="../diagnostico-del-motor/">Diagnóstico del Motor</option>
       <option value="../pulso-del-motor/">Pulso del Motor</option>
       <option value="../oido-industrial/">Oído Industrial</option>
@@ -313,7 +315,6 @@
       <option value="../correas-transportadoras/">Rastreador de Correas</option>
       <option value="../memoria-del-motor/">Memoria del Motor</option>
       <option value="../transformadores-dga/">Transformadores (DGA)</option>
-      <option value="../horizonte-de-falla/">Horizonte de Falla</option>
     </select>
     <button class="theme-toggle" id="themeToggle" type="button"><span id="themeIcon">🌙</span><span id="themeLabel">Oscuro</span></button>
   </div>
@@ -354,22 +355,22 @@
   })();
   </script>
   <header class="hero">
-    <div class="badge">Ingeniería aplicada a Calderas / Generación de vapor</div>
-    <span class="badge" style="border-color:var(--accent); color:var(--accent); margin-left:8px;">Serie de tiempo · Estadístico</span>
-    <h1>Pulso de la Caldera</h1>
-    <p class="lead">¿La eficiencia térmica de hoy es la normal para el nivel de sólidos disueltos del agua, o la incrustación está avanzando más rápido de lo esperado?</p>
+    <div class="badge">Ingeniería aplicada a Vibración</div>
+    <span class="badge" style="border-color:var(--accent); color:var(--accent); margin-left:8px;">Regresión · Prognóstico probabilístico</span>
+    <h1>Horizonte de Falla</h1>
+    <p class="lead">No es "algún día va a fallar" — es "con 90% de confianza, tienes entre estas dos fechas para actuar".</p>
   </header>
 
   <section class="context">
     <h2>El problema</h2>
-    <p>Toda caldera pierde eficiencia con el tiempo: el agua de alimentación siempre trae sólidos disueltos (TDS) que, si la purga (blowdown) no los controla bien, se depositan como incrustación sobre las superficies de intercambio de calor. Menos calor pasa al agua, más se escapa por la chimenea, y se quema más combustible para producir el mismo vapor. El deterioro es esperable entre limpiezas químicas — lo que este modelo detecta es cuándo la eficiencia cae más rápido de lo que el nivel de TDS explicaría, señal de que la incrustación se está acelerando o de que la purga dejó de estar bien calibrada.</p>
+    <p>Un solo dato de vibración dice poco: lo que importa es la tendencia. Este modelo toma el nivel de vibración de hoy y su velocidad de crecimiento, y proyecta la fecha en la que cruzará el umbral de alerta y el de alarma — no como una fecha exacta (nadie puede prometer eso), sino como un rango con 90% de confianza, calculado a partir de qué tan ruidosa es la tendencia real. Cuanto más dispersa la lectura histórica, más ancho el rango; cuanto más consistente, más angosto y más útil para planificar el cambio del componente con anticipación real.</p>
   </section>
 
   <section id="demo">
     <h2>Demo interactivo</h2>
     <div class="panel">
       <div class="toggle-row">
-        <span class="label">Modelo entrenado con datos sintéticos (Serie de tiempo, promedio móvil) — mueve los sliders para simular una lectura de hoy.</span>
+        <span class="label">Modelo entrenado con datos sintéticos (Regresión lineal + banda de confianza) — mueve los sliders para simular la lectura y tendencia de hoy.</span>
         <label class="switch">
           <span>Modo Analista</span>
           <input type="checkbox" id="analystToggle">
@@ -380,15 +381,15 @@
       <div class="demo-grid">
         <div class="controls-col">
           <div class="slider-group">
-            <label>TDS del agua de caldera hoy <span class="val" id="tdsVal">1400 ppm</span></label>
-            <input type="range" id="tdsSlider" min="500" max="3500" step="10" value="1400">
-            <div class="hint"><span>500 ppm (agua muy pura)</span><span>3500 ppm (límite de control típico)</span></div>
+            <label>Vibración medida hoy <span class="val" id="vibVal">3.2 mm/s</span></label>
+            <input type="range" id="vibSlider" min="1.0" max="9.0" step="0.1" value="3.2">
+            <div class="hint"><span>1.0 mm/s (muy bajo)</span><span>9.0 mm/s (ya en alarma)</span></div>
           </div>
 
           <div class="slider-group">
-            <label>Eficiencia térmica medida hoy <span class="val" id="effVal">86.5 %</span></label>
-            <input type="range" id="effSlider" min="65" max="90" step="0.1" value="86.5">
-            <div class="hint"><span>65 % (muy incrustada)</span><span>90 % (diseño, recién limpiada)</span></div>
+            <label>Tendencia de crecimiento <span class="val" id="rateVal">0.12 mm/s / semana</span></label>
+            <input type="range" id="rateSlider" min="0.02" max="0.60" step="0.01" value="0.12">
+            <div class="hint"><span>0.02 (casi estable)</span><span>0.60 mm/s/semana (degradación rápida)</span></div>
           </div>
 
           <div class="result" id="resultBox">
@@ -405,34 +406,34 @@
         <div class="live-col">
           <h3>Simulación en vivo</h3>
           <div class="ts-wrap">
-            <div class="ts-label">Eficiencia térmica diaria (últimos 24 días) + hoy</div>
+            <div class="ts-label">Proyección de vibración con banda de confianza (90%)</div>
             <canvas id="tsChart" width="560" height="190"></canvas>
           </div>
 
           <div class="gauge-wrap">
-            <div class="gauge-label">Desviación vs. eficiencia esperada para este TDS</div>
-            <div class="gauge-bar"><div class="gauge-mid"></div><div class="gauge-fill" id="gaugeFill"></div></div>
-            <div class="gauge-value"><b id="gaugeValue">0</b> pp <span class="gauge-note">respecto a lo esperado para este TDS</span></div>
+            <div class="gauge-label">Vibración de hoy vs. umbrales de alerta / alarma</div>
+            <div class="gauge-bar" id="gaugeBar"><div class="gauge-fill" id="gaugeFill"></div></div>
+            <div class="gauge-value"><b id="gaugeValue">0</b> mm/s <span class="gauge-note">alerta 4.5 · alarma 7.1 mm/s (ilustrativo, ISO 10816-3)</span></div>
           </div>
 
           <div class="cost-card">
-            <div class="cc-label">Sobrecosto de combustible mensual proyectado si se mantiene</div>
-            <div class="cc-value" id="costMonthly">S/. 0</div>
+            <div class="cc-label">Ventana de planificación (peor caso, 90% de confianza)</div>
+            <div class="cc-value" id="costMonthly">–</div>
           </div>
 
-          <p class="sim-note">Simulación ilustrativa: la serie histórica, la relación TDS-eficiencia y el costo de combustible (S/. 340/día por punto porcentual de déficit) son de ejemplo — no provienen del panel de control real de ninguna caldera.</p>
+          <p class="sim-note">Simulación ilustrativa: los umbrales, la tendencia y el ruido histórico son de ejemplo — no provienen del sistema de monitoreo real de ningún equipo.</p>
         </div>
       </div>
 
       <div class="analyst" id="analystPanel">
         <h3 style="font-size:18px; text-transform:none; letter-spacing:0; margin-bottom:8px; color:var(--text);">Reentrenar en vivo</h3>
-        <p style="font-size:15px; color:var(--muted); margin-bottom:18px;">Elige la ventana de suavizado (promedio móvil de los últimos N días) y observa cómo cambia el pronóstico. Los primeros 17 días son entrenamiento (●, violeta); los últimos 7 son prueba (○, blanco) — el error de pronóstico (MAPE) en la prueba es lo que de verdad importa.</p>
+        <p style="font-size:15px; color:var(--muted); margin-bottom:18px;">Elige cuántas lecturas recientes usar para ajustar la tendencia. Con pocas lecturas, el ajuste reacciona rápido a un cambio real pero el rango de confianza es más ancho; con más lecturas, el rango se angosta pero tarda más en notar un cambio de tendencia genuino.</p>
 
         <div class="dataset-wrap">
-          <div class="dataset-label">Vista del dataset histórico</div>
+          <div class="dataset-label">Vista del dataset histórico (lecturas semanales)</div>
           <div class="dataset-scroll">
             <table class="dataset-table">
-              <thead><tr><th>Fecha</th><th>TDS (ppm)</th><th>Eficiencia (%)</th><th>Set</th></tr></thead>
+              <thead><tr><th>Fecha</th><th>Vibración (mm/s)</th><th>Usada en el ajuste</th></tr></thead>
               <tbody id="datasetBody"></tbody>
             </table>
           </div>
@@ -441,11 +442,10 @@
 
         <div class="degree-row" id="degreeRow"></div>
         <canvas id="chart" width="800" height="320"></canvas>
-        <canvas id="residuals" width="800" height="200"></canvas>
         <div class="metrics">
-          <span>Ventana: <b id="mWindow">5</b> días</span>
-          <span>MAPE entrenamiento: <b id="mMapeTrain">–</b>%</span>
-          <span>MAPE prueba: <b id="mMapeTest">–</b>%</span>
+          <span>Ventana: <b id="mWindow">9</b> lecturas</span>
+          <span>Tendencia: <b id="mSlope">–</b> mm/s/semana</span>
+          <span>R²: <b id="mR2">–</b></span>
         </div>
         <div class="fit-badge" id="mFitBadge">–</div>
       </div>
@@ -456,14 +456,14 @@
     <h2>¿Qué significa para tu planta?</h2>
     <div class="business-grid">
       <div>
-        <p>Con la lectura actual, este déficit de eficiencia proyectado a un mes representa <span class="stat" id="bizCostInline">S/. 0</span> en sobrecosto de combustible. Detectarlo el mismo día que aparece — en vez de notarlo recién en la próxima factura de gas o diésel — es la diferencia entre adelantar una purga o una limpieza química programada, y perder semanas quemando más combustible del necesario para el mismo vapor.</p>
+        <p>Con la lectura actual, tienes <span class="stat" id="bizCostInline">–</span> antes de que, en el peor escenario dentro del 90% de confianza, la vibración entre en zona de alarma. Programar el cambio de componente dentro de esa ventana — en vez de esperar la falla — es la diferencia entre una intervención planificada y una parada de emergencia.</p>
         <div class="biz-action" id="bizAction">
           <div class="biz-title" id="bizTitle">Calculando…</div>
           <div class="biz-detail" id="bizDetail"></div>
         </div>
       </div>
       <div>
-        <div class="ts-label">Proyección de sobrecosto acumulado (30 días)</div>
+        <div class="ts-label">Costo estimado: intervención planificada vs. falla no planificada</div>
         <canvas id="projection" width="480" height="230"></canvas>
       </div>
     </div>
@@ -471,7 +471,7 @@
 
   <section id="cta">
     <h2>De esta demo a tu planta</h2>
-    <p style="color:var(--muted); max-width:640px; margin-bottom:20px;">La serie histórica, la relación TDS-eficiencia y el costo de combustible de este demo están calibrados sobre datos sintéticos para poder compartir esta demo abiertamente — la metodología es la misma que aplicamos en campo para auditar la eficiencia térmica real de tu sala de calderas. Llevarlo a tu planta implica estandarizar cómo capturas tus lecturas de TDS, purga, temperatura de chimenea y consumo de combustible, analizarlas, y calibrar el modelo de pronóstico con tu propio histórico — ahí es donde entra nuestro motor AutoML, ajustando el modelo correcto y evitando falsas alarmas o desvíos reales que pasen desapercibidos. Se adapta al tipo de caldera y combustible de tu planta —pirotubular, acuotubular, gas, diésel, biomasa— cuando la calibramos con tu histórico real. Si quieres recorrer ese proceso, conversemos.</p>
+    <p style="color:var(--muted); max-width:640px; margin-bottom:20px;">El historial de vibración, los umbrales y los costos de este demo están calibrados sobre datos sintéticos para poder compartir esta demo abiertamente — la metodología es la misma que aplicamos en campo para convertir tu programa de monitoreo de vibración en fechas de acción concretas. Llevarlo a tu planta implica estandarizar cómo capturas y guardas tus lecturas de vibración, analizarlas, y calibrar el modelo de tendencia con tu propio histórico — ahí es donde entra nuestro motor AutoML, ajustando el modelo correcto y calculando un rango de confianza real en vez de una fecha inventada. Se adapta al tipo de activo rotativo de tu planta —motores, bombas, ventiladores, cajas reductoras— cuando lo calibramos con tu histórico real. Si quieres recorrer ese proceso, conversemos.</p>
     <div class="cta-row">
       <a class="btn primary" href="https://chat.whatsapp.com/GvBz1tuUeNZ0xwTkjsuE3z" target="_blank" rel="noopener">Unirme a la comunidad de WhatsApp</a>
       <a class="btn ghost" href="https://www.linkedin.com/company/reliabilit-ia/" target="_blank" rel="noopener">Seguir en LinkedIn</a>
@@ -480,11 +480,11 @@
 
     <div class="contact-card">
       <div>
-        <h3>¿Hablamos de la eficiencia de tu caldera?</h3>
-        <p>Si tienes datos de TDS, purga o consumo de combustible y quieres validar este análisis con tu planta, escríbeme directamente.</p>
+        <h3>¿Hablamos de tu programa de monitoreo de vibración?</h3>
+        <p>Si tienes lecturas históricas de vibración y quieres validar este análisis con tu planta, escríbeme directamente.</p>
       </div>
       <div class="contact-links">
-        <a class="contact-row" href="https://wa.me/51997610310?text=Hola%20Miguel%2C%20vi%20el%20demo%20Pulso%20de%20la%20Caldera%20y%20quiero%20conversar%20sobre%20la%20calibracion%20para%20mi%20planta" target="_blank" rel="noopener">
+        <a class="contact-row" href="https://wa.me/51997610310?text=Hola%20Miguel%2C%20vi%20el%20demo%20Horizonte%20de%20Falla%20y%20quiero%20conversar%20sobre%20la%20calibracion%20para%20mi%20planta" target="_blank" rel="noopener">
           <span class="contact-icon">💬</span>
           <span class="contact-text"><b>WhatsApp</b>+51 997 610 310</span>
         </a>
@@ -503,14 +503,14 @@
   <section class="related-section">
     <div class="share-row">
       <span style="font-size:13px; color:var(--muted); align-self:center;">Compartir esta demo:</span>
-      <a class="share-btn" href="https://wa.me/?text=Mira%20esta%20demo%20de%20Pulso%20de%20la%20Caldera%20%E2%80%94%20mantenimiento%20predictivo%20con%20IA%2C%20en%20vivo%3A%20https%3A//angel19968.github.io/reliabilit-ia/modelos/pulso-de-la-caldera/" target="_blank" rel="noopener">💬 WhatsApp</a>
-      <a class="share-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A//angel19968.github.io/reliabilit-ia/modelos/pulso-de-la-caldera/" target="_blank" rel="noopener">in LinkedIn</a>
+      <a class="share-btn" href="https://wa.me/?text=Mira%20esta%20demo%20de%20Horizonte%20de%20Falla%20%E2%80%94%20mantenimiento%20predictivo%20con%20IA%2C%20en%20vivo%3A%20https%3A//angel19968.github.io/reliabilit-ia/modelos/horizonte-de-falla/" target="_blank" rel="noopener">💬 WhatsApp</a>
+      <a class="share-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A//angel19968.github.io/reliabilit-ia/modelos/horizonte-de-falla/" target="_blank" rel="noopener">in LinkedIn</a>
     </div>
     <h2 style="margin-top:32px;">Otros modelos que te pueden interesar</h2>
     <div class="related-grid">
-      <a class="related-card" href="../pulso-energetico/"><span class="rc-icon">⚡</span><span class="rc-name">Pulso Energético</span></a>
-      <a class="related-card" href="../transformadores-dga/"><span class="rc-icon">🔌</span><span class="rc-name">Transformadores (DGA)</span></a>
-      <a class="related-card" href="../detector-anomalias-compresor/"><span class="rc-icon">🌀</span><span class="rc-name">Detector de Anomalías del Compresor</span></a>
+      <a class="related-card" href="../radar-de-rodamientos/"><span class="rc-icon">⚙️</span><span class="rc-name">Radar de Rodamientos</span></a>
+      <a class="related-card" href="../frontera-de-vibracion/"><span class="rc-icon">📳</span><span class="rc-name">Frontera de Vibración</span></a>
+      <a class="related-card" href="../guardian-de-la-bomba/"><span class="rc-icon">🚰</span><span class="rc-name">Guardián de la Bomba</span></a>
     </div>
   </section>
 
@@ -522,13 +522,13 @@
       <a href="https://www.linkedin.com/in/miguelcayllahua/" target="_blank" rel="noopener">LinkedIn personal</a>
       <a href="mailto:miguelcquispe@gmail.com">Correo</a>
     </div>
-    <p style="">La metodología es la misma que aplicamos en proyectos reales; los datos y la simulación de esta demo son sintéticos para poder compartirlos públicamente. Se calibra con tu propio histórico de TDS, purga y consumo de combustible —sin importar el tipo de caldera— cuando trabajamos juntos. Los parámetros de este demo son de referencia — se recalibran a la medida de cada equipo cuando trabajamos con tus datos.</p>
+    <p style="">La metodología es la misma que aplicamos en proyectos reales; los datos y la simulación de esta demo son sintéticos para poder compartirlos públicamente. Se calibra con tu propio histórico de vibración —sin importar el tipo de activo rotativo— cuando trabajamos juntos. Los parámetros de este demo son de referencia — se recalibran a la medida de cada equipo cuando trabajamos con tus datos.</p>
   </footer>
 </div>
 
 <script>
 /* =========================================================
-   Datos sintéticos base: 24 días de TDS y eficiencia térmica
+   Datos sintéticos base: 12 lecturas semanales de vibración
    ========================================================= */
 function seededRandom(seed){
   let s = seed;
@@ -537,55 +537,72 @@ function seededRandom(seed){
     return s/233280;
   };
 }
-function baseEfficiency(tds){
-  // relación de ejemplo: 88% de diseño, con control de TDS hasta 800 ppm;
-  // sobre ese punto, cada 100 ppm extra cuesta ~0.25 pp de eficiencia por incrustación.
-  return 88 - 0.0025*Math.max(0, tds-800);
-}
 
-// Fechas reales: esta es una serie de tiempo consecutiva, así que cada día
-// del histórico tiene una fecha de calendario real, terminando justo antes
-// de REF_DATE (que representa "hoy" en esta simulación).
+const ALERT = 4.5;  // mm/s RMS — ilustrativo, zona B/C tipo ISO 10816-3
+const ALARM = 7.1;  // mm/s RMS — ilustrativo, zona C/D tipo ISO 10816-3
+const Z90 = 1.645;  // z para banda de confianza de 90% (dos colas)
+
 const REF_DATE = new Date('2026-07-15');
 const MESES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
 function fmtDate(d){ return String(d.getDate()).padStart(2,'0')+' '+MESES[d.getMonth()]+' '+d.getFullYear(); }
-function dateForDay(i, total){ const d = new Date(REF_DATE); d.setDate(d.getDate()-(total-i)); return d; }
+function dateForOffset(daysFromToday){ const d = new Date(REF_DATE); d.setDate(d.getDate()+Math.round(daysFromToday)); return d; }
+function dateForHistDay(dayIdx, lastHistDay){ const d = new Date(REF_DATE); d.setDate(d.getDate()-(lastHistDay-dayIdx)); return d; }
 
-const rnd = seededRandom(11);
-const N_HIST = 24;
-const tds = [];
-const eff = [];
-let tdsLevel = 850;
+const rnd = seededRandom(13);
+const N_HIST = 12;
+const histDays = [], histVib = [];
+let trueVib = 1.9;
 for(let i=0;i<N_HIST;i++){
-  // tendencia de fondo: el TDS promedio sube poco a poco al acercarse la fecha
-  // de limpieza química, con variación operativa día a día (purgas parciales).
-  const trend = i*55;
-  const wobble = (rnd()-0.5)*220;
-  tdsLevel = Math.max(650, 850+trend+wobble);
-  const noise = (rnd()-0.5)*4.0;
-  const e = Math.max(60, Math.min(90, baseEfficiency(tdsLevel)+noise));
-  tds.push(tdsLevel);
-  eff.push(e);
+  trueVib += 0.16 + (rnd()-0.5)*0.08;
+  const noise = (rnd()-0.5)*0.5;
+  histDays.push(i*7);
+  histVib.push(Math.max(0.3, trueVib+noise));
 }
-// Desviación estándar de los residuos reales vs. la relación esperada —
-// de aquí sale la banda de confianza, no de un número inventado.
-const residuals0 = eff.map((e,i)=> e - baseEfficiency(tds[i]));
-const stdResidual = Math.sqrt(residuals0.reduce((a,r)=>a+r*r,0)/residuals0.length);
-const BAND = 1.6*stdResidual;
-const FUEL_COST_PER_PP = 340; // soles/día por punto porcentual de déficit de eficiencia, ilustrativo
+const LAST_HIST_DAY = histDays[histDays.length-1];
+
+/* =========================================================
+   Regresión lineal (OLS) + banda de confianza
+   ========================================================= */
+function olsFit(x, y){
+  const n = x.length;
+  const xBar = x.reduce((a,b)=>a+b,0)/n;
+  const yBar = y.reduce((a,b)=>a+b,0)/n;
+  let Sxy=0, Sxx=0, Syy=0;
+  for(let i=0;i<n;i++){ Sxy += (x[i]-xBar)*(y[i]-yBar); Sxx += (x[i]-xBar)**2; Syy += (y[i]-yBar)**2; }
+  const slope = Sxx>0 ? Sxy/Sxx : 0;
+  const intercept = yBar - slope*xBar;
+  let ssRes = 0;
+  for(let i=0;i<n;i++){ const pred = intercept+slope*x[i]; ssRes += (y[i]-pred)**2; }
+  const sigma = n>2 ? Math.sqrt(ssRes/(n-2)) : 0;
+  const seSlope = Sxx>0 ? sigma/Math.sqrt(Sxx) : 0;
+  const r2 = Syy>0 ? 1-ssRes/Syy : 1;
+  return {slope, intercept, sigma, seSlope, r2};
+}
+
+// banda "típica" derivada del historial completo — se usa para ensanchar/angostar
+// la proyección del modo básico según qué tan ruidosa es una tendencia real de este tipo.
+const fitFull = olsFit(histDays, histVib);
+const SESLOPE_TYP = fitFull.seSlope; // mm/s por día
+
+function projectCrossing(anchorDay, anchorVal, slopePerDay, threshold){
+  if(anchorVal >= threshold) return anchorDay;
+  if(slopePerDay <= 1e-6) return null;
+  return anchorDay + (threshold-anchorVal)/slopePerDay;
+}
 
 /* =========================================================
    MODO BÁSICO
    ========================================================= */
-const tdsSlider = document.getElementById('tdsSlider');
-const effSlider = document.getElementById('effSlider');
-const tdsVal = document.getElementById('tdsVal');
-const effVal = document.getElementById('effVal');
+const vibSlider = document.getElementById('vibSlider');
+const rateSlider = document.getElementById('rateSlider');
+const vibVal = document.getElementById('vibVal');
+const rateVal = document.getElementById('rateVal');
 const riskDot = document.getElementById('riskDot');
 const riskTitle = document.getElementById('riskTitle');
 const riskDetail = document.getElementById('riskDetail');
 const costLine = document.getElementById('costLine');
 const gaugeFill = document.getElementById('gaugeFill');
+const gaugeBar = document.getElementById('gaugeBar');
 const gaugeValue = document.getElementById('gaugeValue');
 const costMonthlyEl = document.getElementById('costMonthly');
 const bizCostInline = document.getElementById('bizCostInline');
@@ -597,137 +614,158 @@ const pctx = projectionCanvas.getContext('2d');
 const tsCanvas = document.getElementById('tsChart');
 const tctx = tsCanvas.getContext('2d');
 
+const PLANNED_COST = 3500;   // soles, intervención planificada — ilustrativo
+const EMERGENCY_COST = 14000; // soles, falla no planificada — ilustrativo (~4x)
+
 function fmtSoles(v){
   return 'S/. ' + Math.round(v).toLocaleString('es-PE');
 }
+function fmtDays(d){
+  if(d==null) return 'sin cruce proyectado';
+  if(d<=0) return 'ya alcanzado';
+  return Math.round(d) + ' días';
+}
 
-function drawProjection(dailyExtraCost, colorCss){
+// dibuja las dos barras de comparación de costo
+function drawCostComparison(){
   const W = projectionCanvas.width, H = projectionCanvas.height;
   pctx.clearRect(0,0,W,H);
-  const padL = 56, padR = 20, padT = 20, padB = 34;
-  const days = 30;
-  const maxTotal = Math.max(200, dailyExtraCost*days*1.15);
-  function toPx(x,y){
-    return [
-      padL + x/days*(W-padL-padR),
-      H-padB - y/maxTotal*(H-padT-padB)
-    ];
-  }
+  const padL = 56, padR = 20, padT = 20, padB = 40;
+  const maxV = EMERGENCY_COST*1.15;
+  const barW = 90;
+  const bars = [
+    {label:'Planificada', value:PLANNED_COST, color:'#3ecfa0', x: W*0.28},
+    {label:'No planificada', value:EMERGENCY_COST, color:'#f4722e', x: W*0.68}
+  ];
   pctx.strokeStyle = '#22222c';
   pctx.lineWidth = 1;
   pctx.beginPath();
   pctx.moveTo(padL, padT); pctx.lineTo(padL, H-padB); pctx.lineTo(W-padR, H-padB);
   pctx.stroke();
+  bars.forEach(b=>{
+    const barH = (b.value/maxV)*(H-padT-padB);
+    const x = b.x - barW/2, y = H-padB-barH;
+    pctx.fillStyle = b.color;
+    pctx.fillRect(x, y, barW, barH);
+    pctx.fillStyle = '#f4f4f7';
+    pctx.font = '13px DM Mono, monospace';
+    pctx.textAlign = 'center';
+    pctx.fillText(fmtSoles(b.value), b.x, y-10);
+    pctx.fillStyle = '#a8a8b4';
+    pctx.font = '12px DM Mono, monospace';
+    pctx.fillText(b.label, b.x, H-padB+18);
+  });
+  pctx.textAlign = 'left';
   pctx.fillStyle = '#8a8a98';
   pctx.font = '12px DM Mono, monospace';
-  pctx.fillText('días', W/2-14, H-10);
-  pctx.save();
-  pctx.translate(16, H/2+40);
-  pctx.rotate(-Math.PI/2);
-  pctx.fillText('sobrecosto acumulado (S/.)', 0,0);
-  pctx.restore();
-
-  const color = getComputedStyle(document.documentElement).getPropertyValue(colorCss.replace('var(','').replace(')','')).trim() || colorCss;
-  pctx.strokeStyle = colorCss.startsWith('var(') ? color : colorCss;
-  pctx.lineWidth = 2.5;
-  pctx.beginPath();
-  for(let d=0; d<=days; d++){
-    const [x,y] = toPx(d, dailyExtraCost*d);
-    if(d===0) pctx.moveTo(x,y); else pctx.lineTo(x,y);
-  }
-  pctx.stroke();
-
-  const [x1,y1] = toPx(days, dailyExtraCost*days);
-  pctx.fillStyle = pctx.strokeStyle;
-  pctx.beginPath(); pctx.arc(x1,y1,5,0,Math.PI*2); pctx.fill();
-  pctx.fillStyle = '#f4f4f7';
-  pctx.font = '13px DM Mono, monospace';
-  pctx.fillText(fmtSoles(dailyExtraCost*days), Math.max(padL, x1-70), y1-10);
+  pctx.fillText('costo estimado (S/.), ilustrativo', padL, 14);
 }
 
-function drawTsChart(todayEff, todayTds, status){
+function drawTsChart(anchorVal, slope, slopeLow, slopeHigh, bounds){
   const W = tsCanvas.width, H = tsCanvas.height;
   tctx.clearRect(0,0,W,H);
-  const padL = 40, padR = 16, padT = 14, padB = 22;
-  const totalDays = N_HIST+1;
-  const allVals = eff.concat([todayEff]);
-  const yMin = Math.min(...allVals)*0.94, yMax = Math.max(...allVals)*1.03;
-  function toPx(i,v){
+  const padL = 44, padR = 16, padT = 16, padB = 24;
+  const horizon = bounds.horizon;
+  const yMax = ALARM*1.32;
+  function toPx(x,y){
     return [
-      padL + i/(totalDays-1)*(W-padL-padR),
-      H-padB - (v-yMin)/(yMax-yMin)*(H-padT-padB)
+      padL + x/horizon*(W-padL-padR),
+      H-padB - Math.min(y,yMax)/yMax*(H-padT-padB)
     ];
   }
-  // banda esperada a lo largo del histórico + hoy
-  tctx.beginPath();
-  const bandPts = [];
-  for(let i=0;i<N_HIST;i++){
-    const exp = baseEfficiency(tds[i]);
-    bandPts.push([i, exp+BAND]);
+
+  // bandas verticales de cruce (alerta y alarma)
+  function shadeBand(early, late, color){
+    if(early==null) return;
+    const lateClamped = late==null ? horizon : Math.min(late, horizon);
+    const [x1] = toPx(Math.min(early,horizon), 0);
+    const [x2] = toPx(lateClamped, 0);
+    tctx.fillStyle = color;
+    tctx.fillRect(x1, padT, Math.max(1,x2-x1), H-padT-padB);
   }
-  bandPts.push([N_HIST, baseEfficiency(todayTds)+BAND]);
-  bandPts.forEach((p,idx)=>{ const [x,y]=toPx(p[0],p[1]); if(idx===0) tctx.moveTo(x,y); else tctx.lineTo(x,y); });
-  for(let i=N_HIST;i>=0;i--){
-    const exp = i<N_HIST ? baseEfficiency(tds[i]) : baseEfficiency(todayTds);
-    const [x,y] = toPx(i, exp-BAND);
+  shadeBand(bounds.alertEarly, bounds.alertLate, 'rgba(232,197,71,0.12)');
+  shadeBand(bounds.alarmEarly, bounds.alarmLate, 'rgba(244,114,46,0.12)');
+
+  // cono de incertidumbre
+  tctx.beginPath();
+  for(let d=0; d<=horizon; d+=Math.max(1,Math.round(horizon/60))){
+    const [x,y] = toPx(d, anchorVal+slopeHigh*d);
+    if(d===0) tctx.moveTo(x,y); else tctx.lineTo(x,y);
+  }
+  for(let d=horizon; d>=0; d-=Math.max(1,Math.round(horizon/60))){
+    const [x,y] = toPx(d, anchorVal+slopeLow*d);
     tctx.lineTo(x,y);
   }
   tctx.closePath();
-  tctx.fillStyle = 'rgba(62,207,160,0.08)';
+  tctx.fillStyle = 'rgba(123,94,167,0.16)';
   tctx.fill();
 
-  // línea histórica
+  // línea central
   tctx.strokeStyle = '#7b5ea7';
-  tctx.lineWidth = 1.8;
-  tctx.beginPath();
-  eff.forEach((e,i)=>{ const [x,y]=toPx(i,e); if(i===0) tctx.moveTo(x,y); else tctx.lineTo(x,y); });
-  tctx.stroke();
-  tctx.fillStyle = '#7b5ea7';
-  eff.forEach((e,i)=>{ const [x,y]=toPx(i,e); tctx.beginPath(); tctx.arc(x,y,2,0,Math.PI*2); tctx.fill(); });
-
-  // marcador de hoy
-  const [tx,ty] = toPx(N_HIST, todayEff);
-  const [lx,ly] = toPx(N_HIST-1, eff[N_HIST-1]);
-  tctx.strokeStyle = status.color;
   tctx.lineWidth = 2;
-  tctx.beginPath(); tctx.moveTo(lx,ly); tctx.lineTo(tx,ty); tctx.stroke();
-  tctx.fillStyle = status.color;
-  tctx.beginPath(); tctx.arc(tx,ty,5.5,0,Math.PI*2); tctx.fill();
+  tctx.beginPath();
+  for(let d=0; d<=horizon; d+=Math.max(1,Math.round(horizon/60))){
+    const [x,y] = toPx(d, anchorVal+slope*d);
+    if(d===0) tctx.moveTo(x,y); else tctx.lineTo(x,y);
+  }
+  tctx.stroke();
+
+  // líneas de umbral
+  [[ALERT,'#e8c547','alerta'],[ALARM,'#f4722e','alarma']].forEach(([T,color,label])=>{
+    const [x1,y1] = toPx(0,T), [x2] = toPx(horizon,T);
+    tctx.strokeStyle = color;
+    tctx.setLineDash([5,4]);
+    tctx.lineWidth = 1.5;
+    tctx.beginPath(); tctx.moveTo(x1,y1); tctx.lineTo(x2,y1); tctx.stroke();
+    tctx.setLineDash([]);
+    tctx.fillStyle = color;
+    tctx.font = '11px DM Mono, monospace';
+    tctx.fillText(label, x1+4, y1-4);
+  });
+
+  // marcador "hoy"
+  const [tx,ty] = toPx(0, anchorVal);
+  tctx.fillStyle = '#3ecfa0';
+  tctx.beginPath(); tctx.arc(tx,ty,5,0,Math.PI*2); tctx.fill();
   tctx.fillStyle = '#f4f4f7';
   tctx.font = '11px DM Mono, monospace';
-  tctx.fillText('hoy', Math.max(padL, tx-14), ty-10);
+  tctx.fillText('hoy', tx+8, ty+4);
 
   tctx.fillStyle = '#8a8a98';
   tctx.font = '11px DM Mono, monospace';
-  tctx.fillText('% eficiencia · zona verde = rango esperado', padL, 12);
+  tctx.fillText('mm/s · banda violeta = rango 90% · banda ámbar/naranja = ventana de cruce', padL, 12);
 }
 
 function updateBasic(){
-  const t = parseFloat(tdsSlider.value);
-  const e = parseFloat(effSlider.value);
-  tdsVal.textContent = t.toFixed(0) + ' ppm';
-  effVal.textContent = e.toFixed(1) + ' %';
+  const vib = parseFloat(vibSlider.value);
+  const rate = parseFloat(rateSlider.value);
+  vibVal.textContent = vib.toFixed(1) + ' mm/s';
+  rateVal.textContent = rate.toFixed(2) + ' mm/s / semana';
 
-  const expected = baseEfficiency(t);
-  const deviation = e - expected; // negativo = peor de lo esperado
-  const absDev = Math.abs(deviation);
+  const slope = rate/7;
+  const slopeLow = Math.max(0, slope - Z90*SESLOPE_TYP);
+  const slopeHigh = slope + Z90*SESLOPE_TYP;
+
+  const alertCentral = projectCrossing(0, vib, slope, ALERT);
+  const alertEarly = projectCrossing(0, vib, slopeHigh, ALERT);
+  const alertLate = projectCrossing(0, vib, slopeLow, ALERT);
+  const alarmCentral = projectCrossing(0, vib, slope, ALARM);
+  const alarmEarly = projectCrossing(0, vib, slopeHigh, ALARM);
+  const alarmLate = projectCrossing(0, vib, slopeLow, ALARM);
 
   let color, title, detail, simple;
-  if(absDev <= BAND){
-    color = 'var(--success)';
-    title = 'Envejecimiento normal';
-    detail = 'La eficiencia de hoy está dentro del rango esperado para este nivel de TDS.';
-    simple = 'todo normal, la caldera envejece como se espera.';
-  } else if(absDev <= BAND*2){
-    color = '#e8c547';
-    title = 'Desvío moderado';
-    detail = deviation<0 ? 'La eficiencia cae más rápido de lo esperado para este TDS. Vale la pena revisar la purga en la próxima ronda.' : 'Eficiencia mejor de lo esperado para este TDS — probablemente una purga reciente; confirma que el sensor esté bien calibrado.';
-    simple = deviation<0 ? 'revisa la purga en tu próxima ronda.' : 'confirma que el sensor de eficiencia esté bien calibrado.';
+  if(vib >= ALARM){
+    color = 'var(--cta)'; title = 'Ya en zona de alarma';
+    detail = 'La vibración de hoy ya está por encima del umbral de alarma — esto requiere atención inmediata, no una proyección a futuro.';
+    simple = 'esto ya necesita atención hoy, no una proyección.';
+  } else if(vib >= ALERT){
+    color = '#e8c547'; title = 'En zona de alerta';
+    detail = `Con esta tendencia, se proyecta alarma en ${fmtDays(alarmCentral)} (rango 90%: ${fmtDays(alarmEarly)} — ${fmtDays(alarmLate)}).`;
+    simple = 'ya está en alerta; empieza a planificar el cambio ahora.';
   } else {
-    color = 'var(--cta)';
-    title = 'Desvío alto — revisar hoy';
-    detail = deviation<0 ? 'Caída de eficiencia muy por encima de lo que explica el TDS: posible incrustación acelerada, fuga de vapor o purga mal calibrada. Programa una limpieza química si persiste.' : 'Eficiencia muy por encima de lo esperado para este TDS — confirma que la lectura del sensor sea correcta.';
-    simple = deviation<0 ? 'revisa hoy: puede haber incrustación acelerada o una fuga de vapor.' : 'revisa hoy el sensor, el dato no cuadra.';
+    color = 'var(--success)'; title = 'Zona normal';
+    detail = `Con esta tendencia, se proyecta alerta en ${fmtDays(alertCentral)} (rango 90%: ${fmtDays(alertEarly)} — ${fmtDays(alertLate)}) y alarma en ${fmtDays(alarmCentral)} (rango 90%: ${fmtDays(alarmEarly)} — ${fmtDays(alarmLate)}).`;
+    simple = 'todo normal por ahora; el modelo ya te muestra cuándo replanificar.';
   }
   riskDot.style.background = color;
   riskTitle.style.color = color;
@@ -736,211 +774,215 @@ function updateBasic(){
   const simpleEl = document.getElementById('simpleSummary');
   if(simpleEl) simpleEl.textContent = '💬 En palabras simples: ' + simple;
 
-  const dailyExtraCost = Math.max(0, -deviation) * FUEL_COST_PER_PP;
-  costLine.textContent = deviation<0
-    ? ('Sobrecosto de hoy: ' + fmtSoles(dailyExtraCost))
-    : 'Sin sobrecosto — eficiencia igual o mejor que la esperada.';
+  if(alarmEarly==null){
+    costLine.textContent = 'Con esta tendencia, ni en el peor escenario (90%) se proyecta alarma en el horizonte mostrado.';
+  } else if(alarmEarly<=0){
+    costLine.textContent = 'La alarma ya está alcanzada o es inminente — no hay ventana de planificación.';
+  } else {
+    costLine.textContent = `Ventana de planificación: hasta ${fmtDays(alarmEarly)} (peor caso, 90%) — fecha límite aprox. ${fmtDate(dateForOffset(alarmEarly))}.`;
+  }
 
-  const pct = Math.min(100, Math.max(0, 50 + (deviation/(BAND*2.5))*50));
+  const gaugeMax = ALARM*1.3;
+  const pct = Math.min(100, Math.max(0, (vib/gaugeMax)*100));
   gaugeFill.style.width = pct.toFixed(1) + '%';
   gaugeFill.style.background = color;
-  gaugeValue.textContent = (deviation>=0?'+':'') + deviation.toFixed(1);
+  gaugeValue.textContent = vib.toFixed(1);
+  // ticks de alerta/alarma sobre el gauge
+  let alertTick = gaugeBar.querySelector('.tick-alert');
+  let alarmTick = gaugeBar.querySelector('.tick-alarm');
+  if(!alertTick){
+    alertTick = document.createElement('span'); alertTick.className='gauge-tick tick-alert';
+    alarmTick = document.createElement('span'); alarmTick.className='gauge-tick tick-alarm';
+    gaugeBar.appendChild(alertTick); gaugeBar.appendChild(alarmTick);
+  }
+  alertTick.style.left = ((ALERT/gaugeMax)*100).toFixed(1)+'%';
+  alarmTick.style.left = ((ALARM/gaugeMax)*100).toFixed(1)+'%';
 
-  const monthly = dailyExtraCost*30;
-  costMonthlyEl.textContent = fmtSoles(monthly);
-  bizCostInline.textContent = fmtSoles(monthly);
+  if(alarmEarly==null){
+    costMonthlyEl.textContent = 'Sin urgencia';
+  } else if(alarmEarly<=0){
+    costMonthlyEl.textContent = 'Inmediata';
+  } else {
+    costMonthlyEl.textContent = fmtDate(dateForOffset(alarmEarly));
+  }
+
+  bizCostInline.textContent = alarmEarly==null ? 'un horizonte largo y sin urgencia' : (alarmEarly<=0 ? '0 días' : fmtDays(alarmEarly));
   bizCostInline.style.color = color;
   bizAction.style.borderColor = color;
   bizTitle.style.color = color;
   bizTitle.textContent = title;
-  bizDetail.textContent = detail;
+  bizDetail.textContent = alarmEarly==null || alarmEarly<=0
+    ? detail
+    : `Una intervención planificada dentro de esa ventana cuesta en promedio ${fmtSoles(PLANNED_COST)}; una falla no planificada (parada de emergencia + repuesto urgente + producción perdida) cuesta en promedio ${fmtSoles(EMERGENCY_COST)} — un ahorro potencial de ${fmtSoles(EMERGENCY_COST-PLANNED_COST)} (ilustrativo).`;
 
-  drawProjection(dailyExtraCost, color);
-  drawTsChart(e, t, {color: color.startsWith('var(') ? getComputedStyle(document.documentElement).getPropertyValue(color.slice(4,-1)).trim() : color});
+  const horizon = Math.max(60, Math.min(760, (alarmLate!=null ? alarmLate : (alarmCentral!=null ? alarmCentral*1.6 : 400))*1.15));
+  drawTsChart(vib, slope, slopeLow, slopeHigh, {horizon, alertEarly, alertLate, alarmEarly, alarmLate});
+  drawCostComparison();
 }
-tdsSlider.addEventListener('input', updateBasic);
-effSlider.addEventListener('input', updateBasic);
+vibSlider.addEventListener('input', updateBasic);
+rateSlider.addEventListener('input', updateBasic);
 updateBasic();
+</script>
 
+<script>
 /* =========================================================
-   MODO ANALISTA — pronóstico por promedio móvil, ventana ajustable
+   MODO ANALISTA — ventana de lecturas recientes + cono de proyección
    ========================================================= */
-function forecastSeries(window){
-  // predicción del día i = promedio de los 'window' días anteriores
-  const preds = [];
-  for(let i=window;i<N_HIST;i++){
-    let sum=0;
-    for(let k=1;k<=window;k++) sum += eff[i-k];
-    preds.push({i, actual: eff[i], pred: sum/window});
-  }
-  return preds;
-}
-
-const TRAIN_END = 17; // días 0..16 entrenamiento, 17..23 prueba
-
-function renderDatasetPreview(){
+function renderDatasetPreview(usedFromIdx){
   const tbody = document.getElementById('datasetBody');
   const note = document.getElementById('datasetNote');
   if(!tbody) return;
-  tbody.innerHTML = tds.map((t,i)=>{
-    const isTrain = i < TRAIN_END;
-    const date = dateForDay(i, N_HIST);
-    return `<tr><td>${fmtDate(date)}</td><td>${t.toFixed(0)}</td><td>${eff[i].toFixed(1)}%</td><td class="${isTrain?'set-train':'set-test'}">${isTrain?'Entrenamiento':'Prueba'}</td></tr>`;
+  tbody.innerHTML = histDays.map((d,i)=>{
+    const date = dateForHistDay(d, LAST_HIST_DAY);
+    const used = i >= usedFromIdx;
+    return `<tr><td>${fmtDate(date)}</td><td>${histVib[i].toFixed(2)}</td><td class="${used?'set-train':'set-test'}">${used?'Sí':'No (fuera de ventana)'}</td></tr>`;
   }).join('');
-  const firstDate = dateForDay(0, N_HIST), lastDate = dateForDay(N_HIST-1, N_HIST);
-  note.textContent = `${N_HIST} días históricos (${fmtDate(firstDate)} — ${fmtDate(lastDate)}) — ${TRAIN_END} de entrenamiento, ${N_HIST-TRAIN_END} de prueba. "Hoy" en esta simulación es ${fmtDate(REF_DATE)}.`;
-}
-renderDatasetPreview();
-
-function splitTrainTest(preds){
-  return {
-    train: preds.filter(p=>p.i < TRAIN_END),
-    test: preds.filter(p=>p.i >= TRAIN_END)
-  };
-}
-function mape(preds){
-  if(preds.length===0) return 0;
-  return preds.reduce((a,p)=>a+Math.abs(p.actual-p.pred)/p.actual*100,0)/preds.length;
+  const firstDate = dateForHistDay(histDays[0], LAST_HIST_DAY), lastDate = dateForHistDay(LAST_HIST_DAY, LAST_HIST_DAY);
+  note.textContent = `${N_HIST} lecturas semanales (${fmtDate(firstDate)} — ${fmtDate(lastDate)}). "Hoy" en esta simulación es ${fmtDate(REF_DATE)}.`;
 }
 
 const chartCanvas = document.getElementById('chart');
 const cctx = chartCanvas.getContext('2d');
-const residualCanvas = document.getElementById('residuals');
-const rctx = residualCanvas.getContext('2d');
-let currentWindow = 5;
+let currentWindow = 9;
 
-function toPxChart(i, v, W, H, pad, yMin, yMax){
-  return [
-    pad + i/(N_HIST-1)*(W-2*pad),
-    H-pad - (v-yMin)/(yMax-yMin)*(H-2*pad)
-  ];
-}
-
-function drawMainChart(preds){
+function drawMainChart(usedFromIdx, fit){
   const W = chartCanvas.width, H = chartCanvas.height;
-  const pad = 40;
+  const padL = 46, padR = 20, padT = 30, padB = 30;
   cctx.clearRect(0,0,W,H);
-  const yMin = Math.min(...eff)*0.94, yMax = Math.max(...eff)*1.03;
+
+  const slope = fit.slope, slopeLow = Math.max(0, fit.slope - Z90*fit.seSlope), slopeHigh = fit.slope + Z90*fit.seSlope;
+  const anchorDay = LAST_HIST_DAY, anchorVal = histVib[histVib.length-1];
+  const alarmLate = projectCrossing(anchorDay, anchorVal, slopeLow, ALARM);
+  const alarmCentral = projectCrossing(anchorDay, anchorVal, slope, ALARM);
+  const horizonDay = Math.max(anchorDay+90, Math.min(anchorDay+760, (alarmLate!=null?alarmLate:(alarmCentral!=null?alarmCentral*1.5:anchorDay+400))*1.1));
+
+  const yMax = ALARM*1.32;
+  function toPx(x,y){
+    return [
+      padL + x/horizonDay*(W-padL-padR),
+      H-padB - Math.min(y,yMax)/yMax*(H-padT-padB)
+    ];
+  }
 
   cctx.strokeStyle = '#22222c';
   cctx.lineWidth = 1;
   cctx.beginPath();
-  cctx.moveTo(pad, pad); cctx.lineTo(pad, H-pad); cctx.lineTo(W-pad, H-pad);
+  cctx.moveTo(padL, padT); cctx.lineTo(padL, H-padB); cctx.lineTo(W-padR, H-padB);
   cctx.stroke();
-  cctx.fillStyle = '#a8a8b4';
-  cctx.font = '13px DM Mono, monospace';
-  cctx.fillText('día', W/2-10, H-10);
-  cctx.save();
-  cctx.translate(16, H/2+50);
-  cctx.rotate(-Math.PI/2);
-  cctx.fillText('eficiencia (%)', 0, 0);
-  cctx.restore();
-
-  // línea de eficiencia real (24 días completos)
-  cctx.strokeStyle = '#3ecfa0';
-  cctx.lineWidth = 2;
-  cctx.beginPath();
-  eff.forEach((e,i)=>{
-    const [x,y] = toPxChart(i,e,W,H,pad,yMin,yMax);
-    if(i===0) cctx.moveTo(x,y); else cctx.lineTo(x,y);
-  });
-  cctx.stroke();
-
-  // puntos de pronóstico: entrenamiento (violeta) vs prueba (blanco)
-  preds.forEach(p=>{
-    const [x,y] = toPxChart(p.i, p.pred, W,H,pad,yMin,yMax);
-    const isTrain = p.i < TRAIN_END;
-    cctx.beginPath();
-    cctx.arc(x,y, isTrain?4:5, 0, Math.PI*2);
-    if(isTrain){
-      cctx.fillStyle = '#7b5ea7';
-      cctx.fill();
-    } else {
-      cctx.fillStyle = 'rgba(244,244,247,0.12)';
-      cctx.strokeStyle = '#f4f4f7';
-      cctx.lineWidth = 1.5;
-      cctx.fill();
-      cctx.stroke();
-    }
-  });
-
   cctx.fillStyle = '#a8a8b4';
   cctx.font = '12px DM Mono, monospace';
-  cctx.fillText('línea verde = eficiencia real · ● pronóstico entrenamiento · ○ pronóstico prueba', pad, pad-16);
-}
+  cctx.fillText('días desde el inicio del historial · vibración (mm/s)', padL, 18);
 
-function drawResiduals(preds){
-  const W = residualCanvas.width, H = residualCanvas.height;
-  rctx.clearRect(0,0,W,H);
-  const padL = 56, padR = 20, padT = 30, padB = 34;
-  const maxErrPct = 6;
-  function toPxX(i){ return padL + i/(N_HIST-1)*(W-padL-padR); }
-  const midY = padT + (H-padT-padB)/2;
-  const halfH = (H-padT-padB)/2 - 6;
+  // bandas de cruce
+  function shadeBand(early, late, color){
+    if(early==null) return;
+    const lateClamped = late==null ? horizonDay : Math.min(late, horizonDay);
+    const [x1] = toPx(Math.min(early,horizonDay), 0);
+    const [x2] = toPx(lateClamped, 0);
+    cctx.fillStyle = color;
+    cctx.fillRect(x1, padT, Math.max(1,x2-x1), H-padT-padB);
+  }
+  const alertEarly = projectCrossing(anchorDay, anchorVal, slopeHigh, ALERT);
+  const alertLate = projectCrossing(anchorDay, anchorVal, slopeLow, ALERT);
+  const alarmEarly = projectCrossing(anchorDay, anchorVal, slopeHigh, ALARM);
+  shadeBand(alertEarly, alertLate, 'rgba(232,197,71,0.10)');
+  shadeBand(alarmEarly, alarmLate, 'rgba(244,114,46,0.10)');
 
-  rctx.fillStyle = '#c9c9d4';
-  rctx.font = '14px DM Mono, monospace';
-  rctx.fillText('Error de pronóstico por día (% de la eficiencia real)', padL, 18);
+  // cono de incertidumbre desde el ancla hacia el futuro
+  cctx.beginPath();
+  const step = Math.max(1, Math.round((horizonDay-anchorDay)/60));
+  for(let d=anchorDay; d<=horizonDay; d+=step){
+    const [x,y] = toPx(d, anchorVal+slopeHigh*(d-anchorDay));
+    if(d===anchorDay) cctx.moveTo(x,y); else cctx.lineTo(x,y);
+  }
+  for(let d=horizonDay; d>=anchorDay; d-=step){
+    const [x,y] = toPx(d, anchorVal+slopeLow*(d-anchorDay));
+    cctx.lineTo(x,y);
+  }
+  cctx.closePath();
+  cctx.fillStyle = 'rgba(123,94,167,0.16)';
+  cctx.fill();
 
-  rctx.font = '12px DM Mono, monospace';
-  [-6,-3,0,3,6].forEach(v=>{
-    const y = midY - (v/maxErrPct)*halfH;
-    rctx.strokeStyle = v===0 ? '#3a3a48' : '#1a1a22';
-    rctx.lineWidth = 1;
-    rctx.beginPath(); rctx.moveTo(padL, y); rctx.lineTo(W-padR, y); rctx.stroke();
-    rctx.fillStyle = '#8a8a98';
-    rctx.fillText((v>0?'+':'')+v+'%', 6, y+4);
+  // línea de ajuste sobre el historial usado + proyección central
+  cctx.strokeStyle = '#7b5ea7';
+  cctx.lineWidth = 2;
+  cctx.beginPath();
+  const fitStartDay = histDays[usedFromIdx];
+  for(let d=fitStartDay; d<=horizonDay; d+=step){
+    const y = fit.intercept + fit.slope*d;
+    const [x,py] = toPx(d,y);
+    if(d===fitStartDay) cctx.moveTo(x,py); else cctx.lineTo(x,py);
+  }
+  cctx.stroke();
+
+  // líneas de umbral
+  [[ALERT,'#e8c547','alerta'],[ALARM,'#f4722e','alarma']].forEach(([T,color,label])=>{
+    const [x1,y1] = toPx(0,T), [x2] = toPx(horizonDay,T);
+    cctx.strokeStyle = color;
+    cctx.setLineDash([5,4]);
+    cctx.lineWidth = 1.5;
+    cctx.beginPath(); cctx.moveTo(padL,y1); cctx.lineTo(W-padR,y1); cctx.stroke();
+    cctx.setLineDash([]);
+    cctx.fillStyle = color;
+    cctx.font = '11px DM Mono, monospace';
+    cctx.fillText(label, padL+4, y1-4);
   });
-  rctx.fillStyle = '#8a8a98';
-  rctx.fillText('día', W/2-10, H-8);
 
-  preds.forEach(p=>{
-    const errPct = (p.actual-p.pred)/p.actual*100;
-    const x = toPxX(p.i);
-    const barH = Math.max(-halfH, Math.min(halfH, (errPct/maxErrPct)*halfH));
-    const isTrain = p.i < TRAIN_END;
-    rctx.fillStyle = errPct >= 0
-      ? (isTrain ? 'rgba(62,207,160,0.85)' : 'rgba(62,207,160,0.5)')
-      : (isTrain ? 'rgba(244,114,46,0.85)' : 'rgba(244,114,46,0.5)');
-    rctx.fillRect(x-4, midY - Math.max(0,barH), 8, Math.abs(barH));
+  // puntos históricos: usados (verde) vs excluidos de la ventana (gris tenue)
+  histDays.forEach((d,i)=>{
+    const [x,y] = toPx(d, histVib[i]);
+    const used = i >= usedFromIdx;
+    cctx.fillStyle = used ? '#3ecfa0' : 'rgba(154,154,168,0.45)';
+    cctx.beginPath();
+    cctx.arc(x,y, used?4.5:3.5, 0, Math.PI*2);
+    cctx.fill();
   });
+
+  // marcador "hoy"
+  const [tx,ty] = toPx(anchorDay, anchorVal);
+  cctx.fillStyle = '#f4f4f7';
+  cctx.font = '11px DM Mono, monospace';
+  cctx.fillText('hoy', tx-8, ty-10);
+
+  cctx.fillStyle = '#a8a8b4';
+  cctx.font = '11px DM Mono, monospace';
+  cctx.fillText('● usada en el ajuste · ● fuera de la ventana · banda violeta = rango 90%', padL, H-10);
 }
 
 function setWindow(w){
   currentWindow = w;
-  const preds = forecastSeries(w);
-  const {train, test} = splitTrainTest(preds);
-  const mapeTrain = mape(train);
-  const mapeTest = mape(test);
+  const usedFromIdx = N_HIST - w;
+  const xs = histDays.slice(usedFromIdx), ys = histVib.slice(usedFromIdx);
+  const fit = olsFit(xs, ys);
 
   document.getElementById('mWindow').textContent = w;
-  document.getElementById('mMapeTrain').textContent = mapeTrain.toFixed(2);
-  document.getElementById('mMapeTest').textContent = mapeTest.toFixed(2);
+  document.getElementById('mSlope').textContent = (fit.slope*7).toFixed(3) + ' ± ' + (Z90*fit.seSlope*7).toFixed(3);
+  document.getElementById('mR2').textContent = fit.r2.toFixed(3);
 
   const badge = document.getElementById('mFitBadge');
-  if(w <= 3){
-    badge.textContent = '⚠ Ventana muy corta — reacciona a cada variación normal de purga como si fuera una tendencia (ruidoso).';
+  if(w <= 6){
+    badge.textContent = '⚠ Ventana corta — reacciona rápido a un cambio real, pero el rango de confianza es más ancho (menos lecturas para estimar la tendencia).';
     badge.style.color = 'var(--cta)';
   } else if(w >= 12){
-    badge.textContent = '⚠ Ventana muy larga — diluye la tendencia de incrustación real y reacciona tarde a un desvío genuino.';
+    badge.textContent = 'Ventana completa — el rango de confianza es el más angosto posible con este historial, pero tarda más en reflejar un cambio de tendencia reciente.';
     badge.style.color = '#e8c547';
-  } else if(mapeTest < 1.3){
-    badge.textContent = '✓ Buen equilibrio — sigue la tendencia de incrustación sin perseguir el ruido diario de TDS.';
+  } else if(fit.r2 > 0.8){
+    badge.textContent = '✓ Buen ajuste — la tendencia explica bien la variación histórica (R² alto) con un rango de confianza razonable.';
     badge.style.color = 'var(--success)';
   } else {
-    badge.textContent = 'Ajuste aceptable, pero revisa otras ventanas para comparar el error de prueba.';
+    badge.textContent = 'Ajuste aceptable, pero compara con otras ventanas — un R² bajo indica que el ruido pesa casi tanto como la tendencia.';
     badge.style.color = 'var(--muted)';
   }
 
-  drawMainChart(preds);
-  drawResiduals(preds);
+  renderDatasetPreview(usedFromIdx);
+  drawMainChart(usedFromIdx, fit);
 }
 
 const degreeRow = document.getElementById('degreeRow');
-[3,5,7,10,14].forEach(w=>{
+[6,9,12].forEach(w=>{
   const btn = document.createElement('button');
   btn.className = 'degree-btn' + (w===currentWindow ? ' active':'');
-  btn.textContent = w + ' días';
+  btn.textContent = w + ' lecturas';
   btn.addEventListener('click', ()=>{
     document.querySelectorAll('.degree-btn').forEach(b=>b.classList.remove('active'));
     btn.classList.add('active');
@@ -963,11 +1005,10 @@ analystToggle.addEventListener('change', ()=>{
 <script>
 (function(){
   var GLOSSARY = [
-    {term:'TDS', def:'Sólidos disueltos totales (Total Dissolved Solids): mide en ppm la concentración de minerales disueltos en el agua de caldera; en exceso, forman incrustación sobre las superficies de intercambio de calor.'},
-    {term:'ppm', def:'Partes por millón: unidad de concentración — 1 ppm equivale a 1 mg de soluto por litro de agua, aproximadamente.'},
-    {term:'purga', def:'Blowdown: extracción controlada de agua de la caldera para mantener el TDS dentro de un rango seguro y evitar arrastre o incrustación.'},
-    {term:'incrustación', def:'Scale: depósito mineral que se forma sobre las superficies de intercambio de calor cuando el TDS no se controla bien, reduciendo la transferencia de calor y la eficiencia.'},
-    {term:'MAPE', def:'Error porcentual absoluto medio (Mean Absolute Percentage Error): mide qué tan lejos está, en promedio, el pronóstico del valor real, como porcentaje.'}
+    {term:'RMS', def:'Valor cuadrático medio (Root Mean Square): resume la energía de una señal de vibración en un solo número comparable.'},
+    {term:'R²', def:'Coeficiente de determinación: qué tan bien la tendencia ajustada explica la variación de los datos reales (1.0 = ajuste perfecto).'},
+    {term:'ISO 10816', def:'Familia de normas internacionales que define zonas de severidad de vibración (A, B, C, D) según el tipo y tamaño de máquina.'},
+    {term:'banda de confianza', def:'Rango alrededor de una predicción dentro del cual se espera que caiga el valor real con una probabilidad dada (aquí, 90%).'}
   ];
   var SKIP_TAGS = {SCRIPT:1, STYLE:1, SELECT:1, OPTION:1, TITLE:1};
   var wrapped = {};
