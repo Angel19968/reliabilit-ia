@@ -15,11 +15,11 @@
 <link rel="icon" href="../../assets/favicon.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
 <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
-<title>Gemelo Digital del Motor — RELIABILIT-IA</title>
-<meta name="description" content="Un modelo físico de un motor eléctrico corre en vivo junto al sensor real. La brecha entre ambos revela refrigeración degradada o aislamiento dañado — antes de que la temperatura absoluta lo delate.">
+<title>Gemelo Térmico del Transformador — RELIABILIT-IA</title>
+<meta name="description" content="Modelo térmico IEEE C57.91 de un transformador corriendo en vivo: compara el punto caliente del devanado predicho por física contra el sensor real y estima el envejecimiento acelerado del aislamiento.">
 
-<meta property="og:title" content="Gemelo Digital del Motor — RELIABILIT-IA">
-<meta property="og:description" content="Mueve la carga, degrada la refrigeración o el aislamiento, y mira en vivo cómo se abre la brecha entre el gemelo digital (sano) y el sensor real.">
+<meta property="og:title" content="Gemelo Térmico del Transformador — RELIABILIT-IA">
+<meta property="og:description" content="Mueve la carga, degrada la refrigeración o simula un punto caliente localizado, y mira en vivo cómo se abre la brecha frente al gemelo digital sano — con el factor de envejecimiento del aislamiento en tiempo real.">
 <meta property="og:image" content="../../assets/og-image.png">
 <meta property="og:type" content="website">
 
@@ -46,8 +46,8 @@
     {
       "@type": "ListItem",
       "position": 3,
-      "name": "Gemelo Digital del Motor",
-      "item": "https://angel19968.github.io/reliabilit-ia/modelos/gemelo-digital-del-motor/"
+      "name": "Gemelo Térmico del Transformador",
+      "item": "https://angel19968.github.io/reliabilit-ia/modelos/gemelo-termico-del-transformador/"
     }
   ]
 }
@@ -56,11 +56,11 @@
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "Gemelo Digital del Motor — RELIABILIT-IA",
+  "name": "Gemelo Térmico del Transformador — RELIABILIT-IA",
   "applicationCategory": "BusinessApplication",
   "operatingSystem": "Web",
-  "url": "https://angel19968.github.io/reliabilit-ia/modelos/gemelo-digital-del-motor/",
-  "description": "Un modelo físico de un motor eléctrico corre en vivo junto al sensor real. La brecha entre ambos revela refrigeración degradada o aislamiento dañado.",
+  "url": "https://angel19968.github.io/reliabilit-ia/modelos/gemelo-termico-del-transformador/",
+  "description": "Modelo térmico IEEE C57.91 de un transformador que corre en vivo junto al sensor real, comparando el punto caliente del devanado predicho por física contra la medición real.",
   "isAccessibleForFree": true,
   "offers": {
     "@type": "Offer",
@@ -226,7 +226,7 @@
   .attr-bar{height:14px; background:var(--border); border-radius:999px; overflow:hidden;}
   .attr-fill{height:100%; width:0%; border-radius:999px; transition:width .3s ease;}
   .attr-fill.cooling{background:#4ea8de;}
-  .attr-fill.insul{background:#e8945c;}
+  .attr-fill.hotspot{background:#e8945c;}
   .attr-caveat{font-size:12px; color:var(--muted); margin-top:8px;}
 
   .dataset-wrap{margin-top:24px;}
@@ -323,6 +323,7 @@
       <option value="">Ir a otro modelo →</option>
       <option value="../radar-de-rodamientos/">Radar de Rodamientos</option>
       <option value="../diagnostico-del-motor/">Diagnóstico del Motor</option>
+      <option value="../gemelo-digital-del-motor/">Gemelo Digital del Motor</option>
       <option value="../pulso-del-motor/">Pulso del Motor</option>
       <option value="../pulso-energetico/">Pulso Energético</option>
       <option value="../pulso-de-la-caldera/">Pulso de la Caldera</option>
@@ -341,7 +342,6 @@
       <option value="../correas-transportadoras/">Rastreador de Correas</option>
       <option value="../memoria-del-motor/">Memoria del Motor</option>
       <option value="../transformadores-dga/">Transformadores (DGA)</option>
-      <option value="../gemelo-termico-del-transformador/">Gemelo Térmico del Transformador</option>
       <option value="../centinela-del-aerogenerador/">Centinela del Aerogenerador</option>
       <option value="../huella-del-aceite/">Huella del Aceite</option>
     </select>
@@ -384,22 +384,22 @@
   })();
   </script>
   <header class="hero">
-    <div class="badge">Ingeniería aplicada a Motores Eléctricos</div>
+    <div class="badge">Ingeniería aplicada a Transformadores</div>
     <span class="badge" style="border-color:var(--accent); color:var(--accent); margin-left:8px;">Simulación física · Gemelo digital en vivo</span>
-    <h1>Gemelo Digital del Motor</h1>
-    <p class="lead">No compara tu motor contra otros motores — lo compara contra su propia física: la temperatura que debería tener ahora mismo si todo estuviera sano.</p>
+    <h1>Gemelo Térmico del Transformador</h1>
+    <p class="lead">El mismo estándar que usan los fabricantes (IEEE C57.91) corriendo en vivo — para saber si el punto caliente del devanado está donde la física dice que debería estar.</p>
   </header>
 
   <section class="context">
     <h2>El problema</h2>
-    <p>Los demás modelos de este catálogo aprenden de datos históricos: comparan una lectura contra lo que vieron antes. Un <b>gemelo digital</b> es distinto — es una réplica construida con ecuaciones de ingeniería (balance de calor, en este caso) que corre en paralelo al motor real, sin necesitar ni un solo ejemplo de falla previa. Mientras el motor real opera, el gemelo calcula la temperatura de bobinado que <i>debería</i> tener, dada la carga y la temperatura ambiente actuales, asumiendo refrigeración y aislamiento sanos. Cuando el sensor real se aleja de esa predicción física de forma sostenida, algo cambió que la física no explica: refrigeración obstruida, aislamiento degradado, o ambas. Mueve los controles abajo y observa la brecha abrirse en vivo.</p>
+    <p>"Transformadores (DGA)" —el otro modelo de este catálogo para este equipo— detecta fallas analizando los gases que el aceite ya generó: es preciso, pero llega después de que el daño térmico empezó. Este gemelo digital ataca el problema desde el otro lado: usa el modelo térmico estándar <b>IEEE C57.91</b> para calcular, en vivo, la temperatura del punto caliente del devanado que <i>debería</i> existir dado la carga y la temperatura ambiente actuales — antes de que se genere un solo gas. Cuando el sensor real se aleja de esa predicción física de forma sostenida, hay un problema real: refrigeración degradada o un punto caliente localizado (conexión floja, obstrucción del flujo de aceite). Mueve los controles y observa la brecha — y el envejecimiento del aislamiento que provoca — en vivo.</p>
   </section>
 
   <section id="demo">
     <h2>Demo interactivo</h2>
     <div class="panel">
       <div class="toggle-row">
-        <span class="label">Simulación física en vivo (balance de calor de primer orden) — cambia la carga o degrada la refrigeración/aislamiento y observa la respuesta en tiempo real.</span>
+        <span class="label">Simulación física en vivo (modelo térmico IEEE C57.91, dos constantes de tiempo) — cambia la carga o degrada la refrigeración/punto caliente y observa la respuesta en tiempo real.</span>
         <label class="switch">
           <span>Modo Analista</span>
           <input type="checkbox" id="analystToggle">
@@ -410,26 +410,26 @@
       <div class="demo-grid">
         <div class="controls-col">
           <div class="slider-group">
-            <label>Carga del motor <span class="val" id="loadVal">60%</span></label>
-            <input type="range" id="loadSlider" min="0" max="105" step="1" value="60">
-            <div class="hint"><span>0% (detenido)</span><span>105% (sobrecarga leve)</span></div>
+            <label>Carga del transformador <span class="val" id="loadVal">70%</span></label>
+            <input type="range" id="loadSlider" min="0" max="105" step="1" value="70">
+            <div class="hint"><span>0% (sin carga)</span><span>105% (sobrecarga leve)</span></div>
           </div>
 
           <div class="slider-group">
             <label>Temperatura ambiente <span class="val" id="tambVal">25 °C</span></label>
-            <input type="range" id="tambSlider" min="15" max="40" step="1" value="25">
-            <div class="hint"><span>15 °C</span><span>40 °C</span></div>
+            <input type="range" id="tambSlider" min="0" max="40" step="1" value="25">
+            <div class="hint"><span>0 °C</span><span>40 °C</span></div>
           </div>
 
-          <div class="fault-group-label">Estado de la refrigeración</div>
+          <div class="fault-group-label">Estado de la refrigeración (ventiladores/bombas de aceite)</div>
           <div class="fault-row" id="coolingRow">
             <button class="fault-btn active ok" data-value="normal">Normal</button>
             <button class="fault-btn" data-value="parcial">Parcialmente obstruida</button>
             <button class="fault-btn" data-value="fallado">Fallada</button>
           </div>
 
-          <div class="fault-group-label">Estado del aislamiento</div>
-          <div class="fault-row" id="insulRow">
+          <div class="fault-group-label">Punto caliente localizado (conexión floja / flujo de aceite obstruido)</div>
+          <div class="fault-row" id="hotspotRow">
             <button class="fault-btn active ok" data-value="normal">Normal</button>
             <button class="fault-btn" data-value="inicial">Degradación inicial</button>
             <button class="fault-btn" data-value="avanzada">Degradación avanzada</button>
@@ -456,11 +456,11 @@
 
           <div class="metric-row">
             <div class="metric-card twin">
-              <div class="mc-label">Gemelo (sano)</div>
+              <div class="mc-label">Punto caliente (gemelo)</div>
               <div class="mc-value" id="twinVal">– °C</div>
             </div>
             <div class="metric-card real">
-              <div class="mc-label">Sensor real</div>
+              <div class="mc-label">Punto caliente (real)</div>
               <div class="mc-value" id="realVal">– °C</div>
             </div>
             <div class="metric-card">
@@ -470,14 +470,19 @@
           </div>
 
           <div class="ts-wrap">
-            <div class="ts-label">Temperatura de bobinado en vivo (últimos 30 min simulados)</div>
+            <div class="ts-label">Punto caliente del devanado en vivo (últimas ~14h simuladas)</div>
             <canvas id="liveChart" width="560" height="210"></canvas>
           </div>
 
           <div class="gauge-wrap">
             <div class="gauge-label">Residual vs. umbrales de atención / alarma</div>
             <div class="gauge-bar" id="gaugeBar"><div class="gauge-fill" id="gaugeFill"></div></div>
-            <div class="gauge-value"><b id="gaugeValue">0</b> °C <span class="gauge-note">atención 5 °C · alarma 15 °C (ilustrativo)</span></div>
+            <div class="gauge-value"><b id="gaugeValue">0</b> °C <span class="gauge-note">atención 6 °C · alarma 18 °C (ilustrativo)</span></div>
+          </div>
+
+          <div class="cost-card">
+            <div class="cc-label">Factor de envejecimiento del aislamiento (FAA, IEEE C57.91)</div>
+            <div class="cc-value" id="faaValue">–</div>
           </div>
 
           <p class="sim-note">Simulación ilustrativa: el modelo térmico, los umbrales y los costos son de ejemplo — no provienen del sistema de monitoreo real de ningún equipo. El "sensor real" de esta demo es el mismo modelo físico con fallas inyectadas + ruido de medición.</p>
@@ -486,7 +491,7 @@
 
       <div class="analyst" id="analystPanel">
         <h3 style="font-size:18px; text-transform:none; letter-spacing:0; margin-bottom:8px; color:var(--text);">Atribución causal por simulación contrafactual</h3>
-        <p style="font-size:15px; color:var(--muted); margin-bottom:18px;">El gemelo también corre dos simulaciones "qué pasaría si": una con solo la refrigeración degradada, otra con solo el aislamiento degradado (ambas partiendo del mismo gemelo sano). Comparar cada una contra el gemelo sano estima cuánto del residual total explica cada falla — sin esperar a un diagnóstico manual.</p>
+        <p style="font-size:15px; color:var(--muted); margin-bottom:18px;">El gemelo también corre dos simulaciones "qué pasaría si": una con solo la refrigeración degradada, otra con solo el punto caliente localizado (ambas partiendo del mismo gemelo sano). Comparar cada una contra el gemelo sano estima cuánto del residual total explica cada falla.</p>
 
         <div class="attr-wrap">
           <div class="attr-row">
@@ -494,14 +499,14 @@
             <div class="attr-bar"><div class="attr-fill cooling" id="attrCoolFill"></div></div>
           </div>
           <div class="attr-row">
-            <div class="attr-label"><span>Aporte estimado — aislamiento</span><span id="attrInsulVal">– °C</span></div>
-            <div class="attr-bar"><div class="attr-fill insul" id="attrInsulFill"></div></div>
+            <div class="attr-label"><span>Aporte estimado — punto caliente localizado</span><span id="attrHotVal">– °C</span></div>
+            <div class="attr-bar"><div class="attr-fill hotspot" id="attrHotFill"></div></div>
           </div>
-          <p class="attr-caveat">Estimación aproximada: con una sola falla activa el margen de error es menor a 2%; con ambas fallas activas a la vez, ronda 5–10% por la leve interacción no lineal entre refrigeración y aislamiento en la ecuación de balance térmico.</p>
+          <p class="attr-caveat">Estimación aproximada: con una sola falla activa el margen de error es prácticamente nulo; con ambas fallas activas a la vez, puede haber un margen menor por la leve interacción no lineal del modelo térmico.</p>
         </div>
 
-        <h3 style="font-size:18px; text-transform:none; letter-spacing:0; margin:24px 0 8px; color:var(--text);">Tamaño del motor (masa térmica)</h3>
-        <p style="font-size:15px; color:var(--muted); margin-bottom:14px;">Un motor más grande tiene más masa metálica que calentar: reacciona más lento a cambios de carga o de falla, tanto para bien (más tiempo para reaccionar) como para mal (tarda más en delatar un problema).</p>
+        <h3 style="font-size:18px; text-transform:none; letter-spacing:0; margin:24px 0 8px; color:var(--text);">Tamaño del transformador (masa térmica)</h3>
+        <p style="font-size:15px; color:var(--muted); margin-bottom:14px;">Un transformador de potencia tiene mucho más aceite y masa metálica que uno de distribución: el tope de aceite reacciona mucho más lento a cambios de carga o de falla — pero el punto caliente del devanado siempre reacciona rápido, sin importar el tamaño del tanque.</p>
         <div class="degree-row" id="tauRow"></div>
         <p class="dataset-note" id="tauNote"></p>
 
@@ -524,7 +529,7 @@
     <h2>¿Qué significa para tu planta?</h2>
     <div class="business-grid">
       <div>
-        <p>A diferencia de un modelo entrenado con historial de fallas, un gemelo digital se arma con datos que ya tienes en la placa del motor y su hoja técnica: potencia nominal, clase de aislamiento, curva de refrigeración. <span class="stat">Funciona desde el primer día</span>, sin esperar meses acumulando ejemplos de falla real. Con la lectura actual, el estado del motor es <span class="stat" id="bizCostInline">–</span>.</p>
+        <p>El aislamiento de un transformador no se degrada linealmente: cada grado por encima de su punto de diseño acelera el envejecimiento de forma exponencial (regla práctica de la industria: ~6-8 °C de exceso duplican la tasa de envejecimiento). <span class="stat">Este gemelo cuantifica ese envejecimiento en vivo</span>, con la misma fórmula de Arrhenius del estándar IEEE. Con la lectura actual, el estado del transformador es <span class="stat" id="bizCostInline">–</span>.</p>
         <div class="biz-action" id="bizAction">
           <div class="biz-title" id="bizTitle">Calculando…</div>
           <div class="biz-detail" id="bizDetail"></div>
@@ -539,7 +544,7 @@
 
   <section id="cta">
     <h2>De esta demo a tu planta</h2>
-    <p style="color:var(--muted); max-width:640px; margin-bottom:20px;">El modelo térmico, los umbrales y los costos de este demo están calibrados sobre datos sintéticos para poder compartir esta demo abiertamente — la lógica de ingeniería es la misma que aplicamos en campo para construir gemelos digitales de activos críticos. Llevarlo a tu planta implica levantar los datos técnicos del equipo (hoja de datos, curvas de refrigeración) y calibrar el modelo físico contra unas pocas lecturas reales de tu sensor — no contra años de historial de fallas. Se adapta a otros activos con comportamiento térmico similar —transformadores, generadores, reductores— cuando lo calibramos con tu equipo real. Si quieres recorrer ese proceso, conversemos.</p>
+    <p style="color:var(--muted); max-width:640px; margin-bottom:20px;">El modelo térmico, los umbrales y los costos de este demo están calibrados sobre datos sintéticos para poder compartir esta demo abiertamente — la lógica de ingeniería es la misma que aplicamos en campo para construir gemelos digitales de activos críticos. Llevarlo a tu planta implica levantar los datos de placa del transformador (rise de aceite y de punto caliente a carga nominal, constantes de tiempo del fabricante) y calibrar el modelo contra unas pocas lecturas reales de tus sensores de temperatura — funciona junto con tu programa de DGA existente, no lo reemplaza. Se adapta a otros activos con comportamiento térmico similar —reactores, motores grandes, generadores— cuando lo calibramos con tu equipo real. Si quieres recorrer ese proceso, conversemos.</p>
     <div class="cta-row">
       <a class="btn primary" href="https://chat.whatsapp.com/GvBz1tuUeNZ0xwTkjsuE3z" target="_blank" rel="noopener">Unirme a la comunidad de WhatsApp</a>
       <a class="btn ghost" href="https://www.linkedin.com/company/reliabilit-ia/" target="_blank" rel="noopener">Seguir en LinkedIn</a>
@@ -548,11 +553,11 @@
 
     <div class="contact-card">
       <div>
-        <h3>¿Hablamos de un gemelo digital para tu equipo crítico?</h3>
-        <p>Si tienes la hoja técnica de un motor u otro activo rotativo y quieres validar este enfoque con tu planta, escríbeme directamente.</p>
+        <h3>¿Hablamos de un gemelo digital para tus transformadores?</h3>
+        <p>Si tienes los datos de placa de un transformador y quieres validar este enfoque con tu planta, escríbeme directamente.</p>
       </div>
       <div class="contact-links">
-        <a class="contact-row" href="https://wa.me/51997610310?text=Hola%20Miguel%2C%20vi%20el%20demo%20Gemelo%20Digital%20del%20Motor%20y%20quiero%20conversar%20sobre%20la%20calibracion%20para%20mi%20planta" target="_blank" rel="noopener">
+        <a class="contact-row" href="https://wa.me/51997610310?text=Hola%20Miguel%2C%20vi%20el%20demo%20Gemelo%20Termico%20del%20Transformador%20y%20quiero%20conversar%20sobre%20la%20calibracion%20para%20mi%20planta" target="_blank" rel="noopener">
           <span class="contact-icon">💬</span>
           <span class="contact-text"><b>WhatsApp</b>+51 997 610 310</span>
         </a>
@@ -571,14 +576,14 @@
   <section class="related-section">
     <div class="share-row">
       <span style="font-size:13px; color:var(--muted); align-self:center;">Compartir esta demo:</span>
-      <a class="share-btn" href="https://wa.me/?text=Mira%20esta%20demo%20de%20Gemelo%20Digital%20del%20Motor%20%E2%80%94%20mantenimiento%20predictivo%20con%20IA%2C%20en%20vivo%3A%20https%3A//angel19968.github.io/reliabilit-ia/modelos/gemelo-digital-del-motor/" target="_blank" rel="noopener">💬 WhatsApp</a>
-      <a class="share-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A//angel19968.github.io/reliabilit-ia/modelos/gemelo-digital-del-motor/" target="_blank" rel="noopener">in LinkedIn</a>
+      <a class="share-btn" href="https://wa.me/?text=Mira%20esta%20demo%20de%20Gemelo%20Termico%20del%20Transformador%20%E2%80%94%20mantenimiento%20predictivo%20con%20IA%2C%20en%20vivo%3A%20https%3A//angel19968.github.io/reliabilit-ia/modelos/gemelo-termico-del-transformador/" target="_blank" rel="noopener">💬 WhatsApp</a>
+      <a class="share-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A//angel19968.github.io/reliabilit-ia/modelos/gemelo-termico-del-transformador/" target="_blank" rel="noopener">in LinkedIn</a>
     </div>
     <h2 style="margin-top:32px;">Otros modelos que te pueden interesar</h2>
     <div class="related-grid">
-      <a class="related-card" href="../termometro-del-motor/"><span class="rc-icon">🌡️</span><span class="rc-name">Termómetro del Motor</span></a>
-      <a class="related-card" href="../memoria-del-motor/"><span class="rc-icon">🔧</span><span class="rc-name">Memoria del Motor</span></a>
-      <a class="related-card" href="../diagnostico-del-motor/"><span class="rc-icon">🔧</span><span class="rc-name">Diagnóstico del Motor</span></a>
+      <a class="related-card" href="../transformadores-dga/"><span class="rc-icon">🔌</span><span class="rc-name">Transformadores (DGA)</span></a>
+      <a class="related-card" href="../gemelo-digital-del-motor/"><span class="rc-icon">🔧</span><span class="rc-name">Gemelo Digital del Motor</span></a>
+      <a class="related-card" href="../pulso-de-la-caldera/"><span class="rc-icon">🔥</span><span class="rc-name">Pulso de la Caldera</span></a>
     </div>
   </section>
 
@@ -590,32 +595,43 @@
       <a href="https://www.linkedin.com/in/miguelcayllahua/" target="_blank" rel="noopener">LinkedIn personal</a>
       <a href="mailto:miguelcquispe@gmail.com">Correo</a>
     </div>
-    <p style="">La metodología es la misma que aplicamos en proyectos reales; los datos y la simulación de esta demo son sintéticos para poder compartirlos públicamente. Se calibra con la hoja técnica y unas pocas lecturas reales de tu propio equipo cuando trabajamos juntos. Los parámetros de este demo son de referencia — se recalibran a la medida de cada motor cuando trabajamos con tus datos.</p>
+    <p style="">La metodología es la misma que aplicamos en proyectos reales; los datos y la simulación de esta demo son sintéticos para poder compartirlos públicamente. Se calibra con la placa técnica y unas pocas lecturas reales de tu propio equipo cuando trabajamos juntos. Los parámetros de este demo son de referencia — se recalibran a la medida de cada transformador cuando trabajamos con tus datos.</p>
   </footer>
 </div>
 
 <script>
 /* =========================================================
-   Modelo térmico del motor (capacitancia térmica de primer orden)
-   dT/dt = (T_ss - T) / tau
-   T_ss(carga, refrig, aislam) = T_amb + K_GEN * carga^2 * insulFactor / coolingFactor
+   Modelo térmico del transformador — IEEE C57.91 (simplificado)
+   rise_TO_ss(carga,cf) = ThetaTO_R/cf * ((carga^2*Rr+1)/(Rr+1))^n
+   rise_HS_ss(carga,hf) = ThetaH_R*hf * carga^(2m)
+   hotspot = Tamb + rise_TO + rise_HS   (dos constantes de tiempo: tau_TO lenta, tau_HS rapida)
    ========================================================= */
-const K_GEN = 65; // °C de subida nominal sobre ambiente a carga=1.0, refrigeracion y aislamiento sanos
-const TAU_OPTIONS = { pequeno: 180, mediano: 420, grande: 720 }; // segundos
-const TAU_LABELS = { pequeno: 'Motor pequeño (τ≈3 min)', mediano: 'Motor mediano (τ=7 min)', grande: 'Motor grande (τ=12 min)' };
-const COOLING = { normal: 1.0, parcial: 0.75, fallado: 0.55 };
-const INSUL = { normal: 1.0, inicial: 1.12, avanzada: 1.28 };
-const ATENCION = 5;   // °C de residual
-const ALARMA = 15;    // °C de residual
-const SIM_DT = 6;     // segundos simulados por tick
-const TICK_MS = 200;  // ms reales por tick (~30x tiempo real)
-const WINDOW_SEC = 1800; // 30 min simulados visibles en el chart
+const THETA_TO_R = 55; // rise nominal de aceite (tope) a carga=1, sano, °C
+const THETA_H_R = 20;  // rise nominal de punto caliente sobre aceite a carga=1, sano, °C
+const Rr = 6;   // relacion perdidas carga/vacio
+const N_EXP = 0.8;  // exponente aceite (ONAN)
+const M_EXP = 0.8;  // exponente devanado
+const TAU_TO_OPTIONS = { pequeno: 90*60, mediano: 150*60, grande: 300*60 }; // segundos
+const TAU_H_OPTIONS  = { pequeno: 4*60,  mediano: 6*60,   grande: 10*60 };  // segundos
+const TAU_LABELS = { pequeno: 'Distribución (τ_aceite≈90 min)', mediano: 'Mediano (τ_aceite=150 min)', grande: 'Potencia (τ_aceite=300 min)' };
+const COOLING = { normal: 1.0, parcial: 0.75, fallado: 0.5 };
+const HOTSPOT = { normal: 1.0, inicial: 1.6, avanzada: 2.4 };
+const ATENCION = 6;   // °C de residual
+const ALARMA = 18;    // °C de residual
+const SIM_DT = 60;    // segundos simulados por tick
+const TICK_MS = 200;  // ms reales por tick (~300x tiempo real)
+const WINDOW_SEC = 50000; // ventana visible del chart (~14h simuladas)
 
-function steadyState(Tamb, load, coolingFactor, insulFactor) {
-  return Tamb + K_GEN * load * load * insulFactor / coolingFactor;
+function steadyRises(load, coolingFactor, hotspotFactor) {
+  const dTO = (THETA_TO_R / coolingFactor) * Math.pow((load*load*Rr + 1)/(Rr+1), N_EXP);
+  const dH = THETA_H_R * hotspotFactor * Math.pow(load, 2*M_EXP);
+  return { to: dTO, hs: dH };
 }
-function stepTemp(T, Tss, dt, tau) {
-  return T + (dt * (Tss - T)) / tau;
+function stepRise(current, target, dt, tau) { return current + dt*(target-current)/tau; }
+function hotspotOf(Tamb, state) { return Tamb + state.to + state.hs; }
+function FAA(thetaH_C) {
+  const K = thetaH_C + 273;
+  return Math.exp(15000/383 - 15000/K);
 }
 
 /* =========================================================
@@ -626,7 +642,7 @@ const loadVal = document.getElementById('loadVal');
 const tambSlider = document.getElementById('tambSlider');
 const tambVal = document.getElementById('tambVal');
 const coolingRow = document.getElementById('coolingRow');
-const insulRow = document.getElementById('insulRow');
+const hotspotRow = document.getElementById('hotspotRow');
 const playPauseBtn = document.getElementById('playPauseBtn');
 const resetBtn = document.getElementById('resetBtn');
 const riskDot = document.getElementById('riskDot');
@@ -639,6 +655,7 @@ const residualVal = document.getElementById('residualVal');
 const gaugeFill = document.getElementById('gaugeFill');
 const gaugeBar = document.getElementById('gaugeBar');
 const gaugeValue = document.getElementById('gaugeValue');
+const faaValue = document.getElementById('faaValue');
 const bizCostInline = document.getElementById('bizCostInline');
 const bizAction = document.getElementById('bizAction');
 const bizTitle = document.getElementById('bizTitle');
@@ -648,36 +665,37 @@ const lctx = liveCanvas.getContext('2d');
 const projectionCanvas = document.getElementById('projection');
 const pctx = projectionCanvas.getContext('2d');
 const attrCoolFill = document.getElementById('attrCoolFill');
-const attrInsulFill = document.getElementById('attrInsulFill');
+const attrHotFill = document.getElementById('attrHotFill');
 const attrCoolVal = document.getElementById('attrCoolVal');
-const attrInsulVal = document.getElementById('attrInsulVal');
+const attrHotVal = document.getElementById('attrHotVal');
 const logBody = document.getElementById('logBody');
 const tauRow = document.getElementById('tauRow');
 const tauNote = document.getElementById('tauNote');
 const modelBadge = document.getElementById('modelBadge');
 
 let currentCooling = 'normal';
-let currentInsul = 'normal';
+let currentHotspot = 'normal';
 let currentTauKey = 'mediano';
-let currentTau = TAU_OPTIONS.mediano;
+let currentTauTO = TAU_TO_OPTIONS.mediano;
+let currentTauH = TAU_H_OPTIONS.mediano;
 let paused = false;
 let simTime = 0;
 let history = [];
 let sim = null;
 
 function initSim() {
-  const Tamb = parseFloat(tambSlider.value);
-  sim = { twin: Tamb, coolOnly: Tamb, insulOnly: Tamb, real: Tamb };
+  sim = { twin: {to:0,hs:0}, coolOnly: {to:0,hs:0}, hotOnly: {to:0,hs:0}, real: {to:0,hs:0} };
   simTime = 0;
   history = [];
   if (logBody) logBody.innerHTML = '';
 }
 initSim();
 
-const PLANNED_COST = 2600;   // soles, inspección/ajuste planificado — ilustrativo
-const EMERGENCY_COST = 15000; // soles, rebobinado + parada no planificada — ilustrativo
+const PLANNED_COST = 8000;    // soles, inspeccion + limpieza refrigeracion / ajuste conexion — ilustrativo
+const EMERGENCY_COST = 120000; // soles, falla de transformador (reemplazo + parada + riesgo de derrame) — ilustrativo
 
 function fmtSoles(v) { return 'S/. ' + Math.round(v).toLocaleString('es-PE'); }
+function fmtFAA(faa) { return faa < 0.01 ? '<0.01' : faa.toFixed(2); }
 
 function estadoOf(absResidual) {
   if (absResidual < ATENCION) return { key: 'normal', label: 'Normal', color: 'var(--success)' };
@@ -686,7 +704,7 @@ function estadoOf(absResidual) {
 }
 
 /* =========================================================
-   Dibujo: gráfico en vivo (gemelo vs. real, con desplazamiento)
+   Dibujo: gráfico en vivo (gemelo vs. real)
    ========================================================= */
 function drawLiveChart() {
   const W = liveCanvas.width, H = liveCanvas.height;
@@ -704,7 +722,6 @@ function drawLiveChart() {
       H - padB - (y - yMin) / (yMax - yMin) * (H - padT - padB)
     ];
   }
-  // líneas guía horizontales
   lctx.strokeStyle = '#1c1c26';
   lctx.lineWidth = 1;
   for (let i = 0; i <= 3; i++) {
@@ -719,14 +736,12 @@ function drawLiveChart() {
   }
   lctx.textAlign = 'left';
 
-  // línea gemelo (violeta)
   lctx.strokeStyle = '#7b5ea7';
   lctx.lineWidth = 2;
   lctx.beginPath();
   history.forEach((p, i) => { const [x, y] = toPx(p.t, p.twin); i === 0 ? lctx.moveTo(x, y) : lctx.lineTo(x, y); });
   lctx.stroke();
 
-  // línea real (naranja)
   lctx.strokeStyle = '#f4722e';
   lctx.lineWidth = 2;
   lctx.beginPath();
@@ -778,24 +793,24 @@ function drawCostComparison() {
    Atribución causal (contrafactual)
    ========================================================= */
 function updateAttribution() {
-  const attrCool = sim.coolOnly - sim.twin;
-  const attrInsul = sim.insulOnly - sim.twin;
-  const scale = Math.max(20, Math.abs(attrCool) + Math.abs(attrInsul), 5);
+  const attrCool = hotspotOf(0, sim.coolOnly) - hotspotOf(0, sim.twin);
+  const attrHot = hotspotOf(0, sim.hotOnly) - hotspotOf(0, sim.twin);
+  const scale = Math.max(20, Math.abs(attrCool) + Math.abs(attrHot), 5);
   attrCoolFill.style.width = Math.min(100, Math.abs(attrCool) / scale * 100).toFixed(1) + '%';
-  attrInsulFill.style.width = Math.min(100, Math.abs(attrInsul) / scale * 100).toFixed(1) + '%';
+  attrHotFill.style.width = Math.min(100, Math.abs(attrHot) / scale * 100).toFixed(1) + '%';
   attrCoolVal.textContent = attrCool.toFixed(1) + ' °C';
-  attrInsulVal.textContent = attrInsul.toFixed(1) + ' °C';
+  attrHotVal.textContent = attrHot.toFixed(1) + ' °C';
 }
 
 /* =========================================================
    Registro en vivo (tabla)
    ========================================================= */
-function pushLogRow(load, displayedReal, residual, estado) {
+function pushLogRow(load, twinHs, displayedReal, residual, estado) {
   if (!logBody) return;
   const tr = document.createElement('tr');
   tr.innerHTML = '<td>' + (simTime / 60).toFixed(1) + '</td>' +
     '<td>' + Math.round(load * 100) + '%</td>' +
-    '<td>' + sim.twin.toFixed(1) + '</td>' +
+    '<td>' + twinHs.toFixed(1) + '</td>' +
     '<td>' + displayedReal.toFixed(1) + '</td>' +
     '<td>' + residual.toFixed(1) + '</td>' +
     '<td style="color:' + estado.color.replace('var(--success)', '#3ecfa0').replace('var(--cta)', '#f4722e') + '">' + estado.label + '</td>';
@@ -811,29 +826,36 @@ function tick() {
   const Tamb = parseFloat(tambSlider.value);
   const load = parseFloat(loadSlider.value) / 100;
   const cf = COOLING[currentCooling];
-  const insf = INSUL[currentInsul];
+  const hf = HOTSPOT[currentHotspot];
 
   simTime += SIM_DT;
-  const TssTwin = steadyState(Tamb, load, 1.0, 1.0);
-  const TssCool = steadyState(Tamb, load, cf, 1.0);
-  const TssInsul = steadyState(Tamb, load, 1.0, insf);
-  const TssReal = steadyState(Tamb, load, cf, insf);
-  sim.twin = stepTemp(sim.twin, TssTwin, SIM_DT, currentTau);
-  sim.coolOnly = stepTemp(sim.coolOnly, TssCool, SIM_DT, currentTau);
-  sim.insulOnly = stepTemp(sim.insulOnly, TssInsul, SIM_DT, currentTau);
-  sim.real = stepTemp(sim.real, TssReal, SIM_DT, currentTau);
+  const targetTwin = steadyRises(load, 1.0, 1.0);
+  const targetCool = steadyRises(load, cf, 1.0);
+  const targetHot = steadyRises(load, 1.0, hf);
+  const targetReal = steadyRises(load, cf, hf);
 
-  const displayedReal = sim.real + (Math.random() - 0.5) * 0.6;
-  const residual = displayedReal - sim.twin;
+  sim.twin.to = stepRise(sim.twin.to, targetTwin.to, SIM_DT, currentTauTO);
+  sim.twin.hs = stepRise(sim.twin.hs, targetTwin.hs, SIM_DT, currentTauH);
+  sim.coolOnly.to = stepRise(sim.coolOnly.to, targetCool.to, SIM_DT, currentTauTO);
+  sim.coolOnly.hs = stepRise(sim.coolOnly.hs, targetCool.hs, SIM_DT, currentTauH);
+  sim.hotOnly.to = stepRise(sim.hotOnly.to, targetHot.to, SIM_DT, currentTauTO);
+  sim.hotOnly.hs = stepRise(sim.hotOnly.hs, targetHot.hs, SIM_DT, currentTauH);
+  sim.real.to = stepRise(sim.real.to, targetReal.to, SIM_DT, currentTauTO);
+  sim.real.hs = stepRise(sim.real.hs, targetReal.hs, SIM_DT, currentTauH);
 
-  history.push({ t: simTime, twin: sim.twin, real: displayedReal });
+  const twinHs = hotspotOf(Tamb, sim.twin);
+  const realHsClean = hotspotOf(Tamb, sim.real);
+  const displayedReal = realHsClean + (Math.random() - 0.5) * 0.6;
+  const residual = displayedReal - twinHs;
+
+  history.push({ t: simTime, twin: twinHs, real: displayedReal });
   while (history.length && history[0].t < simTime - WINDOW_SEC) history.shift();
 
-  render(load, Tamb, displayedReal, residual);
+  render(load, twinHs, displayedReal, residual);
 }
 
-function render(load, Tamb, displayedReal, residual) {
-  twinVal.textContent = sim.twin.toFixed(1) + ' °C';
+function render(load, twinHs, displayedReal, residual) {
+  twinVal.textContent = twinHs.toFixed(1) + ' °C';
   realVal.textContent = displayedReal.toFixed(1) + ' °C';
   residualVal.textContent = (residual >= 0 ? '+' : '') + residual.toFixed(1) + ' °C';
 
@@ -841,19 +863,22 @@ function render(load, Tamb, displayedReal, residual) {
   riskDot.style.background = estado.color;
   riskTitle.style.color = estado.color;
 
+  const faa = FAA(displayedReal);
+  faaValue.textContent = fmtFAA(faa) + '× lo normal' + (faa < 0.01 ? ' (insignificante a esta temperatura)' : '');
+
   let detail, simple;
   if (estado.key === 'normal') {
     riskTitle.textContent = 'Normal — el sensor sigue al gemelo';
-    detail = 'La brecha entre el gemelo digital y el sensor real es pequeña: la física explica bien lo que mide el sensor. Refrigeración y aislamiento se comportan como se espera para esta carga.';
-    simple = 'todo normal, el motor se comporta como predice la física.';
+    detail = 'La brecha entre el gemelo digital y el sensor real es pequeña: la física explica bien lo que mide el sensor. Refrigeración y conexiones se comportan como se espera para esta carga.';
+    simple = 'todo normal, el transformador se comporta como predice la física.';
   } else if (estado.key === 'atencion') {
     riskTitle.textContent = 'Atención — brecha sostenida';
-    detail = 'El sensor real está por encima de lo que el gemelo sano predice para esta carga. Activa el Modo Analista para ver cuánto de esa brecha explica la refrigeración y cuánto el aislamiento.';
-    simple = 'hay una brecha que vale la pena revisar en la próxima ronda de inspección.';
+    detail = 'El sensor real está por encima de lo que el gemelo sano predice para esta carga. Activa el Modo Analista para ver cuánto de esa brecha explica la refrigeración y cuánto un punto caliente localizado.';
+    simple = 'hay una brecha que vale la pena revisar en la próxima inspección termográfica.';
   } else {
     riskTitle.textContent = 'Alarma — la física ya no explica al sensor';
-    detail = 'La brecha entre gemelo y sensor real es grande y sostenida: esto no es ruido de medición, es una falla física activa (refrigeración, aislamiento, o ambas). Requiere atención antes de la próxima falla térmica.';
-    simple = 'esto ya necesita inspección pronto, no una revisión de rutina.';
+    detail = 'La brecha entre gemelo y sensor real es grande y sostenida: esto no es ruido de medición, es una falla física activa. El envejecimiento del aislamiento ya se está acelerando de forma significativa.';
+    simple = 'esto ya necesita inspección pronto — el aislamiento está envejeciendo mucho más rápido de lo normal.';
   }
   riskDetail.textContent = detail;
   document.getElementById('simpleSummary').textContent = '💬 En palabras simples: ' + simple;
@@ -880,16 +905,16 @@ function render(load, Tamb, displayedReal, residual) {
   bizTitle.style.color = estado.color;
   bizTitle.textContent = riskTitle.textContent;
   bizDetail.textContent = estado.key === 'normal'
-    ? 'No se requiere acción — sigue monitoreando en vivo.'
-    : 'Una inspección planificada dentro de esta ventana cuesta en promedio ' + fmtSoles(PLANNED_COST) + '; un rebobinado de emergencia por falla de aislamiento (parada + repuesto urgente + producción perdida) cuesta en promedio ' + fmtSoles(EMERGENCY_COST) + ' — un ahorro potencial de ' + fmtSoles(EMERGENCY_COST - PLANNED_COST) + ' (ilustrativo).';
+    ? 'No se requiere acción — sigue monitoreando en vivo. Envejecimiento actual: ' + fmtFAA(faa) + '× la tasa normal.'
+    : 'Una inspección planificada dentro de esta ventana cuesta en promedio ' + fmtSoles(PLANNED_COST) + '; una falla de transformador no planificada (reemplazo + parada + riesgo de derrame) cuesta en promedio ' + fmtSoles(EMERGENCY_COST) + ' — un ahorro potencial de ' + fmtSoles(EMERGENCY_COST - PLANNED_COST) + ' (ilustrativo). Envejecimiento actual: ' + fmtFAA(faa) + '× la tasa normal.';
 
   drawLiveChart();
   drawCostComparison();
   updateAttribution();
-  pushLogRow(load, displayedReal, residual, estado);
+  pushLogRow(load, twinHs, displayedReal, residual, estado);
 
   modelBadge.style.color = estado.color;
-  modelBadge.textContent = 'τ actual: ' + TAU_LABELS[currentTauKey] + ' · tiempo simulado: ' + (simTime / 60).toFixed(1) + ' min';
+  modelBadge.textContent = 'Tamaño: ' + TAU_LABELS[currentTauKey] + ' · tiempo simulado: ' + (simTime / 60).toFixed(0) + ' min';
 }
 
 /* =========================================================
@@ -910,7 +935,7 @@ function wireFaultRow(row, setFn) {
   });
 }
 wireFaultRow(coolingRow, v => { currentCooling = v; });
-wireFaultRow(insulRow, v => { currentInsul = v; });
+wireFaultRow(hotspotRow, v => { currentHotspot = v; });
 
 playPauseBtn.addEventListener('click', () => {
   paused = !paused;
@@ -927,12 +952,13 @@ resetBtn.addEventListener('click', () => { initSim(); });
     tauRow.querySelectorAll('.degree-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
     currentTauKey = key;
-    currentTau = TAU_OPTIONS[key];
-    tauNote.textContent = 'Con este tamaño, un escalón de carga tarda ~' + Math.round(currentTau * 2.3 / 60) + ' min en asentarse por completo (≈8 constantes de tiempo).';
+    currentTauTO = TAU_TO_OPTIONS[key];
+    currentTauH = TAU_H_OPTIONS[key];
+    tauNote.textContent = 'El tope de aceite tarda ~' + Math.round(currentTauTO * 2.3 / 60) + ' min en asentarse por completo; el punto caliente del devanado, ~' + Math.round(currentTauH * 2.3 / 60) + ' min (≈8 constantes de tiempo cada uno).';
   });
   tauRow.appendChild(btn);
 });
-tauNote.textContent = 'Con este tamaño, un escalón de carga tarda ~' + Math.round(currentTau * 2.3 / 60) + ' min en asentarse por completo (≈8 constantes de tiempo).';
+tauNote.textContent = 'El tope de aceite tarda ~' + Math.round(currentTauTO * 2.3 / 60) + ' min en asentarse por completo; el punto caliente del devanado, ~' + Math.round(currentTauH * 2.3 / 60) + ' min (≈8 constantes de tiempo cada uno).';
 
 const analystToggle = document.getElementById('analystToggle');
 const analystPanel = document.getElementById('analystPanel');
@@ -950,7 +976,8 @@ setInterval(tick, TICK_MS);
 (function(){
   var GLOSSARY = [
     {term:'gemelo digital', def:'Réplica virtual de un activo físico, construida con ecuaciones de ingeniería (no solo estadística), que corre en paralelo al equipo real para comparar predicción física contra medición real.'},
-    {term:'constante de tiempo', def:'Tiempo característico (τ) que tarda un cuerpo en alcanzar ~63% del cambio hacia su nueva temperatura de equilibrio; motores más grandes (más masa) tienen τ mayor.'},
+    {term:'IEEE C57.91', def:'Guía estándar de la industria eléctrica para calcular la temperatura del punto caliente del devanado y la capacidad de carga de transformadores de potencia.'},
+    {term:'punto caliente', def:'El punto más caliente del devanado de un transformador — no es un promedio, es el peor punto local, el que realmente limita la vida del aislamiento.'},
     {term:'residual', def:'Diferencia entre lo que predice el modelo (gemelo) y lo que mide el sensor real; un residual que crece de forma sostenida es la señal de alerta.'},
     {term:'contrafactual', def:'Simulación de "qué pasaría si" solo una variable hubiera cambiado, manteniendo las demás en su estado sano — permite estimar cuánto aporta cada falla por separado.'}
   ];
