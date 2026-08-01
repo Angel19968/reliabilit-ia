@@ -15,11 +15,11 @@
 <link rel="icon" href="../../assets/favicon.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
 <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
-<title>Termómetro del Motor — RELIABILIT-IA</title>
-<meta name="description" content="Predice la temperatura del devanado de un motor eléctrico según su carga y tiempo de operación continuo, usando una red neuronal entrenada desde cero.">
+<title>Centinela del Aerogenerador — RELIABILIT-IA</title>
+<meta name="description" content="Detecta lecturas anómalas en la caja de engranajes de un aerogenerador sin necesitar ejemplos previos de falla, usando distancia estadística (Mahalanobis) al patrón de operación normal.">
 
-<meta property="og:title" content="Termómetro del Motor — RELIABILIT-IA">
-<meta property="og:description" content="Mueve carga y tiempo de operación y mira en vivo la temperatura estimada del devanado.">
+<meta property="og:title" content="Centinela del Aerogenerador — RELIABILIT-IA">
+<meta property="og:description" content="Mueve vibración y temperatura de aceite de la caja de engranajes y mira en vivo qué tan lejos está esa lectura de cómo opera normalmente tu aerogenerador.">
 <meta property="og:image" content="../../assets/og-image.png">
 <meta property="og:type" content="website">
 
@@ -46,8 +46,8 @@
     {
       "@type": "ListItem",
       "position": 3,
-      "name": "Termómetro del Motor",
-      "item": "https://angel19968.github.io/reliabilit-ia/modelos/termometro-del-motor/"
+      "name": "Centinela del Aerogenerador",
+      "item": "https://angel19968.github.io/reliabilit-ia/modelos/centinela-del-aerogenerador/"
     }
   ]
 }
@@ -56,11 +56,11 @@
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "Termómetro del Motor — RELIABILIT-IA",
+  "name": "Centinela del Aerogenerador — RELIABILIT-IA",
   "applicationCategory": "BusinessApplication",
   "operatingSystem": "Web",
-  "url": "https://angel19968.github.io/reliabilit-ia/modelos/termometro-del-motor/",
-  "description": "Predice la temperatura del devanado de un motor eléctrico según su carga y tiempo de operación continuo, usando una red neuronal entrenada desde cero.",
+  "url": "https://angel19968.github.io/reliabilit-ia/modelos/centinela-del-aerogenerador/",
+  "description": "Detecta lecturas anómalas en la caja de engranajes de un aerogenerador sin necesitar ejemplos previos de falla, usando distancia estadística (Mahalanobis) al patrón de operación normal.",
   "isAccessibleForFree": true,
   "offers": {
     "@type": "Offer",
@@ -171,7 +171,7 @@
 
   .live-col h3{font-size:14px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:14px; font-family:'DM Mono',monospace; font-weight:500;}
   .instrument-wrap{margin-bottom:18px;}
-  #instrument{width:100%; max-width:420px; height:260px; background:#0a0a0f; border:1px solid #22222c; border-radius:12px; display:block;}
+  #instrument{width:100%; max-width:420px; height:240px; background:#0a0a0f; border:1px solid #22222c; border-radius:12px; display:block;}
   .instrument-stats{font-size:13px; color:var(--muted); line-height:1.9; margin-top:10px; display:flex; gap:22px; flex-wrap:wrap;}
   .instrument-stats b{color:var(--text); font-size:15px;}
   .gauge-wrap{margin-bottom:16px;}
@@ -194,7 +194,7 @@
   }
   .degree-btn.active{background:var(--accent); border-color:var(--accent); color:#fff;}
   #chart{width:100%; height:340px; background:#0a0a0f; border:1px solid #22222c; border-radius:12px; display:block;}
-  #residuals{width:100%; height:220px; background:#0a0a0f; border:1px solid #22222c; border-radius:12px; display:block; margin-top:18px;}
+  #residuals{width:100%; height:170px; background:#0a0a0f; border:1px solid #22222c; border-radius:12px; display:block; margin-top:18px;}
   .metrics{display:flex; gap:24px; margin-top:16px; flex-wrap:wrap; font-size:14px; color:var(--muted);}
   .metrics b{color:var(--text);}
   .fit-badge{margin-top:14px; font-size:15px; font-weight:600; padding:10px 14px; border-radius:10px; background:var(--panel2); display:inline-block;}
@@ -206,6 +206,10 @@
   .dataset-table th{position:sticky; top:0; background:var(--panel2); color:var(--muted); text-align:left; font-weight:500; padding:8px 12px; border-bottom:1px solid var(--border); text-transform:uppercase; letter-spacing:.04em; font-size:11px;}
   .dataset-table td{padding:7px 12px; border-bottom:1px solid var(--border); color:var(--text);}
   .dataset-table tr:last-child td{border-bottom:none;}
+  .dataset-table td.set-train{color:var(--accent);}
+  .dataset-table td.set-test{color:var(--muted);}
+  .dataset-table td.hit{color:var(--cta); font-weight:600;}
+  .dataset-table td.miss{color:var(--muted);}
   .dataset-note{font-size:12px; color:var(--muted); margin-top:8px;}
 
   .business p{color:var(--muted); font-size:16px; max-width:640px;}
@@ -297,22 +301,22 @@
       <option value="../diagnostico-del-motor/">Diagnóstico del Motor</option>
       <option value="../pulso-del-motor/">Pulso del Motor</option>
       <option value="../oido-industrial/">Oído Industrial</option>
-      <option value="../detector-anomalias-compresor/">Detector de Anomalías del Compresor</option>
       <option value="../radiografia-de-planta/">Radiografía de Planta</option>
       <option value="../semaforo-de-bombas/">Semáforo de Bombas</option>
       <option value="../guardian-de-la-bomba/">Guardián de la Bomba</option>
       <option value="../frontera-de-vibracion/">Frontera de Vibración</option>
       <option value="../familias-de-turbinas/">Familias de Turbinas</option>
       <option value="../nubes-de-sensores/">Nubes de Sensores</option>
+      <option value="../termometro-del-motor/">Termómetro del Motor</option>
       <option value="../mapa-de-anomalias/">Mapa de Anomalías</option>
       <option value="../ojo-termico/">Ojo Térmico</option>
       <option value="../correas-transportadoras/">Rastreador de Correas</option>
       <option value="../memoria-del-motor/">Memoria del Motor</option>
       <option value="../transformadores-dga/">Transformadores (DGA)</option>
-      <option value="../centinela-del-aerogenerador/">Centinela del Aerogenerador</option>
       <option value="../huella-del-aceite/">Huella del Aceite</option>
       <option value="../horizonte-de-falla/">Horizonte de Falla</option>
       <option value="../pulso-de-la-caldera/">Pulso de la Caldera</option>
+      <option value="../detector-anomalias-compresor/">Detector de Anomalías del Compresor</option>
     </select>
     <button class="theme-toggle" id="themeToggle" type="button"><span id="themeIcon">🌙</span><span id="themeLabel">Oscuro</span></button>
   </div>
@@ -354,23 +358,23 @@
   </script>
 
   <header class="hero">
-    <div class="badge">Regresión · Motor eléctrico</div>
-    <span class="badge" style="border-color:var(--accent); color:var(--accent); margin-left:8px;">Aprendizaje supervisado · Red neuronal</span>
-    <h1>Termómetro del Motor</h1>
-    <p class="lead">¿A qué temperatura llegará el devanado si este motor sigue así de cargado por unas horas más?</p>
+    <div class="badge">Anomalías · Aerogenerador</div>
+    <span class="badge" style="border-color:var(--accent); color:var(--accent); margin-left:8px;">No supervisado · Detección de anomalías</span>
+    <h1>Centinela del Aerogenerador</h1>
+    <p class="lead">¿Cómo saber que algo anda mal en la caja de engranajes de tu aerogenerador si nunca la has visto fallar?</p>
   </header>
 
   <section class="context">
     <h2>El problema</h2>
-    <p>La temperatura de un devanado no sube en línea recta con la carga ni con el tiempo: sube rápido al principio y luego se va "aplanando" a medida que el motor se acerca a su temperatura de equilibrio térmico — una curva de saturación, no una recta ni una parábola simple. Modelarla bien requiere capturar cómo interactúan dos variables a la vez (carga y tiempo de operación) sobre una forma no lineal. En vez de forzar esa curva con más términos polinomiales como en el <a href="../radar-de-rodamientos/">Radar de Rodamientos</a>, este módulo usa una red neuronal pequeña —un perceptrón multicapa entrenado por retropropagación (backpropagation), la técnica detrás de la mayoría del "deep learning" actual, aquí implementada desde cero— que aprende la forma de la curva directamente de los datos, sin que nadie le diga de antemano qué forma tiene.</p>
-    <p>Este demo simula la temperatura del devanado de un motor eléctrico según dos datos que cualquier variador o PLC ya registra: el porcentaje de carga y las horas de operación continua desde el último arranque en frío. Es información que casi cualquier planta con motores eléctricos críticos ya tiene disponible, solo que rara vez se usa para anticipar sobrecalentamientos antes de que ocurran.</p>
+    <p>La mayoría de modelos predictivos necesitan ejemplos etiquetados de fallas pasadas para aprender a reconocerlas. El problema es que la caja de engranajes de un aerogenerador es justamente el componente donde menos ejemplos de falla documentada existen — es caro, de acceso difícil (arriba de la torre) y cada fabricante y modelo tiene su propio patrón de desgaste. La detección de anomalías resuelve esto de otra forma: en vez de aprender "así se ve una falla", aprende "así se ve la operación normal" a partir del propio historial saludable de ese aerogenerador, y marca matemáticamente como sospechosa cualquier lectura que se aleje demasiado de ese patrón — sin necesitar haber visto antes el tipo específico de falla que está por ocurrir.</p>
+    <p>Este demo simula esa lectura: mueve la vibración y la temperatura del aceite de la caja de engranajes, y mira en vivo qué tan lejos está esa combinación de cómo opera normalmente este aerogenerador.</p>
   </section>
 
   <section id="demo">
     <h2>Demo interactivo</h2>
     <div class="panel">
       <div class="toggle-row">
-        <span class="label">Red neuronal (perceptrón multicapa, retropropagación) — mueve los sliders para simular una condición de operación.</span>
+        <span class="label">Clasificación por distancia estadística al patrón normal — mueve los sliders para simular una lectura de campo.</span>
         <label class="switch">
           <span>Modo Analista</span>
           <input type="checkbox" id="analystToggle">
@@ -381,15 +385,15 @@
       <div class="demo-grid">
         <div class="controls-col">
           <div class="slider-group">
-            <label>Carga del motor <span class="val" id="loadVal">40 %</span></label>
-            <input type="range" id="loadSlider" min="10" max="100" step="1" value="40">
-            <div class="hint"><span>10%</span><span>100%</span></div>
+            <label>Vibración de la caja de engranajes <span class="val" id="vibVal">3.0 mm/s</span></label>
+            <input type="range" id="vibSlider" min="1.5" max="5.5" step="0.05" value="3.0">
+            <div class="hint"><span>1.5 mm/s (muy bajo)</span><span>5.5 mm/s RMS (severo)</span></div>
           </div>
 
           <div class="slider-group">
-            <label>Tiempo de operación continua <span class="val" id="tVal">2.0 h</span></label>
-            <input type="range" id="tSlider" min="0" max="8" step="0.1" value="2.0">
-            <div class="hint"><span>0 h</span><span>8 h</span></div>
+            <label>Temperatura del aceite de la caja <span class="val" id="oilTempVal">62 °C</span></label>
+            <input type="range" id="oilTempSlider" min="45" max="85" step="1" value="62">
+            <div class="hint"><span>45 °C</span><span>85 °C</span></div>
           </div>
 
           <div class="result" id="resultBox">
@@ -407,48 +411,57 @@
         <div class="live-col">
           <h3>Simulación en vivo</h3>
           <div class="instrument-wrap">
-            <canvas id="instrument" width="420" height="260"></canvas>
+            <canvas id="instrument" width="420" height="240"></canvas>
             <div class="instrument-stats">
-              <div>Temperatura estimada: <b id="tempStat">–</b></div>
-              <div>Margen de error típico: <b id="rmseStat">± 4.0 °C</b></div>
+              <div>Distancia estadística (D²): <b id="d2Stat">–</b></div>
+              <div>Percentil de anormalidad: <b id="pctStat">–</b></div>
             </div>
           </div>
 
           <div class="gauge-wrap">
-            <div class="gauge-label">Temperatura del devanado (0-130°C)</div>
-            <div class="gauge-bar"><div class="gauge-fill" id="gaugeFill"></div><span class="gauge-tick" style="left:57.7%"></span><span class="gauge-tick" style="left:76.9%"></span></div>
-            <div class="gauge-value"><b id="gaugeValue">0</b>°C</div>
+            <div class="gauge-label">Percentil de anormalidad (0-100)</div>
+            <div class="gauge-bar"><div class="gauge-fill" id="gaugeFill"></div><span class="gauge-tick" style="left:90%"></span><span class="gauge-tick" style="left:97.5%"></span></div>
+            <div class="gauge-value"><b id="gaugeValue">0</b> <span class="gauge-note">% de la operación normal más cercana al promedio que esta lectura</span></div>
           </div>
 
-          <p class="sim-note">Simulación ilustrativa: el mapa y el punto se dibujan a partir de los mismos valores de los sliders — no provienen de un motor real.</p>
+          <p class="sim-note">Simulación ilustrativa: el mapa de operación y el punto se dibujan a partir de los mismos valores de los sliders — no provienen de un sistema CMS real.</p>
         </div>
       </div>
 
       <div class="analyst" id="analystPanel">
-        <h3 style="font-size:18px; text-transform:none; letter-spacing:0; margin-bottom:8px; color:var(--text);">Ajustar el tamaño de la red en vivo</h3>
-        <p style="font-size:15px; color:var(--muted); margin-bottom:18px;">Cada botón entrena una red con un número distinto de neuronas en su única capa oculta, usando los mismos datos y la misma cantidad de iteraciones de entrenamiento. Con muy pocas neuronas, la red no tiene suficiente capacidad para aprender la forma curva de saturación y subajusta. A partir de 4 neuronas, la red ya captura bien la curva — y en este problema en particular, seguir agregando neuronas no la hace sobreajustar: la relación entre carga, tiempo y temperatura es una curva suave, así que el error que queda es sobre todo ruido de medición genuino, no memorización.</p>
+        <h3 style="font-size:18px; text-transform:none; letter-spacing:0; margin-bottom:8px; color:var(--text);">Reentrenar en vivo</h3>
+        <p style="font-size:15px; color:var(--muted); margin-bottom:18px;">Este modelo nunca ve ejemplos de falla durante el entrenamiento — solo aprende la forma de la nube de 80 lecturas de operación normal de este aerogenerador (●, violeta) y calcula qué tan lejos está cualquier lectura nueva de esa nube, usando distancia de Mahalanobis. Elige qué tan estricto es el umbral de alarma (percentil de la distribución): un umbral bajo detecta más incidentes reales pero también dispara más falsas alarmas sobre operación normal; uno muy alto casi no genera falsas alarmas, pero deja pasar fallas incipientes. Los 10 incidentes históricos de la tabla de abajo se usan solo para medir qué tan bien funciona cada umbral — nunca para entrenar el modelo.</p>
 
         <div class="dataset-wrap">
-          <div class="dataset-label">Vista del dataset (220 lecturas simuladas — 146 entrenamiento / 74 prueba)</div>
+          <div class="dataset-label">Vista del dataset de operación normal</div>
           <div class="dataset-scroll">
             <table class="dataset-table">
-              <thead><tr><th>#</th><th>Fecha</th><th>Carga (%)</th><th>Tiempo (h)</th><th>Temperatura (°C)</th><th>Conjunto</th></tr></thead>
+              <thead><tr><th>#</th><th>Fecha</th><th>Vibración (mm/s RMS)</th><th>Temp. aceite (°C)</th><th>Set</th></tr></thead>
               <tbody id="datasetBody"></tbody>
             </table>
           </div>
           <p class="dataset-note" id="datasetNote"></p>
         </div>
 
-        <div class="degree-row" id="hRow"></div>
-        <div class="dataset-label">Superficie aprendida (temperatura estimada según carga y tiempo)</div>
+        <div class="dataset-wrap">
+          <div class="dataset-label">Incidentes históricos usados para validar el umbral (no entrenan el modelo)</div>
+          <div class="dataset-scroll">
+            <table class="dataset-table">
+              <thead><tr><th>#</th><th>Fecha del incidente</th><th>Vibración (mm/s)</th><th>Temp. aceite (°C)</th><th>D²</th><th>Resultado con el umbral actual</th></tr></thead>
+              <tbody id="incidentBody"></tbody>
+            </table>
+          </div>
+          <p class="dataset-note" id="incidentNote"></p>
+        </div>
+
+        <div class="degree-row" id="degreeRow"></div>
         <canvas id="chart" width="800" height="340"></canvas>
-        <div class="dataset-label" style="margin-top:18px;">Calibración: temperatura real vs. predicha (conjunto de prueba)</div>
-        <canvas id="residuals" width="800" height="220"></canvas>
+        <canvas id="residuals" width="800" height="170"></canvas>
         <div class="metrics">
-          <span>Neuronas ocultas (H): <b id="mH">4</b></span>
-          <span>R² entrenamiento: <b id="mR2Train">–</b></span>
-          <span>R² prueba: <b id="mR2Test">–</b></span>
-          <span>RMSE prueba: <b id="mRmse">–</b></span>
+          <span>Percentil: <b id="mPercentile">90%</b></span>
+          <span>Umbral D²: <b id="mThresh">–</b></span>
+          <span>Incidentes detectados: <b id="mRecall">–</b></span>
+          <span>Falsas alarmas: <b id="mFpr">–</b></span>
         </div>
         <div class="fit-badge" id="mFitBadge">–</div>
       </div>
@@ -459,14 +472,14 @@
     <h2>¿Qué significa para tu planta?</h2>
     <div class="business-grid">
       <div>
-        <p>Con la condición actual, el devanado se estima en <span class="stat" id="bizLevelInline">Normal</span>. Anticipar la temperatura antes de que el motor llegue ahí —en vez de solo alarmar cuando ya la cruzó— da tiempo para bajar la carga, mejorar la ventilación o programar una parada antes de que el aislamiento del devanado empiece a degradarse por calor acumulado, que es una de las causas más comunes de falla prematura en motores eléctricos.</p>
+        <p>Con la lectura actual, este aerogenerador se clasifica como <span class="stat" id="bizLevelInline">Normal</span>. La ventaja de este enfoque es que no necesitas esperar a acumular fallas documentadas para empezar a monitorear un aerogenerador nuevo o un modelo poco común en tu parque — basta con unas semanas de operación saludable para tener una línea base. Detectar una desviación en etapa "Atención" en vez de "Anómalo" típicamente cambia un reemplazo de caja de engranajes con grúa y semanas de turbina parada, por una inspección boroscópica planificada y un cambio de aceite.</p>
         <div class="biz-action" id="bizAction">
           <div class="biz-title" id="bizTitle">Calculando…</div>
           <div class="biz-detail" id="bizDetail"></div>
         </div>
       </div>
       <div>
-        <div class="gauge-label">Vida útil del aislamiento estimada por nivel</div>
+        <div class="gauge-label">Costo evitado estimado por nivel de alerta</div>
         <canvas id="projection" width="480" height="230"></canvas>
       </div>
     </div>
@@ -474,7 +487,7 @@
 
   <section id="cta">
     <h2>De esta demo a tu planta</h2>
-    <p style="color:var(--muted); max-width:640px; margin-bottom:20px;">El dataset y la red de este demo están calibrados sobre datos sintéticos para poder compartir esta demo abiertamente — la metodología es la misma que aplicamos en campo para monitorear tu motor real. Llevarlo a tu planta implica entrenar esta misma red con lecturas reales de temperatura, carga y tiempo de operación de tus motores críticos, sumar variables adicionales que ya mides (temperatura ambiente, ventilación, calidad de la alimentación eléctrica) y calibrar el punto de alerta según la clase de aislamiento real de cada motor — ahí es donde entra nuestro motor AutoML. Se adapta al tipo de equipo y a la industria —minería, manufactura, energía, alimentos— cuando la calibramos con tus datos. Si quieres recorrer ese proceso, conversemos.</p>
+    <p style="color:var(--muted); max-width:640px; margin-bottom:20px;">La nube de operación normal, los umbrales y la simulación de este demo están calibrados sobre datos sintéticos para poder compartir esta demo abiertamente — la metodología es la misma que aplicamos en campo para monitorear tu aerogenerador real. Llevarlo a tu parque eólico implica estandarizar cómo capturas tus variables de CMS/SCADA (vibración, temperatura de aceite, velocidad del rotor), construir la línea base de operación normal de cada turbina, y elegir el umbral correcto según qué tan costosa es una falsa alarma frente a una falla no detectada en tu caso particular — ahí es donde entra nuestro motor AutoML, calibrando el modelo con el patrón real de cada máquina. Se adapta a la marca, modelo y tipo de caja de engranajes (con o sin multiplicador) cuando la calibramos con tus datos. Si quieres recorrer ese proceso, conversemos.</p>
     <div class="cta-row">
       <a class="btn primary" href="https://chat.whatsapp.com/GvBz1tuUeNZ0xwTkjsuE3z" target="_blank" rel="noopener">Unirme a la comunidad de WhatsApp</a>
       <a class="btn ghost" href="https://www.linkedin.com/company/reliabilit-ia/" target="_blank" rel="noopener">Seguir en LinkedIn</a>
@@ -483,11 +496,11 @@
 
     <div class="contact-card">
       <div>
-        <h3>¿Hablamos de tus motores críticos?</h3>
-        <p>Si tienes motores eléctricos donde el sobrecalentamiento es un riesgo conocido y quieres validar este análisis con tu planta, escríbeme directamente.</p>
+        <h3>¿Hablamos de anomalías en tu parque eólico?</h3>
+        <p>Si tienes datos de CMS o SCADA de tus aerogeneradores y quieres validar este análisis con tu parque, escríbeme directamente.</p>
       </div>
       <div class="contact-links">
-        <a class="contact-row" href="https://wa.me/51997610310?text=Hola%20Miguel%2C%20vi%20el%20demo%20Termometro%20del%20Motor%20y%20quiero%20conversar%20sobre%20la%20calibracion%20para%20mi%20planta" target="_blank" rel="noopener">
+        <a class="contact-row" href="https://wa.me/51997610310?text=Hola%20Miguel%2C%20vi%20el%20demo%20Centinela%20del%20Aerogenerador%20y%20quiero%20conversar%20sobre%20la%20calibracion%20para%20mi%20parque%20eolico" target="_blank" rel="noopener">
           <span class="contact-icon">💬</span>
           <span class="contact-text"><b>WhatsApp</b>+51 997 610 310</span>
         </a>
@@ -506,14 +519,14 @@
   <section class="related-section">
     <div class="share-row">
       <span style="font-size:13px; color:var(--muted); align-self:center;">Compartir esta demo:</span>
-      <a class="share-btn" href="https://wa.me/?text=Mira%20esta%20demo%20de%20Term%C3%B3metro%20del%20Motor%20%E2%80%94%20mantenimiento%20predictivo%20con%20IA%2C%20en%20vivo%3A%20https%3A//angel19968.github.io/reliabilit-ia/modelos/termometro-del-motor/" target="_blank" rel="noopener">💬 WhatsApp</a>
-      <a class="share-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A//angel19968.github.io/reliabilit-ia/modelos/termometro-del-motor/" target="_blank" rel="noopener">in LinkedIn</a>
+      <a class="share-btn" href="https://wa.me/?text=Mira%20esta%20demo%20de%20Centinela%20del%20Aerogenerador%20%E2%80%94%20mantenimiento%20predictivo%20con%20IA%2C%20en%20vivo%3A%20https%3A//angel19968.github.io/reliabilit-ia/modelos/centinela-del-aerogenerador/" target="_blank" rel="noopener">💬 WhatsApp</a>
+      <a class="share-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A//angel19968.github.io/reliabilit-ia/modelos/centinela-del-aerogenerador/" target="_blank" rel="noopener">in LinkedIn</a>
     </div>
     <h2 style="margin-top:32px;">Otros modelos que te pueden interesar</h2>
     <div class="related-grid">
-      <a class="related-card" href="../radar-de-rodamientos/"><span class="rc-icon">⚙️</span><span class="rc-name">Radar de Rodamientos</span></a>
-      <a class="related-card" href="../diagnostico-del-motor/"><span class="rc-icon">🔧</span><span class="rc-name">Diagnóstico del Motor</span></a>
-      <a class="related-card" href="../pulso-del-motor/"><span class="rc-icon">🔧</span><span class="rc-name">Pulso del Motor</span></a>
+      <a class="related-card" href="../familias-de-turbinas/"><span class="rc-icon">🌬️</span><span class="rc-name">Familias de Turbinas</span></a>
+      <a class="related-card" href="../guardian-de-la-bomba/"><span class="rc-icon">🚰</span><span class="rc-name">Guardián de la Bomba</span></a>
+      <a class="related-card" href="../horizonte-de-falla/"><span class="rc-icon">📳</span><span class="rc-name">Horizonte de Falla</span></a>
     </div>
   </section>
 
@@ -531,169 +544,136 @@
 
 <script>
 /* =========================================================
-   Generación del dataset sintético: curva térmica de carga
-   tipo exponencial saturante, con dos variables de entrada.
+   Definición de niveles (compartido por Modo Básico y Analista)
    ========================================================= */
+const LEVELS = ['Normal','Atención','Anómalo'];
+const LEVEL_COLORS = ['#3ecfa0','#e8c547','#f4722e'];
+const LEVEL_DETAIL = [
+  'La lectura cae dentro del patrón habitual de operación de la caja de engranajes. Sin acción requerida.',
+  'La lectura se aleja del patrón habitual, aunque no de forma extrema. Vale la pena anotarla y confirmar en la siguiente ronda si la tendencia continúa.',
+  'La lectura se aleja fuertemente de cómo opera normalmente esta caja de engranajes. Aunque el modelo nunca vio antes esta falla específica, la distancia estadística ya justifica una inspección — antes de subir una grúa, vale la pena confirmar con un boroscopio o un muestreo de aceite.'
+];
+const LEVEL_SIMPLE = [
+  'todo normal, no hagas nada por ahora.',
+  'anótalo y confirma en tu siguiente ronda si sigue así.',
+  'programa una inspección — esto es raro para este aerogenerador.'
+];
+const PCT_THRESHOLDS = [90, 97.5]; // percentiles de referencia para Atención / Anómalo
+const D2_THRESHOLDS = PCT_THRESHOLDS.map(p => -2*Math.log(1-p/100));
+
 function seededRandom(seed){
   let s = seed;
-  return function(){ s = (s*9301+49297) % 233280; return s/233280; };
+  return function(){
+    s = (s*9301+49297) % 233280;
+    return s/233280;
+  };
 }
 function gaussian(rnd){
   const u1 = Math.max(1e-9, rnd()), u2 = rnd();
   return Math.sqrt(-2*Math.log(u1))*Math.cos(2*Math.PI*u2);
+}
+
+/* =========================================================
+   Generación del dataset sintético: 120 lecturas de operación
+   normal (proceso "verdadero" que nunca se le muestra al modelo
+   más que a través de estas 120 muestras).
+   ========================================================= */
+const MU_TRUE = [3.0, 62];
+const COV_TRUE = [[0.16, 0.8],[0.8, 16]];
+const L11 = Math.sqrt(COV_TRUE[0][0]);
+const L21 = COV_TRUE[1][0]/L11;
+const L22 = Math.sqrt(COV_TRUE[1][1]-L21*L21);
+function sampleNormal(rnd){
+  const z1 = gaussian(rnd), z2 = gaussian(rnd);
+  const dx = L11*z1;
+  const dy = L21*z1 + L22*z2;
+  return {x: MU_TRUE[0]+dx, y: MU_TRUE[1]+dy};
 }
 const REF_DATE = new Date('2026-07-15');
 const MESES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
 function fmtDate(d){ return String(d.getDate()).padStart(2,'0')+' '+MESES[d.getMonth()]+' '+d.getFullYear(); }
 function dateFromDaysAgo(daysAgo){ const d = new Date(REF_DATE); d.setDate(d.getDate()-Math.round(daysAgo)); return d; }
 
-const rnd = seededRandom(211);
-const T_AMB = 25, TAU = 1.8;
-function trueTemp(load, t){
-  const deltaMax = 90*Math.pow(load/100, 1.7);
-  return T_AMB + deltaMax*(1-Math.exp(-t/TAU));
-}
-
-const N = 220;
+const rnd = seededRandom(61);
 const dataset = [];
-for(let i=0;i<N;i++){
-  const load = 10 + rnd()*90;
-  const t = rnd()*8;
-  const T = trueTemp(load,t) + gaussian(rnd)*2.5;
-  const date = dateFromDaysAgo(rnd()*400);
-  dataset.push({load, t, T, date});
-}
-for(let i=dataset.length-1;i>0;i--){ const j=Math.floor(rnd()*(i+1)); [dataset[i],dataset[j]]=[dataset[j],dataset[i]]; }
-const trainData = dataset.filter((_,i)=> i%3 !== 0);
-const testData  = dataset.filter((_,i)=> i%3 === 0);
+for(let i=0;i<120;i++){ dataset.push(sampleNormal(rnd)); }
+const rndHistDate = seededRandom(83);
+dataset.forEach(p=>{ p.date = dateFromDaysAgo(rndHistDate()*365); });
+const trainPoints = dataset.filter((_,i)=> i%3 !== 0); // 80
+const testPoints = dataset.filter((_,i)=> i%3 === 0);  // 40
 
-function stats(arr,key){
-  const v = arr.map(p=>p[key]);
-  const m = v.reduce((a,b)=>a+b,0)/v.length;
-  const sd = Math.sqrt(v.reduce((a,x)=>a+(x-m)**2,0)/v.length);
-  return {m,sd};
+// Ajuste real: media y covarianza muestral, calculadas SOLO con las 80
+// lecturas de entrenamiento — este es el único "aprendizaje" del modelo.
+const n = trainPoints.length;
+const meanX = trainPoints.reduce((a,p)=>a+p.x,0)/n;
+const meanY = trainPoints.reduce((a,p)=>a+p.y,0)/n;
+let covXX=0, covYY=0, covXY=0;
+trainPoints.forEach(p=>{
+  covXX += (p.x-meanX)**2;
+  covYY += (p.y-meanY)**2;
+  covXY += (p.x-meanX)*(p.y-meanY);
+});
+covXX/=n; covYY/=n; covXY/=n;
+const detCov = covXX*covYY - covXY*covXY;
+const I00 = covYY/detCov, I01 = -covXY/detCov, I11 = covXX/detCov;
+
+function mahalanobisSq(x,y){
+  const dx = x-meanX, dy = y-meanY;
+  return dx*dx*I00 + 2*dx*dy*I01 + dy*dy*I11;
 }
-const SL = stats(trainData,'load'), ST = stats(trainData,'t'), SY = stats(trainData,'T');
-function zx(p){ return [(p.load-SL.m)/SL.sd, (p.t-ST.m)/ST.sd]; }
-function zy(T){ return (T-SY.m)/SY.sd; }
-function unzy(z){ return z*SY.sd + SY.m; }
+function classify(d2){
+  if(d2 < D2_THRESHOLDS[0]) return 0;
+  if(d2 < D2_THRESHOLDS[1]) return 1;
+  return 2;
+}
+function anomalyPercentile(d2){
+  return (1 - Math.exp(-d2/2)) * 100; // CDF exacta de chi-cuadrado, 2 g.l.
+}
+
+// 10 incidentes históricos documentados — se usan solo para EVALUAR el
+// umbral elegido en Modo Analista, nunca para entrenar el modelo.
+const anomalies = [
+  {x:3.6, y:68, label:'Picadura temprana en dientes de engranaje'},
+  {x:3.7, y:66, label:'Desgaste incipiente de engranaje planetario'},
+  {x:3.4, y:70, label:'Resonancia estructural de la torre'},
+  {x:3.9, y:69, label:'Fatiga de rodamiento intermedio'},
+  {x:3.3, y:73, label:'Bajo nivel de aceite'},
+  {x:4.2, y:71, label:'Desalineación del eje principal'},
+  {x:3.6, y:76, label:'Contaminación / pérdida de lubricación'},
+  {x:4.6, y:73, label:'Vibración por desequilibrio de rotor'},
+  {x:3.4, y:80, label:'Sobrecalentamiento por falla de bomba de refrigeración'},
+  {x:5.0, y:75, label:'Falla de rodamiento de alta velocidad'}
+];
+const rndInc = seededRandom(71);
+anomalies.forEach(a => { a.d2 = mahalanobisSq(a.x, a.y); a.date = dateFromDaysAgo(rndInc()*900+30); });
 
 function renderDatasetPreview(){
   const tbody = document.getElementById('datasetBody');
   const note = document.getElementById('datasetNote');
   if(!tbody) return;
-  const rows = dataset.slice(0,60).map((p,i)=>{
-    const inTrain = i%3 !== 0;
-    return `<tr><td>${i+1}</td><td>${fmtDate(p.date)}</td><td>${p.load.toFixed(1)}</td><td>${p.t.toFixed(2)}</td><td>${p.T.toFixed(1)}</td><td>${inTrain?'Entrenamiento':'Prueba'}</td></tr>`;
+  tbody.innerHTML = dataset.map((p,i)=>{
+    const isTrain = i%3 !== 0;
+    return `<tr><td>${i+1}</td><td>${fmtDate(p.date)}</td><td>${p.x.toFixed(2)}</td><td>${p.y.toFixed(1)}</td><td class="${isTrain?'set-train':'set-test'}">${isTrain?'Entrenamiento':'Prueba'}</td></tr>`;
   }).join('');
-  tbody.innerHTML = rows;
   const sortedDates = dataset.map(p=>p.date).sort((a,b)=>a-b);
-  note.textContent = `Mostrando 60 de ${dataset.length} lecturas totales, entre ${fmtDate(sortedDates[0])} y ${fmtDate(sortedDates[sortedDates.length-1])} (${trainData.length} entrenamiento / ${testData.length} prueba).`;
+  note.textContent = `${dataset.length} lecturas de operación normal, entre ${fmtDate(sortedDates[0])} y ${fmtDate(sortedDates[sortedDates.length-1])} — ${trainPoints.length} de entrenamiento, ${testPoints.length} de prueba. El modelo nunca ve una lectura de falla.`;
 }
 renderDatasetPreview();
 
 /* =========================================================
-   Red neuronal: perceptrón multicapa (2 entradas -> H ocultas
-   con tanh -> 1 salida lineal), entrenado por retropropagación
-   desde cero.
-   ========================================================= */
-function initMLP(H, seed){
-  const r = seededRandom(seed);
-  function randW(){ return (r()*2-1)*0.5; }
-  const W1 = Array.from({length:H},()=>[randW(),randW()]);
-  const b1 = Array.from({length:H},()=>0);
-  const W2 = Array.from({length:H},()=>randW());
-  return { W1, b1, W2, b2:0, H };
-}
-function forward(net, x){
-  const z1 = net.W1.map((w,i)=> w[0]*x[0]+w[1]*x[1]+net.b1[i]);
-  const a1 = z1.map(v=>Math.tanh(v));
-  const z2 = a1.reduce((s,a,i)=>s+a*net.W2[i], net.b2);
-  return { a1, z2 };
-}
-function trainMLP(net, data, epochs, lr, l2){
-  const n = data.length;
-  for(let e=0;e<epochs;e++){
-    const gW1 = net.W1.map(()=>[0,0]);
-    const gb1 = net.b1.map(()=>0);
-    const gW2 = net.W2.map(()=>0);
-    let gb2 = 0;
-    data.forEach(p=>{
-      const x = zx(p);
-      const y = zy(p.T);
-      const { a1, z2 } = forward(net, x);
-      const err = z2 - y;
-      gb2 += err;
-      a1.forEach((a,i)=> gW2[i] += err*a);
-      a1.forEach((a,i)=>{
-        const dz1 = err*net.W2[i]*(1-a*a);
-        gb1[i] += dz1;
-        gW1[i][0] += dz1*x[0];
-        gW1[i][1] += dz1*x[1];
-      });
-    });
-    net.W1.forEach((w,i)=>{ w[0] -= lr*(gW1[i][0]/n + l2*w[0]); w[1] -= lr*(gW1[i][1]/n + l2*w[1]); });
-    net.b1.forEach((b,i)=> net.b1[i] -= lr*(gb1[i]/n));
-    net.W2.forEach((w,i)=> net.W2[i] -= lr*(gW2[i]/n + l2*w));
-    net.b2 -= lr*(gb2/n);
-  }
-  return net;
-}
-function predictNet(net, p){
-  const { z2 } = forward(net, zx(p));
-  return unzy(z2);
-}
-function r2Of(net, data){
-  const yMean = data.reduce((s,p)=>s+p.T,0)/data.length;
-  const ssRes = data.reduce((s,p)=>s+(p.T-predictNet(net,p))**2,0);
-  const ssTot = data.reduce((s,p)=>s+(p.T-yMean)**2,0);
-  return 1 - ssRes/ssTot;
-}
-function rmseOf(net, data){
-  const errs = data.map(p=> (predictNet(net,p)-p.T)**2 );
-  return Math.sqrt(errs.reduce((a,b)=>a+b,0)/data.length);
-}
-
-/* =========================================================
-   MODELO DE PRODUCCIÓN fijo (H=4, validado como el punto
-   donde la red ya captura bien la curva de saturación).
-   ========================================================= */
-const PROD_H = 4, PROD_EPOCHS = 600, PROD_LR = 0.08, PROD_L2 = 0.001, PROD_SEED = 999;
-const prodNet = initMLP(PROD_H, PROD_SEED);
-trainMLP(prodNet, trainData, PROD_EPOCHS, PROD_LR, PROD_L2);
-const PROD_RMSE = rmseOf(prodNet, testData);
-
-const LEVELS = ['Normal','Elevada','Crítica'];
-const LEVEL_COLORS = ['#3ecfa0','#e8c547','#f4722e'];
-const LEVEL_DETAIL = [
-  'La temperatura estimada está dentro de un rango normal de operación.',
-  'La temperatura estimada ya se acerca a niveles que aceleran el desgaste del aislamiento — vale la pena vigilar si la carga o el tiempo de operación se mantienen así.',
-  'La temperatura estimada está en un rango que puede degradar el aislamiento del devanado si se sostiene por mucho tiempo — considera reducir carga o mejorar la ventilación.'
-];
-const LEVEL_SIMPLE = [
-  'el motor está trabajando fresco, sin problema.',
-  'vigila la carga, se está calentando más de lo ideal.',
-  'reduce carga o mejora la ventilación pronto — se está calentando de más.'
-];
-function levelOf(temp){
-  if(temp < 75) return 0;
-  if(temp < 100) return 1;
-  return 2;
-}
-
-/* =========================================================
    MODO BÁSICO
    ========================================================= */
-const loadSlider = document.getElementById('loadSlider');
-const tSlider = document.getElementById('tSlider');
-const loadVal = document.getElementById('loadVal');
-const tVal = document.getElementById('tVal');
+const vibSlider = document.getElementById('vibSlider');
+const oilTempSlider = document.getElementById('oilTempSlider');
+const vibVal = document.getElementById('vibVal');
+const oilTempVal = document.getElementById('oilTempVal');
 const riskDot = document.getElementById('riskDot');
 const riskTitle = document.getElementById('riskTitle');
 const riskDetail = document.getElementById('riskDetail');
 const confidenceLine = document.getElementById('confidenceLine');
 const confidenceNote = document.getElementById('confidenceNote');
-const tempStat = document.getElementById('tempStat');
+const d2Stat = document.getElementById('d2Stat');
+const pctStat = document.getElementById('pctStat');
 const gaugeFill = document.getElementById('gaugeFill');
 const gaugeValue = document.getElementById('gaugeValue');
 const bizLevelInline = document.getElementById('bizLevelInline');
@@ -703,13 +683,13 @@ const bizDetail = document.getElementById('bizDetail');
 const projectionCanvas = document.getElementById('projection');
 const pctx = projectionCanvas.getContext('2d');
 
-function drawProjection(activeIdx, realTemp){
+function drawProjection(activeIdx, scorePct){
   const W = projectionCanvas.width, H = projectionCanvas.height;
   pctx.clearRect(0,0,W,H);
   const padL = 56, padR = 20, padT = 20, padB = 46;
-  const years = [8, 3, 0.5];
-  const maxYears = years[0]*1.15;
-  const bw = (W-padL-padR)/years.length;
+  const costs = [0, 4000, 180000]; // soles, ilustrativo: costo evitado por nivel (reemplazo de caja de engranajes + grúa es muy caro)
+  const maxCost = costs[costs.length-1]*1.1;
+  const bw = (W-padL-padR)/costs.length;
 
   pctx.strokeStyle = '#22222c';
   pctx.lineWidth = 1;
@@ -717,123 +697,126 @@ function drawProjection(activeIdx, realTemp){
   pctx.moveTo(padL, padT); pctx.lineTo(padL, H-padB); pctx.lineTo(W-padR, H-padB);
   pctx.stroke();
 
-  years.forEach((y,i)=>{
-    const barH = Math.max(2,(y/maxYears)*(H-padT-padB));
+  costs.forEach((c,i)=>{
+    const barH = Math.max(2,(c/maxCost)*(H-padT-padB));
     const x = padL + i*bw + bw*0.18;
-    const yTop = H-padB-barH;
+    const y = H-padB-barH;
     const w = bw*0.64;
     pctx.fillStyle = i===activeIdx ? LEVEL_COLORS[i] : 'rgba(244,244,247,0.14)';
-    pctx.fillRect(x,yTop,w,barH);
+    pctx.fillRect(x,y,w,barH);
     pctx.fillStyle = '#a8a8b4';
     pctx.font = '11px DM Mono, monospace';
     pctx.fillText(LEVELS[i], x-2, H-padB+16);
     if(i===activeIdx){
       pctx.fillStyle = '#f4f4f7';
       pctx.font = '12px DM Mono, monospace';
-      pctx.fillText('~'+y+' años', x-6, yTop-8);
+      pctx.fillText('S/. '+c.toLocaleString('es-PE'), x-4, y-8);
     }
   });
   pctx.fillStyle = '#8a8a98';
   pctx.font = '11px DM Mono, monospace';
-  pctx.fillText('vida útil del aislamiento si se opera así de forma sostenida (ilustrativo)', padL, 14);
+  pctx.fillText('costo de intervención evitado con detección temprana (ilustrativo)', padL, 14);
 
-  // Indicador continuo: la temperatura real predicha por la red neuronal
-  // para esta lectura (no solo a qué nivel discreto pertenece).
-  if(typeof realTemp === 'number'){
-    const pctReal = Math.min(100, Math.max(0, (realTemp/130)*100));
+  // Indicador continuo: dónde cae exactamente esta lectura, calculado en vivo
+  // (no solo a qué nivel discreto pertenece) — el percentil real de anomalía.
+  if(typeof scorePct === 'number'){
     const by = H-12, bh = 5;
     pctx.fillStyle = 'rgba(244,244,247,0.10)';
     pctx.fillRect(padL, by, W-padL-padR, bh);
-    const fw = (pctReal/100)*(W-padL-padR);
+    const fw = Math.min(1,Math.max(0,scorePct/100))*(W-padL-padR);
     pctx.fillStyle = LEVEL_COLORS[activeIdx];
     pctx.fillRect(padL, by, fw, bh);
     pctx.fillStyle = '#c9c9d4';
     pctx.font = '10px DM Mono, monospace';
-    pctx.fillText('temperatura real predicha: '+realTemp.toFixed(1)+'°C', padL, by-4);
+    pctx.fillText('percentil de anomalía real: '+scorePct.toFixed(0)+'/100', padL, by-4);
   }
 }
 
 function updateBasic(){
-  const load = parseFloat(loadSlider.value);
-  const t = parseFloat(tSlider.value);
-  loadVal.textContent = load.toFixed(0) + ' %';
-  tVal.textContent = t.toFixed(1) + ' h';
+  const vib = parseFloat(vibSlider.value);
+  const temp = parseFloat(oilTempSlider.value);
+  vibVal.textContent = vib.toFixed(2) + ' mm/s';
+  oilTempVal.textContent = temp.toFixed(0) + ' °C';
 
-  const temp = predictNet(prodNet, {load, t});
-  const idx = levelOf(temp);
+  const d2 = mahalanobisSq(vib, temp);
+  const pct = anomalyPercentile(d2);
+  const idx = classify(d2);
   const color = LEVEL_COLORS[idx];
 
   riskDot.style.background = color;
   riskTitle.style.color = color;
-  riskTitle.textContent = LEVELS[idx];
+  riskTitle.textContent = LEVELS[idx] + ' — percentil ' + pct.toFixed(0) + '%';
   riskDetail.textContent = LEVEL_DETAIL[idx];
   const simpleEl = document.getElementById('simpleSummary');
   if(simpleEl) simpleEl.textContent = '💬 En palabras simples: ' + LEVEL_SIMPLE[idx];
 
-  const distToThresh = Math.min(Math.abs(temp-75), Math.abs(temp-100)) / PROD_RMSE;
+  // confianza: distancia real (en puntos porcentuales) al umbral más cercano
+  const distPct = Math.min(...PCT_THRESHOLDS.map(t=>Math.abs(pct-t)), pct-0, 100-pct);
   let confLevel, confColor, confNote;
-  if(distToThresh > 1.5){
+  if(distPct > 5){
     confLevel = 'Alta'; confColor = 'var(--success)';
-    confNote = 'La estimación está lejos de cualquier umbral entre niveles, más allá del margen de error típico del modelo.';
-  } else if(distToThresh > 0.6){
+    confNote = 'La lectura está lejos de cualquier umbral entre niveles.';
+  } else if(distPct > 2){
     confLevel = 'Media'; confColor = '#e8c547';
-    confNote = 'Cerca de un umbral — el nivel vecino también es plausible dado el margen de error típico.';
+    confNote = 'Cerca de un umbral — el nivel vecino también es plausible.';
   } else {
     confLevel = 'Baja'; confColor = 'var(--cta)';
-    confNote = 'Justo en el borde entre dos niveles, dentro del margen de error del modelo — trata esta lectura con cautela.';
+    confNote = 'Justo en el borde entre dos niveles — trátalo como referencia, repite la medición.';
   }
   confidenceLine.textContent = 'Confianza de la clasificación: ' + confLevel;
   confidenceLine.style.color = confColor;
   confidenceNote.textContent = confNote;
 
-  tempStat.textContent = temp.toFixed(1) + ' °C';
+  d2Stat.textContent = d2.toFixed(2);
+  pctStat.textContent = pct.toFixed(1) + '%';
 
-  const pct = Math.min(100, Math.max(0, (temp/130)*100));
-  gaugeFill.style.width = pct.toFixed(1) + '%';
+  gaugeFill.style.width = Math.min(100,Math.max(0,pct)).toFixed(1) + '%';
   gaugeFill.style.background = color;
-  gaugeValue.textContent = temp.toFixed(0);
+  gaugeValue.textContent = Math.round(pct);
 
   bizLevelInline.textContent = LEVELS[idx];
   bizLevelInline.style.color = color;
   bizAction.style.borderColor = color;
   bizTitle.style.color = color;
-  bizTitle.textContent = LEVELS[idx];
+  bizTitle.textContent = LEVELS[idx] + ' — percentil ' + pct.toFixed(0) + '%';
   bizDetail.textContent = LEVEL_DETAIL[idx];
 
-  drawProjection(idx, temp);
-  drawInstrument(load, t, idx);
+  drawProjection(idx, pct);
+  drawInstrument(vib, temp, idx);
 }
-loadSlider.addEventListener('input', updateBasic);
-tSlider.addEventListener('input', updateBasic);
+vibSlider.addEventListener('input', updateBasic);
+oilTempSlider.addEventListener('input', updateBasic);
 
 /* =========================================================
-   SIMULACIÓN EN VIVO — mapa de calor de temperatura estimada.
+   SIMULACIÓN EN VIVO — mapa de operación con elipses de
+   confianza (Mahalanobis), calculado a partir del mismo ajuste
+   que usa el Modo Básico.
    ========================================================= */
 const instrumentCanvas = document.getElementById('instrument');
 const ictx = instrumentCanvas.getContext('2d');
-function hexToRgb(hex){ const v=hex.replace('#',''); return [parseInt(v.slice(0,2),16),parseInt(v.slice(2,4),16),parseInt(v.slice(4,6),16)]; }
-function rgba(c,a){ return `rgba(${c[0]},${c[1]},${c[2]},${a})`; }
-const LOAD_MIN=10, LOAD_MAX=100, T_MIN=0, T_MAX=8;
-function tempColor(temp){
-  const idx = levelOf(temp);
-  return LEVEL_COLORS[idx];
+function rgba(hex, a){
+  const v = hex.replace('#','');
+  const r=parseInt(v.slice(0,2),16), g=parseInt(v.slice(2,4),16), b=parseInt(v.slice(4,6),16);
+  return `rgba(${r},${g},${b},${a})`;
 }
+function eigenSym2(a,b,d){
+  const tr=a+d, diff=(a-d)/2;
+  const rt = Math.sqrt(diff*diff+b*b);
+  return {l1: tr/2+rt, l2: tr/2-rt, theta: 0.5*Math.atan2(2*b, a-d)};
+}
+const EIG = eigenSym2(covXX, covXY, covYY);
+const VX_MIN=1.5, VX_MAX=5.5, TX_MIN=45, TX_MAX=85;
 
-function drawInstrument(load, t, idx){
+function drawInstrument(curPress, curTemp, idx){
   const W = instrumentCanvas.width, H = instrumentCanvas.height;
-  const pad = 36;
+  const pad = 34;
   ictx.clearRect(0,0,W,H);
-  function toPx(loadv,tv){ return [ pad+(loadv-LOAD_MIN)/(LOAD_MAX-LOAD_MIN)*(W-2*pad), H-pad-(tv-T_MIN)/(T_MAX-T_MIN)*(H-2*pad) ]; }
 
-  const cell = 8;
-  for(let px=pad; px<W-pad; px+=cell){
-    for(let py=pad; py<H-pad; py+=cell){
-      const loadv = LOAD_MIN + (px-pad)/(W-2*pad)*(LOAD_MAX-LOAD_MIN);
-      const tv = T_MIN + (1-(py-pad)/(H-2*pad))*(T_MAX-T_MIN);
-      const temp = predictNet(prodNet, {load:loadv, t:tv});
-      ictx.fillStyle = rgba(hexToRgb(tempColor(temp)), 0.16);
-      ictx.fillRect(px,py,cell,cell);
-    }
+  function toPx(p,t){
+    return [
+      pad + (p-VX_MIN)/(VX_MAX-VX_MIN)*(W-2*pad),
+      H-pad - (t-TX_MIN)/(TX_MAX-TX_MIN)*(H-2*pad)
+    ];
   }
 
   ictx.strokeStyle = '#22222c';
@@ -843,18 +826,47 @@ function drawInstrument(load, t, idx){
   ictx.stroke();
   ictx.fillStyle = '#8a8a98';
   ictx.font = '10px DM Mono, monospace';
-  ictx.fillText('carga (%)', pad, H-10);
+  ictx.fillText('vibración (mm/s)', W/2-30, H-8);
   ictx.save();
-  ictx.translate(12, H/2+40);
+  ictx.translate(12, H/2+30);
   ictx.rotate(-Math.PI/2);
-  ictx.fillText('tiempo de operación (h)', 0, 0);
+  ictx.fillText('temp. aceite (°C)', 0, 0);
   ictx.restore();
 
+  // elipses de confianza (90% y 97.5%)
+  [{t:D2_THRESHOLDS[1], color:'#f4722e', dash:[]}, {t:D2_THRESHOLDS[0], color:'#e8c547', dash:[]}].forEach(({t,color})=>{
+    const r1 = Math.sqrt(Math.max(0,EIG.l1)*t), r2 = Math.sqrt(Math.max(0,EIG.l2)*t);
+    ictx.beginPath();
+    for(let k=0;k<=64;k++){
+      const th = (k/64)*Math.PI*2;
+      const dx = r1*Math.cos(EIG.theta)*Math.cos(th) - r2*Math.sin(EIG.theta)*Math.sin(th);
+      const dy = r1*Math.sin(EIG.theta)*Math.cos(th) + r2*Math.cos(EIG.theta)*Math.sin(th);
+      const [px,py] = toPx(meanX+dx, meanY+dy);
+      if(k===0) ictx.moveTo(px,py); else ictx.lineTo(px,py);
+    }
+    ictx.closePath();
+    ictx.strokeStyle = rgba(color,0.55);
+    ictx.lineWidth = 1.3;
+    ictx.stroke();
+  });
+
+  // nube de operación normal (puntos de entrenamiento, tenues)
+  trainPoints.forEach(p=>{
+    const [x,y] = toPx(p.x,p.y);
+    ictx.beginPath();
+    ictx.fillStyle = 'rgba(123,94,167,0.35)';
+    ictx.arc(x,y,2,0,Math.PI*2);
+    ictx.fill();
+  });
+
+  // punto actual, con leve jitter para dar sensación de lectura en vivo
+  const jx = curPress + (Math.random()-0.5)*0.02;
+  const jy = curTemp + (Math.random()-0.5)*0.15;
+  const [cx,cy] = toPx(jx,jy);
   const color = LEVEL_COLORS[idx];
-  const [cx,cy] = toPx(load,t);
   ictx.beginPath();
-  ictx.fillStyle = rgba(hexToRgb(color),0.25);
-  ictx.arc(cx,cy,13,0,Math.PI*2);
+  ictx.fillStyle = rgba(color,0.25);
+  ictx.arc(cx,cy,12,0,Math.PI*2);
   ictx.fill();
   ictx.beginPath();
   ictx.fillStyle = color;
@@ -863,36 +875,56 @@ function drawInstrument(load, t, idx){
   ictx.strokeStyle = '#f4f4f7';
   ictx.lineWidth = 1.3;
   ictx.stroke();
+
+  ictx.fillStyle = '#8a8a98';
+  ictx.font = '10px DM Mono, monospace';
+  ictx.fillText('● operación normal · líneas = fronteras 90% / 97.5%', pad, pad-14);
 }
+drawInstrument(parseFloat(vibSlider.value), parseFloat(oilTempSlider.value), classify(mahalanobisSq(parseFloat(vibSlider.value), parseFloat(oilTempSlider.value))));
+updateBasic();
+function liveLoop(){
+  updateBasic();
+  requestAnimationFrame(liveLoop);
+}
+requestAnimationFrame(liveLoop);
 
 /* =========================================================
-   MODO ANALISTA — H ajustable
+   MODO ANALISTA — umbral (percentil) ajustable, evaluado contra
+   el set de prueba normal + los 10 incidentes históricos
    ========================================================= */
 const chartCanvas = document.getElementById('chart');
 const cctx = chartCanvas.getContext('2d');
 const residualCanvas = document.getElementById('residuals');
 const rctx = residualCanvas.getContext('2d');
-let currentH = PROD_H;
+let currentPercentile = 90;
 
-function toPxChart(loadv,tv,W,H,pad){
-  return [ pad+(loadv-LOAD_MIN)/(LOAD_MAX-LOAD_MIN)*(W-2*pad), H-pad-(tv-T_MIN)/(T_MAX-T_MIN)*(H-2*pad) ];
+function toPxChart(p,t,W,H,pad){
+  return [
+    pad + (p-VX_MIN)/(VX_MAX-VX_MIN)*(W-2*pad),
+    H-pad - (t-TX_MIN)/(TX_MAX-TX_MIN)*(H-2*pad)
+  ];
 }
 
-function drawSurface(net){
+function drawDecisionMap(thresh){
   const W = chartCanvas.width, H = chartCanvas.height;
   const pad = 40;
   cctx.clearRect(0,0,W,H);
 
-  const cell = 6;
-  for(let px=pad; px<W-pad; px+=cell){
-    for(let py=pad; py<H-pad; py+=cell){
-      const loadv = LOAD_MIN + (px-pad)/(W-2*pad)*(LOAD_MAX-LOAD_MIN);
-      const tv = T_MIN + (1-(py-pad)/(H-2*pad))*(T_MAX-T_MIN);
-      const temp = predictNet(net, {load:loadv, t:tv});
-      cctx.fillStyle = rgba(hexToRgb(tempColor(temp)), 0.18);
-      cctx.fillRect(px,py,cell,cell);
-    }
+  const r1 = Math.sqrt(Math.max(0,EIG.l1)*thresh), r2 = Math.sqrt(Math.max(0,EIG.l2)*thresh);
+  cctx.beginPath();
+  for(let k=0;k<=80;k++){
+    const th = (k/80)*Math.PI*2;
+    const dx = r1*Math.cos(EIG.theta)*Math.cos(th) - r2*Math.sin(EIG.theta)*Math.sin(th);
+    const dy = r1*Math.sin(EIG.theta)*Math.cos(th) + r2*Math.cos(EIG.theta)*Math.sin(th);
+    const [px,py] = toPxChart(meanX+dx, meanY+dy, W,H,pad);
+    if(k===0) cctx.moveTo(px,py); else cctx.lineTo(px,py);
   }
+  cctx.closePath();
+  cctx.fillStyle = 'rgba(62,207,160,0.08)';
+  cctx.fill();
+  cctx.strokeStyle = 'rgba(62,207,160,0.7)';
+  cctx.lineWidth = 1.5;
+  cctx.stroke();
 
   cctx.strokeStyle = '#22222c';
   cctx.lineWidth = 1;
@@ -901,118 +933,142 @@ function drawSurface(net){
   cctx.stroke();
   cctx.fillStyle = '#a8a8b4';
   cctx.font = '13px DM Mono, monospace';
-  cctx.fillText('carga (%)', W/2-30, H-10);
+  cctx.fillText('vibración de la caja (mm/s RMS)', W/2-80, H-10);
   cctx.save();
-  cctx.translate(16, H/2+50);
+  cctx.translate(16, H/2+60);
   cctx.rotate(-Math.PI/2);
-  cctx.fillText('tiempo de operación (h)', 0, 0);
+  cctx.fillText('temperatura del aceite (°C)', 0, 0);
   cctx.restore();
 
-  trainData.forEach(p=>{
-    const [x,y] = toPxChart(p.load,p.t,W,H,pad);
+  trainPoints.forEach(p=>{
+    const [x,y] = toPxChart(p.x,p.y,W,H,pad);
+    cctx.beginPath();
+    cctx.fillStyle = '#7b5ea7';
+    cctx.arc(x,y,3.5,0,Math.PI*2);
+    cctx.fill();
+  });
+  testPoints.forEach(p=>{
+    const d2 = mahalanobisSq(p.x,p.y);
+    const flagged = d2 > thresh;
+    const [x,y] = toPxChart(p.x,p.y,W,H,pad);
+    cctx.beginPath();
+    cctx.fillStyle = flagged ? 'rgba(244,114,46,0.85)' : 'rgba(244,244,247,0.35)';
+    cctx.arc(x,y,4,0,Math.PI*2);
+    cctx.fill();
+  });
+  anomalies.forEach(a=>{
+    const flagged = a.d2 > thresh;
+    const [x,y] = toPxChart(a.x,a.y,W,H,pad);
+    cctx.beginPath();
+    cctx.strokeStyle = flagged ? '#3ecfa0' : '#f4722e';
+    cctx.lineWidth = 2;
+    cctx.arc(x,y,7,0,Math.PI*2);
+    cctx.stroke();
     cctx.beginPath();
     cctx.fillStyle = '#f4f4f7';
-    cctx.arc(x,y,1.8,0,Math.PI*2);
+    cctx.arc(x,y,2.5,0,Math.PI*2);
     cctx.fill();
   });
 
   cctx.fillStyle = '#a8a8b4';
   cctx.font = '12px DM Mono, monospace';
-  cctx.fillText('color = temperatura estimada por la red · puntos blancos = datos de entrenamiento', pad, pad-16);
+  cctx.fillText('● entrenamiento · ● / ○ prueba (detectado/no) · ◯ incidente real (verde=detectado, naranja=no detectado)', pad, pad-16);
 }
 
-function drawCalibration(net){
+function drawMetricBars(recall, fpr){
   const W = residualCanvas.width, H = residualCanvas.height;
-  const pad = 40;
   rctx.clearRect(0,0,W,H);
-  const allT = dataset.map(p=>p.T);
-  const minT = Math.min(...allT)-5, maxT = Math.max(...allT)+5;
-  function toPx(v){ return pad+(v-minT)/(maxT-minT)*(W-2*pad); }
-
-  rctx.strokeStyle = '#22222c';
-  rctx.lineWidth = 1;
-  rctx.beginPath();
-  rctx.moveTo(pad, pad); rctx.lineTo(pad, H-pad); rctx.lineTo(W-pad, H-pad);
-  rctx.stroke();
-
-  // linea diagonal ideal (predicho = real)
-  rctx.strokeStyle = 'rgba(244,244,247,0.3)';
-  rctx.setLineDash([5,4]);
-  rctx.beginPath();
-  rctx.moveTo(toPx(minT), H-pad-(toPx(minT)-pad));
-  const x1 = toPx(minT), y1 = H-pad, x2 = toPx(maxT), yTop = pad;
-  rctx.moveTo(pad, H-pad);
-  rctx.lineTo(W-pad, pad);
-  rctx.stroke();
-  rctx.setLineDash([]);
-
-  testData.forEach(p=>{
-    const pred = predictNet(net, p);
-    const x = toPx(p.T);
-    const y = H-pad-((pred-minT)/(maxT-minT))*(H-2*pad);
-    rctx.beginPath();
-    rctx.fillStyle = 'rgba(62,207,160,0.7)';
-    rctx.arc(x,y,3,0,Math.PI*2);
-    rctx.fill();
+  const padL = 140, padR = 60, padT = 24, padB = 20;
+  const rows = [
+    {label:'Incidentes detectados (recall)', value: recall, color:'#3ecfa0'},
+    {label:'Falsas alarmas (FPR)', value: fpr, color:'#f4722e'}
+  ];
+  const rowH = (H-padT-padB)/rows.length;
+  rctx.fillStyle = '#c9c9d4';
+  rctx.font = '13px DM Mono, monospace';
+  rctx.fillText('Métricas del umbral actual', padL, 14);
+  rows.forEach((r,i)=>{
+    const y = padT + i*rowH + rowH*0.28;
+    const barW = (r.value)*(W-padL-padR);
+    rctx.fillStyle = '#8a8a98';
+    rctx.font = '12px DM Mono, monospace';
+    rctx.fillText(r.label, 8, y+rowH*0.36);
+    rctx.fillStyle = 'rgba(244,244,247,0.08)';
+    rctx.fillRect(padL, y, W-padL-padR, rowH*0.44);
+    rctx.fillStyle = r.color;
+    rctx.fillRect(padL, y, Math.max(2,barW), rowH*0.44);
+    rctx.fillStyle = '#f4f4f7';
+    rctx.fillText((r.value*100).toFixed(0)+'%', W-padR+8, y+rowH*0.36);
   });
-
-  rctx.fillStyle = '#a8a8b4';
-  rctx.font = '12px DM Mono, monospace';
-  rctx.fillText('eje X = temperatura real · eje Y = predicha por la red · línea punteada = predicción perfecta', pad, 16);
-  rctx.fillText('temperatura real (°C)', W/2-50, H-8);
 }
 
-function setH(H){
-  currentH = H;
-  const net = initMLP(H, PROD_SEED);
-  trainMLP(net, trainData, PROD_EPOCHS, PROD_LR, PROD_L2);
-  const r2train = r2Of(net, trainData);
-  const r2test = r2Of(net, testData);
-  const rmseTest = rmseOf(net, testData);
-  const gapPP = (r2train-r2test)*100;
+function renderIncidentTable(thresh){
+  const tbody = document.getElementById('incidentBody');
+  const note = document.getElementById('incidentNote');
+  if(!tbody) return;
+  let detected = 0;
+  tbody.innerHTML = anomalies.map((a,i)=>{
+    const flagged = a.d2 > thresh;
+    if(flagged) detected++;
+    return `<tr><td>${i+1}</td><td>${fmtDate(a.date)}</td><td>${a.x.toFixed(2)}</td><td>${a.y.toFixed(1)}</td><td>${a.d2.toFixed(2)}</td><td class="${flagged?'hit':'miss'}">${flagged?'✓ Detectado':'✗ No detectado — '+a.label}</td></tr>`;
+  }).join('');
+  note.textContent = `${detected} de ${anomalies.length} incidentes históricos habrían sido detectados con este umbral.`;
+}
 
-  document.getElementById('mH').textContent = H;
-  document.getElementById('mR2Train').textContent = (r2train*100).toFixed(1)+'%';
-  document.getElementById('mR2Test').textContent = (r2test*100).toFixed(1)+'%';
-  document.getElementById('mRmse').textContent = rmseTest.toFixed(2)+' °C';
+function setPercentile(p){
+  currentPercentile = p;
+  const thresh = -2*Math.log(1-p/100);
+
+  let tp=0, fn=0, fp=0, tn=0;
+  anomalies.forEach(a=>{ if(a.d2>thresh) tp++; else fn++; });
+  testPoints.forEach(pt=>{
+    const d2 = mahalanobisSq(pt.x,pt.y);
+    if(d2>thresh) fp++; else tn++;
+  });
+  const recall = tp/(tp+fn);
+  const fpr = fp/(fp+tn);
+
+  document.getElementById('mPercentile').textContent = p + '%';
+  document.getElementById('mThresh').textContent = thresh.toFixed(2);
+  document.getElementById('mRecall').textContent = (recall*100).toFixed(0)+'% ('+tp+'/'+anomalies.length+')';
+  document.getElementById('mFpr').textContent = (fpr*100).toFixed(1)+'%';
 
   const badge = document.getElementById('mFitBadge');
-  if(r2train < 0.90){
-    badge.textContent = '⚠ Subajuste — con tan pocas neuronas, la red no logra capturar la curva de saturación ni siquiera en los datos que ya conoce.';
+  if(fpr > 0.20){
+    badge.textContent = '⚠ Demasiado sensible — dispara muchas falsas alarmas sobre operación normal.';
     badge.style.color = 'var(--cta)';
-  } else if(gapPP > 8){
-    badge.textContent = '⚠ Sobreajuste — la red memoriza detalles del entrenamiento que no generalizan a datos nuevos.';
+  } else if(recall < 0.60){
+    badge.textContent = '⚠ Demasiado permisivo — deja pasar la mayoría de los incidentes reales.';
     badge.style.color = '#e8c547';
   } else {
-    badge.textContent = '✓ Ajuste razonable — buen R² en ambos conjuntos. En este problema, más neuronas no generan sobreajuste porque la curva real es suave: el error restante es sobre todo ruido de medición, no memorización.';
+    badge.textContent = '✓ Equilibrio razonable — detecta la mayoría de incidentes sin disparar demasiadas falsas alarmas.';
     badge.style.color = 'var(--success)';
   }
 
-  drawSurface(net);
-  drawCalibration(net);
+  renderIncidentTable(thresh);
+  drawDecisionMap(thresh);
+  drawMetricBars(recall, fpr);
 }
 
-const hRow = document.getElementById('hRow');
-[1,2,3,4,6,8,12,20].forEach(H=>{
+const degreeRow = document.getElementById('degreeRow');
+[70,80,85,90,95,97.5,99].forEach(p=>{
   const btn = document.createElement('button');
-  btn.className = 'degree-btn' + (H===currentH ? ' active':'');
-  btn.textContent = 'H=' + H;
+  btn.className = 'degree-btn' + (p===currentPercentile ? ' active':'');
+  btn.textContent = 'p=' + p + '%';
   btn.addEventListener('click', ()=>{
     document.querySelectorAll('.degree-btn').forEach(b=>b.classList.remove('active'));
     btn.classList.add('active');
-    setH(H);
+    setPercentile(p);
   });
-  hRow.appendChild(btn);
+  degreeRow.appendChild(btn);
 });
 
 const analystToggle = document.getElementById('analystToggle');
 const analystPanel = document.getElementById('analystPanel');
 analystToggle.addEventListener('change', ()=>{
   analystPanel.classList.toggle('show', analystToggle.checked);
-  if(analystToggle.checked) setH(currentH);
+  if(analystToggle.checked) setPercentile(currentPercentile);
 });
-
-updateBasic();
 </script>
 
 
@@ -1022,12 +1078,11 @@ updateBasic();
 <script>
 (function(){
   var GLOSSARY = [
-    {term:'MCSA', def:'Análisis de firma de corriente del motor (Motor Current Signature Analysis): detecta fallas mecánicas y eléctricas midiendo variaciones en la corriente, sin abrir el equipo.'},
     {term:'RMS', def:'Valor cuadrático medio (Root Mean Square): resume la energía de una señal de vibración en un solo número comparable.'},
-    {term:'dB', def:'Decibel: unidad logarítmica de intensidad sonora — cada +10 dB representa aprox. 10 veces más energía acústica.'},
-    {term:'ΔT', def:'Delta T: diferencia de temperatura entre dos puntos de medición.'},
-    {term:'deslizamiento', def:'Slip: diferencia entre la velocidad del campo magnético del motor y la velocidad real del rotor; crece con más carga o daño mecánico.'},
-    {term:'R²', def:'Coeficiente de determinación: qué tan bien el modelo explica la variación de los datos reales (1.0 = ajuste perfecto).'}
+    {term:'Mahalanobis', def:'Distancia de Mahalanobis: mide qué tan lejos está una lectura del centro de la nube de operación normal, tomando en cuenta la forma y correlación de esa nube — no solo la distancia en línea recta.'},
+    {term:'percentil', def:'Percentil: posición relativa de un valor dentro de una distribución; el percentil 95 significa que el valor es mayor que el 95% de las lecturas normales.'},
+    {term:'D²', def:'Distancia de Mahalanobis al cuadrado: la métrica que este modelo usa para decidir qué tan anómala es una lectura respecto al patrón de operación normal.'},
+    {term:'CMS', def:'Sistema de Monitoreo de Condición (Condition Monitoring System): sensores permanentes de vibración, temperatura y otras variables instalados en un aerogenerador para vigilancia continua.'}
   ];
   var SKIP_TAGS = {SCRIPT:1, STYLE:1, SELECT:1, OPTION:1, TITLE:1};
   var wrapped = {};
