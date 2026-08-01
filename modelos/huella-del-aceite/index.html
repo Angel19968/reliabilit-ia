@@ -15,11 +15,11 @@
 <link rel="icon" href="../../assets/favicon.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
 <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
-<title>Frontera de Vibración — RELIABILIT-IA</title>
-<meta name="description" content="Separa tres estados de vibración (Estable, Alerta, Crítico) con una frontera de decisión trazada por máximo margen, y observa en vivo cómo la regularización afecta esa frontera.">
+<title>Huella del Aceite — RELIABILIT-IA</title>
+<meta name="description" content="Clasifica el estado de un equipo en Normal, Precaución o Crítico a partir de dos parámetros de análisis de aceite: acidez (TAN) y partículas de desgaste (hierro).">
 
-<meta property="og:title" content="Frontera de Vibración — RELIABILIT-IA">
-<meta property="og:description" content="Mueve vibración RMS y factor de cresta y mira en vivo de qué lado de la frontera cae la lectura.">
+<meta property="og:title" content="Huella del Aceite — RELIABILIT-IA">
+<meta property="og:description" content="Mueve la acidez (TAN) y el hierro del aceite y mira en vivo qué está diciendo el lubricante sobre el desgaste interno del equipo.">
 <meta property="og:image" content="../../assets/og-image.png">
 <meta property="og:type" content="website">
 
@@ -46,8 +46,8 @@
     {
       "@type": "ListItem",
       "position": 3,
-      "name": "Frontera de Vibración",
-      "item": "https://angel19968.github.io/reliabilit-ia/modelos/frontera-de-vibracion/"
+      "name": "Huella del Aceite",
+      "item": "https://angel19968.github.io/reliabilit-ia/modelos/huella-del-aceite/"
     }
   ]
 }
@@ -56,11 +56,11 @@
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "Frontera de Vibración — RELIABILIT-IA",
+  "name": "Huella del Aceite — RELIABILIT-IA",
   "applicationCategory": "BusinessApplication",
   "operatingSystem": "Web",
-  "url": "https://angel19968.github.io/reliabilit-ia/modelos/frontera-de-vibracion/",
-  "description": "Separa tres estados de vibración (Estable, Alerta, Crítico) con una frontera de decisión trazada por máximo margen, y observa en vivo cómo la regularización afecta esa frontera.",
+  "url": "https://angel19968.github.io/reliabilit-ia/modelos/huella-del-aceite/",
+  "description": "Clasifica el estado de un equipo en Normal, Precaución o Crítico a partir de dos parámetros de análisis de aceite: acidez (TAN) y partículas de desgaste (hierro).",
   "isAccessibleForFree": true,
   "offers": {
     "@type": "Offer",
@@ -116,7 +116,6 @@
   section{padding:40px 0; border-bottom:1px solid var(--border);}
   section h2{font-size:22px; margin-bottom:14px;}
   .context p{color:var(--muted); max-width:640px; font-size:15px;}
-  .context p + p{margin-top:12px;}
 
   .panel{
     background:var(--panel); border:1px solid var(--border); border-radius:16px; padding:28px;
@@ -165,23 +164,28 @@
   .result .risk-dot{width:16px; height:16px; border-radius:50%; flex-shrink:0;}
   .result .risk-text h3{font-size:23px; margin-bottom:6px;}
   .result .risk-text p{font-size:15px; color:var(--muted);}
-  .confidence-line{font-size:14px !important; font-weight:600; margin-top:10px !important; color:var(--text) !important;}
-  .confidence-note{font-size:13px !important; color:var(--muted); margin-top:2px !important;}
+  .cost-line{font-size:14px !important; font-weight:600; margin-top:10px !important; color:var(--text) !important;}
   .simple-summary{font-size:14px !important; margin-top:12px !important; padding-top:12px !important; border-top:1px dashed var(--border); color:var(--text) !important;}
 
   .live-col h3{font-size:14px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:14px; font-family:'DM Mono',monospace; font-weight:500;}
-  .instrument-wrap{margin-bottom:18px;}
-  #instrument{width:100%; max-width:420px; height:260px; background:#0a0a0f; border:1px solid #22222c; border-radius:12px; display:block;}
-  .instrument-stats{font-size:13px; color:var(--muted); line-height:1.9; margin-top:10px; display:flex; gap:22px; flex-wrap:wrap;}
-  .instrument-stats b{color:var(--text); font-size:15px;}
-  .gauge-wrap{margin-bottom:16px;}
+  .ts-wrap{margin-bottom:18px;}
+  .ts-label{font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:8px;}
+  #tsChart{width:100%; height:190px; background:#0a0a0f; border:1px solid #22222c; border-radius:10px; display:block;}
   .gauge-label{font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:8px;}
+  .gauge-wrap{margin-bottom:18px;}
   .gauge-bar{height:12px; background:var(--border); border-radius:999px; overflow:hidden; margin:8px 0; position:relative;}
-  .gauge-fill{height:100%; width:0%; transition:background .35s ease, width .3s ease;}
+  .gauge-fill{height:100%; width:0%; background:var(--success); transition:background .35s ease, width .3s ease;}
+  .gauge-mid{position:absolute; left:50%; top:-3px; width:2px; height:18px; background:var(--muted); opacity:.6;}
+  .gauge-tick{position:absolute; top:0; bottom:0; width:2px; background:rgba(244,244,247,0.55); z-index:2;}
   .gauge-value{font-size:16px; color:var(--text);}
   .gauge-value b{font-size:20px;}
   .gauge-note{font-size:13px; color:var(--muted);}
-  .sim-note{font-size:13px; color:var(--muted); line-height:1.7; margin-top:6px;}
+  .cost-card{
+    margin-top:4px; padding:16px 18px; border-radius:12px; background:var(--panel2); border:1px solid var(--border);
+  }
+  .cost-card .cc-label{font-size:12px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted);}
+  .cost-card .cc-value{font-size:24px; font-family:'Syne',sans-serif; font-weight:800; margin-top:4px;}
+  .sim-note{font-size:13px; color:var(--muted); line-height:1.7; margin-top:14px;}
 
   .analyst{margin-top:32px; padding-top:26px; border-top:1px dashed var(--border); display:none;}
   .analyst.show{display:block;}
@@ -192,8 +196,8 @@
     transition:background .15s, border-color .15s;
   }
   .degree-btn.active{background:var(--accent); border-color:var(--accent); color:#fff;}
-  #chart{width:100%; height:340px; background:#0a0a0f; border:1px solid #22222c; border-radius:12px; display:block;}
-  #confMatrix{width:100%; height:190px; background:#0a0a0f; border:1px solid #22222c; border-radius:12px; display:block; margin-top:18px;}
+  #chart{width:100%; height:320px; background:#0a0a0f; border:1px solid #22222c; border-radius:12px; display:block;}
+  #residuals{width:100%; height:200px; background:#0a0a0f; border:1px solid #22222c; border-radius:12px; display:block; margin-top:18px;}
   .metrics{display:flex; gap:24px; margin-top:16px; flex-wrap:wrap; font-size:14px; color:var(--muted);}
   .metrics b{color:var(--text);}
   .fit-badge{margin-top:14px; font-size:15px; font-weight:600; padding:10px 14px; border-radius:10px; background:var(--panel2); display:inline-block;}
@@ -205,6 +209,8 @@
   .dataset-table th{position:sticky; top:0; background:var(--panel2); color:var(--muted); text-align:left; font-weight:500; padding:8px 12px; border-bottom:1px solid var(--border); text-transform:uppercase; letter-spacing:.04em; font-size:11px;}
   .dataset-table td{padding:7px 12px; border-bottom:1px solid var(--border); color:var(--text);}
   .dataset-table tr:last-child td{border-bottom:none;}
+  .dataset-table td.set-train{color:var(--accent);}
+  .dataset-table td.set-test{color:var(--muted);}
   .dataset-note{font-size:12px; color:var(--muted); margin-top:8px;}
 
   .business p{color:var(--muted); font-size:16px; max-width:640px;}
@@ -282,8 +288,7 @@
     display:inline-flex; align-items:center; gap:6px; transition:border-color .15s;
   }
   .share-btn:hover{border-color:var(--accent);}
-</style>
-</head>
+</style></head>
 <body>
 
 <div class="wrap">
@@ -293,6 +298,7 @@
       <option value="">Ir a otro modelo →</option>
       <option value="../radar-de-rodamientos/">Radar de Rodamientos</option>
       <option value="../pulso-energetico/">Pulso Energético</option>
+      <option value="../pulso-de-la-caldera/">Pulso de la Caldera</option>
       <option value="../diagnostico-del-motor/">Diagnóstico del Motor</option>
       <option value="../pulso-del-motor/">Pulso del Motor</option>
       <option value="../oido-industrial/">Oído Industrial</option>
@@ -300,6 +306,8 @@
       <option value="../radiografia-de-planta/">Radiografía de Planta</option>
       <option value="../semaforo-de-bombas/">Semáforo de Bombas</option>
       <option value="../guardian-de-la-bomba/">Guardián de la Bomba</option>
+      <option value="../frontera-de-vibracion/">Frontera de Vibración</option>
+      <option value="../horizonte-de-falla/">Horizonte de Falla</option>
       <option value="../familias-de-turbinas/">Familias de Turbinas</option>
       <option value="../nubes-de-sensores/">Nubes de Sensores</option>
       <option value="../termometro-del-motor/">Termómetro del Motor</option>
@@ -308,9 +316,6 @@
       <option value="../correas-transportadoras/">Rastreador de Correas</option>
       <option value="../memoria-del-motor/">Memoria del Motor</option>
       <option value="../transformadores-dga/">Transformadores (DGA)</option>
-      <option value="../huella-del-aceite/">Huella del Aceite</option>
-      <option value="../horizonte-de-falla/">Horizonte de Falla</option>
-      <option value="../pulso-de-la-caldera/">Pulso de la Caldera</option>
     </select>
     <button class="theme-toggle" id="themeToggle" type="button"><span id="themeIcon">🌙</span><span id="themeLabel">Oscuro</span></button>
   </div>
@@ -350,25 +355,23 @@
     sync();
   })();
   </script>
-
   <header class="hero">
-    <div class="badge">Clasificación · Vibración</div>
-    <span class="badge" style="border-color:var(--accent); color:var(--accent); margin-left:8px;">Aprendizaje supervisado · SVM</span>
-    <h1>Frontera de Vibración</h1>
-    <p class="lead">¿Dónde exactamente termina "estable" y empieza "atención"? Traza la frontera con el mayor margen posible entre los tres estados.</p>
+    <div class="badge">Ingeniería aplicada a Lubricación</div>
+    <span class="badge" style="border-color:var(--accent); color:var(--accent); margin-left:8px;">Nuevas tecnologías · Análisis de aceite</span>
+    <h1>Huella del Aceite</h1>
+    <p class="lead">El aceite no solo lubrica — guarda una huella química de todo lo que le pasó al equipo por dentro.</p>
   </header>
 
   <section class="context">
     <h2>El problema</h2>
-    <p>El <a href="../semaforo-de-bombas/">Semáforo de Bombas</a> estima una probabilidad de cada estado (regresión logística). Este módulo usa una idea distinta y complementaria: en vez de estimar probabilidades, busca directamente la frontera —la línea de decisión— que separa mejor los tres estados de vibración, maximizando el margen entre cada clase y sus vecinas más cercanas. Es la misma lógica detrás de un clasificador de margen máximo (SVM). El resultado suele ser una frontera más "definida", útil cuando lo que te interesa no es tanto "qué probabilidad hay de..." sino "de qué lado de la línea está esta lectura, y qué tan cerca del borde".</p>
-    <p>Las dos variables que usa este demo —vibración RMS global y factor de cresta— son lecturas estándar de cualquier analizador de vibraciones. El factor de cresta (pico máximo dividido entre el RMS) suele subir antes de que el RMS global lo haga, así que combinarlos ayuda a distinguir un estado de "Alerta" temprano de uno ya "Crítico".</p>
+    <p>Cambiar el aceite por calendario ignora lo que el aceite mismo está diciendo. Dos números bastan para empezar a leer esa huella: el TAN (Número de Acidez Total), que sube cuando el aceite se oxida y pierde su capacidad protectora, y el hierro disuelto (Fe), que sube cuando hay desgaste metal-metal en rodamientos, engranajes o camisas. Ninguno de los dos por sí solo cuenta toda la historia — juntos, permiten clasificar el estado del equipo antes de que el desgaste se note en vibración o en una falla real.</p>
   </section>
 
   <section id="demo">
     <h2>Demo interactivo</h2>
     <div class="panel">
       <div class="toggle-row">
-        <span class="label">Clasificador de margen máximo (SVM lineal, uno-contra-todos) — mueve los sliders para simular una lectura de campo.</span>
+        <span class="label">Clasificación por umbrales de referencia — mueve los sliders para simular un reporte de laboratorio.</span>
         <label class="switch">
           <span>Modo Analista</span>
           <input type="checkbox" id="analystToggle">
@@ -379,15 +382,15 @@
       <div class="demo-grid">
         <div class="controls-col">
           <div class="slider-group">
-            <label>Vibración RMS <span class="val" id="vibVal">3.5 mm/s</span></label>
-            <input type="range" id="vibSlider" min="0.3" max="9" step="0.1" value="3.5">
-            <div class="hint"><span>0.3 mm/s</span><span>9 mm/s</span></div>
+            <label>TAN — Número de Acidez Total <span class="val" id="tanVal">0.60 mg KOH/g</span></label>
+            <input type="range" id="tanSlider" min="0.10" max="4.00" step="0.05" value="0.60">
+            <div class="hint"><span>0.10 (aceite nuevo)</span><span>4.00 mg KOH/g (muy oxidado)</span></div>
           </div>
 
           <div class="slider-group">
-            <label>Factor de cresta <span class="val" id="crestVal">3.5</span></label>
-            <input type="range" id="crestSlider" min="1.5" max="8" step="0.1" value="3.5">
-            <div class="hint"><span>1.5</span><span>8.0</span></div>
+            <label>Hierro disuelto (Fe) <span class="val" id="feVal">15 ppm</span></label>
+            <input type="range" id="feSlider" min="0" max="150" step="1" value="15">
+            <div class="hint"><span>0 ppm</span><span>150 ppm (desgaste severo)</span></div>
           </div>
 
           <div class="result" id="resultBox">
@@ -395,8 +398,7 @@
             <div class="risk-text">
               <h3 id="riskTitle">Calculando…</h3>
               <p id="riskDetail"></p>
-              <p class="confidence-line" id="confidenceLine"></p>
-              <p class="confidence-note" id="confidenceNote"></p>
+              <p class="cost-line" id="costLine"></p>
               <p class="simple-summary" id="simpleSummary"></p>
             </div>
           </div>
@@ -404,46 +406,43 @@
 
         <div class="live-col">
           <h3>Simulación en vivo</h3>
-          <div class="instrument-wrap">
-            <canvas id="instrument" width="420" height="260"></canvas>
-            <div class="instrument-stats">
-              <div>Margen a la frontera más cercana: <b id="marginStat">–</b></div>
-            </div>
+          <div class="ts-wrap">
+            <div class="ts-label">Mapa de zonas: TAN vs. hierro disuelto</div>
+            <canvas id="tsChart" width="560" height="230"></canvas>
           </div>
 
           <div class="gauge-wrap">
-            <div class="gauge-label">Cercanía a un cambio de estado (0-100)</div>
-            <div class="gauge-bar"><div class="gauge-fill" id="gaugeFill"></div></div>
-            <div class="gauge-value"><b id="gaugeValue">0</b> <span class="gauge-note">0 = muy dentro de la región actual, 100 = justo en el límite con otro estado</span></div>
+            <div class="gauge-label">Índice de severidad (0-100)</div>
+            <div class="gauge-bar" id="gaugeBar"><div class="gauge-fill" id="gaugeFill"></div><span class="gauge-tick" style="left:35%"></span><span class="gauge-tick" style="left:65%"></span></div>
+            <div class="gauge-value"><b id="gaugeValue">0</b> <span class="gauge-note">toma el peor de los dos: TAN o hierro disuelto</span></div>
           </div>
 
-          <p class="sim-note">Simulación ilustrativa: el mapa y el punto de operación se dibujan a partir de los mismos valores de los sliders — no provienen de un sensor real.</p>
+          <p class="sim-note">Simulación ilustrativa: los umbrales y el mapa de zonas son de ejemplo, calibrados sobre datos sintéticos — no provienen de un laboratorio de análisis de aceite real.</p>
         </div>
       </div>
 
       <div class="analyst" id="analystPanel">
-        <h3 style="font-size:18px; text-transform:none; letter-spacing:0; margin-bottom:8px; color:var(--text);">Ajustar la regularización en vivo</h3>
-        <p style="font-size:15px; color:var(--muted); margin-bottom:18px;">λ (lambda) controla qué tan flexible puede ser la frontera para ajustarse a los datos de entrenamiento. Con λ muy alto, el modelo se vuelve demasiado rígido y clasifica mal incluso los datos que ya conoce (subajuste). Con λ bajo, la frontera se ajusta más a los datos — pero, al ser un modelo lineal con solo dos variables, su capacidad de "memorizar" ruido es limitada: en este dataset, el riesgo real está casi todo del lado del subajuste, no del sobreajuste. Elige un valor de λ para ver el efecto en la frontera y en la exactitud.</p>
+        <h3 style="font-size:18px; text-transform:none; letter-spacing:0; margin-bottom:8px; color:var(--text);">Reentrenar en vivo</h3>
+        <p style="font-size:15px; color:var(--muted); margin-bottom:18px;">Elige cuántos vecinos (k) usa el clasificador k-NN. El set de 140 muestras se divide en 93 para entrenar (●) y 47 reservadas para probar qué tan bien generaliza (○). Con k=1, el modelo copia al vecino más cercano y memoriza hasta el ruido de laboratorio; con k muy alto, promedia tantas muestras que diluye la frontera entre clases.</p>
 
         <div class="dataset-wrap">
-          <div class="dataset-label">Vista del dataset (210 lecturas simuladas — 140 entrenamiento / 70 prueba)</div>
+          <div class="dataset-label">Vista del dataset histórico</div>
           <div class="dataset-scroll">
             <table class="dataset-table">
-              <thead><tr><th>#</th><th>Fecha</th><th>Vibración RMS</th><th>Factor de cresta</th><th>Estado real</th><th>Conjunto</th></tr></thead>
+              <thead><tr><th>#</th><th>TAN (mg KOH/g)</th><th>Fe (ppm)</th><th>Nivel real</th><th>Set</th></tr></thead>
               <tbody id="datasetBody"></tbody>
             </table>
           </div>
           <p class="dataset-note" id="datasetNote"></p>
         </div>
 
-        <div class="degree-row" id="lambdaRow"></div>
+        <div class="degree-row" id="degreeRow"></div>
         <canvas id="chart" width="800" height="340"></canvas>
-        <canvas id="confMatrix" width="800" height="190"></canvas>
+        <canvas id="residuals" width="800" height="200"></canvas>
         <div class="metrics">
-          <span>λ: <b id="mLambda">0.001</b></span>
+          <span>k: <b id="mDegree">9</b></span>
           <span>Exactitud entrenamiento: <b id="mAccTrain">–</b></span>
           <span>Exactitud prueba: <b id="mAccTest">–</b></span>
-          <span>Brecha: <b id="mGap">–</b></span>
         </div>
         <div class="fit-badge" id="mFitBadge">–</div>
       </div>
@@ -454,14 +453,14 @@
     <h2>¿Qué significa para tu planta?</h2>
     <div class="business-grid">
       <div>
-        <p>Con la lectura actual, esta bomba se clasifica como <span class="stat" id="bizLevelInline">Estable</span>. La ventaja de una frontera de margen máximo es que da una lectura clara de "qué tan cerca del límite" está una medición, no solo una etiqueta — eso ayuda a priorizar inspecciones cuando varios equipos están, por ejemplo, todos en "Alerta" pero algunos están mucho más cerca de volverse "Crítico" que otros.</p>
+        <p>Con la lectura actual, el equipo se clasifica en <span class="stat" id="bizLevelInline">Normal</span>. Seguir operando con TAN o hierro elevados no da síntomas inmediatos — el aceite pierde su película protectora y el desgaste se acelera en silencio, hasta que aparece como vibración, ruido o, en el peor caso, una falla mecánica. Actuar cuando el aceite lo indica, no cuando el equipo lo grita, es la diferencia entre un cambio de aceite y un cambio de componente.</p>
         <div class="biz-action" id="bizAction">
           <div class="biz-title" id="bizTitle">Calculando…</div>
           <div class="biz-detail" id="bizDetail"></div>
         </div>
       </div>
       <div>
-        <div class="gauge-label">Costo evitado estimado por estado</div>
+        <div class="ts-label">Costo estimado de intervención por nivel</div>
         <canvas id="projection" width="480" height="230"></canvas>
       </div>
     </div>
@@ -469,7 +468,7 @@
 
   <section id="cta">
     <h2>De esta demo a tu planta</h2>
-    <p style="color:var(--muted); max-width:640px; margin-bottom:20px;">El dataset, la frontera y la simulación de este demo están calibrados sobre datos sintéticos para poder compartir esta demo abiertamente — la metodología es la misma que aplicamos en campo para clasificar tu equipo real. Llevarlo a tu planta implica calibrar la frontera con tus propias lecturas históricas, ajustar qué variables entran al modelo según los sensores que ya tienes instalados, y decidir el nivel de regularización adecuado al volumen de datos disponible — ahí es donde entra nuestro motor AutoML. Se adapta al tipo de equipo y a la industria —minería, manufactura, energía, alimentos— cuando la calibramos con tus datos. Si quieres recorrer ese proceso, conversemos.</p>
+    <p style="color:var(--muted); max-width:640px; margin-bottom:20px;">Los umbrales, las clases y la simulación de este demo están calibrados sobre datos sintéticos para poder compartir esta demo abiertamente — la metodología es la misma que aplicamos en campo para leer un reporte de laboratorio real. Llevarlo a tu planta implica estandarizar cómo tomas y envías tus muestras de aceite, incorporar más parámetros (viscosidad, agua, TBN, conteo de partículas por ISO 4406) según tu equipo, y calibrar el modelo con tu propio histórico — ahí es donde entra nuestro motor AutoML, ajustando los umbrales correctos para tu tipo de aceite y equipo, y evitando tanto falsas alarmas como desgaste real que pase desapercibido. Se adapta al tipo de lubricante y activo —motores, reductores, sistemas hidráulicos, transformadores— cuando lo calibramos con tus datos. Si quieres recorrer ese proceso, conversemos.</p>
     <div class="cta-row">
       <a class="btn primary" href="https://chat.whatsapp.com/GvBz1tuUeNZ0xwTkjsuE3z" target="_blank" rel="noopener">Unirme a la comunidad de WhatsApp</a>
       <a class="btn ghost" href="https://www.linkedin.com/company/reliabilit-ia/" target="_blank" rel="noopener">Seguir en LinkedIn</a>
@@ -478,11 +477,11 @@
 
     <div class="contact-card">
       <div>
-        <h3>¿Hablamos de clasificar el estado de tus equipos?</h3>
-        <p>Si tienes lecturas de vibración de tus equipos y quieres validar este análisis con tu planta, escríbeme directamente.</p>
+        <h3>¿Hablamos de tu programa de análisis de aceite?</h3>
+        <p>Si tienes reportes históricos de laboratorio y quieres validar este análisis con tu planta, escríbeme directamente.</p>
       </div>
       <div class="contact-links">
-        <a class="contact-row" href="https://wa.me/51997610310?text=Hola%20Miguel%2C%20vi%20el%20demo%20Frontera%20de%20Vibracion%20y%20quiero%20conversar%20sobre%20la%20calibracion%20para%20mi%20planta" target="_blank" rel="noopener">
+        <a class="contact-row" href="https://wa.me/51997610310?text=Hola%20Miguel%2C%20vi%20el%20demo%20Huella%20del%20Aceite%20y%20quiero%20conversar%20sobre%20la%20calibracion%20para%20mi%20planta" target="_blank" rel="noopener">
           <span class="contact-icon">💬</span>
           <span class="contact-text"><b>WhatsApp</b>+51 997 610 310</span>
         </a>
@@ -501,14 +500,14 @@
   <section class="related-section">
     <div class="share-row">
       <span style="font-size:13px; color:var(--muted); align-self:center;">Compartir esta demo:</span>
-      <a class="share-btn" href="https://wa.me/?text=Mira%20esta%20demo%20de%20Frontera%20de%20Vibraci%C3%B3n%20%E2%80%94%20mantenimiento%20predictivo%20con%20IA%2C%20en%20vivo%3A%20https%3A//angel19968.github.io/reliabilit-ia/modelos/frontera-de-vibracion/" target="_blank" rel="noopener">💬 WhatsApp</a>
-      <a class="share-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A//angel19968.github.io/reliabilit-ia/modelos/frontera-de-vibracion/" target="_blank" rel="noopener">in LinkedIn</a>
+      <a class="share-btn" href="https://wa.me/?text=Mira%20esta%20demo%20de%20Huella%20del%20Aceite%20%E2%80%94%20mantenimiento%20predictivo%20con%20IA%2C%20en%20vivo%3A%20https%3A//angel19968.github.io/reliabilit-ia/modelos/huella-del-aceite/" target="_blank" rel="noopener">💬 WhatsApp</a>
+      <a class="share-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A//angel19968.github.io/reliabilit-ia/modelos/huella-del-aceite/" target="_blank" rel="noopener">in LinkedIn</a>
     </div>
     <h2 style="margin-top:32px;">Otros modelos que te pueden interesar</h2>
     <div class="related-grid">
-      <a class="related-card" href="../radar-de-rodamientos/"><span class="rc-icon">⚙️</span><span class="rc-name">Radar de Rodamientos</span></a>
-      <a class="related-card" href="../semaforo-de-bombas/"><span class="rc-icon">🚰</span><span class="rc-name">Semáforo de Bombas</span></a>
-      <a class="related-card" href="../diagnostico-del-motor/"><span class="rc-icon">🔧</span><span class="rc-name">Diagnóstico del Motor</span></a>
+      <a class="related-card" href="../pulso-del-motor/"><span class="rc-icon">🔧</span><span class="rc-name">Pulso del Motor</span></a>
+      <a class="related-card" href="../oido-industrial/"><span class="rc-icon">💨</span><span class="rc-name">Oído Industrial</span></a>
+      <a class="related-card" href="../guardian-de-la-bomba/"><span class="rc-icon">🚰</span><span class="rc-name">Guardián de la Bomba</span></a>
     </div>
   </section>
 
@@ -520,166 +519,37 @@
       <a href="https://www.linkedin.com/in/miguelcayllahua/" target="_blank" rel="noopener">LinkedIn personal</a>
       <a href="mailto:miguelcquispe@gmail.com">Correo</a>
     </div>
-    <p style="">La metodología es la misma que aplicamos en proyectos reales; los datos y la simulación de esta demo son sintéticos para poder compartirlos públicamente. Se calibra con tus propios datos —sin importar el tipo de equipo o la industria— cuando trabajamos juntos. Los parámetros de este demo son de referencia — se recalibran a la medida de cada equipo cuando trabajamos con tus datos.</p>
+    <p style="">La metodología es la misma que aplicamos en proyectos reales; los datos y la simulación de esta demo son sintéticos para poder compartirlos públicamente. Se calibra con tu propio histórico de laboratorio —sin importar el tipo de lubricante o activo— cuando trabajamos juntos. Los parámetros de este demo son de referencia — se recalibran a la medida de cada equipo cuando trabajamos con tus datos.</p>
   </footer>
 </div>
 
 <script>
 /* =========================================================
-   Generación del dataset sintético: 3 estados de vibración
-   descritos por 2 variables reales de análisis de vibración.
+   MODO BÁSICO — clasificación por umbrales de referencia
    ========================================================= */
-function seededRandom(seed){
-  let s = seed;
-  return function(){ s = (s*9301+49297) % 233280; return s/233280; };
-}
-function gaussian(rnd){
-  const u1 = Math.max(1e-9, rnd()), u2 = rnd();
-  return Math.sqrt(-2*Math.log(u1))*Math.cos(2*Math.PI*u2);
-}
-const REF_DATE = new Date('2026-07-15');
-const MESES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
-function fmtDate(d){ return String(d.getDate()).padStart(2,'0')+' '+MESES[d.getMonth()]+' '+d.getFullYear(); }
-function dateFromDaysAgo(daysAgo){ const d = new Date(REF_DATE); d.setDate(d.getDate()-Math.round(daysAgo)); return d; }
+const LEVELS = ['Normal','Precaución','Crítico'];
+const LEVEL_COLORS = ['#3ecfa0','#e8c547','#f4722e'];
+const TAN_MIN=0.10, TAN_MAX=4.00, FE_MIN=0, FE_MAX=150;
 
-const rnd = seededRandom(77);
-const N_PER_CLASS = 70;
-const CLASS_NAMES = ['Estable','Alerta','Crítico'];
-const CLASS_COLORS = ['#3ecfa0','#e8c547','#f4722e'];
-
-const points = [];
-for(let i=0;i<N_PER_CLASS;i++){
-  const rms = Math.max(0.3, 2.0 + gaussian(rnd)*0.7);
-  const crest = Math.max(1.5, 3.0 + gaussian(rnd)*0.5);
-  const date = dateFromDaysAgo(rnd()*400);
-  points.push({x: rms, y: crest, c: 0, date});
+function severityOf(tan, fe){
+  const sTan = 100*(tan-TAN_MIN)/(TAN_MAX-TAN_MIN);
+  const sFe = 100*(fe-FE_MIN)/(FE_MAX-FE_MIN);
+  return Math.max(0, Math.min(100, Math.max(sTan, sFe)));
 }
-for(let i=0;i<N_PER_CLASS;i++){
-  const rms = Math.max(0.3, 4.0 + gaussian(rnd)*0.9);
-  const crest = Math.max(1.5, 4.3 + gaussian(rnd)*0.7);
-  const date = dateFromDaysAgo(rnd()*400);
-  points.push({x: rms, y: crest, c: 1, date});
-}
-for(let i=0;i<N_PER_CLASS;i++){
-  const rms = Math.max(0.3, 6.8 + gaussian(rnd)*1.1);
-  const crest = Math.max(1.5, 5.8 + gaussian(rnd)*0.9);
-  const date = dateFromDaysAgo(rnd()*400);
-  points.push({x: rms, y: crest, c: 2, date});
-}
-// shuffle deterministically
-for(let i=points.length-1;i>0;i--){ const j=Math.floor(rnd()*(i+1)); [points[i],points[j]]=[points[j],points[i]]; }
-
-const trainPoints = points.filter((_,i)=> i%3 !== 0);
-const testPoints  = points.filter((_,i)=> i%3 === 0);
-
-function stats(arr,key){
-  const v = arr.map(p=>p[key]);
-  const m = v.reduce((a,b)=>a+b,0)/v.length;
-  const sd = Math.sqrt(v.reduce((a,x)=>a+(x-m)**2,0)/v.length);
-  return {m,sd};
-}
-const SX = stats(trainPoints,'x'), SY = stats(trainPoints,'y');
-function toZ(p){ return [(p.x-SX.m)/SX.sd, (p.y-SY.m)/SY.sd]; }
-
-/* =========================================================
-   SVM lineal uno-contra-todos, hinge loss + regularización L2,
-   entrenado por descenso de subgradiente (desde cero).
-   ========================================================= */
-function trainSVM(data, lambda, epochs, lr){
-  const models = {};
-  [0,1,2].forEach(c=>{
-    let w = [0,0], b = 0;
-    for(let e=0;e<epochs;e++){
-      let gw = [0,0], gb = 0;
-      data.forEach(p=>{
-        const z = toZ(p);
-        const y = p.c===c ? 1 : -1;
-        const margin = y*(w[0]*z[0]+w[1]*z[1]+b);
-        if(margin < 1){
-          gw[0] += -y*z[0]; gw[1] += -y*z[1]; gb += -y;
-        }
-      });
-      gw[0] = gw[0]/data.length + lambda*w[0];
-      gw[1] = gw[1]/data.length + lambda*w[1];
-      gb = gb/data.length;
-      w[0] -= lr*gw[0]; w[1] -= lr*gw[1]; b -= lr*gb;
-    }
-    models[c] = {w,b};
-  });
-  return models;
-}
-function scoresOf(models, p){
-  const z = toZ(p);
-  const s = {};
-  [0,1,2].forEach(c=>{ const m = models[c]; s[c] = m.w[0]*z[0]+m.w[1]*z[1]+m.b; });
-  return s;
-}
-function predict(models, p){
-  const s = scoresOf(models, p);
-  let best=-Infinity, bestC=0;
-  [0,1,2].forEach(c=>{ if(s[c]>best){ best=s[c]; bestC=c; } });
-  return bestC;
-}
-function accuracy(models, data){
-  let correct=0;
-  data.forEach(p=>{ if(predict(models,p)===p.c) correct++; });
-  return correct/data.length;
+function classOf(severity){
+  if(severity < 35) return 0;
+  if(severity < 65) return 1;
+  return 2;
 }
 
-function renderDatasetPreview(){
-  const tbody = document.getElementById('datasetBody');
-  const note = document.getElementById('datasetNote');
-  if(!tbody) return;
-  const rows = points.slice(0, 60).map((p,i)=>{
-    const inTrain = i%3 !== 0;
-    return `<tr><td>${i+1}</td><td>${fmtDate(p.date)}</td><td>${p.x.toFixed(2)}</td><td>${p.y.toFixed(2)}</td><td>${CLASS_NAMES[p.c]}</td><td>${inTrain?'Entrenamiento':'Prueba'}</td></tr>`;
-  }).join('');
-  tbody.innerHTML = rows;
-  const sortedDates = points.map(p=>p.date).sort((a,b)=>a-b);
-  note.textContent = `Mostrando 60 de ${points.length} lecturas totales, entre ${fmtDate(sortedDates[0])} y ${fmtDate(sortedDates[sortedDates.length-1])} (${trainPoints.length} entrenamiento / ${testPoints.length} prueba).`;
-}
-renderDatasetPreview();
-
-/* =========================================================
-   MODELO DE PRODUCCIÓN fijo (λ=0.001, validado como el punto
-   con mejor exactitud de prueba y brecha contenida).
-   ========================================================= */
-const PROD_LAMBDA = 0.001, PROD_EPOCHS = 300, PROD_LR = 0.5;
-const prodModel = trainSVM(trainPoints, PROD_LAMBDA, PROD_EPOCHS, PROD_LR);
-
-const LEVEL_DETAIL = [
-  'La lectura cae claramente en la región de operación estable.',
-  'La lectura muestra señales tempranas de desviación — vale la pena anotarla y darle seguimiento en la siguiente ronda.',
-  'La lectura cae en la región crítica: se recomienda programar una inspección a la brevedad.'
-];
-const LEVEL_SIMPLE = [
-  'todo estable, no hagas nada por ahora.',
-  'anótalo y dale seguimiento en tu siguiente ronda.',
-  'programa una inspección pronto, la vibración ya es crítica.'
-];
-
-function classifyProd(rms, crest){
-  const p = {x:rms, y:crest};
-  const s = scoresOf(prodModel, p);
-  const cls = predict(prodModel, p);
-  const sorted = [0,1,2].sort((a,b)=>s[b]-s[a]);
-  const margin = s[sorted[0]] - s[sorted[1]];
-  return {cls, margin, scores:s};
-}
-
-/* =========================================================
-   MODO BÁSICO
-   ========================================================= */
-const vibSlider = document.getElementById('vibSlider');
-const crestSlider = document.getElementById('crestSlider');
-const vibVal = document.getElementById('vibVal');
-const crestVal = document.getElementById('crestVal');
+const tanSlider = document.getElementById('tanSlider');
+const feSlider = document.getElementById('feSlider');
+const tanVal = document.getElementById('tanVal');
+const feVal = document.getElementById('feVal');
 const riskDot = document.getElementById('riskDot');
 const riskTitle = document.getElementById('riskTitle');
 const riskDetail = document.getElementById('riskDetail');
-const confidenceLine = document.getElementById('confidenceLine');
-const confidenceNote = document.getElementById('confidenceNote');
-const marginStat = document.getElementById('marginStat');
+const costLine = document.getElementById('costLine');
 const gaugeFill = document.getElementById('gaugeFill');
 const gaugeValue = document.getElementById('gaugeValue');
 const bizLevelInline = document.getElementById('bizLevelInline');
@@ -688,177 +558,256 @@ const bizTitle = document.getElementById('bizTitle');
 const bizDetail = document.getElementById('bizDetail');
 const projectionCanvas = document.getElementById('projection');
 const pctx = projectionCanvas.getContext('2d');
+const tsCanvas = document.getElementById('tsChart');
+const tctx = tsCanvas.getContext('2d');
 
-function drawProjection(activeIdx, scorePct){
+function fmtSoles(v){ return 'S/. ' + Math.round(v).toLocaleString('es-PE'); }
+
+const LEVEL_COSTS = [150, 1200, 11000]; // soles, ilustrativo: muestreo rutinario / cambio de aceite / falla de componente
+const LEVEL_ACTIONS = [
+  'Sin acción correctiva — continuar con el monitoreo de rutina en el próximo muestreo programado.',
+  'Cambiar el aceite y el filtro, y volver a muestrear en 2-4 semanas para confirmar que el TAN y el hierro bajen a rango normal.',
+  'Programar inspección del componente (rodamientos, engranajes) y posible reemplazo — el desgaste metal-metal ya está en curso.'
+];
+
+function drawCostBars(highlightCls){
   const W = projectionCanvas.width, H = projectionCanvas.height;
   pctx.clearRect(0,0,W,H);
-  const padL = 56, padR = 20, padT = 20, padB = 46;
-  const costs = [0, 500, 8500];
-  const maxCost = costs[costs.length-1]*1.1;
-  const bw = (W-padL-padR)/costs.length;
-
+  const padL = 56, padR = 20, padT = 20, padB = 40;
+  const maxV = Math.max(...LEVEL_COSTS)*1.15;
+  const barW = 76;
   pctx.strokeStyle = '#22222c';
   pctx.lineWidth = 1;
   pctx.beginPath();
   pctx.moveTo(padL, padT); pctx.lineTo(padL, H-padB); pctx.lineTo(W-padR, H-padB);
   pctx.stroke();
-
-  costs.forEach((c,i)=>{
-    const barH = Math.max(2,(c/maxCost)*(H-padT-padB));
-    const x = padL + i*bw + bw*0.18;
-    const y = H-padB-barH;
-    const w = bw*0.64;
-    pctx.fillStyle = i===activeIdx ? CLASS_COLORS[i] : 'rgba(244,244,247,0.14)';
-    pctx.fillRect(x,y,w,barH);
+  LEVELS.forEach((label,i)=>{
+    const cx = padL + (i+0.5)*((W-padL-padR)/3);
+    const val = LEVEL_COSTS[i];
+    const barH = (val/maxV)*(H-padT-padB);
+    const x = cx-barW/2, y = H-padB-barH;
+    pctx.globalAlpha = i===highlightCls ? 1 : 0.45;
+    pctx.fillStyle = LEVEL_COLORS[i];
+    pctx.fillRect(x,y,barW,barH);
+    pctx.globalAlpha = 1;
+    pctx.fillStyle = '#f4f4f7';
+    pctx.font = '13px DM Mono, monospace';
+    pctx.textAlign = 'center';
+    pctx.fillText(fmtSoles(val), cx, y-10);
     pctx.fillStyle = '#a8a8b4';
-    pctx.font = '11px DM Mono, monospace';
-    pctx.fillText(CLASS_NAMES[i], x-2, H-padB+16);
-    if(i===activeIdx){
-      pctx.fillStyle = '#f4f4f7';
-      pctx.font = '12px DM Mono, monospace';
-      pctx.fillText('S/. '+c.toLocaleString('es-PE'), x-4, y-8);
-    }
+    pctx.font = '12px DM Mono, monospace';
+    pctx.fillText(label, cx, H-padB+18);
   });
+  pctx.textAlign = 'left';
   pctx.fillStyle = '#8a8a98';
-  pctx.font = '11px DM Mono, monospace';
-  pctx.fillText('costo de intervención evitado con detección temprana (ilustrativo)', padL, 14);
+  pctx.font = '12px DM Mono, monospace';
+  pctx.fillText('costo estimado (S/.), ilustrativo', padL, 14);
+}
 
-  // Indicador continuo: qué tan cerca está esta lectura de una frontera
-  // real de la SVM (no solo en qué región cayó).
-  if(typeof scorePct === 'number'){
-    const by = H-12, bh = 5;
-    pctx.fillStyle = 'rgba(244,244,247,0.10)';
-    pctx.fillRect(padL, by, W-padL-padR, bh);
-    const fw = Math.min(1,Math.max(0,scorePct/100))*(W-padL-padR);
-    pctx.fillStyle = CLASS_COLORS[activeIdx];
-    pctx.fillRect(padL, by, fw, bh);
-    pctx.fillStyle = '#c9c9d4';
-    pctx.font = '10px DM Mono, monospace';
-    pctx.fillText('cercanía real a la frontera: '+scorePct.toFixed(0)+'/100', padL, by-4);
+function drawZoneMap(tan, fe, cls){
+  const W = tsCanvas.width, H = tsCanvas.height;
+  tctx.clearRect(0,0,W,H);
+  const padL = 44, padR = 16, padT = 16, padB = 26;
+  function toPx(t,f){
+    return [
+      padL + (t-TAN_MIN)/(TAN_MAX-TAN_MIN)*(W-padL-padR),
+      H-padB - (f-FE_MIN)/(FE_MAX-FE_MIN)*(H-padT-padB)
+    ];
   }
+  // fondo por zona de severidad (grilla gruesa, rápida de pintar)
+  const cell = 10;
+  for(let px=padL; px<W-padR; px+=cell){
+    for(let py=padT; py<H-padB; py+=cell){
+      const t = TAN_MIN + (px-padL)/(W-padL-padR)*(TAN_MAX-TAN_MIN);
+      const f = FE_MIN + (1-(py-padT)/(H-padT-padB))*(FE_MAX-FE_MIN);
+      const sev = severityOf(t,f);
+      const c = classOf(sev);
+      tctx.fillStyle = LEVEL_COLORS[c];
+      tctx.globalAlpha = 0.13;
+      tctx.fillRect(px,py,cell,cell);
+    }
+  }
+  tctx.globalAlpha = 1;
+
+  tctx.strokeStyle = '#22222c';
+  tctx.lineWidth = 1;
+  tctx.beginPath();
+  tctx.moveTo(padL, padT); tctx.lineTo(padL, H-padB); tctx.lineTo(W-padR, H-padB);
+  tctx.stroke();
+  tctx.fillStyle = '#a8a8b4';
+  tctx.font = '11px DM Mono, monospace';
+  tctx.fillText('TAN (mg KOH/g) →', padL, H-8);
+  tctx.save();
+  tctx.translate(14, H/2+34);
+  tctx.rotate(-Math.PI/2);
+  tctx.fillText('Fe (ppm) →', 0,0);
+  tctx.restore();
+
+  const [x,y] = toPx(tan,fe);
+  tctx.fillStyle = LEVEL_COLORS[cls];
+  tctx.beginPath();
+  tctx.arc(x,y,7,0,Math.PI*2);
+  tctx.fill();
+  tctx.strokeStyle = '#f4f4f7';
+  tctx.lineWidth = 2;
+  tctx.stroke();
 }
 
 function updateBasic(){
-  const rms = parseFloat(vibSlider.value);
-  const crest = parseFloat(crestSlider.value);
-  vibVal.textContent = rms.toFixed(1) + ' mm/s';
-  crestVal.textContent = crest.toFixed(1);
+  const tan = parseFloat(tanSlider.value);
+  const fe = parseFloat(feSlider.value);
+  tanVal.textContent = tan.toFixed(2) + ' mg KOH/g';
+  feVal.textContent = fe.toFixed(0) + ' ppm';
 
-  const {cls, margin} = classifyProd(rms, crest);
-  const color = CLASS_COLORS[cls];
+  const severity = severityOf(tan, fe);
+  const cls = classOf(severity);
+  const color = LEVEL_COLORS[cls];
+  const title = LEVELS[cls];
 
+  const sTan = 100*(tan-TAN_MIN)/(TAN_MAX-TAN_MIN);
+  const sFe = 100*(fe-FE_MIN)/(FE_MAX-FE_MIN);
+  let detail, simple;
+  if(cls===0){
+    detail = 'El aceite está dentro de rango — ni la acidez ni el hierro disuelto indican degradación ni desgaste anormal.';
+    simple = 'todo normal, sigue con el monitoreo de rutina.';
+  } else if(cls===1){
+    detail = sTan >= sFe
+      ? 'La acidez (TAN) está elevada — el aceite empieza a oxidarse y a perder capacidad protectora.'
+      : 'El hierro disuelto está elevado — hay desgaste metal-metal en curso, aunque el aceite en sí todavía no está muy degradado.';
+    simple = 'vale la pena cambiar el aceite pronto y volver a muestrear.';
+  } else {
+    detail = 'Tanto el nivel de acidez como el de hierro (o al menos uno de forma severa) están fuera de rango — el aceite ya no protege bien y probablemente hay desgaste activo en el componente.';
+    simple = 'esto necesita inspección del componente, no solo un cambio de aceite.';
+  }
   riskDot.style.background = color;
   riskTitle.style.color = color;
-  riskTitle.textContent = CLASS_NAMES[cls];
-  riskDetail.textContent = LEVEL_DETAIL[cls];
+  riskTitle.textContent = title;
+  riskDetail.textContent = detail;
   const simpleEl = document.getElementById('simpleSummary');
-  if(simpleEl) simpleEl.textContent = '💬 En palabras simples: ' + LEVEL_SIMPLE[cls];
+  if(simpleEl) simpleEl.textContent = '💬 En palabras simples: ' + simple;
+  costLine.textContent = `Acción recomendada: ${LEVEL_ACTIONS[cls]}`;
 
-  let confLevel, confColor, confNote;
-  if(margin > 1.2){
-    confLevel = 'Alta'; confColor = 'var(--success)';
-    confNote = 'La lectura está lejos de cualquier frontera entre estados.';
-  } else if(margin > 0.4){
-    confLevel = 'Media'; confColor = '#e8c547';
-    confNote = 'Cerca de una frontera — el estado vecino también es plausible.';
-  } else {
-    confLevel = 'Baja'; confColor = 'var(--cta)';
-    confNote = 'Justo en el borde entre dos estados — confirma con otra lectura antes de decidir.';
-  }
-  confidenceLine.textContent = 'Confianza de la clasificación: ' + confLevel;
-  confidenceLine.style.color = confColor;
-  confidenceNote.textContent = confNote;
-
-  marginStat.textContent = margin.toFixed(2);
-
-  const pct = 100 - Math.min(100, Math.max(0, margin/1.6*100));
-  gaugeFill.style.width = pct.toFixed(1) + '%';
+  gaugeFill.style.width = severity.toFixed(1) + '%';
   gaugeFill.style.background = color;
-  gaugeValue.textContent = Math.round(pct);
+  gaugeValue.textContent = Math.round(severity);
 
-  bizLevelInline.textContent = CLASS_NAMES[cls];
+  bizLevelInline.textContent = title;
   bizLevelInline.style.color = color;
   bizAction.style.borderColor = color;
   bizTitle.style.color = color;
-  bizTitle.textContent = CLASS_NAMES[cls];
-  bizDetail.textContent = LEVEL_DETAIL[cls];
+  bizTitle.textContent = title;
+  bizDetail.textContent = `Costo estimado de la acción recomendada: ${fmtSoles(LEVEL_COSTS[cls])}. ${LEVEL_ACTIONS[cls]}`;
 
-  drawProjection(cls, pct);
-  drawInstrument(rms, crest, cls);
+  drawZoneMap(tan, fe, cls);
+  drawCostBars(cls);
 }
-vibSlider.addEventListener('input', updateBasic);
-crestSlider.addEventListener('input', updateBasic);
+tanSlider.addEventListener('input', updateBasic);
+feSlider.addEventListener('input', updateBasic);
+updateBasic();
+</script>
 
+<script>
 /* =========================================================
-   SIMULACIÓN EN VIVO — mapa de regiones de decisión del
-   modelo de producción con el punto actual resaltado.
+   MODO ANALISTA — dataset sintético + clasificador k-NN
    ========================================================= */
-const instrumentCanvas = document.getElementById('instrument');
-const ictx = instrumentCanvas.getContext('2d');
-function hexToRgb(hex){ const v=hex.replace('#',''); return [parseInt(v.slice(0,2),16),parseInt(v.slice(2,4),16),parseInt(v.slice(4,6),16)]; }
-function rgba(c,a){ return `rgba(${c[0]},${c[1]},${c[2]},${a})`; }
-const RMS_MIN=0.3, RMS_MAX=9, CREST_MIN=1.5, CREST_MAX=8;
+function seededRandom(seed){
+  let s = seed;
+  return function(){ s = (s*9301+49297) % 233280; return s/233280; };
+}
+const rnd = seededRandom(23);
 
-function drawInstrument(rms, crest, cls){
-  const W = instrumentCanvas.width, H = instrumentCanvas.height;
-  const pad = 36;
-  ictx.clearRect(0,0,W,H);
-  function toPx(v,t){ return [ pad+(v-RMS_MIN)/(RMS_MAX-RMS_MIN)*(W-2*pad), H-pad-(t-CREST_MIN)/(CREST_MAX-CREST_MIN)*(H-2*pad) ]; }
-
-  const cell = 8;
-  for(let px=pad; px<W-pad; px+=cell){
-    for(let py=pad; py<H-pad; py+=cell){
-      const v = RMS_MIN + (px-pad)/(W-2*pad)*(RMS_MAX-RMS_MIN);
-      const t = CREST_MIN + (1-(py-pad)/(H-2*pad))*(CREST_MAX-CREST_MIN);
-      const c = predict(prodModel, {x:v,y:t});
-      ictx.fillStyle = rgba(hexToRgb(CLASS_COLORS[c]), 0.14);
-      ictx.fillRect(px,py,cell,cell);
-    }
-  }
-
-  ictx.strokeStyle = '#22222c';
-  ictx.lineWidth = 1;
-  ictx.beginPath();
-  ictx.moveTo(pad, pad); ictx.lineTo(pad, H-pad); ictx.lineTo(W-pad, H-pad);
-  ictx.stroke();
-  ictx.fillStyle = '#8a8a98';
-  ictx.font = '10px DM Mono, monospace';
-  ictx.fillText('vibración RMS (mm/s)', pad, H-10);
-  ictx.save();
-  ictx.translate(12, H/2+40);
-  ictx.rotate(-Math.PI/2);
-  ictx.fillText('factor de cresta', 0, 0);
-  ictx.restore();
-
-  const color = CLASS_COLORS[cls];
-  const [cx,cy] = toPx(rms,crest);
-  ictx.beginPath();
-  ictx.fillStyle = rgba(hexToRgb(color),0.25);
-  ictx.arc(cx,cy,13,0,Math.PI*2);
-  ictx.fill();
-  ictx.beginPath();
-  ictx.fillStyle = color;
-  ictx.arc(cx,cy,6,0,Math.PI*2);
-  ictx.fill();
-  ictx.strokeStyle = '#f4f4f7';
-  ictx.lineWidth = 1.3;
-  ictx.stroke();
+function sampleState(){
+  const r = rnd();
+  if(r<0.45) return 0;
+  if(r<0.80) return 1;
+  return 2;
+}
+function sampleTanBase(state){
+  const ranges = [[0.10,0.90],[0.55,1.60],[1.20,3.50]];
+  const [lo,hi] = ranges[state];
+  return lo + rnd()*(hi-lo);
+}
+function sampleFeBase(state){
+  const ranges = [[2,32],[18,65],[45,140]];
+  const [lo,hi] = ranges[state];
+  return lo + rnd()*(hi-lo);
 }
 
-/* =========================================================
-   MODO ANALISTA — λ ajustable + matriz de confusión
-   ========================================================= */
+const REF_DATE = new Date('2026-07-15');
+const MESES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+function fmtDate(d){ return String(d.getDate()).padStart(2,'0')+' '+MESES[d.getMonth()]+' '+d.getFullYear(); }
+function dateFromDaysAgo(daysAgo){ const d = new Date(REF_DATE); d.setDate(d.getDate()-Math.round(daysAgo)); return d; }
+
+const N_DS = 140;
+const dataset = [];
+for(let i=0;i<N_DS;i++){
+  const state = sampleState();
+  const tanR = Math.max(0.05, sampleTanBase(state) + (rnd()-0.5)*0.5);
+  const feR = Math.max(1, sampleFeBase(state) + (rnd()-0.5)*24);
+  dataset.push({tan: tanR, fe: feR, label: state});
+}
+// fechas generadas con un generador aparte para no alterar la secuencia
+// tan/fe/label ya validada (train/test, sobre/subajuste por k).
+const rndDate = seededRandom(31);
+dataset.forEach(d=>{ d.date = dateFromDaysAgo(rndDate()*420); });
+const dsTans = dataset.map(d=>d.tan), dsFes = dataset.map(d=>d.fe);
+const DNORM = {tanMin:Math.min(...dsTans), tanMax:Math.max(...dsTans), feMin:Math.min(...dsFes), feMax:Math.max(...dsFes)};
+dataset.forEach(d=>{ d.nTan=(d.tan-DNORM.tanMin)/(DNORM.tanMax-DNORM.tanMin); d.nFe=(d.fe-DNORM.feMin)/(DNORM.feMax-DNORM.feMin); });
+
+const trainPoints = dataset.filter((_,i)=> i%3 !== 0);
+const testPoints = dataset.filter((_,i)=> i%3 === 0);
+
+function renderDatasetPreview(){
+  const tbody = document.getElementById('datasetBody');
+  const note = document.getElementById('datasetNote');
+  if(!tbody) return;
+  tbody.innerHTML = dataset.map((p,i)=>{
+    const isTrain = i%3 !== 0;
+    return `<tr><td>${i+1}</td><td>${p.tan.toFixed(2)}</td><td>${p.fe.toFixed(0)}</td><td>${LEVELS[p.label]}</td><td class="${isTrain?'set-train':'set-test'}">${isTrain?'Entrenamiento':'Prueba'}</td></tr>`;
+  }).join('');
+  const sortedDates = dataset.map(p=>p.date).sort((a,b)=>a-b);
+  note.textContent = `${dataset.length} muestras de laboratorio, registradas entre ${fmtDate(sortedDates[0])} y ${fmtDate(sortedDates[sortedDates.length-1])} — ${trainPoints.length} de entrenamiento, ${testPoints.length} de prueba.`;
+}
+renderDatasetPreview();
+
+function knnPredict(train, point, k){
+  const dists = train.map(t=>{
+    const dt=t.nTan-point.nTan, df=t.nFe-point.nFe;
+    return {d:Math.sqrt(dt*dt+df*df), label:t.label};
+  });
+  dists.sort((a,b)=>a.d-b.d);
+  const top = dists.slice(0,k);
+  const counts = {};
+  top.forEach(t=>counts[t.label]=(counts[t.label]||0)+1);
+  let best=null,bestC=-1;
+  Object.entries(counts).forEach(([l,c])=>{ if(c>bestC){bestC=c;best=parseInt(l);} });
+  return best;
+}
+function accuracyKnn(train, points, k){
+  let c=0; points.forEach(p=>{ if(knnPredict(train,p,k)===p.label) c++; });
+  return c/points.length;
+}
+
 const chartCanvas = document.getElementById('chart');
 const cctx = chartCanvas.getContext('2d');
-const confCanvas = document.getElementById('confMatrix');
-const rctx = confCanvas.getContext('2d');
-let currentLambda = 0.001;
+const residualCanvas = document.getElementById('residuals');
+const rctx = residualCanvas.getContext('2d');
+let currentK = 9;
 
-function toPxChart(v,t,W,H,pad){
-  return [ pad+(v-RMS_MIN)/(RMS_MAX-RMS_MIN)*(W-2*pad), H-pad-(t-CREST_MIN)/(CREST_MAX-CREST_MIN)*(H-2*pad) ];
+function hexToRgb(hex){
+  const v = hex.replace('#','');
+  return [parseInt(v.slice(0,2),16), parseInt(v.slice(2,4),16), parseInt(v.slice(4,6),16)];
+}
+function rgba(rgb, a){ return `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${a})`; }
+
+function toPxChart(tan, fe, W, H, pad){
+  return [
+    pad + (tan-DNORM.tanMin)/(DNORM.tanMax-DNORM.tanMin)*(W-2*pad),
+    H-pad - (fe-DNORM.feMin)/(DNORM.feMax-DNORM.feMin)*(H-2*pad)
+  ];
 }
 
-function drawDecisionMap(models){
+function drawDecisionMap(k){
   const W = chartCanvas.width, H = chartCanvas.height;
   const pad = 40;
   cctx.clearRect(0,0,W,H);
@@ -866,11 +815,12 @@ function drawDecisionMap(models){
   const cell = 8;
   for(let px=pad; px<W-pad; px+=cell){
     for(let py=pad; py<H-pad; py+=cell){
-      const v = RMS_MIN + (px-pad)/(W-2*pad)*(RMS_MAX-RMS_MIN);
-      const t = CREST_MIN + (1-(py-pad)/(H-2*pad))*(CREST_MAX-CREST_MIN);
-      const c = predict(models, {x:v,y:t});
-      cctx.fillStyle = rgba(hexToRgb(CLASS_COLORS[c]), 0.16);
-      cctx.fillRect(px,py,cell,cell);
+      const tan = DNORM.tanMin + (px-pad)/(W-2*pad)*(DNORM.tanMax-DNORM.tanMin);
+      const fe = DNORM.feMin + (1-(py-pad)/(H-2*pad))*(DNORM.feMax-DNORM.feMin);
+      const point = {nTan:(tan-DNORM.tanMin)/(DNORM.tanMax-DNORM.tanMin), nFe:(fe-DNORM.feMin)/(DNORM.feMax-DNORM.feMin)};
+      const label = knnPredict(trainPoints, point, k);
+      cctx.fillStyle = rgba(hexToRgb(LEVEL_COLORS[label]), 0.16);
+      cctx.fillRect(px, py, cell, cell);
     }
   }
 
@@ -881,120 +831,124 @@ function drawDecisionMap(models){
   cctx.stroke();
   cctx.fillStyle = '#a8a8b4';
   cctx.font = '13px DM Mono, monospace';
-  cctx.fillText('vibración RMS (mm/s)', W/2-70, H-10);
+  cctx.fillText('TAN (mg KOH/g)', W/2-40, H-10);
   cctx.save();
-  cctx.translate(16, H/2+60);
+  cctx.translate(16, H/2+40);
   cctx.rotate(-Math.PI/2);
-  cctx.fillText('factor de cresta', 0, 0);
+  cctx.fillText('hierro disuelto (ppm)', 0, 0);
   cctx.restore();
 
   trainPoints.forEach(p=>{
-    const [x,y] = toPxChart(p.x,p.y,W,H,pad);
+    const [x,y] = toPxChart(p.tan, p.fe, W, H, pad);
     cctx.beginPath();
-    cctx.fillStyle = CLASS_COLORS[p.c];
-    cctx.arc(x,y,3,0,Math.PI*2);
+    cctx.fillStyle = LEVEL_COLORS[p.label];
+    cctx.arc(x,y,4,0,Math.PI*2);
     cctx.fill();
   });
   testPoints.forEach(p=>{
-    const [x,y] = toPxChart(p.x,p.y,W,H,pad);
+    const [x,y] = toPxChart(p.tan, p.fe, W, H, pad);
     cctx.beginPath();
-    cctx.strokeStyle = CLASS_COLORS[p.c];
-    cctx.lineWidth = 1.6;
-    cctx.arc(x,y,4,0,Math.PI*2);
+    cctx.fillStyle = LEVEL_COLORS[p.label];
+    cctx.globalAlpha = 0.35;
+    cctx.arc(x,y,5,0,Math.PI*2);
+    cctx.fill();
+    cctx.globalAlpha = 1;
+    cctx.strokeStyle = '#f4f4f7';
+    cctx.lineWidth = 1.3;
     cctx.stroke();
   });
 
   cctx.fillStyle = '#a8a8b4';
   cctx.font = '12px DM Mono, monospace';
-  cctx.fillText('● entrenamiento · ◯ prueba — color = estado real', pad, pad-16);
+  cctx.fillText('● entrenamiento · ○ prueba · color = nivel real', pad, pad-16);
 }
 
-function drawConfusion(models){
-  const conf = {0:{0:0,1:0,2:0},1:{0:0,1:0,2:0},2:{0:0,1:0,2:0}};
-  testPoints.forEach(p=>{ conf[p.c][predict(models,p)]++; });
+function drawConfusion(k){
+  const N = LEVELS.length;
+  const conf = Array.from({length:N},()=>new Array(N).fill(0));
+  testPoints.forEach(p=>{ conf[p.label][knnPredict(trainPoints,p,k)]++; });
 
-  const W = confCanvas.width, H = confCanvas.height;
+  const W = residualCanvas.width, H = residualCanvas.height;
   rctx.clearRect(0,0,W,H);
-  const padL = 130, padT = 34, cellW = 130, cellH = 42;
-  rctx.fillStyle = '#c9c9d4';
-  rctx.font = '13px DM Mono, monospace';
-  rctx.fillText('Matriz de confusión (conjunto de prueba) — filas = estado real, columnas = predicho', padL-90, 16);
+  const padL = 100, padT = 30, cellW = (W-padL-10)/N, cellH = (H-padT-6)/N;
 
-  CLASS_NAMES.forEach((name,j)=>{
+  rctx.fillStyle = '#c9c9d4';
+  rctx.font = '12px DM Mono, monospace';
+  rctx.fillText('Matriz de confusión (prueba) — filas = nivel real, columnas = predicho', padL-80, 14);
+
+  LEVELS.forEach((name,j)=>{
     rctx.fillStyle = '#8a8a98';
-    rctx.font = '11px DM Mono, monospace';
-    rctx.fillText(name, padL + j*cellW + 30, padT-8);
+    rctx.font = '10px DM Mono, monospace';
+    rctx.fillText(name.slice(0,10), padL + j*cellW + 4, padT-6);
   });
-  CLASS_NAMES.forEach((name,i)=>{
+  LEVELS.forEach((name,i)=>{
     const y = padT + i*cellH;
     rctx.fillStyle = '#8a8a98';
-    rctx.font = '11px DM Mono, monospace';
-    rctx.fillText(name, 8, y+cellH*0.6);
-    CLASS_NAMES.forEach((_,j)=>{
+    rctx.font = '10px DM Mono, monospace';
+    rctx.fillText(name.slice(0,10), 4, y+cellH*0.6);
+    LEVELS.forEach((_,j)=>{
       const x = padL + j*cellW;
       const val = conf[i][j];
-      const total = CLASS_NAMES.reduce((a,_,k)=>a+conf[i][k],0);
+      const total = conf[i].reduce((a,b)=>a+b,0);
       const intensity = total ? val/total : 0;
-      rctx.fillStyle = i===j ? rgba(hexToRgb(CLASS_COLORS[i]), 0.15+intensity*0.6) : rgba([244,244,247], 0.04+intensity*0.22);
-      rctx.fillRect(x, y, cellW-6, cellH-6);
+      rctx.fillStyle = i===j ? rgba(hexToRgb(LEVEL_COLORS[i]), 0.15+intensity*0.6) : rgba([244,244,247], 0.04+intensity*0.22);
+      rctx.fillRect(x, y, cellW-4, cellH-4);
       rctx.fillStyle = '#f4f4f7';
-      rctx.font = '14px DM Mono, monospace';
-      rctx.fillText(String(val), x+cellW/2-10, y+cellH*0.55);
+      rctx.font = '13px DM Mono, monospace';
+      rctx.fillText(String(val), x+cellW/2-6, y+cellH*0.6);
     });
   });
 }
 
-function setLambda(lambda){
-  currentLambda = lambda;
-  const models = trainSVM(trainPoints, lambda, PROD_EPOCHS, PROD_LR);
-  const accTrain = accuracy(models, trainPoints);
-  const accTest = accuracy(models, testPoints);
-  const gapPP = (accTrain-accTest)*100;
+function setK(k){
+  currentK = k;
+  const accTrain = accuracyKnn(trainPoints, trainPoints, k);
+  const accTest = accuracyKnn(trainPoints, testPoints, k);
+  const gap = accTrain - accTest;
 
-  document.getElementById('mLambda').textContent = lambda;
+  document.getElementById('mDegree').textContent = k;
   document.getElementById('mAccTrain').textContent = (accTrain*100).toFixed(1)+'%';
   document.getElementById('mAccTest').textContent = (accTest*100).toFixed(1)+'%';
-  document.getElementById('mGap').textContent = gapPP.toFixed(1)+'pp';
 
   const badge = document.getElementById('mFitBadge');
-  if(accTrain < 0.75){
-    badge.textContent = '⚠ Subajuste — con este λ la frontera es demasiado rígida: clasifica mal incluso datos que ya conoce.';
+  if(k===1){
+    badge.textContent = '⚠ Sobreajuste — con k=1, el modelo copia al vecino más cercano y memoriza el ruido de laboratorio de cada muestra individual.';
     badge.style.color = 'var(--cta)';
-  } else if(gapPP > 12){
-    badge.textContent = '⚠ Sobreajuste — la frontera se ajusta demasiado al entrenamiento y pierde generalización.';
+  } else if(k>=21){
+    badge.textContent = '⚠ Subajuste — con k tan alto, el modelo promedia demasiadas muestras y diluye la frontera entre niveles.';
     badge.style.color = '#e8c547';
+  } else if(gap > 0.12){
+    badge.textContent = '⚠ Sigue sobreajustando — la exactitud de entrenamiento es bastante más alta que la de prueba.';
+    badge.style.color = 'var(--cta)';
   } else {
-    badge.textContent = '✓ Ajuste razonable — buena exactitud en ambos conjuntos, brecha contenida. Con un modelo lineal de 2 variables, el riesgo real aquí es subajustar, no sobreajustar.';
+    badge.textContent = '✓ Ajuste razonable — generaliza bien a muestras que el modelo no vio durante el entrenamiento.';
     badge.style.color = 'var(--success)';
   }
 
-  drawDecisionMap(models);
-  drawConfusion(models);
+  drawDecisionMap(k);
+  drawConfusion(k);
 }
 
-const lambdaRow = document.getElementById('lambdaRow');
-[0.0001, 0.001, 0.01, 0.05, 0.1, 0.3, 0.8, 2.0].forEach(lambda=>{
+const degreeRow = document.getElementById('degreeRow');
+[1,3,5,7,9,15,21,31].forEach(k=>{
   const btn = document.createElement('button');
-  btn.className = 'degree-btn' + (lambda===currentLambda ? ' active':'');
-  btn.textContent = 'λ=' + lambda;
+  btn.className = 'degree-btn' + (k===currentK ? ' active':'');
+  btn.textContent = 'k=' + k;
   btn.addEventListener('click', ()=>{
     document.querySelectorAll('.degree-btn').forEach(b=>b.classList.remove('active'));
     btn.classList.add('active');
-    setLambda(lambda);
+    setK(k);
   });
-  lambdaRow.appendChild(btn);
+  degreeRow.appendChild(btn);
 });
 
 const analystToggle = document.getElementById('analystToggle');
 const analystPanel = document.getElementById('analystPanel');
 analystToggle.addEventListener('change', ()=>{
   analystPanel.classList.toggle('show', analystToggle.checked);
-  if(analystToggle.checked) setLambda(currentLambda);
+  if(analystToggle.checked) setK(currentK);
 });
-
-updateBasic();
 </script>
-
 
 <style>
   .glossary-term{border-bottom:1px dotted var(--muted); cursor:help;}
@@ -1002,12 +956,11 @@ updateBasic();
 <script>
 (function(){
   var GLOSSARY = [
-    {term:'MCSA', def:'Análisis de firma de corriente del motor (Motor Current Signature Analysis): detecta fallas mecánicas y eléctricas midiendo variaciones en la corriente, sin abrir el equipo.'},
-    {term:'RMS', def:'Valor cuadrático medio (Root Mean Square): resume la energía de una señal de vibración en un solo número comparable.'},
-    {term:'dB', def:'Decibel: unidad logarítmica de intensidad sonora — cada +10 dB representa aprox. 10 veces más energía acústica.'},
-    {term:'ΔT', def:'Delta T: diferencia de temperatura entre dos puntos de medición.'},
-    {term:'deslizamiento', def:'Slip: diferencia entre la velocidad del campo magnético del motor y la velocidad real del rotor; crece con más carga o daño mecánico.'},
-    {term:'R²', def:'Coeficiente de determinación: qué tan bien el modelo explica la variación de los datos reales (1.0 = ajuste perfecto).'}
+    {term:'TAN', def:'Número de Acidez Total (Total Acid Number): mide cuánto se ha oxidado un aceite; sube con la degradación química y la pérdida de aditivos.'},
+    {term:'ppm', def:'Partes por millón: unidad de concentración — 1 ppm equivale a 1 mg de soluto por litro o kilogramo, aproximadamente.'},
+    {term:'k-NN', def:'k vecinos más cercanos (k-Nearest Neighbors): clasifica una muestra nueva según la clase mayoritaria entre sus k muestras históricas más parecidas.'},
+    {term:'TBN', def:'Número de Base Total (Total Base Number): mide la reserva alcalina de un aceite para neutralizar ácidos; relevante sobre todo en motores de combustión.'},
+    {term:'ISO 4406', def:'Norma que clasifica el nivel de contaminación por partículas sólidas en un fluido hidráulico o lubricante, mediante un código de tres números.'}
   ];
   var SKIP_TAGS = {SCRIPT:1, STYLE:1, SELECT:1, OPTION:1, TITLE:1};
   var wrapped = {};

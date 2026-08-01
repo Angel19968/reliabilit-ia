@@ -34,7 +34,7 @@
   "@type": "WebSite",
   "name": "RELIABILIT-IA",
   "url": "https://angel19968.github.io/reliabilit-ia/",
-  "description": "Catálogo de 20 demos interactivas de mantenimiento predictivo con modelos de Machine Learning y Deep Learning entrenados desde cero, aplicados a rodamientos, motores, bombas, compresores, turbinas, calderas y más.",
+  "description": "Catálogo de 21 demos interactivas de mantenimiento predictivo con modelos de Machine Learning y Deep Learning entrenados desde cero, aplicados a rodamientos, motores, bombas, compresores, turbinas, calderas y más.",
   "publisher": {
     "@type": "Organization",
     "name": "RELIABILIT-IA",
@@ -125,6 +125,7 @@
   .card[data-sector="correas"] .tag::before{content:"🎢";}
   .card[data-sector="transformadores"] .tag::before{content:"🔌";}
   .card[data-sector="calderas"] .tag::before{content:"🔥";}
+  .card[data-sector="aceite"] .tag::before{content:"🛢️";}
   .card h3{font-size:20px; margin:10px 0 8px;}
   .card p{
     font-size:14px; color:var(--muted);
@@ -276,6 +277,7 @@
         <button class="chip" data-value="correas">Correas transportadoras</button>
         <button class="chip" data-value="transformadores">Transformadores</button>
         <button class="chip" data-value="calderas">Calderas</button>
+        <button class="chip" data-value="aceite">Aceite</button>
       </div>
       <button class="filter-reset" id="filterReset">Limpiar filtros</button>
     </div>
@@ -418,6 +420,12 @@
         <div class="tag">Visión · Termografía</div>
         <h3>Ojo Térmico</h3>
         <p>Clasifica imágenes térmicas para detectar puntos calientes en equipos.</p>
+        <span class="status">● Disponible</span>
+      </a>
+      <a class="card" data-paradigm="nuevas-tecnologias" data-sector="aceite" href="./modelos/huella-del-aceite/">
+        <div class="tag">Nuevas tecnologías · Aceite</div>
+        <h3>Huella del Aceite</h3>
+        <p>Clasifica el estado de un equipo en Normal, Precaución o Crítico según TAN y hierro disuelto en el aceite.</p>
         <span class="status">● Disponible</span>
       </a>
       </div>
