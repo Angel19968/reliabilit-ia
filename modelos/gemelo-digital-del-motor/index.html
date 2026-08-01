@@ -1,0 +1,1004 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<!-- Google Analytics (GA4) — INACTIVO: reemplaza G-XXXXXXXXXX por tu Measurement ID real para activarlo -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXXXXX');
+</script>
+<script>(function(){try{var t=localStorage.getItem('ria-theme');if(t==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../../assets/favicon.ico" sizes="any">
+<link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
+<link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
+<title>Gemelo Digital del Motor — RELIABILIT-IA</title>
+<meta name="description" content="Un modelo físico de un motor eléctrico corre en vivo junto al sensor real. La brecha entre ambos revela refrigeración degradada o aislamiento dañado — antes de que la temperatura absoluta lo delate.">
+
+<meta property="og:title" content="Gemelo Digital del Motor — RELIABILIT-IA">
+<meta property="og:description" content="Mueve la carga, degrada la refrigeración o el aislamiento, y mira en vivo cómo se abre la brecha entre el gemelo digital (sano) y el sensor real.">
+<meta property="og:image" content="../../assets/og-image.png">
+<meta property="og:type" content="website">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "RELIABILIT-IA",
+      "item": "https://angel19968.github.io/reliabilit-ia/"
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": "Catálogo de demos",
+      "item": "https://angel19968.github.io/reliabilit-ia/#modelos"
+    },
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": "Gemelo Digital del Motor",
+      "item": "https://angel19968.github.io/reliabilit-ia/modelos/gemelo-digital-del-motor/"
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Gemelo Digital del Motor — RELIABILIT-IA",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web",
+  "url": "https://angel19968.github.io/reliabilit-ia/modelos/gemelo-digital-del-motor/",
+  "description": "Un modelo físico de un motor eléctrico corre en vivo junto al sensor real. La brecha entre ambos revela refrigeración degradada o aislamiento dañado.",
+  "isAccessibleForFree": true,
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  }
+}
+</script>
+
+<style>
+  :root{
+    --bg:#0a0a0f;
+    --panel:#121218;
+    --panel2:#181820;
+    --border:#22222c;
+    --text:#f4f4f7;
+    --muted:#9a9aa8;
+    --success:#3ecfa0;
+    --cta:#f4722e;
+    --accent:#7b5ea7;
+  }
+  [data-theme="light"]{
+    --bg:#FFFFFF;
+    --panel:#FAFBFC;
+    --panel2:#EEF0F3;
+    --border:#E4E7EB;
+    --text:#141822;
+    --muted:#5B6472;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    background:var(--bg); color:var(--text); font-family:'Inter', sans-serif;
+    line-height:1.6; -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:'Syne', sans-serif; font-weight:800; letter-spacing:-0.02em;}
+  a{color:var(--success);}
+  .wrap{max-width:960px;margin:0 auto;padding:0 24px;}
+  .back{display:inline-block; font-size:13px; color:var(--muted); text-decoration:none;}
+  .nav-row{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; position:sticky; top:0; z-index:30; background:var(--bg); padding:14px 0; margin:0 -24px; padding-left:24px; padding-right:24px; border-bottom:1px solid transparent;}
+  .nav-row.is-stuck{border-bottom-color:var(--border);}
+  .quick-nav{font-family:'DM Mono',monospace; font-size:13px; background:var(--panel); color:var(--text); border:1px solid var(--border); border-radius:8px; padding:6px 10px; max-width:230px;}
+  .back:hover{color:var(--success);}
+
+  header.hero{padding:24px 0 40px; border-bottom:1px solid var(--border);}
+  .badge{
+    display:inline-block; font-size:12px; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--success); border:1px solid var(--success); border-radius:999px;
+    padding:5px 14px; margin-bottom:18px;
+  }
+  h1{font-size:clamp(28px,5vw,44px); line-height:1.1; margin-bottom:14px;}
+  .lead{font-family:'Instrument Serif', serif; font-style:italic; font-size:20px; color:var(--muted); max-width:640px;}
+
+  section{padding:40px 0; border-bottom:1px solid var(--border);}
+  section h2{font-size:22px; margin-bottom:14px;}
+  .context p{color:var(--muted); max-width:640px; font-size:15px;}
+
+  .panel{
+    background:var(--panel); border:1px solid var(--border); border-radius:16px; padding:28px;
+  }
+
+  .toggle-row{display:flex; align-items:center; justify-content:space-between; margin-bottom:24px; flex-wrap:wrap; gap:12px;}
+  .toggle-row .label{font-size:15px; color:var(--muted);}
+  .switch{
+    display:inline-flex; align-items:center; gap:10px; cursor:pointer; user-select:none;
+    font-size:14px; color:var(--text);
+  }
+  .switch input{display:none;}
+  .track{
+    width:42px; height:24px; background:var(--border); border-radius:999px; position:relative; transition:.2s;
+    flex-shrink:0;
+  }
+  .track::after{
+    content:''; position:absolute; top:3px; left:3px; width:18px; height:18px; border-radius:50%;
+    background:var(--muted); transition:.2s;
+  }
+  .switch input:checked + .track{background:var(--accent);}
+  .switch input:checked + .track::after{transform:translateX(18px); background:#fff;}
+
+  .demo-grid{display:grid; grid-template-columns:1.05fr 1fr; gap:32px;}
+  @media (max-width:760px){ .demo-grid{grid-template-columns:1fr;} }
+
+  .slider-group{margin-bottom:22px;}
+  .slider-group label{display:flex; justify-content:space-between; font-size:16px; margin-bottom:8px;}
+  .slider-group label .val{color:var(--success); font-weight:500;}
+  input[type=range]{
+    width:100%; -webkit-appearance:none; height:6px; border-radius:999px; background:var(--border); outline:none;
+  }
+  input[type=range]::-webkit-slider-thumb{
+    -webkit-appearance:none; width:20px; height:20px; border-radius:50%;
+    background:var(--success); cursor:pointer; border:3px solid var(--bg);
+  }
+  input[type=range]::-moz-range-thumb{
+    width:20px; height:20px; border-radius:50%; background:var(--success); cursor:pointer; border:3px solid var(--bg);
+  }
+  .hint{font-size:13px; color:var(--muted); display:flex; justify-content:space-between; margin-top:4px;}
+
+  .result{
+    margin-top:26px; padding:22px; border-radius:14px; background:var(--panel2); border:1px solid var(--border);
+    display:flex; align-items:center; gap:20px; flex-wrap:wrap;
+  }
+  .result .risk-dot{width:16px; height:16px; border-radius:50%; flex-shrink:0;}
+  .result .risk-text h3{font-size:23px; margin-bottom:6px;}
+  .result .risk-text p{font-size:15px; color:var(--muted);}
+  .cost-line{font-size:14px !important; font-weight:600; margin-top:10px !important; color:var(--text) !important;}
+  .simple-summary{font-size:14px !important; margin-top:12px !important; padding-top:12px !important; border-top:1px dashed var(--border); color:var(--text) !important;}
+
+  .live-col h3{font-size:14px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:14px; font-family:'DM Mono',monospace; font-weight:500;}
+  .ts-wrap{margin-bottom:18px;}
+  .ts-label{font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:8px;}
+  #liveChart{width:100%; height:210px; background:#0a0a0f; border:1px solid #22222c; border-radius:10px; display:block;}
+  .gauge-label{font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:8px;}
+  .gauge-wrap{margin-bottom:18px;}
+  .gauge-bar{height:12px; background:var(--border); border-radius:999px; overflow:hidden; margin:8px 0; position:relative;}
+  .gauge-fill{height:100%; width:0%; background:var(--success); transition:background .35s ease, width .3s ease;}
+  .gauge-tick{position:absolute; top:0; bottom:0; width:2px; background:rgba(244,244,247,0.55); z-index:2;}
+  .gauge-value{font-size:16px; color:var(--text);}
+  .gauge-value b{font-size:20px;}
+  .gauge-note{font-size:13px; color:var(--muted);}
+  .cost-card{
+    margin-top:4px; padding:16px 18px; border-radius:12px; background:var(--panel2); border:1px solid var(--border);
+  }
+  .cost-card .cc-label{font-size:12px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted);}
+  .cost-card .cc-value{font-size:24px; font-family:'Syne',sans-serif; font-weight:800; margin-top:4px;}
+  .sim-note{font-size:13px; color:var(--muted); line-height:1.7; margin-top:14px;}
+
+  .metric-row{display:flex; gap:12px; flex-wrap:wrap; margin-bottom:18px;}
+  .metric-card{flex:1; min-width:110px; background:var(--panel2); border:1px solid var(--border); border-radius:12px; padding:12px 14px;}
+  .metric-card .mc-label{font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted);}
+  .metric-card .mc-value{font-size:22px; font-family:'Syne',sans-serif; font-weight:800; margin-top:4px;}
+  .metric-card.twin .mc-value{color:var(--accent);}
+  .metric-card.real .mc-value{color:var(--cta);}
+
+  .live-controls{display:flex; gap:10px; margin-bottom:16px; flex-wrap:wrap;}
+  .live-btn{font-family:'DM Mono', monospace; font-size:13px; padding:8px 16px; border-radius:8px; border:1px solid var(--border); background:transparent; color:var(--text); cursor:pointer; transition:border-color .15s;}
+  .live-btn:hover{border-color:var(--accent);}
+  .live-btn.primary{background:var(--accent); border-color:var(--accent); color:#fff;}
+
+  .fault-row{display:flex; gap:8px; margin-bottom:8px; flex-wrap:wrap;}
+  .fault-btn{
+    font-family:'DM Mono', monospace; font-size:13px; padding:8px 14px; border-radius:8px;
+    border:1px solid var(--border); background:transparent; color:var(--text); cursor:pointer;
+    transition:background .15s, border-color .15s;
+  }
+  .fault-btn.active{background:var(--cta); border-color:var(--cta); color:#0a0a0f; font-weight:600;}
+  .fault-btn.active.ok{background:var(--success); border-color:var(--success);}
+  .fault-group-label{font-size:14px; color:var(--muted); margin:14px 0 8px;}
+  .fault-group-label:first-child{margin-top:0;}
+
+  .analyst{margin-top:32px; padding-top:26px; border-top:1px dashed var(--border); display:none;}
+  .analyst.show{display:block;}
+  .degree-row{display:flex; gap:8px; margin-bottom:18px; flex-wrap:wrap;}
+  .degree-btn{
+    font-family:'DM Mono', monospace; font-size:14px; padding:9px 18px; border-radius:8px;
+    border:1px solid var(--border); background:transparent; color:var(--text); cursor:pointer;
+    transition:background .15s, border-color .15s;
+  }
+  .degree-btn.active{background:var(--accent); border-color:var(--accent); color:#fff;}
+  .fit-badge{margin-top:14px; font-size:15px; font-weight:600; padding:10px 14px; border-radius:10px; background:var(--panel2); display:inline-block;}
+
+  .attr-wrap{margin-top:6px;}
+  .attr-row{margin-bottom:16px;}
+  .attr-row .attr-label{display:flex; justify-content:space-between; font-size:14px; margin-bottom:6px;}
+  .attr-bar{height:14px; background:var(--border); border-radius:999px; overflow:hidden;}
+  .attr-fill{height:100%; width:0%; border-radius:999px; transition:width .3s ease;}
+  .attr-fill.cooling{background:#4ea8de;}
+  .attr-fill.insul{background:#e8945c;}
+  .attr-caveat{font-size:12px; color:var(--muted); margin-top:8px;}
+
+  .dataset-wrap{margin-top:24px;}
+  .dataset-label{font-size:13px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:8px;}
+  .dataset-scroll{max-height:260px; overflow-y:auto; border:1px solid var(--border); border-radius:12px;}
+  .dataset-table{width:100%; border-collapse:collapse; font-size:13px;}
+  .dataset-table th{position:sticky; top:0; background:var(--panel2); color:var(--muted); text-align:left; font-weight:500; padding:8px 12px; border-bottom:1px solid var(--border); text-transform:uppercase; letter-spacing:.04em; font-size:11px;}
+  .dataset-table td{padding:7px 12px; border-bottom:1px solid var(--border); color:var(--text);}
+  .dataset-table tr:last-child td{border-bottom:none;}
+  .dataset-note{font-size:12px; color:var(--muted); margin-top:8px;}
+
+  .business p{color:var(--muted); font-size:16px; max-width:640px;}
+  .business .stat{color:var(--success); font-weight:500;}
+  .business-grid{display:grid; grid-template-columns:1.1fr 1fr; gap:32px; align-items:start; margin-top:8px;}
+  @media (max-width:760px){ .business-grid{grid-template-columns:1fr;} }
+  .biz-action{margin-top:18px; padding:18px; border-radius:12px; background:var(--panel2); border:1px solid var(--border); transition:border-color .3s;}
+  .biz-action .biz-title{font-size:17px; font-weight:600;}
+  .biz-action .biz-detail{font-size:14px; color:var(--muted); margin-top:6px;}
+  #projection{width:100%; height:230px; background:#0a0a0f; border:1px solid #22222c; border-radius:12px; display:block;}
+
+  .cta-row{display:flex; gap:14px; flex-wrap:wrap; margin-top:8px;}
+  .btn{
+    font-family:'DM Mono', monospace; font-size:14px; padding:12px 22px; border-radius:10px;
+    text-decoration:none; border:1px solid var(--border); color:var(--text); display:inline-block;
+  }
+  .btn.primary{background:var(--cta); border-color:var(--cta); color:#0a0a0f; font-weight:600;}
+  .btn.ghost:hover{border-color:var(--accent);}
+
+  .contact-card{
+    display:grid; grid-template-columns:1.1fr 1fr; gap:28px;
+    background:var(--panel2); border:1px solid var(--border); border-radius:16px;
+    padding:28px; margin-top:28px;
+  }
+  @media (max-width:700px){ .contact-card{grid-template-columns:1fr;} }
+  .contact-card h3{font-size:19px; margin-bottom:8px;}
+  .contact-card p{font-size:14px; color:var(--muted); max-width:420px;}
+  .contact-links{display:flex; flex-direction:column; gap:12px;}
+  .contact-row{
+    display:flex; align-items:center; gap:14px; padding:12px 16px; border-radius:12px;
+    background:var(--panel); border:1px solid var(--border); text-decoration:none; color:var(--text);
+    transition:border-color .2s;
+  }
+  .contact-row:hover{border-color:var(--success);}
+  .contact-icon{font-size:20px; width:32px; text-align:center; flex-shrink:0;}
+  .contact-text{font-size:14px; line-height:1.5;}
+  .contact-text b{display:block; font-size:15px;}
+
+  footer{padding:36px 0; text-align:center;}
+  footer p{font-size:13px; color:var(--muted); max-width:560px; margin:0 auto;}
+  .footer-links{display:flex; justify-content:center; gap:18px; flex-wrap:wrap; margin-bottom:16px; font-size:13px;}
+  .footer-links a{color:var(--muted); text-decoration:none;}
+  .footer-links a:hover{color:var(--success);}
+
+  @media (max-width:520px){
+    .result{flex-direction:column; align-items:flex-start;}
+  }
+  .thermbar{height:4px; background:linear-gradient(90deg,#2C3E75,#6A3A93,#C43D73,#E86A33,#F5B942); border-radius:0 0 3px 3px;}
+  .theme-toggle{
+    font-family:'DM Mono', monospace; font-size:12px; padding:7px 12px; border-radius:8px;
+    border:1px solid var(--border); background:transparent; color:var(--text); cursor:pointer;
+    display:inline-flex; align-items:center; gap:6px; transition:border-color .15s;
+  }
+  .theme-toggle:hover{border-color:var(--accent);}
+  .wa-float{
+    position:fixed; bottom:24px; right:24px; z-index:60;
+    width:56px; height:56px; border-radius:50%;
+    background:#25D366; color:#fff; text-decoration:none;
+    display:flex; align-items:center; justify-content:center;
+    font-size:26px; box-shadow:0 4px 14px rgba(0,0,0,.35);
+    transition:transform .15s;
+  }
+  .wa-float:hover{transform:scale(1.08);}
+  @media (max-width:520px){ .wa-float{width:50px; height:50px; font-size:22px; bottom:16px; right:16px;} }
+  .related-section h2{margin-bottom:14px;}
+  .related-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr)); gap:16px; margin-top:6px;}
+  .related-card{background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:16px 18px; text-decoration:none; color:var(--text); transition:border-color .2s, transform .2s; display:block;}
+  .related-card:hover{border-color:var(--success); transform:translateY(-2px);}
+  .related-card .rc-icon{font-size:18px; margin-right:6px;}
+  .related-card .rc-name{font-weight:600; font-size:15px;}
+  .share-row{display:flex; gap:10px; flex-wrap:wrap; margin:18px 0 0;}
+  .share-btn{
+    font-family:'DM Mono', monospace; font-size:13px; padding:8px 16px; border-radius:999px;
+    border:1px solid var(--border); background:transparent; color:var(--text); text-decoration:none;
+    display:inline-flex; align-items:center; gap:6px; transition:border-color .15s;
+  }
+  .share-btn:hover{border-color:var(--accent);}
+</style></head>
+<body>
+
+<div class="wrap">
+  <div class="nav-row">
+    <a class="back" href="../../">← Volver al catálogo RELIABILIT-IA</a>
+    <select class="quick-nav" onchange="if(this.value) location.href=this.value;">
+      <option value="">Ir a otro modelo →</option>
+      <option value="../radar-de-rodamientos/">Radar de Rodamientos</option>
+      <option value="../diagnostico-del-motor/">Diagnóstico del Motor</option>
+      <option value="../pulso-del-motor/">Pulso del Motor</option>
+      <option value="../pulso-energetico/">Pulso Energético</option>
+      <option value="../pulso-de-la-caldera/">Pulso de la Caldera</option>
+      <option value="../oido-industrial/">Oído Industrial</option>
+      <option value="../detector-anomalias-compresor/">Detector de Anomalías del Compresor</option>
+      <option value="../radiografia-de-planta/">Radiografía de Planta</option>
+      <option value="../semaforo-de-bombas/">Semáforo de Bombas</option>
+      <option value="../guardian-de-la-bomba/">Guardián de la Bomba</option>
+      <option value="../frontera-de-vibracion/">Frontera de Vibración</option>
+      <option value="../horizonte-de-falla/">Horizonte de Falla</option>
+      <option value="../familias-de-turbinas/">Familias de Turbinas</option>
+      <option value="../nubes-de-sensores/">Nubes de Sensores</option>
+      <option value="../termometro-del-motor/">Termómetro del Motor</option>
+      <option value="../mapa-de-anomalias/">Mapa de Anomalías</option>
+      <option value="../ojo-termico/">Ojo Térmico</option>
+      <option value="../correas-transportadoras/">Rastreador de Correas</option>
+      <option value="../memoria-del-motor/">Memoria del Motor</option>
+      <option value="../transformadores-dga/">Transformadores (DGA)</option>
+      <option value="../centinela-del-aerogenerador/">Centinela del Aerogenerador</option>
+      <option value="../huella-del-aceite/">Huella del Aceite</option>
+    </select>
+    <button class="theme-toggle" id="themeToggle" type="button"><span id="themeIcon">🌙</span><span id="themeLabel">Oscuro</span></button>
+  </div>
+  <div class="thermbar"></div>
+
+<script>
+  (function(){
+    var nav = document.querySelector('.nav-row');
+    if(!nav) return;
+    function onScroll(){ nav.classList.toggle('is-stuck', window.scrollY > 4); }
+    window.addEventListener('scroll', onScroll, {passive:true});
+    onScroll();
+  })();
+  </script>
+
+<script>
+  (function(){
+    var btn = document.getElementById('themeToggle');
+    var icon = document.getElementById('themeIcon');
+    var label = document.getElementById('themeLabel');
+    function sync(){
+      var isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      icon.textContent = isLight ? '☀️' : '🌙';
+      label.textContent = isLight ? 'Claro' : 'Oscuro';
+    }
+    btn.addEventListener('click', function(){
+      var isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      if(isLight){
+        document.documentElement.removeAttribute('data-theme');
+        try{ localStorage.setItem('ria-theme','dark'); }catch(e){}
+      } else {
+        document.documentElement.setAttribute('data-theme','light');
+        try{ localStorage.setItem('ria-theme','light'); }catch(e){}
+      }
+      sync();
+    });
+    sync();
+  })();
+  </script>
+  <header class="hero">
+    <div class="badge">Ingeniería aplicada a Motores Eléctricos</div>
+    <span class="badge" style="border-color:var(--accent); color:var(--accent); margin-left:8px;">Simulación física · Gemelo digital en vivo</span>
+    <h1>Gemelo Digital del Motor</h1>
+    <p class="lead">No compara tu motor contra otros motores — lo compara contra su propia física: la temperatura que debería tener ahora mismo si todo estuviera sano.</p>
+  </header>
+
+  <section class="context">
+    <h2>El problema</h2>
+    <p>Los demás modelos de este catálogo aprenden de datos históricos: comparan una lectura contra lo que vieron antes. Un <b>gemelo digital</b> es distinto — es una réplica construida con ecuaciones de ingeniería (balance de calor, en este caso) que corre en paralelo al motor real, sin necesitar ni un solo ejemplo de falla previa. Mientras el motor real opera, el gemelo calcula la temperatura de bobinado que <i>debería</i> tener, dada la carga y la temperatura ambiente actuales, asumiendo refrigeración y aislamiento sanos. Cuando el sensor real se aleja de esa predicción física de forma sostenida, algo cambió que la física no explica: refrigeración obstruida, aislamiento degradado, o ambas. Mueve los controles abajo y observa la brecha abrirse en vivo.</p>
+  </section>
+
+  <section id="demo">
+    <h2>Demo interactivo</h2>
+    <div class="panel">
+      <div class="toggle-row">
+        <span class="label">Simulación física en vivo (balance de calor de primer orden) — cambia la carga o degrada la refrigeración/aislamiento y observa la respuesta en tiempo real.</span>
+        <label class="switch">
+          <span>Modo Analista</span>
+          <input type="checkbox" id="analystToggle">
+          <span class="track"></span>
+        </label>
+      </div>
+
+      <div class="demo-grid">
+        <div class="controls-col">
+          <div class="slider-group">
+            <label>Carga del motor <span class="val" id="loadVal">60%</span></label>
+            <input type="range" id="loadSlider" min="0" max="105" step="1" value="60">
+            <div class="hint"><span>0% (detenido)</span><span>105% (sobrecarga leve)</span></div>
+          </div>
+
+          <div class="slider-group">
+            <label>Temperatura ambiente <span class="val" id="tambVal">25 °C</span></label>
+            <input type="range" id="tambSlider" min="15" max="40" step="1" value="25">
+            <div class="hint"><span>15 °C</span><span>40 °C</span></div>
+          </div>
+
+          <div class="fault-group-label">Estado de la refrigeración</div>
+          <div class="fault-row" id="coolingRow">
+            <button class="fault-btn active ok" data-value="normal">Normal</button>
+            <button class="fault-btn" data-value="parcial">Parcialmente obstruida</button>
+            <button class="fault-btn" data-value="fallado">Fallada</button>
+          </div>
+
+          <div class="fault-group-label">Estado del aislamiento</div>
+          <div class="fault-row" id="insulRow">
+            <button class="fault-btn active ok" data-value="normal">Normal</button>
+            <button class="fault-btn" data-value="inicial">Degradación inicial</button>
+            <button class="fault-btn" data-value="avanzada">Degradación avanzada</button>
+          </div>
+
+          <div class="live-controls">
+            <button class="live-btn primary" id="playPauseBtn" type="button">⏸ Pausar</button>
+            <button class="live-btn" id="resetBtn" type="button">↺ Reiniciar simulación</button>
+          </div>
+
+          <div class="result" id="resultBox">
+            <div class="risk-dot" id="riskDot"></div>
+            <div class="risk-text">
+              <h3 id="riskTitle">Calculando…</h3>
+              <p id="riskDetail"></p>
+              <p class="cost-line" id="costLine"></p>
+              <p class="simple-summary" id="simpleSummary"></p>
+            </div>
+          </div>
+        </div>
+
+        <div class="live-col">
+          <h3>Gemelo digital vs. sensor real</h3>
+
+          <div class="metric-row">
+            <div class="metric-card twin">
+              <div class="mc-label">Gemelo (sano)</div>
+              <div class="mc-value" id="twinVal">– °C</div>
+            </div>
+            <div class="metric-card real">
+              <div class="mc-label">Sensor real</div>
+              <div class="mc-value" id="realVal">– °C</div>
+            </div>
+            <div class="metric-card">
+              <div class="mc-label">Residual (ΔT)</div>
+              <div class="mc-value" id="residualVal">– °C</div>
+            </div>
+          </div>
+
+          <div class="ts-wrap">
+            <div class="ts-label">Temperatura de bobinado en vivo (últimos 30 min simulados)</div>
+            <canvas id="liveChart" width="560" height="210"></canvas>
+          </div>
+
+          <div class="gauge-wrap">
+            <div class="gauge-label">Residual vs. umbrales de atención / alarma</div>
+            <div class="gauge-bar" id="gaugeBar"><div class="gauge-fill" id="gaugeFill"></div></div>
+            <div class="gauge-value"><b id="gaugeValue">0</b> °C <span class="gauge-note">atención 5 °C · alarma 15 °C (ilustrativo)</span></div>
+          </div>
+
+          <p class="sim-note">Simulación ilustrativa: el modelo térmico, los umbrales y los costos son de ejemplo — no provienen del sistema de monitoreo real de ningún equipo. El "sensor real" de esta demo es el mismo modelo físico con fallas inyectadas + ruido de medición.</p>
+        </div>
+      </div>
+
+      <div class="analyst" id="analystPanel">
+        <h3 style="font-size:18px; text-transform:none; letter-spacing:0; margin-bottom:8px; color:var(--text);">Atribución causal por simulación contrafactual</h3>
+        <p style="font-size:15px; color:var(--muted); margin-bottom:18px;">El gemelo también corre dos simulaciones "qué pasaría si": una con solo la refrigeración degradada, otra con solo el aislamiento degradado (ambas partiendo del mismo gemelo sano). Comparar cada una contra el gemelo sano estima cuánto del residual total explica cada falla — sin esperar a un diagnóstico manual.</p>
+
+        <div class="attr-wrap">
+          <div class="attr-row">
+            <div class="attr-label"><span>Aporte estimado — refrigeración</span><span id="attrCoolVal">– °C</span></div>
+            <div class="attr-bar"><div class="attr-fill cooling" id="attrCoolFill"></div></div>
+          </div>
+          <div class="attr-row">
+            <div class="attr-label"><span>Aporte estimado — aislamiento</span><span id="attrInsulVal">– °C</span></div>
+            <div class="attr-bar"><div class="attr-fill insul" id="attrInsulFill"></div></div>
+          </div>
+          <p class="attr-caveat">Estimación aproximada: con una sola falla activa el margen de error es menor a 2%; con ambas fallas activas a la vez, ronda 5–10% por la leve interacción no lineal entre refrigeración y aislamiento en la ecuación de balance térmico.</p>
+        </div>
+
+        <h3 style="font-size:18px; text-transform:none; letter-spacing:0; margin:24px 0 8px; color:var(--text);">Tamaño del motor (masa térmica)</h3>
+        <p style="font-size:15px; color:var(--muted); margin-bottom:14px;">Un motor más grande tiene más masa metálica que calentar: reacciona más lento a cambios de carga o de falla, tanto para bien (más tiempo para reaccionar) como para mal (tarda más en delatar un problema).</p>
+        <div class="degree-row" id="tauRow"></div>
+        <p class="dataset-note" id="tauNote"></p>
+
+        <div class="dataset-wrap">
+          <div class="dataset-label">Registro en vivo (últimas 12 muestras)</div>
+          <div class="dataset-scroll">
+            <table class="dataset-table">
+              <thead><tr><th>t (min)</th><th>Carga</th><th>Gemelo</th><th>Sensor real</th><th>ΔT</th><th>Estado</th></tr></thead>
+              <tbody id="logBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="fit-badge" id="modelBadge">–</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="business">
+    <h2>¿Qué significa para tu planta?</h2>
+    <div class="business-grid">
+      <div>
+        <p>A diferencia de un modelo entrenado con historial de fallas, un gemelo digital se arma con datos que ya tienes en la placa del motor y su hoja técnica: potencia nominal, clase de aislamiento, curva de refrigeración. <span class="stat">Funciona desde el primer día</span>, sin esperar meses acumulando ejemplos de falla real. Con la lectura actual, el estado del motor es <span class="stat" id="bizCostInline">–</span>.</p>
+        <div class="biz-action" id="bizAction">
+          <div class="biz-title" id="bizTitle">Calculando…</div>
+          <div class="biz-detail" id="bizDetail"></div>
+        </div>
+      </div>
+      <div>
+        <div class="ts-label">Costo estimado: inspección planificada vs. falla no planificada</div>
+        <canvas id="projection" width="480" height="230"></canvas>
+      </div>
+    </div>
+  </section>
+
+  <section id="cta">
+    <h2>De esta demo a tu planta</h2>
+    <p style="color:var(--muted); max-width:640px; margin-bottom:20px;">El modelo térmico, los umbrales y los costos de este demo están calibrados sobre datos sintéticos para poder compartir esta demo abiertamente — la lógica de ingeniería es la misma que aplicamos en campo para construir gemelos digitales de activos críticos. Llevarlo a tu planta implica levantar los datos técnicos del equipo (hoja de datos, curvas de refrigeración) y calibrar el modelo físico contra unas pocas lecturas reales de tu sensor — no contra años de historial de fallas. Se adapta a otros activos con comportamiento térmico similar —transformadores, generadores, reductores— cuando lo calibramos con tu equipo real. Si quieres recorrer ese proceso, conversemos.</p>
+    <div class="cta-row">
+      <a class="btn primary" href="https://chat.whatsapp.com/GvBz1tuUeNZ0xwTkjsuE3z" target="_blank" rel="noopener">Unirme a la comunidad de WhatsApp</a>
+      <a class="btn ghost" href="https://www.linkedin.com/company/reliabilit-ia/" target="_blank" rel="noopener">Seguir en LinkedIn</a>
+      <a class="btn ghost" href="https://www.youtube.com/@miguelangelcayllahuaquispe998" target="_blank" rel="noopener">Ver en YouTube</a>
+    </div>
+
+    <div class="contact-card">
+      <div>
+        <h3>¿Hablamos de un gemelo digital para tu equipo crítico?</h3>
+        <p>Si tienes la hoja técnica de un motor u otro activo rotativo y quieres validar este enfoque con tu planta, escríbeme directamente.</p>
+      </div>
+      <div class="contact-links">
+        <a class="contact-row" href="https://wa.me/51997610310?text=Hola%20Miguel%2C%20vi%20el%20demo%20Gemelo%20Digital%20del%20Motor%20y%20quiero%20conversar%20sobre%20la%20calibracion%20para%20mi%20planta" target="_blank" rel="noopener">
+          <span class="contact-icon">💬</span>
+          <span class="contact-text"><b>WhatsApp</b>+51 997 610 310</span>
+        </a>
+        <a class="contact-row" href="https://www.linkedin.com/in/miguelcayllahua/" target="_blank" rel="noopener">
+          <span class="contact-icon">in</span>
+          <span class="contact-text"><b>LinkedIn</b>Miguel Angel Cayllahua Quispe</span>
+        </a>
+        <a class="contact-row" href="mailto:miguelcquispe@gmail.com">
+          <span class="contact-icon">✉</span>
+          <span class="contact-text"><b>Correo</b>miguelcquispe@gmail.com</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="related-section">
+    <div class="share-row">
+      <span style="font-size:13px; color:var(--muted); align-self:center;">Compartir esta demo:</span>
+      <a class="share-btn" href="https://wa.me/?text=Mira%20esta%20demo%20de%20Gemelo%20Digital%20del%20Motor%20%E2%80%94%20mantenimiento%20predictivo%20con%20IA%2C%20en%20vivo%3A%20https%3A//angel19968.github.io/reliabilit-ia/modelos/gemelo-digital-del-motor/" target="_blank" rel="noopener">💬 WhatsApp</a>
+      <a class="share-btn" href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A//angel19968.github.io/reliabilit-ia/modelos/gemelo-digital-del-motor/" target="_blank" rel="noopener">in LinkedIn</a>
+    </div>
+    <h2 style="margin-top:32px;">Otros modelos que te pueden interesar</h2>
+    <div class="related-grid">
+      <a class="related-card" href="../termometro-del-motor/"><span class="rc-icon">🌡️</span><span class="rc-name">Termómetro del Motor</span></a>
+      <a class="related-card" href="../memoria-del-motor/"><span class="rc-icon">🔧</span><span class="rc-name">Memoria del Motor</span></a>
+      <a class="related-card" href="../diagnostico-del-motor/"><span class="rc-icon">🔧</span><span class="rc-name">Diagnóstico del Motor</span></a>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-links">
+      <a href="https://chat.whatsapp.com/GvBz1tuUeNZ0xwTkjsuE3z" target="_blank" rel="noopener">WhatsApp</a>
+      <a href="https://www.youtube.com/@miguelangelcayllahuaquispe998" target="_blank" rel="noopener">YouTube</a>
+      <a href="https://www.linkedin.com/company/reliabilit-ia/" target="_blank" rel="noopener">LinkedIn empresa</a>
+      <a href="https://www.linkedin.com/in/miguelcayllahua/" target="_blank" rel="noopener">LinkedIn personal</a>
+      <a href="mailto:miguelcquispe@gmail.com">Correo</a>
+    </div>
+    <p style="">La metodología es la misma que aplicamos en proyectos reales; los datos y la simulación de esta demo son sintéticos para poder compartirlos públicamente. Se calibra con la hoja técnica y unas pocas lecturas reales de tu propio equipo cuando trabajamos juntos. Los parámetros de este demo son de referencia — se recalibran a la medida de cada motor cuando trabajamos con tus datos.</p>
+  </footer>
+</div>
+
+<script>
+/* =========================================================
+   Modelo térmico del motor (capacitancia térmica de primer orden)
+   dT/dt = (T_ss - T) / tau
+   T_ss(carga, refrig, aislam) = T_amb + K_GEN * carga^2 * insulFactor / coolingFactor
+   ========================================================= */
+const K_GEN = 65; // °C de subida nominal sobre ambiente a carga=1.0, refrigeracion y aislamiento sanos
+const TAU_OPTIONS = { pequeno: 180, mediano: 420, grande: 720 }; // segundos
+const TAU_LABELS = { pequeno: 'Motor pequeño (τ≈3 min)', mediano: 'Motor mediano (τ=7 min)', grande: 'Motor grande (τ=12 min)' };
+const COOLING = { normal: 1.0, parcial: 0.75, fallado: 0.55 };
+const INSUL = { normal: 1.0, inicial: 1.12, avanzada: 1.28 };
+const ATENCION = 5;   // °C de residual
+const ALARMA = 15;    // °C de residual
+const SIM_DT = 6;     // segundos simulados por tick
+const TICK_MS = 200;  // ms reales por tick (~30x tiempo real)
+const WINDOW_SEC = 1800; // 30 min simulados visibles en el chart
+
+function steadyState(Tamb, load, coolingFactor, insulFactor) {
+  return Tamb + K_GEN * load * load * insulFactor / coolingFactor;
+}
+function stepTemp(T, Tss, dt, tau) {
+  return T + (dt * (Tss - T)) / tau;
+}
+
+/* =========================================================
+   Estado de la simulación
+   ========================================================= */
+const loadSlider = document.getElementById('loadSlider');
+const loadVal = document.getElementById('loadVal');
+const tambSlider = document.getElementById('tambSlider');
+const tambVal = document.getElementById('tambVal');
+const coolingRow = document.getElementById('coolingRow');
+const insulRow = document.getElementById('insulRow');
+const playPauseBtn = document.getElementById('playPauseBtn');
+const resetBtn = document.getElementById('resetBtn');
+const riskDot = document.getElementById('riskDot');
+const riskTitle = document.getElementById('riskTitle');
+const riskDetail = document.getElementById('riskDetail');
+const costLine = document.getElementById('costLine');
+const twinVal = document.getElementById('twinVal');
+const realVal = document.getElementById('realVal');
+const residualVal = document.getElementById('residualVal');
+const gaugeFill = document.getElementById('gaugeFill');
+const gaugeBar = document.getElementById('gaugeBar');
+const gaugeValue = document.getElementById('gaugeValue');
+const bizCostInline = document.getElementById('bizCostInline');
+const bizAction = document.getElementById('bizAction');
+const bizTitle = document.getElementById('bizTitle');
+const bizDetail = document.getElementById('bizDetail');
+const liveCanvas = document.getElementById('liveChart');
+const lctx = liveCanvas.getContext('2d');
+const projectionCanvas = document.getElementById('projection');
+const pctx = projectionCanvas.getContext('2d');
+const attrCoolFill = document.getElementById('attrCoolFill');
+const attrInsulFill = document.getElementById('attrInsulFill');
+const attrCoolVal = document.getElementById('attrCoolVal');
+const attrInsulVal = document.getElementById('attrInsulVal');
+const logBody = document.getElementById('logBody');
+const tauRow = document.getElementById('tauRow');
+const tauNote = document.getElementById('tauNote');
+const modelBadge = document.getElementById('modelBadge');
+
+let currentCooling = 'normal';
+let currentInsul = 'normal';
+let currentTauKey = 'mediano';
+let currentTau = TAU_OPTIONS.mediano;
+let paused = false;
+let simTime = 0;
+let history = [];
+let sim = null;
+
+function initSim() {
+  const Tamb = parseFloat(tambSlider.value);
+  sim = { twin: Tamb, coolOnly: Tamb, insulOnly: Tamb, real: Tamb };
+  simTime = 0;
+  history = [];
+  if (logBody) logBody.innerHTML = '';
+}
+initSim();
+
+const PLANNED_COST = 2600;   // soles, inspección/ajuste planificado — ilustrativo
+const EMERGENCY_COST = 15000; // soles, rebobinado + parada no planificada — ilustrativo
+
+function fmtSoles(v) { return 'S/. ' + Math.round(v).toLocaleString('es-PE'); }
+
+function estadoOf(absResidual) {
+  if (absResidual < ATENCION) return { key: 'normal', label: 'Normal', color: 'var(--success)' };
+  if (absResidual < ALARMA) return { key: 'atencion', label: 'Atención', color: '#e8c547' };
+  return { key: 'alarma', label: 'Alarma', color: 'var(--cta)' };
+}
+
+/* =========================================================
+   Dibujo: gráfico en vivo (gemelo vs. real, con desplazamiento)
+   ========================================================= */
+function drawLiveChart() {
+  const W = liveCanvas.width, H = liveCanvas.height;
+  lctx.clearRect(0, 0, W, H);
+  const padL = 46, padR = 16, padT = 18, padB = 24;
+  if (history.length < 2) return;
+  const tMin = Math.max(0, simTime - WINDOW_SEC), tMax = Math.max(simTime, tMin + 1);
+  let yMax = 100, yMin = 10;
+  history.forEach(p => { yMax = Math.max(yMax, p.twin, p.real); yMin = Math.min(yMin, p.twin, p.real); });
+  yMax = Math.ceil((yMax + 8) / 10) * 10;
+  yMin = Math.max(0, Math.floor((yMin - 8) / 10) * 10);
+  function toPx(t, y) {
+    return [
+      padL + (t - tMin) / (tMax - tMin) * (W - padL - padR),
+      H - padB - (y - yMin) / (yMax - yMin) * (H - padT - padB)
+    ];
+  }
+  // líneas guía horizontales
+  lctx.strokeStyle = '#1c1c26';
+  lctx.lineWidth = 1;
+  for (let i = 0; i <= 3; i++) {
+    const y = yMin + (yMax - yMin) * i / 3;
+    const [x1, py] = toPx(tMin, y);
+    const [x2] = toPx(tMax, y);
+    lctx.beginPath(); lctx.moveTo(x1, py); lctx.lineTo(x2, py); lctx.stroke();
+    lctx.fillStyle = '#6a6a78';
+    lctx.font = '10px DM Mono, monospace';
+    lctx.textAlign = 'right';
+    lctx.fillText(Math.round(y) + '°', padL - 6, py + 3);
+  }
+  lctx.textAlign = 'left';
+
+  // línea gemelo (violeta)
+  lctx.strokeStyle = '#7b5ea7';
+  lctx.lineWidth = 2;
+  lctx.beginPath();
+  history.forEach((p, i) => { const [x, y] = toPx(p.t, p.twin); i === 0 ? lctx.moveTo(x, y) : lctx.lineTo(x, y); });
+  lctx.stroke();
+
+  // línea real (naranja)
+  lctx.strokeStyle = '#f4722e';
+  lctx.lineWidth = 2;
+  lctx.beginPath();
+  history.forEach((p, i) => { const [x, y] = toPx(p.t, p.real); i === 0 ? lctx.moveTo(x, y) : lctx.lineTo(x, y); });
+  lctx.stroke();
+
+  lctx.font = '11px DM Mono, monospace';
+  lctx.fillStyle = '#7b5ea7';
+  lctx.fillText('● gemelo digital (sano)', padL, 14);
+  lctx.fillStyle = '#f4722e';
+  lctx.fillText('● sensor real', padL + 150, 14);
+}
+
+function drawCostComparison() {
+  const W = projectionCanvas.width, H = projectionCanvas.height;
+  pctx.clearRect(0, 0, W, H);
+  const padL = 56, padR = 20, padT = 20, padB = 40;
+  const maxV = EMERGENCY_COST * 1.15;
+  const barW = 90;
+  const bars = [
+    { label: 'Planificada', value: PLANNED_COST, color: '#3ecfa0', x: W * 0.28 },
+    { label: 'No planificada', value: EMERGENCY_COST, color: '#f4722e', x: W * 0.68 }
+  ];
+  pctx.strokeStyle = '#22222c';
+  pctx.lineWidth = 1;
+  pctx.beginPath();
+  pctx.moveTo(padL, padT); pctx.lineTo(padL, H - padB); pctx.lineTo(W - padR, H - padB);
+  pctx.stroke();
+  bars.forEach(b => {
+    const barH = (b.value / maxV) * (H - padT - padB);
+    const x = b.x - barW / 2, y = H - padB - barH;
+    pctx.fillStyle = b.color;
+    pctx.fillRect(x, y, barW, barH);
+    pctx.fillStyle = '#f4f4f7';
+    pctx.font = '13px DM Mono, monospace';
+    pctx.textAlign = 'center';
+    pctx.fillText(fmtSoles(b.value), b.x, y - 10);
+    pctx.fillStyle = '#a8a8b4';
+    pctx.font = '12px DM Mono, monospace';
+    pctx.fillText(b.label, b.x, H - padB + 18);
+  });
+  pctx.textAlign = 'left';
+  pctx.fillStyle = '#8a8a98';
+  pctx.font = '12px DM Mono, monospace';
+  pctx.fillText('costo estimado (S/.), ilustrativo', padL, 14);
+}
+
+/* =========================================================
+   Atribución causal (contrafactual)
+   ========================================================= */
+function updateAttribution() {
+  const attrCool = sim.coolOnly - sim.twin;
+  const attrInsul = sim.insulOnly - sim.twin;
+  const scale = Math.max(20, Math.abs(attrCool) + Math.abs(attrInsul), 5);
+  attrCoolFill.style.width = Math.min(100, Math.abs(attrCool) / scale * 100).toFixed(1) + '%';
+  attrInsulFill.style.width = Math.min(100, Math.abs(attrInsul) / scale * 100).toFixed(1) + '%';
+  attrCoolVal.textContent = attrCool.toFixed(1) + ' °C';
+  attrInsulVal.textContent = attrInsul.toFixed(1) + ' °C';
+}
+
+/* =========================================================
+   Registro en vivo (tabla)
+   ========================================================= */
+function pushLogRow(load, displayedReal, residual, estado) {
+  if (!logBody) return;
+  const tr = document.createElement('tr');
+  tr.innerHTML = '<td>' + (simTime / 60).toFixed(1) + '</td>' +
+    '<td>' + Math.round(load * 100) + '%</td>' +
+    '<td>' + sim.twin.toFixed(1) + '</td>' +
+    '<td>' + displayedReal.toFixed(1) + '</td>' +
+    '<td>' + residual.toFixed(1) + '</td>' +
+    '<td style="color:' + estado.color.replace('var(--success)', '#3ecfa0').replace('var(--cta)', '#f4722e') + '">' + estado.label + '</td>';
+  logBody.insertBefore(tr, logBody.firstChild);
+  while (logBody.children.length > 12) logBody.removeChild(logBody.lastChild);
+}
+
+/* =========================================================
+   Loop principal de simulación
+   ========================================================= */
+function tick() {
+  if (paused) return;
+  const Tamb = parseFloat(tambSlider.value);
+  const load = parseFloat(loadSlider.value) / 100;
+  const cf = COOLING[currentCooling];
+  const insf = INSUL[currentInsul];
+
+  simTime += SIM_DT;
+  const TssTwin = steadyState(Tamb, load, 1.0, 1.0);
+  const TssCool = steadyState(Tamb, load, cf, 1.0);
+  const TssInsul = steadyState(Tamb, load, 1.0, insf);
+  const TssReal = steadyState(Tamb, load, cf, insf);
+  sim.twin = stepTemp(sim.twin, TssTwin, SIM_DT, currentTau);
+  sim.coolOnly = stepTemp(sim.coolOnly, TssCool, SIM_DT, currentTau);
+  sim.insulOnly = stepTemp(sim.insulOnly, TssInsul, SIM_DT, currentTau);
+  sim.real = stepTemp(sim.real, TssReal, SIM_DT, currentTau);
+
+  const displayedReal = sim.real + (Math.random() - 0.5) * 0.6;
+  const residual = displayedReal - sim.twin;
+
+  history.push({ t: simTime, twin: sim.twin, real: displayedReal });
+  while (history.length && history[0].t < simTime - WINDOW_SEC) history.shift();
+
+  render(load, Tamb, displayedReal, residual);
+}
+
+function render(load, Tamb, displayedReal, residual) {
+  twinVal.textContent = sim.twin.toFixed(1) + ' °C';
+  realVal.textContent = displayedReal.toFixed(1) + ' °C';
+  residualVal.textContent = (residual >= 0 ? '+' : '') + residual.toFixed(1) + ' °C';
+
+  const estado = estadoOf(Math.abs(residual));
+  riskDot.style.background = estado.color;
+  riskTitle.style.color = estado.color;
+
+  let detail, simple;
+  if (estado.key === 'normal') {
+    riskTitle.textContent = 'Normal — el sensor sigue al gemelo';
+    detail = 'La brecha entre el gemelo digital y el sensor real es pequeña: la física explica bien lo que mide el sensor. Refrigeración y aislamiento se comportan como se espera para esta carga.';
+    simple = 'todo normal, el motor se comporta como predice la física.';
+  } else if (estado.key === 'atencion') {
+    riskTitle.textContent = 'Atención — brecha sostenida';
+    detail = 'El sensor real está por encima de lo que el gemelo sano predice para esta carga. Activa el Modo Analista para ver cuánto de esa brecha explica la refrigeración y cuánto el aislamiento.';
+    simple = 'hay una brecha que vale la pena revisar en la próxima ronda de inspección.';
+  } else {
+    riskTitle.textContent = 'Alarma — la física ya no explica al sensor';
+    detail = 'La brecha entre gemelo y sensor real es grande y sostenida: esto no es ruido de medición, es una falla física activa (refrigeración, aislamiento, o ambas). Requiere atención antes de la próxima falla térmica.';
+    simple = 'esto ya necesita inspección pronto, no una revisión de rutina.';
+  }
+  riskDetail.textContent = detail;
+  document.getElementById('simpleSummary').textContent = '💬 En palabras simples: ' + simple;
+  costLine.textContent = 'Inspección planificada ahora: ' + fmtSoles(PLANNED_COST) + ' · falla no planificada si se ignora: ' + fmtSoles(EMERGENCY_COST) + ' (ilustrativo).';
+
+  const gaugeMax = ALARMA * 2.2;
+  const pct = Math.min(100, Math.max(0, (Math.abs(residual) / gaugeMax) * 100));
+  gaugeFill.style.width = pct.toFixed(1) + '%';
+  gaugeFill.style.background = estado.color;
+  gaugeValue.textContent = residual.toFixed(1);
+  let attTick = gaugeBar.querySelector('.tick-atencion');
+  let alrTick = gaugeBar.querySelector('.tick-alarma');
+  if (!attTick) {
+    attTick = document.createElement('span'); attTick.className = 'gauge-tick tick-atencion';
+    alrTick = document.createElement('span'); alrTick.className = 'gauge-tick tick-alarma';
+    gaugeBar.appendChild(attTick); gaugeBar.appendChild(alrTick);
+  }
+  attTick.style.left = ((ATENCION / gaugeMax) * 100).toFixed(1) + '%';
+  alrTick.style.left = ((ALARMA / gaugeMax) * 100).toFixed(1) + '%';
+
+  bizCostInline.textContent = estado.label;
+  bizCostInline.style.color = estado.color;
+  bizAction.style.borderColor = estado.color;
+  bizTitle.style.color = estado.color;
+  bizTitle.textContent = riskTitle.textContent;
+  bizDetail.textContent = estado.key === 'normal'
+    ? 'No se requiere acción — sigue monitoreando en vivo.'
+    : 'Una inspección planificada dentro de esta ventana cuesta en promedio ' + fmtSoles(PLANNED_COST) + '; un rebobinado de emergencia por falla de aislamiento (parada + repuesto urgente + producción perdida) cuesta en promedio ' + fmtSoles(EMERGENCY_COST) + ' — un ahorro potencial de ' + fmtSoles(EMERGENCY_COST - PLANNED_COST) + ' (ilustrativo).';
+
+  drawLiveChart();
+  drawCostComparison();
+  updateAttribution();
+  pushLogRow(load, displayedReal, residual, estado);
+
+  modelBadge.style.color = estado.color;
+  modelBadge.textContent = 'τ actual: ' + TAU_LABELS[currentTauKey] + ' · tiempo simulado: ' + (simTime / 60).toFixed(1) + ' min';
+}
+
+/* =========================================================
+   Controles
+   ========================================================= */
+loadSlider.addEventListener('input', () => { loadVal.textContent = loadSlider.value + '%'; });
+tambSlider.addEventListener('input', () => { tambVal.textContent = tambSlider.value + ' °C'; });
+
+function wireFaultRow(row, setFn) {
+  row.querySelectorAll('.fault-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      row.querySelectorAll('.fault-btn').forEach(b => b.classList.remove('active', 'ok'));
+      btn.classList.add('active');
+      const val = btn.getAttribute('data-value');
+      if (val === 'normal') btn.classList.add('ok');
+      setFn(val);
+    });
+  });
+}
+wireFaultRow(coolingRow, v => { currentCooling = v; });
+wireFaultRow(insulRow, v => { currentInsul = v; });
+
+playPauseBtn.addEventListener('click', () => {
+  paused = !paused;
+  playPauseBtn.textContent = paused ? '▶ Reanudar' : '⏸ Pausar';
+  playPauseBtn.classList.toggle('primary', !paused);
+});
+resetBtn.addEventListener('click', () => { initSim(); });
+
+['pequeno', 'mediano', 'grande'].forEach(key => {
+  const btn = document.createElement('button');
+  btn.className = 'degree-btn' + (key === currentTauKey ? ' active' : '');
+  btn.textContent = TAU_LABELS[key];
+  btn.addEventListener('click', () => {
+    tauRow.querySelectorAll('.degree-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentTauKey = key;
+    currentTau = TAU_OPTIONS[key];
+    tauNote.textContent = 'Con este tamaño, un escalón de carga tarda ~' + Math.round(currentTau * 2.3 / 60) + ' min en asentarse por completo (≈8 constantes de tiempo).';
+  });
+  tauRow.appendChild(btn);
+});
+tauNote.textContent = 'Con este tamaño, un escalón de carga tarda ~' + Math.round(currentTau * 2.3 / 60) + ' min en asentarse por completo (≈8 constantes de tiempo).';
+
+const analystToggle = document.getElementById('analystToggle');
+const analystPanel = document.getElementById('analystPanel');
+analystToggle.addEventListener('change', () => {
+  analystPanel.classList.toggle('show', analystToggle.checked);
+});
+
+setInterval(tick, TICK_MS);
+</script>
+
+<style>
+  .glossary-term{border-bottom:1px dotted var(--muted); cursor:help;}
+</style>
+<script>
+(function(){
+  var GLOSSARY = [
+    {term:'gemelo digital', def:'Réplica virtual de un activo físico, construida con ecuaciones de ingeniería (no solo estadística), que corre en paralelo al equipo real para comparar predicción física contra medición real.'},
+    {term:'constante de tiempo', def:'Tiempo característico (τ) que tarda un cuerpo en alcanzar ~63% del cambio hacia su nueva temperatura de equilibrio; motores más grandes (más masa) tienen τ mayor.'},
+    {term:'residual', def:'Diferencia entre lo que predice el modelo (gemelo) y lo que mide el sensor real; un residual que crece de forma sostenida es la señal de alerta.'},
+    {term:'contrafactual', def:'Simulación de "qué pasaría si" solo una variable hubiera cambiado, manteniendo las demás en su estado sano — permite estimar cuánto aporta cada falla por separado.'}
+  ];
+  var SKIP_TAGS = {SCRIPT:1, STYLE:1, SELECT:1, OPTION:1, TITLE:1};
+  var wrapped = {};
+
+  function wrapInNode(root){
+    var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false);
+    var textNodes = [];
+    var node;
+    while((node = walker.nextNode())){
+      if(node.parentNode && SKIP_TAGS[node.parentNode.tagName]) continue;
+      if(node.parentNode && node.parentNode.classList && node.parentNode.classList.contains('glossary-term')) continue;
+      textNodes.push(node);
+    }
+    textNodes.forEach(function(textNode){
+      var text = textNode.nodeValue;
+      var frag = null;
+      for(var i=0; i<GLOSSARY.length; i++){
+        var entry = GLOSSARY[i];
+        if(wrapped[entry.term]) continue;
+        var idx = text.indexOf(entry.term);
+        if(idx === -1) continue;
+        var before = text.slice(0, idx);
+        var match = text.slice(idx, idx + entry.term.length);
+        var after = text.slice(idx + entry.term.length);
+        frag = document.createDocumentFragment();
+        if(before) frag.appendChild(document.createTextNode(before));
+        var span = document.createElement('span');
+        span.className = 'glossary-term';
+        span.title = entry.def;
+        span.textContent = match;
+        frag.appendChild(span);
+        if(after) frag.appendChild(document.createTextNode(after));
+        wrapped[entry.term] = true;
+        break;
+      }
+      if(frag){
+        textNode.parentNode.replaceChild(frag, textNode);
+      }
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', function(){
+    wrapInNode(document.body);
+  });
+})();
+</script>
+
+<a class="wa-float" href="https://chat.whatsapp.com/GvBz1tuUeNZ0xwTkjsuE3z" target="_blank" rel="noopener" aria-label="Unirme a la comunidad de WhatsApp">💬</a>
+</body>
+</html>
