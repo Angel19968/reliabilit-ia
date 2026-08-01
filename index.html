@@ -74,15 +74,6 @@
   h1,h2,h3{font-family:'Syne', sans-serif; font-weight:800; letter-spacing:-0.02em;}
   .wrap{max-width:960px;margin:0 auto;padding:0 24px;}
   header.hero{padding:72px 0 48px; border-bottom:1px solid var(--border);}
-  .hero-grid{display:grid; grid-template-columns:1.3fr 1fr; gap:44px; align-items:center; margin-top:24px;}
-  @media (max-width:760px){
-    .hero-grid{grid-template-columns:1fr; gap:28px;}
-    .hero-photo{max-width:220px; margin:0 auto;}
-  }
-  .hero-photo-frame{background:var(--panel); border:1px solid var(--border); border-radius:20px; padding:10px;}
-  .hero-photo-frame img{width:100%; height:auto; border-radius:14px; display:block;}
-  .hero-caption{text-align:center; margin-top:12px; font-size:13px; color:var(--muted);}
-  .hero-caption b{color:var(--text); font-family:'Syne', sans-serif; font-weight:700;}
   .badge{
     display:inline-block; font-size:12px; letter-spacing:.08em; text-transform:uppercase;
     color:var(--success); border:1px solid var(--success); border-radius:999px;
@@ -90,7 +81,7 @@
   }
   h1{font-size:clamp(32px,5vw,52px); line-height:1.1; margin-bottom:16px;}
   h1 em{font-style:normal; color:var(--success);}
-  .lead{font-family:'Instrument Serif', serif; font-style:italic; font-size:22px; color:var(--muted); max-width:640px;}
+  .lead{font-family:'Instrument Serif', serif; font-style:italic; font-size:22px; color:var(--muted); max-width:640px; line-height:1.7;}
   section{padding:56px 0; border-bottom:1px solid var(--border);}
   .filters{display:flex; flex-wrap:wrap; gap:10px; margin-top:24px; align-items:center;}
   .search-input{
@@ -242,6 +233,7 @@
   <div class="nav-row" id="hubNav">
     <nav class="quick-links">
       <a href="#modelos">Catálogo</a>
+      <a href="#sobre-mi">Sobre mí</a>
       <a href="#equipo">Equipo</a>
       <a href="#metodologia">Metodología</a>
       <a href="#contacto">Contacto</a>
@@ -262,22 +254,12 @@
 
   <header class="hero">
     <svg class="logo" width="200" height="50" viewBox="0 0 300 60" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="RELIABILIT-IA"><text x="0" y="40" font-family="Syne, sans-serif" font-weight="800" font-size="28" fill="currentColor" textLength="270" lengthAdjust="spacingAndGlyphs">RELIABILIT<tspan fill="var(--success)">-IA</tspan></text><circle cx="286" cy="14" r="5" fill="var(--cta)"/></svg>
-    <div class="hero-grid">
-      <div class="hero-text">
-        <div class="badge">Ingeniería aplicada al mantenimiento predictivo</div>
-        <h1>Modelos interactivos que <em>anticipan fallas</em>, no solo las registran.</h1>
-        <p class="lead">Mueve los sliders y mira, en vivo, cómo un modelo entrenado traduce señales de planta en decisiones de mantenimiento — cada demo corre sobre datos sintéticos; con los tuyos, calibramos el mismo motor a tu equipo real.</p>
-        <div class="cta-row">
-          <a class="btn primary" href="https://wa.me/51997610310?text=Hola%20Miguel%2C%20vi%20RELIABILIT-IA%20y%20quiero%20conversar%20sobre%20mi%20planta" target="_blank" rel="noopener">Hablemos de tu planta →</a>
-          <a class="btn ghost" href="#modelos">Ver las 24 demos</a>
-        </div>
-      </div>
-      <div class="hero-photo">
-        <div class="hero-photo-frame">
-          <img src="./assets/miguel-fundador.jpg" alt="Miguel Cayllahua, fundador de RELIABILIT-IA" width="700" height="834" loading="eager">
-        </div>
-        <p class="hero-caption"><b>Miguel Cayllahua</b><br>Fundador, RELIABILIT-IA</p>
-      </div>
+    <div class="badge">Ingeniería aplicada al mantenimiento predictivo</div>
+    <h1>Modelos interactivos que <em>anticipan fallas</em>, no solo las registran.</h1>
+    <p class="lead">Mueve los sliders y mira, en vivo, cómo un modelo entrenado traduce señales de planta en decisiones de mantenimiento — cada demo corre sobre datos sintéticos; con los tuyos, calibramos el mismo motor a tu equipo real.</p>
+    <div class="cta-row">
+      <a class="btn primary" href="https://wa.me/51997610310?text=Hola%20Miguel%2C%20vi%20RELIABILIT-IA%20y%20quiero%20conversar%20sobre%20mi%20planta" target="_blank" rel="noopener">Hablemos de tu planta →</a>
+      <a class="btn ghost" href="#modelos">Ver las 24 demos</a>
     </div>
   </header>
 
@@ -541,8 +523,8 @@
   </section>
 
   <section id="equipo">
-    <h2>Todo el pipeline, en una sola persona</h2>
-    <p class="team-intro">Cada demo de este catálogo pasa por el mismo ciclo completo, de principio a fin — y lo cubro yo mismo, sin fragmentarlo entre distintas personas. Estos son los frentes que reúno en cada proyecto:</p>
+    <h2>Un equipo de especialistas para cada fase</h2>
+    <p class="team-intro">En RELIABILIT-IA cada etapa del proceso se cubre con el nivel de especialización que exige, respaldado por una comunidad de +1,000 ingenieros de confiabilidad en 22 países. Estas son las competencias que se aplican en cada proyecto:</p>
 
     <div class="team-grid">
       <div class="team-card">
