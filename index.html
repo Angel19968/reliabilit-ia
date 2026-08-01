@@ -77,7 +77,7 @@
   .hero-grid{display:grid; grid-template-columns:1.3fr 1fr; gap:44px; align-items:center; margin-top:24px;}
   @media (max-width:760px){
     .hero-grid{grid-template-columns:1fr; gap:28px;}
-    .hero-photo{order:-1; max-width:220px; margin:0 auto;}
+    .hero-photo{max-width:220px; margin:0 auto;}
   }
   .hero-photo-frame{background:var(--panel); border:1px solid var(--border); border-radius:20px; padding:10px;}
   .hero-photo-frame img{width:100%; height:auto; border-radius:14px; display:block;}
@@ -197,6 +197,9 @@
   .theme-toggle:hover{border-color:var(--accent);}
 
   .team-intro{color:var(--muted); max-width:680px; margin-top:10px; font-size:16px;}
+  .bio-grid{display:grid; grid-template-columns:200px 1fr; gap:32px; align-items:start; margin-top:20px;}
+  @media (max-width:640px){ .bio-grid{grid-template-columns:1fr;} .bio-photo{max-width:160px; margin:0 auto;} }
+  .bio-photo img{width:100%; height:auto; border-radius:16px; border:1px solid var(--border); display:block;}
   .bio-text p{color:var(--muted); max-width:680px; font-size:16px; margin-bottom:16px; line-height:1.7;}
   .bio-text p:last-of-type{margin-bottom:0;}
   .cert-line{font-size:14px; color:var(--text); margin-top:20px; padding-top:18px; border-top:1px dashed var(--border); max-width:680px; font-style:italic;}
@@ -258,7 +261,7 @@
   </script>
 
   <header class="hero">
-    <svg class="logo" width="200" height="50" viewBox="0 0 240 60" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="RELIABILIT-IA"><text x="0" y="40" font-family="Syne, sans-serif" font-weight="800" font-size="28" fill="currentColor">RELIABILIT<tspan fill="var(--success)">-IA</tspan></text><circle cx="228" cy="14" r="5" fill="var(--cta)"/></svg>
+    <svg class="logo" width="200" height="50" viewBox="0 0 300 60" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="RELIABILIT-IA"><text x="0" y="40" font-family="Syne, sans-serif" font-weight="800" font-size="28" fill="currentColor" textLength="270" lengthAdjust="spacingAndGlyphs">RELIABILIT<tspan fill="var(--success)">-IA</tspan></text><circle cx="286" cy="14" r="5" fill="var(--cta)"/></svg>
     <div class="hero-grid">
       <div class="hero-text">
         <div class="badge">Ingeniería aplicada al mantenimiento predictivo</div>
@@ -523,12 +526,17 @@
 
   <section id="sobre-mi">
     <h2>Quién está detrás de RELIABILIT-IA</h2>
+    <div class="bio-grid">
+    <div class="bio-photo">
+      <img src="./assets/miguel-fundador.jpg" alt="Miguel Cayllahua, fundador de RELIABILIT-IA" width="240" height="286" loading="lazy">
+    </div>
     <div class="bio-text">
       <p>Soy Ingeniero Mecatrónico con más de 5 años en confiabilidad y mantenimiento predictivo, en operaciones mineras e industriales de alta exigencia — desde plantas metalúrgicas hasta líneas de producción de consumo masivo.</p>
       <p>Combino dos mundos que casi nunca están en la misma persona: la ingeniería de confiabilidad clásica (RCM, FMECA, análisis Weibull, jerarquización de criticidad) y ciencia de datos aplicada (Python, Machine Learning, dashboards en Power BI) — para convertir señales de sensores, SCADA y SAP PM en decisiones de mantenimiento, no solo en reportes.</p>
       <p>Algunos resultados concretos: un modelo de clasificación que redujo fallas un 20% en una línea de producción, más de $30,000 anuales en ahorros combinados entre distintos proyectos, y programas CBM (vibraciones, termografía, aceite, ultrasonido) implementados en activos críticos de minería y metalurgia.</p>
       <p>En 2023 fundé RELIABILIT-IA — hoy una comunidad de más de 1,000 ingenieros de confiabilidad en 22 países. Este catálogo de demos es la forma en que comparto en público, con datos sintéticos, la misma lógica de modelado que aplico en campo con clientes reales.</p>
       <p class="cert-line">Certificaciones destacadas: Machine Learning Specialization (Stanford/DeepLearning.AI) · Análisis Vibracional (TECSUP) · SAP PM Key User · CMRP (en proceso).</p>
+    </div>
     </div>
   </section>
 
@@ -660,7 +668,7 @@
   </section>
 
   <footer>
-    <svg class="logo" width="140" height="35" viewBox="0 0 240 60" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="RELIABILIT-IA"><text x="0" y="40" font-family="Syne, sans-serif" font-weight="800" font-size="28" fill="currentColor">RELIABILIT<tspan fill="var(--success)">-IA</tspan></text><circle cx="228" cy="14" r="5" fill="var(--cta)"/></svg>
+    <svg class="logo" width="140" height="35" viewBox="0 0 300 60" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="RELIABILIT-IA"><text x="0" y="40" font-family="Syne, sans-serif" font-weight="800" font-size="28" fill="currentColor" textLength="270" lengthAdjust="spacingAndGlyphs">RELIABILIT<tspan fill="var(--success)">-IA</tspan></text><circle cx="286" cy="14" r="5" fill="var(--cta)"/></svg>
     <div class="footer-links">
       <a href="https://chat.whatsapp.com/GvBz1tuUeNZ0xwTkjsuE3z" target="_blank" rel="noopener">WhatsApp</a>
       <a href="https://www.youtube.com/@miguelangelcayllahuaquispe998" target="_blank" rel="noopener">YouTube</a>
