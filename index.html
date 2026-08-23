@@ -260,11 +260,15 @@
   @media (max-width:520px){ .wa-float{width:50px; height:50px; font-size:22px; bottom:16px; right:16px;} }
 
   /* ---------- Hero premium (dashboard mockup + servicios + métricas) ---------- */
-  .hero-grid{display:grid; grid-template-columns:1.05fr 1fr; gap:48px; align-items:center; padding:72px 0 56px;}
+  .hero-grid{display:grid; grid-template-columns:1.05fr 1fr; gap:48px; align-items:center; padding:56px 0 32px;}
   .hero-grid > *{min-width:0;}
   .badge{max-width:100%;}
   @media (max-width:960px){ .hero-grid{grid-template-columns:1fr; padding:48px 0 32px;} }
   .hero-grid header.hero{padding:0; border-bottom:none;}
+
+  .hero-checks{list-style:none; margin:18px 0 26px; display:flex; flex-direction:column; gap:10px;}
+  .hero-checks li{display:flex; align-items:center; gap:10px; color:var(--text); font-size:14.5px;}
+  .check-ico{display:inline-flex; align-items:center; justify-content:center; width:20px; height:20px; border-radius:50%; background:var(--emerald); color:#04150d; font-size:12px; font-weight:800; flex:none;}
 
   .dash-wrap{position:relative;}
   .dash-card{
@@ -291,24 +295,24 @@
     background:radial-gradient(600px 200px at 100% 0%, rgba(109,94,248,.15), transparent 60%),
                radial-gradient(500px 200px at 0% 100%, rgba(34,197,94,.12), transparent 60%);
   }
-  .dash-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:16px; position:relative;}
+  .dash-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:12px; position:relative;}
   .dash-title{font-family:'Syne', sans-serif; font-weight:700; font-size:15px;}
   .dash-range{font-family:'DM Mono', monospace; font-size:11px; color:var(--muted); border:1px solid var(--border); border-radius:999px; padding:4px 10px;}
-  .kpi-row{display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:14px; position:relative;}
+  .kpi-row{display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:10px; position:relative;}
   @media (max-width:520px){ .kpi-row{grid-template-columns:repeat(2,1fr);} }
-  .kpi-tile{background:var(--glass-bg); border:1px solid var(--glass-border); border-radius:14px; padding:12px;}
-  .kpi-label{font-size:10.5px; color:var(--muted); margin-bottom:6px;}
+  .kpi-tile{background:var(--glass-bg); border:1px solid var(--glass-border); border-radius:14px; padding:10px;}
+  .kpi-label{font-size:10.5px; color:var(--muted); margin-bottom:5px;}
   .kpi-value{font-family:'Syne', sans-serif; font-weight:700; font-size:18px;}
   .kpi-value.kpi-green{color:var(--emerald);}
   .kpi-value.kpi-purple{color:var(--purple);}
-  .dash-panels{display:grid; grid-template-columns:1.3fr 1fr; gap:12px; margin-bottom:12px; position:relative;}
+  .dash-panels{display:grid; grid-template-columns:1.3fr 1fr; gap:10px; margin-bottom:10px; position:relative;}
   @media (max-width:520px){ .dash-panels{grid-template-columns:1fr;} }
-  .dash-panel{background:var(--glass-bg); border:1px solid var(--glass-border); border-radius:14px; padding:12px;}
-  .dash-panel-title{font-size:11px; color:var(--muted); margin-bottom:6px;}
-  .donut-legend{display:flex; flex-direction:column; gap:5px; margin-top:6px; font-size:10.5px; color:var(--muted);}
+  .dash-panel{background:var(--glass-bg); border:1px solid var(--glass-border); border-radius:14px; padding:10px;}
+  .dash-panel-title{font-size:11px; color:var(--muted); margin-bottom:5px;}
+  .donut-legend{display:flex; flex-direction:column; gap:4px; margin-top:5px; font-size:10.5px; color:var(--muted);}
   .donut-legend span.dot{display:inline-block; width:7px; height:7px; border-radius:50%; margin-right:6px;}
-  .dash-alerts{background:var(--glass-bg); border:1px solid var(--glass-border); border-radius:14px; padding:12px; position:relative;}
-  .alert-row{display:flex; align-items:center; justify-content:space-between; padding:7px 0; border-bottom:1px dashed var(--border); font-size:11.5px;}
+  .dash-alerts{background:var(--glass-bg); border:1px solid var(--glass-border); border-radius:14px; padding:10px; position:relative;}
+  .alert-row{display:flex; align-items:center; justify-content:space-between; padding:5px 0; border-bottom:1px dashed var(--border); font-size:11.5px;}
   .alert-row:last-child{border-bottom:none;}
   .alert-row b{display:block; font-size:12.5px;}
   .alert-tag{font-size:9.5px; padding:2px 8px; border-radius:999px; font-weight:700;}
@@ -329,9 +333,9 @@
   }
 
   .motor-holo{
-    margin-top:16px; border-radius:var(--radius-md); border:1px solid var(--glass-border);
+    margin-top:10px; border-radius:var(--radius-md); border:1px solid var(--glass-border);
     background:radial-gradient(circle at 50% 40%, rgba(6,182,212,.18), rgba(11,20,55,.9) 70%);
-    padding:24px; display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden;
+    padding:14px; display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden;
   }
   .motor-holo svg{filter:drop-shadow(0 0 18px rgba(6,182,212,.55));}
   .motor-holo::after{
@@ -423,6 +427,11 @@
     <div class="badge">Ingeniería aplicada al mantenimiento predictivo</div>
     <h1>Modelos interactivos que <em>anticipan fallas</em>, no solo las registran.</h1>
     <p class="lead">Mueve los sliders y mira, en vivo, cómo un modelo entrenado traduce señales de planta en decisiones de mantenimiento — cada demo corre sobre datos sintéticos; con los tuyos, calibramos el mismo motor a tu equipo real.</p>
+    <ul class="hero-checks">
+      <li><span class="check-ico">✓</span>24 demos interactivas — sin instalar nada, corren en el navegador</li>
+      <li><span class="check-ico">✓</span>Modo Básico y Modo Analista en cada una</li>
+      <li><span class="check-ico">✓</span>Datos sintéticos abiertos — calibramos el mismo modelo con los tuyos</li>
+    </ul>
     <div class="cta-row">
       <a class="btn primary" href="https://wa.me/51997610310?text=Hola%20Miguel%2C%20vi%20RELIABILIT-IA%20y%20quiero%20conversar%20sobre%20mi%20planta" target="_blank" rel="noopener">Hablemos de tu planta →</a>
       <a class="btn ghost" href="#modelos">Ver las 24 demos</a>
