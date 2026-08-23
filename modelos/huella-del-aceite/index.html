@@ -119,6 +119,22 @@
   section{padding:40px 0; border-bottom:1px solid var(--border);}
   section h2{font-size:22px; margin-bottom:14px;}
   .context p{color:var(--muted); max-width:640px; font-size:15px;}
+  .context-grid{display:grid; grid-template-columns:1fr 300px; gap:32px; align-items:start; margin-top:18px;}
+  .context-grid > *{min-width:0;}
+  .context-text p{max-width:640px;}
+  @media (max-width:900px){ .context-grid{grid-template-columns:1fr; margin-top:14px;} }
+  .context-visual{background:var(--panel); border:1px solid var(--border); border-radius:16px; padding:20px;}
+  .cv-wave{width:100%; height:52px; display:block; margin-bottom:14px;}
+  .cv-wave path{fill:none; stroke:var(--success); stroke-width:2; stroke-linecap:round; stroke-dasharray:520; stroke-dashoffset:520; animation:cvDraw 2.2s ease-out forwards;}
+  .cv-title{display:flex; align-items:center; font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:12px;}
+  .cv-dot{display:inline-block; width:7px; height:7px; border-radius:50%; background:var(--success); margin-right:7px; animation:cvPulse 1.8s ease-in-out infinite;}
+  .cv-fact{padding:10px 0; border-top:1px solid var(--border);}
+  .cv-fact:first-of-type{border-top:none; padding-top:0;}
+  .cv-fact-label{font-size:13px; color:var(--text); font-weight:600;}
+  .cv-fact-range{font-size:12px; color:var(--muted); font-family:'DM Mono', monospace; margin-top:2px;}
+  @keyframes cvDraw{to{stroke-dashoffset:0;}}
+  @keyframes cvPulse{0%,100%{opacity:1; transform:scale(1);} 50%{opacity:.35; transform:scale(0.7);}}
+  @media (prefers-reduced-motion: reduce){ .cv-wave path{animation:none; stroke-dashoffset:0;} .cv-dot{animation:none;} }
 
   .panel{
     background:var(--panel); border:1px solid var(--border); border-radius:16px; padding:28px;
@@ -372,7 +388,17 @@
 
   <section class="context">
     <h2>El problema</h2>
-    <p>Cambiar el aceite por calendario ignora lo que el aceite mismo está diciendo. Dos números bastan para empezar a leer esa huella: el TAN (Número de Acidez Total), que sube cuando el aceite se oxida y pierde su capacidad protectora, y el hierro disuelto (Fe), que sube cuando hay desgaste metal-metal en rodamientos, engranajes o camisas. Ninguno de los dos por sí solo cuenta toda la historia — juntos, permiten clasificar el estado del equipo antes de que el desgaste se note en vibración o en una falla real.</p>
+    <div class="context-grid">
+      <div class="context-text">
+        <p>Cambiar el aceite por calendario ignora lo que el aceite mismo está diciendo. Dos números bastan para empezar a leer esa huella: el TAN (Número de Acidez Total), que sube cuando el aceite se oxida y pierde su capacidad protectora, y el hierro disuelto (Fe), que sube cuando hay desgaste metal-metal en rodamientos, engranajes o camisas. Ninguno de los dos por sí solo cuenta toda la historia — juntos, permiten clasificar el estado del equipo antes de que el desgaste se note en vibración o en una falla real.</p>
+      </div>
+      <aside class="context-visual">
+        <svg class="cv-wave" viewBox="0 0 260 52" preserveAspectRatio="none" aria-hidden="true"><path d="M0,28 C15,10 30,46 45,28 C60,10 75,46 90,28 C105,10 120,46 135,28 C150,10 165,46 180,28 C195,10 210,46 225,28 C235,20 245,28 260,28"/></svg>
+        <div class="cv-title"><span class="cv-dot"></span>Variables que observa el modelo</div>
+        <div class="cv-fact"><div class="cv-fact-label">TAN — Número de Acidez Total</div><div class="cv-fact-range">0.10 (aceite nuevo) → 4.00 mg KOH/g (muy oxidado)</div></div>
+        <div class="cv-fact"><div class="cv-fact-label">Hierro disuelto (Fe)</div><div class="cv-fact-range">0 ppm → 150 ppm (desgaste severo)</div></div>
+      </aside>
+    </div>
   </section>
 
   <section id="demo">
