@@ -97,9 +97,11 @@
   }
   h1,h2,h3{font-family:'Syne', sans-serif; font-weight:800; letter-spacing:-0.02em;}
   a{color:var(--success);}
-  .wrap{max-width:960px;margin:0 auto;padding:0 24px;}
+  .wrap{max-width:1200px;margin:0 auto;padding:0 32px;}
+  @media (max-width:600px){ .wrap{padding:0 20px;} }
   .back{display:inline-block; font-size:13px; color:var(--muted); text-decoration:none;}
-  .nav-row{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; position:sticky; top:0; z-index:30; background:var(--bg); padding:14px 0; margin:0 -24px; padding-left:24px; padding-right:24px; border-bottom:1px solid transparent;}
+  .nav-row{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; position:sticky; top:0; z-index:30; background:var(--bg); padding:14px 0; margin:0 -32px; padding-left:32px; padding-right:32px; border-bottom:1px solid transparent;}
+  @media (max-width:600px){ .nav-row{margin:0 -20px; padding-left:20px; padding-right:20px;} }
   .nav-row.is-stuck{border-bottom-color:var(--border);}
   .quick-nav{font-family:'DM Mono',monospace; font-size:13px; background:var(--panel); color:var(--text); border:1px solid var(--border); border-radius:8px; padding:6px 10px; max-width:230px;}
   .back:hover{color:var(--success);}
@@ -110,6 +112,7 @@
     color:var(--success); border:1px solid var(--success); border-radius:999px;
     padding:5px 14px; margin-bottom:18px;
   }
+  .badge{max-width:100%;}
   h1{font-size:clamp(28px,5vw,44px); line-height:1.1; margin-bottom:14px;}
   .lead{font-family:'Instrument Serif', serif; font-style:italic; font-size:20px; color:var(--muted); max-width:640px;}
 
@@ -141,6 +144,7 @@
   .switch input:checked + .track::after{transform:translateX(18px); background:#fff;}
 
   .demo-grid{display:grid; grid-template-columns:1.05fr 1fr; gap:32px;}
+  .demo-grid > *{min-width:0;}
   @media (max-width:760px){ .demo-grid{grid-template-columns:1fr;} }
 
   .slider-group{margin-bottom:22px;}
@@ -212,6 +216,7 @@
   .business p{color:var(--muted); font-size:16px; max-width:640px;}
   .business .stat{color:var(--success); font-weight:500;}
   .business-grid{display:grid; grid-template-columns:1.1fr 1fr; gap:32px; align-items:start; margin-top:8px;}
+  .business-grid > *{min-width:0;}
   @media (max-width:760px){ .business-grid{grid-template-columns:1fr;} }
   .biz-action{margin-top:18px; padding:18px; border-radius:12px; background:var(--panel2); border:1px solid var(--border); transition:border-color .3s;}
   .biz-action .biz-title{font-size:17px; font-weight:600;}
