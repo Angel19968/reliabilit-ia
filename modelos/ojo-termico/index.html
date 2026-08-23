@@ -119,6 +119,22 @@
   section{padding:40px 0; border-bottom:1px solid var(--border);}
   section h2{font-size:22px; margin-bottom:14px;}
   .context p{color:var(--muted); max-width:640px; font-size:15px;}
+  .context-grid{display:grid; grid-template-columns:1fr 300px; gap:32px; align-items:start; margin-top:18px;}
+  .context-grid > *{min-width:0;}
+  .context-text p{max-width:640px;}
+  @media (max-width:900px){ .context-grid{grid-template-columns:1fr; margin-top:14px;} }
+  .context-visual{background:var(--panel); border:1px solid var(--border); border-radius:16px; padding:20px;}
+  .cv-wave{width:100%; height:52px; display:block; margin-bottom:14px;}
+  .cv-wave path{fill:none; stroke:var(--success); stroke-width:2; stroke-linecap:round; stroke-dasharray:520; stroke-dashoffset:520; animation:cvDraw 2.2s ease-out forwards;}
+  .cv-title{display:flex; align-items:center; font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-bottom:12px;}
+  .cv-dot{display:inline-block; width:7px; height:7px; border-radius:50%; background:var(--success); margin-right:7px; animation:cvPulse 1.8s ease-in-out infinite;}
+  .cv-fact{padding:10px 0; border-top:1px solid var(--border);}
+  .cv-fact:first-of-type{border-top:none; padding-top:0;}
+  .cv-fact-label{font-size:13px; color:var(--text); font-weight:600;}
+  .cv-fact-range{font-size:12px; color:var(--muted); font-family:'DM Mono', monospace; margin-top:2px;}
+  @keyframes cvDraw{to{stroke-dashoffset:0;}}
+  @keyframes cvPulse{0%,100%{opacity:1; transform:scale(1);} 50%{opacity:.35; transform:scale(0.7);}}
+  @media (prefers-reduced-motion: reduce){ .cv-wave path{animation:none; stroke-dashoffset:0;} .cv-dot{animation:none;} }
   .context p + p{margin-top:12px;}
 
   .panel{
@@ -371,8 +387,18 @@
 
   <section class="context">
     <h2>El problema</h2>
-    <p>Hasta ahora, todos los módulos de RELIABILIT-IA trabajaron con números: vibración, temperatura puntual, corriente. Este último módulo trabaja con algo distinto — una imagen. Una cámara termográfica no entrega un solo número de temperatura, sino una grilla de miles de lecturas de temperatura, una por píxel. El trabajo del algoritmo no es clasificar un número, sino primero encontrar dónde está el punto caliente dentro de la imagen —una tarea de visión por computadora, no solo de estadística— y después medir qué tan caliente está en verdad. Este módulo implementa desde cero un algoritmo de crecimiento de regiones (flood fill): parte de los píxeles que superan un umbral de temperatura y va "contagiando" a sus vecinos inmediatos que también lo superan, hasta delimitar la región caliente completa como una sola forma conectada — el mismo principio que usa cualquier software de segmentación de imágenes, aplicado aquí a una imagen térmica en vez de una fotografía.</p>
-    <p>El criterio de severidad no usa temperatura absoluta, sino la diferencia (ΔT) entre el punto caliente y una conexión de referencia sana bajo la misma carga — así es como se interpretan las inspecciones termográficas reales en la industria (criterio similar al usado en normas como NETA ATS): una conexión a 45°C puede ser completamente normal si su vecina idéntica, con la misma carga, también está a 43°C — pero anormal si esa misma vecina está a 28°C.</p>
+    <div class="context-grid">
+      <div class="context-text">
+        <p>Hasta ahora, todos los módulos de RELIABILIT-IA trabajaron con números: vibración, temperatura puntual, corriente. Este último módulo trabaja con algo distinto — una imagen. Una cámara termográfica no entrega un solo número de temperatura, sino una grilla de miles de lecturas de temperatura, una por píxel. El trabajo del algoritmo no es clasificar un número, sino primero encontrar dónde está el punto caliente dentro de la imagen —una tarea de visión por computadora, no solo de estadística— y después medir qué tan caliente está en verdad. Este módulo implementa desde cero un algoritmo de crecimiento de regiones (flood fill): parte de los píxeles que superan un umbral de temperatura y va "contagiando" a sus vecinos inmediatos que también lo superan, hasta delimitar la región caliente completa como una sola forma conectada — el mismo principio que usa cualquier software de segmentación de imágenes, aplicado aquí a una imagen térmica en vez de una fotografía.</p>
+        <p>El criterio de severidad no usa temperatura absoluta, sino la diferencia (ΔT) entre el punto caliente y una conexión de referencia sana bajo la misma carga — así es como se interpretan las inspecciones termográficas reales en la industria (criterio similar al usado en normas como NETA ATS): una conexión a 45°C puede ser completamente normal si su vecina idéntica, con la misma carga, también está a 43°C — pero anormal si esa misma vecina está a 28°C.</p>
+      </div>
+      <aside class="context-visual">
+        <svg class="cv-wave" viewBox="0 0 260 52" preserveAspectRatio="none" aria-hidden="true"><path d="M0,28 C15,10 30,46 45,28 C60,10 75,46 90,28 C105,10 120,46 135,28 C150,10 165,46 180,28 C195,10 210,46 225,28 C235,20 245,28 260,28"/></svg>
+        <div class="cv-title"><span class="cv-dot"></span>Variables que observa el modelo</div>
+        <div class="cv-fact"><div class="cv-fact-label">Carga del panel</div><div class="cv-fact-range">20% → 100%</div></div>
+        <div class="cv-fact"><div class="cv-fact-label">Severidad de la conexión central</div><div class="cv-fact-range">+0°C (sana) → +50°C (grave)</div></div>
+      </aside>
+    </div>
   </section>
 
   <section id="demo">
