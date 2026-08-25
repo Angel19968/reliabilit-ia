@@ -279,10 +279,8 @@
     padding:20px;
     position:relative;
     overflow:hidden;
-    display:flex;
-    gap:14px;
-    align-items:stretch;
   }
+  .dash-row{display:flex; gap:14px; align-items:stretch;}
   .dash-sidebar{
     flex-shrink:0; width:42px; border-radius:14px; padding:16px 0;
     background:linear-gradient(180deg, var(--purple), var(--cyan));
@@ -448,6 +446,7 @@
 
   <div class="dash-wrap">
     <div class="dash-card">
+      <div class="dash-row">
       <div class="dash-sidebar">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M3 11l9-7 9 7v9a1 1 0 0 1-1 1h-5v-6H9v6H4a1 1 0 0 1-1-1v-9z" stroke="#fff" stroke-width="1.6" stroke-linejoin="round"/></svg>
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M4 19V9M12 19V5M20 19v-7" stroke="#fff" stroke-width="1.6" stroke-linecap="round"/></svg>
@@ -536,8 +535,44 @@
           </svg>
           <div class="sector-label">Energía y manufactura</div>
         </div>
+        <div class="sector-frame" data-idx="3">
+          <svg class="sector-icon" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" xmlns="http://www.w3.org/2000/svg">
+            <path d="M3 12c3-4 7-6 11-6 4 0 6 2 7 6-1 4-3 6-7 6-4 0-8-2-11-6z" stroke-width="1.4" stroke-linejoin="round"/>
+            <path d="M14 6l3 2M14 18l3-2" stroke-width="1.4" stroke-linecap="round"/>
+            <circle cx="8" cy="11" r=".9" fill="var(--cyan)" stroke="none"/>
+          </svg>
+          <div class="sector-label">Pesca</div>
+        </div>
+        <div class="sector-frame" data-idx="4">
+          <svg class="sector-icon" viewBox="0 0 24 24" fill="none" stroke="var(--emerald)" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 20c0-9 5-14 14-14 0 9-5 14-14 14z" stroke-width="1.4" stroke-linejoin="round"/>
+            <path d="M4 20c3-3 6-6 10-10" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+          <div class="sector-label">Agroindustria</div>
+        </div>
+        <div class="sector-frame" data-idx="5">
+          <svg class="sector-icon" viewBox="0 0 24 24" fill="none" stroke="var(--purple)" xmlns="http://www.w3.org/2000/svg">
+            <path d="M4 21V10l5-3 5 3v11" stroke-width="1.4" stroke-linejoin="round"/>
+            <path d="M14 21V6l3-2 3 2v17" stroke-width="1.4" stroke-linejoin="round"/>
+            <path d="M2 21h20" stroke-width="1.4" stroke-linecap="round"/>
+          </svg>
+          <div class="sector-label">Cemento y construcción</div>
+        </div>
+        <div class="sector-frame" data-idx="6">
+          <svg class="sector-icon" viewBox="0 0 24 24" fill="none" stroke="var(--cyan)" xmlns="http://www.w3.org/2000/svg">
+            <path d="M8 4l4 3 4-3 2 4-3 2v9a1 1 0 0 1-1 1h-4a1 1 0 0 1-1-1v-9l-3-2 2-4z" stroke-width="1.4" stroke-linejoin="round"/>
+          </svg>
+          <div class="sector-label">Textil</div>
+        </div>
+        <div class="sector-frame" data-idx="7">
+          <svg class="sector-icon" viewBox="0 0 24 24" fill="none" stroke="var(--emerald)" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 3c3 4 5 7.5 5 10a5 5 0 0 1-10 0c0-2.5 2-6 5-10z" stroke-width="1.4" stroke-linejoin="round"/>
+          </svg>
+          <div class="sector-label">Oil &amp; Gas</div>
+        </div>
       </div>
 
+      </div>
       </div>
 
       <div class="founder-float">
