@@ -126,44 +126,73 @@
   .chip.active{background:var(--success); border-color:var(--success); color:#0a0a0f; font-weight:600;}
   .filter-reset{font-size:12px; color:var(--muted); background:none; border:none; text-decoration:underline; cursor:pointer; font-family:'DM Mono', monospace;}
   .filter-count{font-size:13px; color:var(--muted); margin-top:14px;}
-  #modelGrid{display:flex; flex-direction:column; gap:40px; margin-top:20px;}
+  #modelGrid{display:flex; flex-direction:column; gap:36px; margin-top:20px;}
   .family-heading{font-family:'Syne', sans-serif; font-weight:700; font-size:18px; margin-bottom:14px; display:flex; align-items:center; gap:8px;}
   .family-heading .family-icon{font-size:19px;}
+  .family-heading .family-count{
+    font-family:'DM Mono', monospace; font-weight:400; font-size:12px; color:var(--muted);
+    background:var(--panel); border:1px solid var(--border); border-radius:999px; padding:2px 9px; margin-left:2px;
+  }
   .family-group.is-hidden{display:none;}
-  .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:20px;}
-  .card.is-hidden{display:none;}
   .empty-state{color:var(--muted); font-size:14px; padding:32px 0; text-align:center; display:none;}
   .empty-state.show{display:block;}
-  .card{
-    background:var(--panel); border:1px solid var(--border); border-radius:14px;
-    padding:24px; transition:border-color .2s, transform .2s; text-decoration:none; color:var(--text);
-    display:flex; flex-direction:column;
+
+  /* --- accordion menu rows (replaces the old always-expanded card grid) --- */
+  .model-list{display:flex; flex-direction:column; gap:8px;}
+  .model-row{
+    border:1px solid var(--border); border-radius:12px; background:var(--panel);
+    transition:border-color .15s;
+    overflow:hidden;
   }
-  .card:hover{border-color:var(--success); transform:translateY(-2px);}
-  .card .tag{font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--accent);}
-  .card .tag::before{margin-right:6px;}
-  .card[data-sector="rodamientos"] .tag::before{content:"⚙️";}
-  .card[data-sector="energia"] .tag::before{content:"⚡";}
-  .card[data-sector="motores"] .tag::before{content:"🔧";}
-  .card[data-sector="aire-comprimido"] .tag::before{content:"💨";}
-  .card[data-sector="compresores"] .tag::before{content:"🌀";}
-  .card[data-sector="planta"] .tag::before{content:"🏭";}
-  .card[data-sector="bombas"] .tag::before{content:"🚰";}
-  .card[data-sector="vibracion"] .tag::before{content:"📳";}
-  .card[data-sector="turbinas"] .tag::before{content:"🌬️";}
-  .card[data-sector="sensores"] .tag::before{content:"📡";}
-  .card[data-sector="termografia"] .tag::before{content:"🌡️";}
-  .card[data-sector="correas"] .tag::before{content:"🎢";}
-  .card[data-sector="transformadores"] .tag::before{content:"🔌";}
-  .card[data-sector="calderas"] .tag::before{content:"🔥";}
-  .card[data-sector="aceite"] .tag::before{content:"🛢️";}
-  .card h3{font-size:20px; margin:10px 0 8px;}
-  .card p{
-    font-size:14px; color:var(--muted);
-    display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical;
-    overflow:hidden; line-height:1.4; min-height:calc(1.4em * 2);
+  .model-row.is-hidden{display:none;}
+  .model-row:hover{border-color:var(--success);}
+  .model-row-head{
+    all:unset; box-sizing:border-box; cursor:pointer; width:100%;
+    display:flex; align-items:center; gap:12px; padding:14px 18px;
+    font-family:'Inter', sans-serif; color:var(--text);
   }
-  .status{font-size:11px; color:var(--success); margin-top:auto; padding-top:14px; display:inline-block;}
+  .model-row-head:focus-visible{outline:2px solid var(--accent); outline-offset:-2px;}
+  .mr-icon{font-size:17px; flex:none;}
+  .mr-title{font-size:15px; font-weight:600; flex:1 1 auto; min-width:120px;}
+  .mr-tag{
+    font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--accent);
+    flex:none; white-space:nowrap;
+  }
+  .mr-status{font-size:11px; color:var(--success); flex:none; white-space:nowrap;}
+  .mr-chevron{flex:none; font-size:12px; color:var(--muted); transition:transform .2s;}
+  .model-row.is-open .mr-chevron{transform:rotate(180deg);}
+  .model-row-body{max-height:0; opacity:0; transition:max-height .28s ease, opacity .2s ease;}
+  .model-row.is-open .model-row-body{max-height:220px; opacity:1;}
+  .mr-body-inner{padding:0 18px 18px; display:flex; flex-wrap:wrap; align-items:center; gap:16px; border-top:1px solid var(--border); margin-top:0; padding-top:14px;}
+  .mr-desc{font-size:14px; color:var(--muted); line-height:1.5; flex:1 1 260px; margin:0;}
+  .mini-chart{flex:none; width:120px; height:48px; opacity:.9;}
+  .mini-svg{width:100%; height:100%; overflow:visible;}
+  .mc-line{fill:none; stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round;}
+  .mc-dash{stroke-dasharray:3 4;}
+  .mc-threshold{stroke:var(--border); stroke-width:1; stroke-dasharray:2 3;}
+  .mc-bar{rx:3; transition:height .2s;}
+  .mc-dot{transition:opacity .2s;}
+  .mc-cell{rx:3; opacity:.55;}
+  .mc-cyan{stroke:var(--cyan, #22d3ee); fill:var(--cyan, #22d3ee);}
+  .mc-emerald{stroke:var(--success); fill:var(--success);}
+  .mc-purple{stroke:var(--purple, #a78bfa); fill:var(--purple, #a78bfa);}
+  .mc-alert{stroke:#f87171; fill:#f87171; opacity:.9;}
+  .mc-dim{fill:var(--muted); opacity:.35;}
+  .mr-link{
+    flex:none; font-family:'DM Mono', monospace; font-size:13px; color:var(--accent);
+    text-decoration:none; white-space:nowrap; border-bottom:1px solid transparent;
+  }
+  .mr-link:hover{border-bottom-color:var(--accent);}
+  @media (max-width:640px){
+    .model-row-head{flex-wrap:wrap; row-gap:6px;}
+    .mr-title{flex-basis:100%; order:1;}
+    .mr-icon{order:0;}
+    .mr-tag{order:2;}
+    .mr-status{order:3;}
+    .mr-chevron{order:4; margin-left:auto;}
+    .mr-body-inner{flex-direction:column; align-items:flex-start;}
+    .model-row.is-open .model-row-body{max-height:320px;}
+  }
   .cta-row{display:flex; gap:14px; flex-wrap:wrap; margin-top:28px;}
   .btn{
     font-family:'DM Mono', monospace; font-size:14px; padding:12px 22px; border-radius:10px;
@@ -698,169 +727,410 @@
 
     <div id="modelGrid">
     <div class="family-group" data-family="rotativos">
-      <h3 class="family-heading"><span class="family-icon">⚙️</span> Rotativos</h3>
-      <div class="grid">
-      <a class="card" data-paradigm="regresion" data-sector="rodamientos" href="./modelos/radar-de-rodamientos/">
-        <div class="tag">Regresión · Rodamientos</div>
-        <h3>Radar de Rodamientos</h3>
-        <p>Estima días hasta falla a partir de vibración RMS y temperatura.</p>
-        <span class="status">● Disponible</span>
-      </a>
-      <a class="card" data-paradigm="clasificacion" data-sector="motores" href="./modelos/diagnostico-del-motor/">
-        <div class="tag">Clasificación · Motor</div>
-        <h3>Diagnóstico del Motor</h3>
-        <p>Clasifica el estado de un motor en 5 niveles de severidad.</p>
-        <span class="status">● Disponible</span>
-      </a>
-      <a class="card" data-paradigm="nuevas-tecnologias" data-sector="motores" href="./modelos/pulso-del-motor/">
-        <div class="tag">Nuevas tecnologías · Motor</div>
-        <h3>Pulso del Motor</h3>
-        <p>Diagnóstico por firma de corriente (MCSA) con pinza amperimétrica.</p>
-        <span class="status">● Disponible</span>
-      </a>
-      <a class="card" data-paradigm="anomalias" data-sector="compresores" href="./modelos/detector-anomalias-compresor/">
-        <div class="tag">Anomalías · Compresor</div>
-        <h3>Detector de Anomalías del Compresor</h3>
-        <p>Detecta lecturas fuera de patrón sin necesitar ejemplos previos de falla.</p>
-        <span class="status">● Disponible</span>
-      </a>
-      <a class="card" data-paradigm="clasificacion" data-sector="bombas" href="./modelos/semaforo-de-bombas/">
-        <div class="tag">Clasificación · Bomba centrífuga</div>
-        <h3>Semáforo de Bombas</h3>
-        <p>Clasifica el estado de una bomba en verde, amarillo o rojo.</p>
-        <span class="status">● Disponible</span>
-      </a>
-      <a class="card" data-paradigm="anomalias" data-sector="bombas" href="./modelos/guardian-de-la-bomba/">
-        <div class="tag">Anomalías · Bomba</div>
-        <h3>Guardián de la Bomba</h3>
-        <p>Detecta comportamiento anómalo aun con pocos datos históricos.</p>
-        <span class="status">● Disponible</span>
-      </a>
-      <a class="card" data-paradigm="clasificacion" data-sector="vibracion" href="./modelos/frontera-de-vibracion/">
-        <div class="tag">Clasificación · Vibración</div>
-        <h3>Frontera de Vibración</h3>
-        <p>Separa 3 estados de vibración con un límite de decisión visual.</p>
-        <span class="status">● Disponible</span>
-      </a>
-      <a class="card" data-paradigm="regresion" data-sector="vibracion" href="./modelos/horizonte-de-falla/">
-        <div class="tag">Regresión · Vibración</div>
-        <h3>Horizonte de Falla</h3>
-        <p>Proyecta con 90% de confianza la fecha en que la vibración cruzará alerta y alarma.</p>
-        <span class="status">● Disponible</span>
-      </a>
-      <a class="card" data-paradigm="clustering" data-sector="turbinas" href="./modelos/familias-de-turbinas/">
-        <div class="tag">Clustering · Turbina</div>
-        <h3>Familias de Turbinas</h3>
-        <p>Agrupa turbinas similares según su comportamiento operativo.</p>
-        <span class="status">● Disponible</span>
-      </a>
-      <a class="card" data-paradigm="anomalias" data-sector="turbinas" href="./modelos/centinela-del-aerogenerador/">
-        <div class="tag">Anomalías · Aerogenerador</div>
-        <h3>Centinela del Aerogenerador</h3>
-        <p>Detecta lecturas anómalas en la caja de engranajes sin necesitar ejemplos previos de falla.</p>
-        <span class="status">● Disponible</span>
-      </a>
-      <a class="card" data-paradigm="regresion" data-sector="motores" href="./modelos/termometro-del-motor/">
-        <div class="tag">Regresión · Motor eléctrico</div>
-        <h3>Termómetro del Motor</h3>
-        <p>Estima la temperatura de un motor eléctrico según su carga.</p>
-        <span class="status">● Disponible</span>
-      </a>
-      <a class="card" data-paradigm="series-tiempo" data-sector="motores" href="./modelos/memoria-del-motor/">
-        <div class="tag">Series de tiempo · Motor</div>
-        <h3>Memoria del Motor</h3>
-        <p>Una LSTM entrenada desde cero compara contra un modelo sin memoria para detectar cuándo una subida reciente es más urgente que el mismo valor alcanzado gradualmente.</p>
-        <span class="status">● Disponible</span>
-      </a>
-      <a class="card" data-paradigm="gemelo-digital" data-sector="motores" href="./modelos/gemelo-digital-del-motor/">
-        <div class="tag">Gemelo digital · Motor eléctrico</div>
-        <h3>Gemelo Digital del Motor</h3>
-        <p>Simula en vivo la temperatura de bobinado esperada por física y la compara contra el sensor real para detectar refrigeración o aislamiento degradados.</p>
-        <span class="status">● Disponible</span>
-      </a>
+      <h3 class="family-heading"><span class="family-icon">⚙️</span> Rotativos <span class="family-count">13</span></h3>
+      <div class="model-list">
+        <div class="model-row" data-paradigm="regresion" data-sector="rodamientos">
+          <button class="model-row-head" type="button" aria-expanded="false">
+            <span class="mr-icon">⚙️</span>
+            <span class="mr-title">Radar de Rodamientos</span>
+            <span class="mr-tag">Regresión · Rodamientos</span>
+            <span class="mr-status">● Disponible</span>
+            <span class="mr-chevron">▾</span>
+          </button>
+          <div class="model-row-body">
+            <div class="mr-body-inner">
+              <p class="mr-desc">Estima días hasta falla a partir de vibración RMS y temperatura.</p>
+              <div class="mini-chart"><svg viewBox="0 0 120 48" class="mini-svg"><polyline points="4,40 24,34 44,30 64,20 84,14 100,8 116,4" class="mc-line mc-cyan"/><line x1="4" y1="16" x2="116" y2="16" class="mc-threshold"/></svg></div>
+              <a class="mr-link" href="./modelos/radar-de-rodamientos/">Abrir demo →</a>
+            </div>
+          </div>
+        </div>
+        <div class="model-row" data-paradigm="clasificacion" data-sector="motores">
+          <button class="model-row-head" type="button" aria-expanded="false">
+            <span class="mr-icon">🔧</span>
+            <span class="mr-title">Diagnóstico del Motor</span>
+            <span class="mr-tag">Clasificación · Motor</span>
+            <span class="mr-status">● Disponible</span>
+            <span class="mr-chevron">▾</span>
+          </button>
+          <div class="model-row-body">
+            <div class="mr-body-inner">
+              <p class="mr-desc">Clasifica el estado de un motor en 5 niveles de severidad.</p>
+              <div class="mini-chart"><svg viewBox="0 0 120 48" class="mini-svg"><rect x="10" y="26" width="18" height="16" class="mc-bar mc-emerald"/><rect x="46" y="14" width="18" height="28" class="mc-bar mc-cyan"/><rect x="82" y="32" width="18" height="10" class="mc-bar mc-purple"/></svg></div>
+              <a class="mr-link" href="./modelos/diagnostico-del-motor/">Abrir demo →</a>
+            </div>
+          </div>
+        </div>
+        <div class="model-row" data-paradigm="nuevas-tecnologias" data-sector="motores">
+          <button class="model-row-head" type="button" aria-expanded="false">
+            <span class="mr-icon">🔧</span>
+            <span class="mr-title">Pulso del Motor</span>
+            <span class="mr-tag">Nuevas tecnologías · Motor</span>
+            <span class="mr-status">● Disponible</span>
+            <span class="mr-chevron">▾</span>
+          </button>
+          <div class="model-row-body">
+            <div class="mr-body-inner">
+              <p class="mr-desc">Diagnóstico por firma de corriente (MCSA) con pinza amperimétrica.</p>
+              <div class="mini-chart"><svg viewBox="0 0 120 48" class="mini-svg"><polyline points="4,24 14,24 20,8 28,40 34,4 40,44 46,24 56,24 62,16 68,32 74,24 116,24" class="mc-line mc-emerald"/></svg></div>
+              <a class="mr-link" href="./modelos/pulso-del-motor/">Abrir demo →</a>
+            </div>
+          </div>
+        </div>
+        <div class="model-row" data-paradigm="anomalias" data-sector="compresores">
+          <button class="model-row-head" type="button" aria-expanded="false">
+            <span class="mr-icon">🌀</span>
+            <span class="mr-title">Detector de Anomalías del Compresor</span>
+            <span class="mr-tag">Anomalías · Compresor</span>
+            <span class="mr-status">● Disponible</span>
+            <span class="mr-chevron">▾</span>
+          </button>
+          <div class="model-row-body">
+            <div class="mr-body-inner">
+              <p class="mr-desc">Detecta lecturas fuera de patrón sin necesitar ejemplos previos de falla.</p>
+              <div class="mini-chart"><svg viewBox="0 0 120 48" class="mini-svg"><circle cx="14" cy="30" r="4" class="mc-dot mc-cyan"/><circle cx="34" cy="26" r="4" class="mc-dot mc-cyan"/><circle cx="54" cy="32" r="4" class="mc-dot mc-cyan"/><circle cx="74" cy="28" r="4" class="mc-dot mc-cyan"/><circle cx="98" cy="10" r="6" class="mc-dot mc-alert"/></svg></div>
+              <a class="mr-link" href="./modelos/detector-anomalias-compresor/">Abrir demo →</a>
+            </div>
+          </div>
+        </div>
+        <div class="model-row" data-paradigm="clasificacion" data-sector="bombas">
+          <button class="model-row-head" type="button" aria-expanded="false">
+            <span class="mr-icon">🚰</span>
+            <span class="mr-title">Semáforo de Bombas</span>
+            <span class="mr-tag">Clasificación · Bomba centrífuga</span>
+            <span class="mr-status">● Disponible</span>
+            <span class="mr-chevron">▾</span>
+          </button>
+          <div class="model-row-body">
+            <div class="mr-body-inner">
+              <p class="mr-desc">Clasifica el estado de una bomba en verde, amarillo o rojo.</p>
+              <div class="mini-chart"><svg viewBox="0 0 120 48" class="mini-svg"><rect x="10" y="26" width="18" height="16" class="mc-bar mc-emerald"/><rect x="46" y="14" width="18" height="28" class="mc-bar mc-cyan"/><rect x="82" y="32" width="18" height="10" class="mc-bar mc-purple"/></svg></div>
+              <a class="mr-link" href="./modelos/semaforo-de-bombas/">Abrir demo →</a>
+            </div>
+          </div>
+        </div>
+        <div class="model-row" data-paradigm="anomalias" data-sector="bombas">
+          <button class="model-row-head" type="button" aria-expanded="false">
+            <span class="mr-icon">🚰</span>
+            <span class="mr-title">Guardián de la Bomba</span>
+            <span class="mr-tag">Anomalías · Bomba</span>
+            <span class="mr-status">● Disponible</span>
+            <span class="mr-chevron">▾</span>
+          </button>
+          <div class="model-row-body">
+            <div class="mr-body-inner">
+              <p class="mr-desc">Detecta comportamiento anómalo aun con pocos datos históricos.</p>
+              <div class="mini-chart"><svg viewBox="0 0 120 48" class="mini-svg"><circle cx="14" cy="30" r="4" class="mc-dot mc-cyan"/><circle cx="34" cy="26" r="4" class="mc-dot mc-cyan"/><circle cx="54" cy="32" r="4" class="mc-dot mc-cyan"/><circle cx="74" cy="28" r="4" class="mc-dot mc-cyan"/><circle cx="98" cy="10" r="6" class="mc-dot mc-alert"/></svg></div>
+              <a class="mr-link" href="./modelos/guardian-de-la-bomba/">Abrir demo →</a>
+            </div>
+          </div>
+        </div>
+        <div class="model-row" data-paradigm="clasificacion" data-sector="vibracion">
+          <button class="model-row-head" type="button" aria-expanded="false">
+            <span class="mr-icon">📳</span>
+            <span class="mr-title">Frontera de Vibración</span>
+            <span class="mr-tag">Clasificación · Vibración</span>
+            <span class="mr-status">● Disponible</span>
+            <span class="mr-chevron">▾</span>
+          </button>
+          <div class="model-row-body">
+            <div class="mr-body-inner">
+              <p class="mr-desc">Separa 3 estados de vibración con un límite de decisión visual.</p>
+              <div class="mini-chart"><svg viewBox="0 0 120 48" class="mini-svg"><rect x="10" y="26" width="18" height="16" class="mc-bar mc-emerald"/><rect x="46" y="14" width="18" height="28" class="mc-bar mc-cyan"/><rect x="82" y="32" width="18" height="10" class="mc-bar mc-purple"/></svg></div>
+              <a class="mr-link" href="./modelos/frontera-de-vibracion/">Abrir demo →</a>
+            </div>
+          </div>
+        </div>
+        <div class="model-row" data-paradigm="regresion" data-sector="vibracion">
+          <button class="model-row-head" type="button" aria-expanded="false">
+            <span class="mr-icon">📳</span>
+            <span class="mr-title">Horizonte de Falla</span>
+            <span class="mr-tag">Regresión · Vibración</span>
+            <span class="mr-status">● Disponible</span>
+            <span class="mr-chevron">▾</span>
+          </button>
+          <div class="model-row-body">
+            <div class="mr-body-inner">
+              <p class="mr-desc">Proyecta con 90% de confianza la fecha en que la vibración cruzará alerta y alarma.</p>
+              <div class="mini-chart"><svg viewBox="0 0 120 48" class="mini-svg"><polyline points="4,40 24,34 44,30 64,20 84,14 100,8 116,4" class="mc-line mc-cyan"/><line x1="4" y1="16" x2="116" y2="16" class="mc-threshold"/></svg></div>
+              <a class="mr-link" href="./modelos/horizonte-de-falla/">Abrir demo →</a>
+            </div>
+          </div>
+        </div>
+        <div class="model-row" data-paradigm="clustering" data-sector="turbinas">
+          <button class="model-row-head" type="button" aria-expanded="false">
+            <span class="mr-icon">🌬️</span>
+            <span class="mr-title">Familias de Turbinas</span>
+            <span class="mr-tag">Clustering · Turbina</span>
+            <span class="mr-status">● Disponible</span>
+            <span class="mr-chevron">▾</span>
+          </button>
+          <div class="model-row-body">
+            <div class="mr-body-inner">
+              <p class="mr-desc">Agrupa turbinas similares según su comportamiento operativo.</p>
+              <div class="mini-chart"><svg viewBox="0 0 120 48" class="mini-svg"><circle cx="18" cy="16" r="4" class="mc-dot mc-cyan"/><circle cx="28" cy="24" r="4" class="mc-dot mc-cyan"/><circle cx="16" cy="30" r="4" class="mc-dot mc-cyan"/><circle cx="70" cy="14" r="4" class="mc-dot mc-emerald"/><circle cx="82" cy="20" r="4" class="mc-dot mc-emerald"/><circle cx="76" cy="30" r="4" class="mc-dot mc-emerald"/><circle cx="102" cy="38" r="4" class="mc-dot mc-purple"/><circle cx="112" cy="30" r="4" class="mc-dot mc-purple"/></svg></div>
+              <a class="mr-link" href="./modelos/familias-de-turbinas/">Abrir demo →</a>
+            </div>
+          </div>
+        </div>
+        <div class="model-row" data-paradigm="anomalias" data-sector="turbinas">
+          <button class="model-row-head" type="button" aria-expanded="false">
+            <span class="mr-icon">🌬️</span>
+            <span class="mr-title">Centinela del Aerogenerador</span>
+            <span class="mr-tag">Anomalías · Aerogenerador</span>
+            <span class="mr-status">● Disponible</span>
+            <span class="mr-chevron">▾</span>
+          </button>
+          <div class="model-row-body">
+            <div class="mr-body-inner">
+              <p class="mr-desc">Detecta lecturas anómalas en la caja de engranajes sin necesitar ejemplos previos de falla.</p>
+              <div class="mini-chart"><svg viewBox="0 0 120 48" class="mini-svg"><circle cx="14" cy="30" r="4" class="mc-dot mc-cyan"/><circle cx="34" cy="26" r="4" class="mc-dot mc-cyan"/><circle cx="54" cy="32" r="4" class="mc-dot mc-cyan"/><circle cx="74" cy="28" r="4" class="mc-dot mc-cyan"/><circle cx="98" cy="10" r="6" class="mc-dot mc-alert"/></svg></div>
+              <a class="mr-link" href="./modelos/centinela-del-aerogenerador/">Abrir demo →</a>
+            </div>
+          </div>
+        </div>
+        <div class="model-row" data-paradigm="regresion" data-sector="motores">
+          <button class="model-row-head" type="button" aria-expanded="false">
+            <span class="mr-icon">🔧</span>
+            <span class="mr-title">Termómetro del Motor</span>
+            <span class="mr-tag">Regresión · Motor eléctrico</span>
+            <span class="mr-status">● Disponible</span>
+            <span class="mr-chevron">▾</span>
+          </button>
+          <div class="model-row-body">
+            <div class="mr-body-inner">
+              <p class="mr-desc">Estima la temperatura de un motor eléctrico según su carga.</p>
+              <div class="mini-chart"><svg viewBox="0 0 120 48" class="mini-svg"><polyline points="4,40 24,34 44,30 64,20 84,14 100,8 116,4" class="mc-line mc-cyan"/><line x1="4" y1="16" x2="116" y2="16" class="mc-threshold"/></svg></div>
+              <a class="mr-link" href="./modelos/termometro-del-motor/">Abrir demo →</a>
+            </div>
+          </div>
+        </div>
+        <div class="model-row" data-paradigm="series-tiempo" data-sector="motores">
+          <button class="model-row-head" type="button" aria-expanded="false">
+            <span class="mr-icon">🔧</span>
+            <span class="mr-title">Memoria del Motor</span>
+            <span class="mr-tag">Series de tiempo · Motor</span>
+            <span class="mr-status">● Disponible</span>
+            <span class="mr-chevron">▾</span>
+          </button>
+          <div class="model-row-body">
+            <div class="mr-body-inner">
+              <p class="mr-desc">Una LSTM entrenada desde cero compara contra un modelo sin memoria para detectar cuándo una subida reciente es más urgente que el mismo valor alcanzado gradualmente.</p>
+              <div class="mini-chart"><svg viewBox="0 0 120 48" class="mini-svg"><polyline points="4,30 16,26 28,32 40,22 52,24 64,14 76,18 88,10 100,16 112,8" class="mc-line mc-cyan"/><polyline points="76,18 88,10 100,16 112,8" class="mc-line mc-dash mc-emerald"/></svg></div>
+              <a class="mr-link" href="./modelos/memoria-del-motor/">Abrir demo →</a>
+            </div>
+          </div>
+        </div>
+        <div class="model-row" data-paradigm="gemelo-digital" data-sector="motores">
+          <button class="model-row-head" type="button" aria-expanded="false">
+            <span class="mr-icon">🔧</span>
+            <span class="mr-title">Gemelo Digital del Motor</span>
+            <span class="mr-tag">Gemelo digital · Motor eléctrico</span>
+            <span class="mr-status">● Disponible</span>
+            <span class="mr-chevron">▾</span>
+          </button>
+          <div class="model-row-body">
+            <div class="mr-body-inner">
+              <p class="mr-desc">Simula en vivo la temperatura de bobinado esperada por física y la compara contra el sensor real para detectar refrigeración o aislamiento degradados.</p>
+              <div class="mini-chart"><svg viewBox="0 0 120 48" class="mini-svg"><polyline points="4,32 20,28 36,30 52,20 68,22 84,12 100,16 116,8" class="mc-line mc-cyan"/><polyline points="4,36 20,34 36,36 52,28 68,30 84,20 100,22 116,16" class="mc-line mc-dash mc-purple"/></svg></div>
+              <a class="mr-link" href="./modelos/gemelo-digital-del-motor/">Abrir demo →</a>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="family-group" data-family="estaticos">
-      <h3 class="family-heading"><span class="family-icon">🔌</span> Estáticos y energía</h3>
-      <div class="grid">
-      <a class="card" data-paradigm="series-tiempo" data-sector="energia" href="./modelos/pulso-energetico/">
-        <div class="tag">Series de tiempo · Energía</div>
-        <h3>Pulso Energético</h3>
-        <p>Proyecta consumo energético y detecta desvíos anómalos.</p>
-        <span class="status">● Disponible</span>
-      </a>
-      <a class="card" data-paradigm="clasificacion" data-sector="correas" href="./modelos/correas-transportadoras/">
-        <div class="tag">Clasificación · Correas transportadoras</div>
-        <h3>Rastreador de Correas</h3>
-        <p>Clasifica el desvío lateral de una correa transportadora antes de que desgaste el borde o derrame material.</p>
-        <span class="status">● Disponible</span>
-      </a>
-      <a class="card" data-paradigm="clasificacion" data-sector="transformadores" href="./modelos/transformadores-dga/">
-        <div class="tag">Clasificación · Transformadores</div>
-        <h3>Transformadores (DGA)</h3>
-        <p>Clasifica el tipo de falla de un transformador en las 7 zonas del Triángulo de Duval a partir del análisis de gases disueltos.</p>
-        <span class="status">● Disponible</span>
-      </a>
-      <a class="card" data-paradigm="gemelo-digital" data-sector="transformadores" href="./modelos/gemelo-termico-del-transformador/">
-        <div class="tag">Gemelo digital · Transformadores</div>
-        <h3>Gemelo Térmico del Transformador</h3>
-        <p>Modelo térmico IEEE C57.91 en vivo: compara el punto caliente del devanado predicho por física contra el sensor real y estima el envejecimiento acelerado del aislamiento.</p>
-        <span class="status">● Disponible</span>
-      </a>
-      <a class="card" data-paradigm="series-tiempo" data-sector="calderas" href="./modelos/pulso-de-la-caldera/">
-        <div class="tag">Series de tiempo · Calderas</div>
-        <h3>Pulso de la Caldera</h3>
-        <p>Sigue la eficiencia térmica de una caldera y detecta cuándo la incrustación avanza más rápido de lo normal.</p>
-        <span class="status">● Disponible</span>
-      </a>
+      <h3 class="family-heading"><span class="family-icon">🔌</span> Estáticos y energía <span class="family-count">5</span></h3>
+      <div class="model-list">
+        <div class="model-row" data-paradigm="series-tiempo" data-sector="energia">
+          <button class="model-row-head" type="button" aria-expanded="false">
+            <span class="mr-icon">⚡</span>
+            <span class="mr-title">Pulso Energético</span>
+            <span class="mr-tag">Series de tiempo · Energía</span>
+            <span class="mr-status">● Disponible</span>
+            <span class="mr-chevron">▾</span>
+          </button>
+          <div class="model-row-body">
+            <div class="mr-body-inner">
+              <p class="mr-desc">Proyecta consumo energético y detecta desvíos anómalos.</p>
+              <div class="mini-chart"><svg viewBox="0 0 120 48" class="mini-svg"><polyline points="4,30 16,26 28,32 40,22 52,24 64,14 76,18 88,10 100,16 112,8" class="mc-line mc-cyan"/><polyline points="76,18 88,10 100,16 112,8" class="mc-line mc-dash mc-emerald"/></svg></div>
+              <a class="mr-link" href="./modelos/pulso-energetico/">Abrir demo →</a>
+            </div>
+          </div>
+        </div>
+        <div class="model-row" data-paradigm="clasificacion" data-sector="correas">
+          <button class="model-row-head" type="button" aria-expanded="false">
+            <span class="mr-icon">🎢</span>
+            <span class="mr-title">Rastreador de Correas</span>
+            <span class="mr-tag">Clasificación · Correas transportadoras</span>
+            <span class="mr-status">● Disponible</span>
+            <span class="mr-chevron">▾</span>
+          </button>
+          <div class="model-row-body">
+            <div class="mr-body-inner">
+              <p class="mr-desc">Clasifica el desvío lateral de una correa transportadora antes de que desgaste el borde o derrame material.</p>
+              <div class="mini-chart"><svg viewBox="0 0 120 48" class="mini-svg"><rect x="10" y="26" width="18" height="16" class="mc-bar mc-emerald"/><rect x="46" y="14" width="18" height="28" class="mc-bar mc-cyan"/><rect x="82" y="32" width="18" height="10" class="mc-bar mc-purple"/></svg></div>
+              <a class="mr-link" href="./modelos/correas-transportadoras/">Abrir demo →</a>
+            </div>
+          </div>
+        </div>
+        <div class="model-row" data-paradigm="clasificacion" data-sector="transformadores">
+          <button class="model-row-head" type="button" aria-expanded="false">
+            <span class="mr-icon">🔌</span>
+            <span class="mr-title">Transformadores (DGA)</span>
+            <span class="mr-tag">Clasificación · Transformadores</span>
+            <span class="mr-status">● Disponible</span>
+            <span class="mr-chevron">▾</span>
+          </button>
+          <div class="model-row-body">
+            <div class="mr-body-inner">
+              <p class="mr-desc">Clasifica el tipo de falla de un transformador en las 7 zonas del Triángulo de Duval a partir del análisis de gases disueltos.</p>
+              <div class="mini-chart"><svg viewBox="0 0 120 48" class="mini-svg"><rect x="10" y="26" width="18" height="16" class="mc-bar mc-emerald"/><rect x="46" y="14" width="18" height="28" class="mc-bar mc-cyan"/><rect x="82" y="32" width="18" height="10" class="mc-bar mc-purple"/></svg></div>
+              <a class="mr-link" href="./modelos/transformadores-dga/">Abrir demo →</a>
+            </div>
+          </div>
+        </div>
+        <div class="model-row" data-paradigm="gemelo-digital" data-sector="transformadores">
+          <button class="model-row-head" type="button" aria-expanded="false">
+            <span class="mr-icon">🔌</span>
+            <span class="mr-title">Gemelo Térmico del Transformador</span>
+            <span class="mr-tag">Gemelo digital · Transformadores</span>
+            <span class="mr-status">● Disponible</span>
+            <span class="mr-chevron">▾</span>
+          </button>
+          <div class="model-row-body">
+            <div class="mr-body-inner">
+              <p class="mr-desc">Modelo térmico IEEE C57.91 en vivo: compara el punto caliente del devanado predicho por física contra el sensor real y estima el envejecimiento acelerado del aislamiento.</p>
+              <div class="mini-chart"><svg viewBox="0 0 120 48" class="mini-svg"><polyline points="4,32 20,28 36,30 52,20 68,22 84,12 100,16 116,8" class="mc-line mc-cyan"/><polyline points="4,36 20,34 36,36 52,28 68,30 84,20 100,22 116,16" class="mc-line mc-dash mc-purple"/></svg></div>
+              <a class="mr-link" href="./modelos/gemelo-termico-del-transformador/">Abrir demo →</a>
+            </div>
+          </div>
+        </div>
+        <div class="model-row" data-paradigm="series-tiempo" data-sector="calderas">
+          <button class="model-row-head" type="button" aria-expanded="false">
+            <span class="mr-icon">🔥</span>
+            <span class="mr-title">Pulso de la Caldera</span>
+            <span class="mr-tag">Series de tiempo · Calderas</span>
+            <span class="mr-status">● Disponible</span>
+            <span class="mr-chevron">▾</span>
+          </button>
+          <div class="model-row-body">
+            <div class="mr-body-inner">
+              <p class="mr-desc">Sigue la eficiencia térmica de una caldera y detecta cuándo la incrustación avanza más rápido de lo normal.</p>
+              <div class="mini-chart"><svg viewBox="0 0 120 48" class="mini-svg"><polyline points="4,30 16,26 28,32 40,22 52,24 64,14 76,18 88,10 100,16 112,8" class="mc-line mc-cyan"/><polyline points="76,18 88,10 100,16 112,8" class="mc-line mc-dash mc-emerald"/></svg></div>
+              <a class="mr-link" href="./modelos/pulso-de-la-caldera/">Abrir demo →</a>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="family-group" data-family="planta">
-      <h3 class="family-heading"><span class="family-icon">🏭</span> Planta y multi-sensor</h3>
-      <div class="grid">
-      <a class="card" data-paradigm="clustering" data-sector="planta" href="./modelos/radiografia-de-planta/">
-        <div class="tag">Clustering · Planta</div>
-        <h3>Radiografía de Planta</h3>
-        <p>Reduce 10 sensores a un mapa visual de 2 ejes para ver el estado general.</p>
-        <span class="status">● Disponible</span>
-      </a>
-      <a class="card" data-paradigm="clustering" data-sector="sensores" href="./modelos/nubes-de-sensores/">
-        <div class="tag">Clustering · Sensores</div>
-        <h3>Nubes de Sensores</h3>
-        <p>Descubre grupos naturales en una nube de datos de sensores.</p>
-        <span class="status">● Disponible</span>
-      </a>
-      <a class="card" data-paradigm="anomalias" data-sector="sensores" href="./modelos/mapa-de-anomalias/">
-        <div class="tag">Anomalías · Sensores múltiples</div>
-        <h3>Mapa de Anomalías</h3>
-        <p>Ubica visualmente las lecturas que se salen del comportamiento normal.</p>
-        <span class="status">● Disponible</span>
-      </a>
+      <h3 class="family-heading"><span class="family-icon">🏭</span> Planta y multi-sensor <span class="family-count">3</span></h3>
+      <div class="model-list">
+        <div class="model-row" data-paradigm="clustering" data-sector="planta">
+          <button class="model-row-head" type="button" aria-expanded="false">
+            <span class="mr-icon">🏭</span>
+            <span class="mr-title">Radiografía de Planta</span>
+            <span class="mr-tag">Clustering · Planta</span>
+            <span class="mr-status">● Disponible</span>
+            <span class="mr-chevron">▾</span>
+          </button>
+          <div class="model-row-body">
+            <div class="mr-body-inner">
+              <p class="mr-desc">Reduce 10 sensores a un mapa visual de 2 ejes para ver el estado general.</p>
+              <div class="mini-chart"><svg viewBox="0 0 120 48" class="mini-svg"><circle cx="18" cy="16" r="4" class="mc-dot mc-cyan"/><circle cx="28" cy="24" r="4" class="mc-dot mc-cyan"/><circle cx="16" cy="30" r="4" class="mc-dot mc-cyan"/><circle cx="70" cy="14" r="4" class="mc-dot mc-emerald"/><circle cx="82" cy="20" r="4" class="mc-dot mc-emerald"/><circle cx="76" cy="30" r="4" class="mc-dot mc-emerald"/><circle cx="102" cy="38" r="4" class="mc-dot mc-purple"/><circle cx="112" cy="30" r="4" class="mc-dot mc-purple"/></svg></div>
+              <a class="mr-link" href="./modelos/radiografia-de-planta/">Abrir demo →</a>
+            </div>
+          </div>
+        </div>
+        <div class="model-row" data-paradigm="clustering" data-sector="sensores">
+          <button class="model-row-head" type="button" aria-expanded="false">
+            <span class="mr-icon">📡</span>
+            <span class="mr-title">Nubes de Sensores</span>
+            <span class="mr-tag">Clustering · Sensores</span>
+            <span class="mr-status">● Disponible</span>
+            <span class="mr-chevron">▾</span>
+          </button>
+          <div class="model-row-body">
+            <div class="mr-body-inner">
+              <p class="mr-desc">Descubre grupos naturales en una nube de datos de sensores.</p>
+              <div class="mini-chart"><svg viewBox="0 0 120 48" class="mini-svg"><circle cx="18" cy="16" r="4" class="mc-dot mc-cyan"/><circle cx="28" cy="24" r="4" class="mc-dot mc-cyan"/><circle cx="16" cy="30" r="4" class="mc-dot mc-cyan"/><circle cx="70" cy="14" r="4" class="mc-dot mc-emerald"/><circle cx="82" cy="20" r="4" class="mc-dot mc-emerald"/><circle cx="76" cy="30" r="4" class="mc-dot mc-emerald"/><circle cx="102" cy="38" r="4" class="mc-dot mc-purple"/><circle cx="112" cy="30" r="4" class="mc-dot mc-purple"/></svg></div>
+              <a class="mr-link" href="./modelos/nubes-de-sensores/">Abrir demo →</a>
+            </div>
+          </div>
+        </div>
+        <div class="model-row" data-paradigm="anomalias" data-sector="sensores">
+          <button class="model-row-head" type="button" aria-expanded="false">
+            <span class="mr-icon">📡</span>
+            <span class="mr-title">Mapa de Anomalías</span>
+            <span class="mr-tag">Anomalías · Sensores múltiples</span>
+            <span class="mr-status">● Disponible</span>
+            <span class="mr-chevron">▾</span>
+          </button>
+          <div class="model-row-body">
+            <div class="mr-body-inner">
+              <p class="mr-desc">Ubica visualmente las lecturas que se salen del comportamiento normal.</p>
+              <div class="mini-chart"><svg viewBox="0 0 120 48" class="mini-svg"><circle cx="14" cy="30" r="4" class="mc-dot mc-cyan"/><circle cx="34" cy="26" r="4" class="mc-dot mc-cyan"/><circle cx="54" cy="32" r="4" class="mc-dot mc-cyan"/><circle cx="74" cy="28" r="4" class="mc-dot mc-cyan"/><circle cx="98" cy="10" r="6" class="mc-dot mc-alert"/></svg></div>
+              <a class="mr-link" href="./modelos/mapa-de-anomalias/">Abrir demo →</a>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <div class="family-group" data-family="termo">
-      <h3 class="family-heading"><span class="family-icon">🌡️</span> Termografía y nuevas técnicas</h3>
-      <div class="grid">
-      <a class="card" data-paradigm="nuevas-tecnologias" data-sector="aire-comprimido" href="./modelos/oido-industrial/">
-        <div class="tag">Nuevas tecnologías · Aire comprimido</div>
-        <h3>Oído Industrial</h3>
-        <p>Traduce nivel ultrasónico en costo estimado de fuga.</p>
-        <span class="status">● Disponible</span>
-      </a>
-      <a class="card" data-paradigm="vision" data-sector="termografia" href="./modelos/ojo-termico/">
-        <div class="tag">Visión · Termografía</div>
-        <h3>Ojo Térmico</h3>
-        <p>Clasifica imágenes térmicas para detectar puntos calientes en equipos.</p>
-        <span class="status">● Disponible</span>
-      </a>
-      <a class="card" data-paradigm="nuevas-tecnologias" data-sector="aceite" href="./modelos/huella-del-aceite/">
-        <div class="tag">Nuevas tecnologías · Aceite</div>
-        <h3>Huella del Aceite</h3>
-        <p>Clasifica el estado de un equipo en Normal, Precaución o Crítico según TAN y hierro disuelto en el aceite.</p>
-        <span class="status">● Disponible</span>
-      </a>
+      <h3 class="family-heading"><span class="family-icon">🌡️</span> Termografía y nuevas técnicas <span class="family-count">3</span></h3>
+      <div class="model-list">
+        <div class="model-row" data-paradigm="nuevas-tecnologias" data-sector="aire-comprimido">
+          <button class="model-row-head" type="button" aria-expanded="false">
+            <span class="mr-icon">💨</span>
+            <span class="mr-title">Oído Industrial</span>
+            <span class="mr-tag">Nuevas tecnologías · Aire comprimido</span>
+            <span class="mr-status">● Disponible</span>
+            <span class="mr-chevron">▾</span>
+          </button>
+          <div class="model-row-body">
+            <div class="mr-body-inner">
+              <p class="mr-desc">Traduce nivel ultrasónico en costo estimado de fuga.</p>
+              <div class="mini-chart"><svg viewBox="0 0 120 48" class="mini-svg"><polyline points="4,24 14,24 20,8 28,40 34,4 40,44 46,24 56,24 62,16 68,32 74,24 116,24" class="mc-line mc-emerald"/></svg></div>
+              <a class="mr-link" href="./modelos/oido-industrial/">Abrir demo →</a>
+            </div>
+          </div>
+        </div>
+        <div class="model-row" data-paradigm="vision" data-sector="termografia">
+          <button class="model-row-head" type="button" aria-expanded="false">
+            <span class="mr-icon">🌡️</span>
+            <span class="mr-title">Ojo Térmico</span>
+            <span class="mr-tag">Visión · Termografía</span>
+            <span class="mr-status">● Disponible</span>
+            <span class="mr-chevron">▾</span>
+          </button>
+          <div class="model-row-body">
+            <div class="mr-body-inner">
+              <p class="mr-desc">Clasifica imágenes térmicas para detectar puntos calientes en equipos.</p>
+              <div class="mini-chart"><svg viewBox="0 0 120 48" class="mini-svg"><rect x="4" y="4" width="20" height="20" class="mc-cell mc-cyan"/><rect x="26" y="4" width="20" height="20" class="mc-cell mc-dim"/><rect x="48" y="4" width="20" height="20" class="mc-cell mc-alert"/><rect x="4" y="26" width="20" height="20" class="mc-cell mc-dim"/><rect x="26" y="26" width="20" height="20" class="mc-cell mc-alert"/><rect x="48" y="26" width="20" height="20" class="mc-cell mc-dim"/></svg></div>
+              <a class="mr-link" href="./modelos/ojo-termico/">Abrir demo →</a>
+            </div>
+          </div>
+        </div>
+        <div class="model-row" data-paradigm="nuevas-tecnologias" data-sector="aceite">
+          <button class="model-row-head" type="button" aria-expanded="false">
+            <span class="mr-icon">🛢️</span>
+            <span class="mr-title">Huella del Aceite</span>
+            <span class="mr-tag">Nuevas tecnologías · Aceite</span>
+            <span class="mr-status">● Disponible</span>
+            <span class="mr-chevron">▾</span>
+          </button>
+          <div class="model-row-body">
+            <div class="mr-body-inner">
+              <p class="mr-desc">Clasifica el estado de un equipo en Normal, Precaución o Crítico según TAN y hierro disuelto en el aceite.</p>
+              <div class="mini-chart"><svg viewBox="0 0 120 48" class="mini-svg"><polyline points="4,24 14,24 20,8 28,40 34,4 40,44 46,24 56,24 62,16 68,32 74,24 116,24" class="mc-line mc-emerald"/></svg></div>
+              <a class="mr-link" href="./modelos/huella-del-aceite/">Abrir demo →</a>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
+    
     </div>
     <p class="empty-state" id="emptyState">Ningún modelo coincide con esos filtros. Prueba quitando alguno.</p>
   </section>
@@ -1024,7 +1294,7 @@
 <script>
 (function(){
   var grid = document.getElementById('modelGrid');
-  var cards = Array.prototype.slice.call(grid.querySelectorAll('.card'));
+  var cards = Array.prototype.slice.call(grid.querySelectorAll('.model-row'));
   var countEl = document.getElementById('filterCount');
   var emptyEl = document.getElementById('emptyState');
   var searchInput = document.getElementById('searchInput');
@@ -1032,9 +1302,19 @@
 
   var familyGroups = Array.prototype.slice.call(grid.querySelectorAll('.family-group'));
 
+  cards.forEach(function(card){
+    var head = card.querySelector('.model-row-head');
+    if(!head) return;
+    head.addEventListener('click', function(){
+      var isOpen = card.classList.toggle('is-open');
+      head.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+    });
+  });
+
   function apply(){
     var visible = 0;
     var q = active.text.trim().toLowerCase();
+    var isFiltering = !!(active.paradigm || active.sector || q);
     cards.forEach(function(card){
       var okP = !active.paradigm || card.dataset.paradigm === active.paradigm;
       var okS = !active.sector || card.dataset.sector === active.sector;
@@ -1042,13 +1322,18 @@
       var show = okP && okS && okQ;
       card.classList.toggle('is-hidden', !show);
       if(show) visible++;
+      if(isFiltering && show && q){
+        card.classList.add('is-open');
+        var h = card.querySelector('.model-row-head');
+        if(h) h.setAttribute('aria-expanded', 'true');
+      }
     });
     familyGroups.forEach(function(fg){
-      var visibleInGroup = fg.querySelectorAll('.card:not(.is-hidden)').length;
+      var visibleInGroup = fg.querySelectorAll('.model-row:not(.is-hidden)').length;
       fg.classList.toggle('is-hidden', visibleInGroup === 0);
     });
     emptyEl.classList.toggle('show', visible === 0);
-    if(active.paradigm || active.sector || q){
+    if(isFiltering){
       countEl.textContent = visible + ' de ' + cards.length + ' modelos';
     } else {
       countEl.textContent = '';
@@ -1087,6 +1372,11 @@
     active.text = '';
     if(searchInput) searchInput.value = '';
     document.querySelectorAll('.chip').forEach(function(c){ c.classList.remove('active'); });
+    cards.forEach(function(card){
+      card.classList.remove('is-open');
+      var h = card.querySelector('.model-row-head');
+      if(h) h.setAttribute('aria-expanded', 'false');
+    });
     apply();
   });
 })();
