@@ -617,19 +617,50 @@
         layout(group2, x, y+h1, w, h-h1);
       }
     }
+    function estWidth(str, fontSize){ return str.length * fontSize * 0.58; }
+    function wrapLabel(label, maxWidth, fontSize){
+      if(estWidth(label, fontSize) <= maxWidth) return [label];
+      var words = label.split(' ');
+      if(words.length===1) return [label];
+      var lines = [], current = '';
+      words.forEach(function(w){
+        var test = current ? current+' '+w : w;
+        if(!current || estWidth(test, fontSize) <= maxWidth){ current = test; }
+        else { lines.push(current); current = w; }
+      });
+      if(current) lines.push(current);
+      if(lines.length>2){ lines = [lines[0], lines.slice(1).join(' ')]; }
+      return lines;
+    }
+    function fitText(t, str, fontSize, availW){
+      t.textContent = str;
+      if(estWidth(str, fontSize) > availW){
+        t.setAttribute('textLength', Math.max(availW,10));
+        t.setAttribute('lengthAdjust', 'spacingAndGlyphs');
+      }
+    }
     function drawCell(d, x, y, w, h){
       var i = data.indexOf(d);
       svg.appendChild(el('rect',{x:x+2,y:y+2,width:Math.max(w-4,0),height:Math.max(h-4,0),rx:6,fill:d.color||PALETTE[i%PALETTE.length]}));
       if(w>60 && h>34){
-        var t1 = el('text',{x:x+12,y:y+22,'font-size':13,'font-weight':700,fill:'#fff'});
-        t1.textContent = d.label;
-        svg.appendChild(t1);
-        var t2 = el('text',{x:x+12,y:y+40,'font-size':11,fill:'#fff','fill-opacity':0.85});
-        t2.textContent = d.value + ' demos (' + Math.round(100*d.value/total) + '%)';
-        svg.appendChild(t2);
+        var availW = w-24;
+        var lines = wrapLabel(d.label, availW, 13);
+        var lineH = 15;
+        lines.forEach(function(line, li){
+          var t1 = el('text',{x:x+12,y:y+22+li*lineH,'font-size':13,'font-weight':700,fill:'#fff'});
+          fitText(t1, line, 13, availW);
+          svg.appendChild(t1);
+        });
+        var subtitleY = y+22+(lines.length-1)*lineH+18;
+        if(subtitleY < y+h-4){
+          var t2 = el('text',{x:x+12,y:subtitleY,'font-size':11,fill:'#fff','fill-opacity':0.85});
+          fitText(t2, d.value + ' demos (' + Math.round(100*d.value/total) + '%)', 11, availW);
+          svg.appendChild(t2);
+        }
       } else if(w>40 && h>20){
+        var availW2 = w-16;
         var t3 = el('text',{x:x+8,y:y+h/2+4,'font-size':11,'font-weight':700,fill:'#fff'});
-        t3.textContent = d.label;
+        fitText(t3, d.label, 11, availW2);
         svg.appendChild(t3);
       }
     }
