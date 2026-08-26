@@ -1,0 +1,28 @@
+{
+  "mixture": {
+    "sf_at_0_is_1": true,
+    "sf_plus_cdf_is_1_maxdev": 0.0,
+    "sf_monotonic_nonincreasing": true
+  },
+  "competing_risks": {
+    "sf_equals_product_of_individual_sf_maxdev": 0.0,
+    "competing_sf_leq_each_individual_sf": true
+  },
+  "optimal_replacement": {
+    "library_ORT": 2643.0327652344577,
+    "library_min_cost": 0.06805741761593756,
+    "manual_ORT": 2662.7090301003345,
+    "manual_min_cost": 0.0680595106658661,
+    "ORT_relative_error_pct": 0.7444578487520731,
+    "min_cost_relative_error_pct": 0.0030754177896575724
+  },
+  "qq_plot": {
+    "max_abs_diff_actual_x": 0.0,
+    "max_abs_diff_theoretical_y": 0.0,
+    "library_fit_slope_m": 1.0301788327361299
+  },
+  "pp_plot": {
+    "max_abs_diff_empirical_x": 0.0,
+    "max_abs_diff_theoretical_y": 0.0
+  }
+}
