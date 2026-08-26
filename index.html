@@ -251,6 +251,31 @@
   .quick-links a{font-size:13px; color:var(--muted); text-decoration:none;}
   .quick-links a:hover{color:var(--success);}
   .nav-actions{display:flex; align-items:center; gap:12px;}
+  .nav-dropdown{position:relative;}
+  .nav-dropdown-toggle{
+    font-family:inherit; font-size:13px; color:var(--muted); background:none; border:none;
+    padding:0; cursor:pointer; display:inline-flex; align-items:center; gap:3px;
+  }
+  .nav-dropdown-toggle:hover{color:var(--success);}
+  .nav-dropdown-caret{font-size:9px; transition:transform .15s;}
+  .nav-dropdown.is-open .nav-dropdown-caret{transform:rotate(180deg);}
+  .nav-dropdown-menu{
+    display:none; position:absolute; top:calc(100% + 10px); left:0; min-width:170px;
+    background:var(--panel); border:1px solid var(--border); border-radius:12px; padding:6px;
+    box-shadow:0 14px 34px -14px rgba(11,20,55,.25); z-index:40; flex-direction:column; gap:2px;
+  }
+  .nav-dropdown.is-open .nav-dropdown-menu{display:flex;}
+  .nav-dropdown-menu a{
+    font-size:13px; color:var(--text); text-decoration:none; padding:8px 10px; border-radius:8px;
+    display:block;
+  }
+  .nav-dropdown-menu a:hover{background:var(--panel2); color:var(--success);}
+  .nav-dropdown-menu .nav-dropdown-note{font-size:11px; color:var(--muted); padding:2px 10px 4px;}
+  @media (max-width:720px){
+    .nav-dropdown-menu{position:static; box-shadow:none; border:none; padding:0 0 0 12px; margin-top:4px; display:none;}
+    .nav-dropdown.is-open .nav-dropdown-menu{display:flex;}
+    .nav-dropdown-menu a{padding:10px 4px; border-bottom:1px solid var(--border); font-size:14px; border-radius:0;}
+  }
   .nav-toggle{
     display:none; font-size:18px; line-height:1; background:none; border:1px solid var(--border);
     border-radius:10px; width:38px; height:38px; align-items:center; justify-content:center;
@@ -537,7 +562,14 @@
       <a href="#metodologia">Metodología</a>
       <a href="#contacto">Contacto</a>
       <a href="./panel-analitico/">Panel Analítico</a>
-      <a href="./confiabilidad-calculos/">Confiabilidad Cálculos</a>
+      <div class="nav-dropdown" id="navDropdown">
+        <button class="nav-dropdown-toggle" type="button" id="navDropdownToggle" aria-haspopup="true" aria-expanded="false">Confiabilidad <span class="nav-dropdown-caret">▾</span></button>
+        <div class="nav-dropdown-menu">
+          <div class="nav-dropdown-note">Curvas calculadas con Python reliability</div>
+          <a href="./confiabilidad-calculos/">Cálculos (Weibull, KM, NA…)</a>
+          <a href="./confiabilidad-avanzada/">Avanzada (MCF, ROCOF, ALT…)</a>
+        </div>
+      </div>
     </nav>
     <div class="nav-actions">
       <a class="btn-demo" href="https://wa.me/51997610310?text=Hola%20Miguel%2C%20quiero%20solicitar%20una%20demo%20de%20RELIABILIT-IA" target="_blank" rel="noopener">🚀 Solicitar Demo</a>
@@ -570,6 +602,26 @@
       });
       quickLinks.querySelectorAll('a').forEach(function(a){
         a.addEventListener('click', closeMenu);
+      });
+    }
+
+    var navDropdown = document.getElementById('navDropdown');
+    var navDropdownToggle = document.getElementById('navDropdownToggle');
+    if(navDropdown && navDropdownToggle){
+      function closeDropdown(){
+        navDropdown.classList.remove('is-open');
+        navDropdownToggle.setAttribute('aria-expanded', 'false');
+      }
+      navDropdownToggle.addEventListener('click', function(e){
+        e.stopPropagation();
+        var isOpen = navDropdown.classList.toggle('is-open');
+        navDropdownToggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      });
+      document.addEventListener('click', function(e){
+        if(!navDropdown.contains(e.target)) closeDropdown();
+      });
+      document.addEventListener('keydown', function(e){
+        if(e.key === 'Escape') closeDropdown();
       });
     }
   })();
