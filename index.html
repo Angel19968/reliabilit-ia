@@ -162,10 +162,10 @@
   .mr-status{font-size:11px; color:var(--success); flex:none; white-space:nowrap;}
   .mr-chevron{flex:none; font-size:12px; color:var(--muted); transition:transform .2s;}
   .model-row.is-open .mr-chevron{transform:rotate(180deg);}
-  .model-row-body{max-height:0; opacity:0; transition:max-height .28s ease, opacity .2s ease;}
-  .model-row.is-open .model-row-body{max-height:220px; opacity:1;}
+  .model-row-body{max-height:0; opacity:0; overflow:hidden; transition:max-height .28s ease, opacity .2s ease;}
+  .model-row.is-open .model-row-body{opacity:1;}
   .mr-body-inner{padding:0 18px 18px; display:flex; flex-wrap:wrap; align-items:center; gap:16px; border-top:1px solid var(--border); margin-top:0; padding-top:14px;}
-  .mr-desc{font-size:14px; color:var(--muted); line-height:1.5; flex:1 1 260px; margin:0;}
+  .mr-desc{font-size:14px; color:var(--muted); line-height:1.5; flex:1 1 260px; min-width:0; margin:0;}
   .mini-chart{flex:none; width:120px; height:48px; opacity:.9;}
   .mini-svg{width:100%; height:100%; overflow:visible;}
   .mc-line{fill:none; stroke-width:2.4; stroke-linecap:round; stroke-linejoin:round;}
@@ -185,14 +185,16 @@
   }
   .mr-link:hover{border-bottom-color:var(--accent);}
   @media (max-width:640px){
-    .model-row-head{flex-wrap:wrap; row-gap:6px;}
-    .mr-title{flex-basis:100%; order:1;}
+    .model-row-head{flex-wrap:wrap; row-gap:6px; padding:12px 14px;}
+    .mr-title{flex-basis:100%; order:1; font-size:14px;}
     .mr-icon{order:0;}
-    .mr-tag{order:2;}
+    .mr-tag{order:2; white-space:normal; flex-basis:100%; line-height:1.4;}
     .mr-status{order:3;}
     .mr-chevron{order:4; margin-left:auto;}
-    .mr-body-inner{flex-direction:column; align-items:flex-start;}
-    .model-row.is-open .model-row-body{max-height:320px;}
+    .mr-body-inner{flex-direction:column; align-items:stretch; padding:0 14px 16px; padding-top:14px;}
+    .mr-desc{flex:none; width:100%;}
+    .mini-chart{flex:none; align-self:flex-start;}
+    .mr-link{flex:none; align-self:flex-start;}
   }
 
   /* --- featured-demo card grid (used by the "¿No sabes por dónde empezar?" quick-start section) --- */
@@ -1317,13 +1319,44 @@
 
   var familyGroups = Array.prototype.slice.call(grid.querySelectorAll('.family-group'));
 
+  function openRow(card){
+    var body = card.querySelector('.model-row-body');
+    var head = card.querySelector('.model-row-head');
+    if(!body) return;
+    card.classList.add('is-open');
+    if(head) head.setAttribute('aria-expanded', 'true');
+    body.style.maxHeight = body.scrollHeight + 'px';
+  }
+  function closeRow(card){
+    var body = card.querySelector('.model-row-body');
+    var head = card.querySelector('.model-row-head');
+    if(!body) return;
+    card.classList.remove('is-open');
+    if(head) head.setAttribute('aria-expanded', 'false');
+    body.style.maxHeight = body.scrollHeight + 'px'; // lock current height first…
+    requestAnimationFrame(function(){ body.style.maxHeight = '0px'; }); // …then collapse, so it animates
+  }
+
   cards.forEach(function(card){
     var head = card.querySelector('.model-row-head');
     if(!head) return;
     head.addEventListener('click', function(){
-      var isOpen = card.classList.toggle('is-open');
-      head.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+      if(card.classList.contains('is-open')) closeRow(card); else openRow(card);
     });
+  });
+
+  // Recompute open rows' height on resize/orientation change (mobile keyboards, rotation,
+  // font-size changes) so content never gets clipped or leaves a stale gap.
+  var resizeTimer;
+  window.addEventListener('resize', function(){
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function(){
+      cards.forEach(function(card){
+        if(!card.classList.contains('is-open')) return;
+        var body = card.querySelector('.model-row-body');
+        if(body){ body.style.maxHeight = 'none'; body.style.maxHeight = body.scrollHeight + 'px'; }
+      });
+    }, 150);
   });
 
   function apply(){
@@ -1337,10 +1370,8 @@
       var show = okP && okS && okQ;
       card.classList.toggle('is-hidden', !show);
       if(show) visible++;
-      if(isFiltering && show && q){
-        card.classList.add('is-open');
-        var h = card.querySelector('.model-row-head');
-        if(h) h.setAttribute('aria-expanded', 'true');
+      if(isFiltering && show && q && !card.classList.contains('is-open')){
+        openRow(card);
       }
     });
     familyGroups.forEach(function(fg){
@@ -1388,9 +1419,7 @@
     if(searchInput) searchInput.value = '';
     document.querySelectorAll('.chip').forEach(function(c){ c.classList.remove('active'); });
     cards.forEach(function(card){
-      card.classList.remove('is-open');
-      var h = card.querySelector('.model-row-head');
-      if(h) h.setAttribute('aria-expanded', 'false');
+      if(card.classList.contains('is-open')) closeRow(card);
     });
     apply();
   });
