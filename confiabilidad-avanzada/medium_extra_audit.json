@@ -1,0 +1,44 @@
+{
+  "histogram": {
+    "histogram_area_should_be_1": 1.0
+  },
+  "mcf": {
+    "mcf_monotonic_nondecreasing": true,
+    "lower_leq_mcf_leq_upper": true,
+    "n_time_points": 35
+  },
+  "rocof": {
+    "trend_detected": "worsening",
+    "beta_hat_gt_1_means_worsening": true,
+    "consistent_with_simulated_beta_2_2": true
+  },
+  "weibull_prob_plot": {
+    "n_scatter_points": 32,
+    "scatter_matches_failures_count": true,
+    "first_point_time_matches_min_failure": true,
+    "last_point_cdf_below_1": true
+  },
+  "reliability_growth": {
+    "A": 0.38875615464534224,
+    "Alpha": 0.51792551106224,
+    "manual_polyfit_A": 0.38875615464534224,
+    "manual_polyfit_Alpha": 0.51792551106224,
+    "A_relative_error_pct": 0.0,
+    "Alpha_relative_error_pct": 0.0,
+    "alpha_between_0_and_1_growth_expected": true
+  },
+  "sequential_sampling": {
+    "n_rows": 61,
+    "reject_geq_accept_where_both_defined": true
+  },
+  "stress_strength": {
+    "library_probability_of_failure": 0.09110506698127492,
+    "manual_integration_probability": 0.09110507696076198,
+    "relative_error_pct": 1.0953822204222276e-05
+  },
+  "dszi": {
+    "cdf_asymptote_maxvalue": 0.8499280799846084,
+    "cdf_approaches_DS_not_1": true,
+    "sf_plus_cdf_is_1": 0.0
+  }
+}
