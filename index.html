@@ -193,6 +193,20 @@
     .mr-body-inner{flex-direction:column; align-items:flex-start;}
     .model-row.is-open .model-row-body{max-height:320px;}
   }
+
+  /* --- featured-demo card grid (used by the "¿No sabes por dónde empezar?" quick-start section) --- */
+  #empieza-aqui .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:20px; margin-top:4px;}
+  #empieza-aqui .card{
+    background:var(--panel); border:1px solid var(--border); border-radius:14px;
+    padding:24px; transition:border-color .2s, transform .2s; text-decoration:none; color:var(--text);
+    display:flex; flex-direction:column;
+  }
+  #empieza-aqui .card:hover{border-color:var(--success); transform:translateY(-2px);}
+  #empieza-aqui .card .tag{font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--accent);}
+  #empieza-aqui .card h3{font-size:18px; margin:10px 0 8px;}
+  #empieza-aqui .card p{font-size:14px; color:var(--muted); line-height:1.5; flex:1;}
+  #empieza-aqui .card .status{font-size:11px; color:var(--success); margin-top:14px; display:inline-block;}
+
   .cta-row{display:flex; gap:14px; flex-wrap:wrap; margin-top:28px;}
   .btn{
     font-family:'DM Mono', monospace; font-size:14px; padding:12px 22px; border-radius:10px;
