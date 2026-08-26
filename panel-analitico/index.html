@@ -1,0 +1,998 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<!-- Google Analytics (GA4) — INACTIVO: reemplaza G-XXXXXXXXXX por tu Measurement ID real para activarlo -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-XXXXXXXXXX');
+</script>
+<script>(function(){try{var t=localStorage.getItem('ria-theme');if(t==='light')document.documentElement.setAttribute('data-theme','light');}catch(e){}})();</script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="icon" href="../assets/favicon.ico" sizes="any">
+<link rel="icon" type="image/svg+xml" href="../assets/favicon.svg">
+<link rel="apple-touch-icon" href="../assets/apple-touch-icon.png">
+<title>Panel Analítico — RELIABILIT-IA</title>
+<meta name="description" content="Galería de visualizaciones estilo Business Intelligence aplicadas a mantenimiento predictivo: comparación, distribución, relación, mapas, KPIs y tablas.">
+
+<meta property="og:title" content="Panel Analítico — RELIABILIT-IA">
+<meta property="og:description" content="15 tipos de gráficos de analítica aplicados a datos de mantenimiento predictivo, con la misma lógica que usamos en proyectos reales.">
+<meta property="og:image" content="../assets/og-image.png">
+<meta property="og:type" content="website">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Instrument+Serif:ital@0;1&family=DM+Mono:wght@400;500&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "RELIABILIT-IA", "item": "https://angel19968.github.io/reliabilit-ia/" },
+    { "@type": "ListItem", "position": 2, "name": "Panel Analítico", "item": "https://angel19968.github.io/reliabilit-ia/panel-analitico/" }
+  ]
+}
+</script>
+
+<style>
+  :root{
+    --bg:#0a0a0f;
+    --panel:#121218;
+    --panel2:#181820;
+    --border:#22222c;
+    --text:#f4f4f7;
+    --muted:#9a9aa8;
+    --success:#3ecfa0;
+    --cta:#f4722e;
+    --accent:#7b5ea7;
+  }
+  [data-theme="light"]{
+    --bg:#FFFFFF;
+    --panel:#FAFBFC;
+    --panel2:#EEF0F3;
+    --border:#E4E7EB;
+    --text:#141822;
+    --muted:#5B6472;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{
+    background:var(--bg); color:var(--text); font-family:'Inter', sans-serif;
+    line-height:1.6; -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:'Syne', sans-serif; font-weight:800; letter-spacing:-0.02em;}
+  a{color:var(--success);}
+  .wrap{max-width:1320px;margin:0 auto;padding:0 32px;}
+  @media (max-width:600px){ .wrap{padding:0 20px;} }
+  .back{display:inline-block; font-size:13px; color:var(--muted); text-decoration:none;}
+  .back:hover{color:var(--success);}
+  .nav-row{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; position:sticky; top:0; z-index:30; background:var(--bg); padding:14px 0; margin:0 -32px; padding-left:32px; padding-right:32px; border-bottom:1px solid transparent;}
+  @media (max-width:600px){ .nav-row{margin:0 -20px; padding-left:20px; padding-right:20px;} }
+  .nav-row.is-stuck{border-bottom-color:var(--border);}
+  .theme-toggle{
+    font-family:'DM Mono', monospace; font-size:12px; padding:7px 12px; border-radius:8px;
+    border:1px solid var(--border); background:transparent; color:var(--text); cursor:pointer;
+    display:inline-flex; align-items:center; gap:6px; transition:border-color .15s;
+  }
+  .theme-toggle:hover{border-color:var(--accent);}
+  .thermbar{height:4px; background:linear-gradient(90deg,#2C3E75,#6A3A93,#C43D73,#E86A33,#F5B942); border-radius:0 0 3px 3px;}
+
+  header.hero{padding:36px 0 30px; border-bottom:1px solid var(--border);}
+  .badge{
+    display:inline-block; font-size:12px; letter-spacing:.08em; text-transform:uppercase;
+    color:var(--success); border:1px solid var(--success); border-radius:999px;
+    padding:5px 14px; margin-bottom:18px;
+  }
+  h1{font-size:clamp(28px,5vw,42px); line-height:1.1; margin-bottom:14px;}
+  .lead{font-family:'Instrument Serif', serif; font-style:italic; font-size:19px; color:var(--muted); max-width:720px;}
+  .disclosure{margin-top:18px; font-size:13px; color:var(--muted); max-width:760px; padding:12px 16px; background:var(--panel2); border:1px solid var(--border); border-radius:10px; line-height:1.6;}
+
+  section.cat{padding:36px 0; border-bottom:1px solid var(--border);}
+  section.cat h2{font-size:21px; margin-bottom:6px;}
+  .cat-intro{color:var(--muted); font-size:14.5px; max-width:680px; margin-bottom:22px;}
+
+  .chart-grid{display:grid; grid-template-columns:repeat(2,1fr); gap:20px;}
+  @media (max-width:900px){ .chart-grid{grid-template-columns:1fr;} }
+  .chart-grid.wide{grid-template-columns:1fr;}
+
+  .chart-panel{background:var(--panel); border:1px solid var(--border); border-radius:16px; padding:20px 22px 18px;}
+  .chart-panel h3{font-size:15px; font-weight:700; margin-bottom:4px;}
+  .chart-caption{font-size:12.5px; color:var(--muted); margin-bottom:14px; line-height:1.5;}
+  .chart-svg-wrap{width:100%;}
+  .chart-svg-wrap svg{width:100%; height:auto; display:block; overflow:visible;}
+  .chart-legend{display:flex; flex-wrap:wrap; gap:10px 16px; margin-top:12px; font-size:12px; color:var(--muted);}
+  .chart-legend .item{display:inline-flex; align-items:center; gap:6px;}
+  .chart-legend .dot{width:9px; height:9px; border-radius:3px; flex-shrink:0;}
+
+  .ai-tag{
+    display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:600; letter-spacing:.03em;
+    color:var(--cta); border:1px dashed var(--cta); border-radius:999px; padding:3px 10px; margin-bottom:10px;
+  }
+
+  /* KPI + gauge */
+  .kpi-row{display:grid; grid-template-columns:repeat(4,1fr); gap:16px;}
+  @media (max-width:900px){ .kpi-row{grid-template-columns:repeat(2,1fr);} }
+  @media (max-width:480px){ .kpi-row{grid-template-columns:1fr;} }
+  .kpi-card{background:var(--panel); border:1px solid var(--border); border-radius:14px; padding:18px;}
+  .kpi-label{font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:.05em;}
+  .kpi-value{font-family:'Syne',sans-serif; font-weight:800; font-size:26px; color:var(--success); margin-top:6px;}
+  .kpi-note{font-size:11.5px; color:var(--muted); margin-top:4px;}
+  .gauge-card{grid-column:span 1; display:flex; flex-direction:column; align-items:center; text-align:center;}
+  .gauge-value-text{font-family:'Syne',sans-serif; font-weight:800; font-size:22px; margin-top:-38px;}
+
+  /* Matrix table */
+  .matrix-wrap{overflow-x:auto;}
+  table.matrix{width:100%; border-collapse:collapse; font-size:13px; min-width:520px;}
+  table.matrix th, table.matrix td{padding:9px 12px; text-align:left; border-bottom:1px solid var(--border); white-space:nowrap;}
+  table.matrix th{font-family:'DM Mono',monospace; font-size:11px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted); font-weight:500;}
+  table.matrix td.num{font-family:'DM Mono',monospace; text-align:right;}
+  table.matrix tr:last-child td{font-weight:700; border-bottom:none; border-top:1px solid var(--border);}
+
+  /* Decomposition tree (illustrative) */
+  .dtree{display:flex; flex-direction:column; align-items:center; gap:0;}
+  .dtree-root{background:var(--panel2); border:1px solid var(--accent); border-radius:10px; padding:10px 18px; font-size:13.5px; font-weight:700; text-align:center;}
+  .dtree-connector{width:2px; height:18px; background:var(--border);}
+  .dtree-level{display:flex; flex-wrap:wrap; justify-content:center; gap:10px; width:100%;}
+  .dtree-node{background:var(--panel2); border:1px solid var(--border); border-radius:10px; padding:9px 14px; font-size:12.5px; text-align:center; min-width:110px;}
+  .dtree-node .n-val{display:block; color:var(--success); font-weight:700; font-size:13px; margin-top:2px;}
+  .dtree-branch{display:flex; flex-direction:column; align-items:center; gap:0;}
+
+  footer{padding:40px 0 60px; text-align:center;}
+  footer p{color:var(--muted); font-size:13px; max-width:640px; margin:16px auto 0;}
+  .footer-back{display:inline-block; margin-top:6px; font-size:14px;}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <div class="nav-row" id="navRow">
+    <a class="back" href="../">← Volver al catálogo RELIABILIT-IA</a>
+    <button class="theme-toggle" id="themeToggle" type="button"><span id="themeIcon">🌙</span><span id="themeLabel">Oscuro</span></button>
+  </div>
+  <div class="thermbar"></div>
+
+  <header class="hero">
+    <div class="badge">Panel analítico</div>
+    <h1>Visualizaciones estilo Business Intelligence, aplicadas a mantenimiento predictivo</h1>
+    <p class="lead">Una muestra de los tipos de gráfico que solemos usar para explicar datos de planta a gerencia y equipos de confiabilidad — más allá de las 24 demos interactivas del catálogo.</p>
+    <div class="disclosure">
+      <strong>Nota sobre los datos:</strong> los gráficos de composición del catálogo (dona, treemap, columnas apiladas por familia y la matriz comparativa) usan las cifras reales de las 24 demos publicadas. Los gráficos operativos (fallas, ahorro, KPIs, dispersión, mapa regional) usan datos sintéticos representativos, con la misma lógica que aplicamos con datos reales de cliente. Los marcados como "concepto ilustrativo" no están conectados a un motor de IA en vivo.
+    </div>
+  </header>
+
+  <!-- 1. COMPARACIÓN Y TENDENCIAS -->
+  <section class="cat" id="cat-comparacion">
+    <h2>Gráficos de comparación y tendencias</h2>
+    <p class="cat-intro">Para comparar categorías entre sí o seguir la evolución de un indicador en el tiempo.</p>
+    <div class="chart-grid">
+      <div class="chart-panel">
+        <h3>Columnas agrupadas</h3>
+        <p class="chart-caption">Paradas no planificadas por planta, antes vs. después de implementar mantenimiento predictivo. Datos sintéticos ilustrativos.</p>
+        <div class="chart-svg-wrap" id="chart-gc"></div>
+        <div class="chart-legend" id="legend-gc"></div>
+      </div>
+      <div class="chart-panel">
+        <h3>Barras agrupadas</h3>
+        <p class="chart-caption">Tiempo medio de detección de una falla incipiente, por técnica de monitoreo — manual vs. con modelo predictivo. Datos sintéticos ilustrativos.</p>
+        <div class="chart-svg-wrap" id="chart-gb"></div>
+        <div class="chart-legend" id="legend-gb"></div>
+      </div>
+      <div class="chart-panel">
+        <h3>Columnas apiladas</h3>
+        <p class="chart-caption">Las 24 demos del catálogo, agrupadas por familia técnica y desglosadas por paradigma de modelo. Datos reales del catálogo actual.</p>
+        <div class="chart-svg-wrap" id="chart-sc"></div>
+        <div class="chart-legend" id="legend-sc"></div>
+      </div>
+      <div class="chart-panel">
+        <h3>Gráfico de líneas</h3>
+        <p class="chart-caption">Disponibilidad general de planta (OEE de confiabilidad) en los últimos 12 meses tras iniciar monitoreo continuo. Datos sintéticos ilustrativos.</p>
+        <div class="chart-svg-wrap" id="chart-ln"></div>
+      </div>
+      <div class="chart-panel" style="grid-column:1 / -1;">
+        <h3>Gráfico de áreas apiladas</h3>
+        <p class="chart-caption">Ahorro acumulado estimado en el año, por técnica de monitoreo (CBM). Datos sintéticos ilustrativos, en la misma línea que la calculadora de ROI de la página principal.</p>
+        <div class="chart-svg-wrap" id="chart-ar"></div>
+        <div class="chart-legend" id="legend-ar"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. PARTE A TODO Y DISTRIBUCIÓN -->
+  <section class="cat" id="cat-distribucion">
+    <h2>Gráficos de parte a todo y distribución</h2>
+    <p class="cat-intro">Para mostrar cómo se compone un total, o cómo avanza un proceso por etapas.</p>
+    <div class="chart-grid">
+      <div class="chart-panel">
+        <h3>Gráfico de anillo (dona)</h3>
+        <p class="chart-caption">Las 24 demos del catálogo, por tipo de modelo (paradigma). Datos reales del catálogo actual.</p>
+        <div class="chart-svg-wrap" id="chart-dn"></div>
+        <div class="chart-legend" id="legend-dn"></div>
+      </div>
+      <div class="chart-panel">
+        <h3>Treemap (mapa de árbol)</h3>
+        <p class="chart-caption">Peso relativo de cada familia técnica dentro del catálogo, por número de demos. Datos reales del catálogo actual.</p>
+        <div class="chart-svg-wrap" id="chart-tm"></div>
+      </div>
+      <div class="chart-panel">
+        <h3>Gráfico de embudo (funnel)</h3>
+        <p class="chart-caption">Pipeline típico desde el dato crudo hasta la acción de mantenimiento. Datos sintéticos ilustrativos.</p>
+        <div class="chart-svg-wrap" id="chart-fn"></div>
+      </div>
+      <div class="chart-panel">
+        <h3>Gráfico de cascada (waterfall)</h3>
+        <p class="chart-caption">De fallas evitadas a ahorro neto anual, restando costos de monitoreo y análisis. Datos sintéticos ilustrativos.</p>
+        <div class="chart-svg-wrap" id="chart-wf"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. RELACIÓN -->
+  <section class="cat" id="cat-relacion">
+    <h2>Gráficos de relación</h2>
+    <p class="cat-intro">Para explorar cómo se relacionan dos o más variables entre activos.</p>
+    <div class="chart-grid wide">
+      <div class="chart-panel">
+        <h3>Gráfico de dispersión y burbujas</h3>
+        <p class="chart-caption">Vibración vs. temperatura por activo; el tamaño de la burbuja representa la criticidad del equipo. Datos sintéticos ilustrativos.</p>
+        <div class="chart-svg-wrap" id="chart-sp"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. MAPAS -->
+  <section class="cat" id="cat-mapas">
+    <h2>Mapas y geolocalización</h2>
+    <p class="cat-intro">Para ubicar dónde está distribuida la comunidad o los activos monitoreados.</p>
+    <div class="chart-grid wide">
+      <div class="chart-panel">
+        <h3>Mapa regional (esquemático)</h3>
+        <p class="chart-caption">Distribución referencial por región de los +1,000 ingenieros y 22 países de la comunidad RELIABILIT-IA. El total de países es real; el desglose por región es aproximado, no un censo exacto por país.</p>
+        <div class="chart-svg-wrap" id="chart-mp"></div>
+        <div class="chart-legend" id="legend-mp"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. KPIs -->
+  <section class="cat" id="cat-kpis">
+    <h2>Indicadores y objetivos (KPIs)</h2>
+    <p class="cat-intro">Valores de referencia típicos en la industria de confiabilidad, usados aquí a modo de ejemplo de formato — no son un resultado verificado de un cliente específico.</p>
+    <div class="kpi-row">
+      <div class="kpi-card">
+        <div class="kpi-label">MTBF</div>
+        <div class="kpi-value">1,240 h</div>
+        <div class="kpi-note">Tiempo medio entre fallas</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">MTTR</div>
+        <div class="kpi-value">6.4 h</div>
+        <div class="kpi-note">Tiempo medio de reparación</div>
+      </div>
+      <div class="kpi-card gauge-card">
+        <div class="kpi-label">Disponibilidad</div>
+        <div class="chart-svg-wrap" id="chart-gauge" style="max-width:170px;"></div>
+        <div class="gauge-value-text">94%</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Confiabilidad (30 días)</div>
+        <div class="kpi-value">91.5%</div>
+        <div class="kpi-note">Probabilidad de operar sin falla</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6. TABLAS -->
+  <section class="cat" id="cat-tablas">
+    <h2>Tablas y datos detallados</h2>
+    <p class="cat-intro">Para revisar la composición exacta del catálogo, celda por celda. Datos reales del catálogo actual.</p>
+    <div class="chart-panel">
+      <h3>Matriz: familia técnica × paradigma de modelo</h3>
+      <p class="chart-caption">Número de demos del catálogo que cruzan cada familia técnica con cada paradigma de modelo.</p>
+      <div class="matrix-wrap" id="matrix-wrap"></div>
+    </div>
+  </section>
+
+  <!-- 7. IA -->
+  <section class="cat" id="cat-ia">
+    <h2>Gráficos de inteligencia artificial (IA)</h2>
+    <p class="cat-intro">En Power BI estos paneles corren sobre un motor de IA en vivo que analiza el dataset conectado. Aquí son solo bocetos de cómo se verían aplicados a mantenimiento predictivo — no calculan nada en tiempo real.</p>
+    <div class="chart-grid">
+      <div class="chart-panel">
+        <span class="ai-tag">🧪 Concepto ilustrativo</span>
+        <h3>Árbol de descomposición</h3>
+        <p class="chart-caption">Cómo se desglosaría una tasa de fallas alta, paso a paso, hasta una causa raíz.</p>
+        <div id="dtree-wrap"></div>
+      </div>
+      <div class="chart-panel">
+        <span class="ai-tag">🧪 Concepto ilustrativo</span>
+        <h3>Esquema de jerarquías (key influencers)</h3>
+        <p class="chart-caption">Boceto de qué variables pesarían más al explicar el riesgo de falla de un activo.</p>
+        <div class="chart-svg-wrap" id="chart-inf"></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>Estas visualizaciones se construyeron a mano con SVG, sin librerías externas — la misma filosofía "sin dependencias" del resto del sitio. Si tu planta necesita un panel así conectado a tus datos reales, conversemos.</p>
+    <a class="footer-back back" href="../">← Volver a RELIABILIT-IA</a>
+  </footer>
+</div>
+
+<script>
+  (function(){
+    var nav = document.getElementById('navRow');
+    if(!nav) return;
+    function onScroll(){ nav.classList.toggle('is-stuck', window.scrollY > 4); }
+    window.addEventListener('scroll', onScroll, {passive:true});
+    onScroll();
+  })();
+</script>
+<script>
+  (function(){
+    var btn = document.getElementById('themeToggle');
+    var icon = document.getElementById('themeIcon');
+    var label = document.getElementById('themeLabel');
+    function sync(){
+      var isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      icon.textContent = isLight ? '☀️' : '🌙';
+      label.textContent = isLight ? 'Claro' : 'Oscuro';
+    }
+    btn.addEventListener('click', function(){
+      var isLight = document.documentElement.getAttribute('data-theme') === 'light';
+      if(isLight){
+        document.documentElement.removeAttribute('data-theme');
+        try{ localStorage.setItem('ria-theme','dark'); }catch(e){}
+      } else {
+        document.documentElement.setAttribute('data-theme','light');
+        try{ localStorage.setItem('ria-theme','light'); }catch(e){}
+      }
+      sync();
+    });
+    sync();
+  })();
+</script>
+
+<script>
+(function(){
+  var NS = 'http://www.w3.org/2000/svg';
+  var PALETTE = ['#7b5ea7','#3ecfa0','#38BDF8','#f4722e','#F5B942','#E86A9A','#A78BFA','#4ADE80'];
+
+  function el(tag, attrs){
+    var e = document.createElementNS(NS, tag);
+    for(var k in attrs){ e.setAttribute(k, attrs[k]); }
+    return e;
+  }
+  function svgRoot(vbW, vbH){
+    return el('svg', {viewBox:'0 0 '+vbW+' '+vbH, preserveAspectRatio:'xMidYMid meet'});
+  }
+  function mount(id, svg){
+    var host = document.getElementById(id);
+    if(!host) return;
+    host.innerHTML = '';
+    host.appendChild(svg);
+  }
+  function legend(id, items){
+    var host = document.getElementById(id);
+    if(!host) return;
+    host.innerHTML = '';
+    items.forEach(function(it){
+      var span = document.createElement('span');
+      span.className = 'item';
+      var dot = document.createElement('span');
+      dot.className = 'dot';
+      dot.style.background = it.color;
+      span.appendChild(dot);
+      span.appendChild(document.createTextNode(it.label));
+      host.appendChild(span);
+    });
+  }
+  function niceMax(v){
+    if(v<=0) return 10;
+    var mag = Math.pow(10, Math.floor(Math.log10(v)));
+    var norm = v/mag;
+    var nice = norm<=1?1:norm<=2?2:norm<=5?5:10;
+    return nice*mag;
+  }
+  function fmt(n){ return Math.round(n).toLocaleString('es-PE'); }
+
+  // ---------- Generic bar/column chart: grouped or stacked, vertical or horizontal ----------
+  function barChart(id, opts){
+    var categories = opts.categories, series = opts.series, horizontal = !!opts.horizontal, stacked = !!opts.stacked;
+    var W = 560, H = 300;
+    var margin = horizontal ? {top:10,right:36,bottom:20,left:118} : {top:14,right:10,bottom:56,left:40};
+    var plotW = W - margin.left - margin.right;
+    var plotH = H - margin.top - margin.bottom;
+    var svg = svgRoot(W,H);
+
+    var maxVal;
+    if(stacked){
+      maxVal = 0;
+      categories.forEach(function(c,i){
+        var sum = series.reduce(function(a,s){ return a + (s.values[i]||0); }, 0);
+        if(sum > maxVal) maxVal = sum;
+      });
+    } else {
+      maxVal = 0;
+      series.forEach(function(s){ s.values.forEach(function(v){ if(v>maxVal) maxVal=v; }); });
+    }
+    maxVal = niceMax(maxVal);
+
+    // gridlines + axis labels (4 steps)
+    var steps = 4;
+    for(var g=0; g<=steps; g++){
+      var val = maxVal * g / steps;
+      if(horizontal){
+        var x = margin.left + plotW * g/steps;
+        svg.appendChild(el('line',{x1:x,y1:margin.top,x2:x,y2:margin.top+plotH,stroke:'currentColor','stroke-opacity':0.12}));
+        var t = el('text',{x:x,y:margin.top+plotH+16,'font-size':10,'text-anchor':'middle',fill:'currentColor','fill-opacity':0.55});
+        t.textContent = fmt(val);
+        svg.appendChild(t);
+      } else {
+        var y = margin.top + plotH - plotH * g/steps;
+        svg.appendChild(el('line',{x1:margin.left,y1:y,x2:margin.left+plotW,y2:y,stroke:'currentColor','stroke-opacity':0.12}));
+        var t2 = el('text',{x:margin.left-8,y:y+3,'font-size':10,'text-anchor':'end',fill:'currentColor','fill-opacity':0.55});
+        t2.textContent = fmt(val);
+        svg.appendChild(t2);
+      }
+    }
+
+    var n = categories.length;
+    var bandSize = (horizontal ? plotH : plotW) / n;
+    var groupPad = bandSize * 0.22;
+    var innerBand = bandSize - groupPad;
+    var barGap = 3;
+    var barW = stacked ? innerBand : (innerBand - barGap*(series.length-1)) / series.length;
+
+    categories.forEach(function(cat, i){
+      var bandStart = (horizontal?margin.top:margin.left) + i*bandSize + groupPad/2;
+      var stackAccum = 0;
+      series.forEach(function(s, si){
+        var val = s.values[i] || 0;
+        var len = (horizontal?plotW:plotH) * (val / maxVal);
+        var color = s.color || PALETTE[si % PALETTE.length];
+        if(horizontal){
+          var y = bandStart + (stacked?0:si*(barW+barGap));
+          var x = stacked ? margin.left + (plotW*stackAccum/maxVal) : margin.left;
+          svg.appendChild(el('rect',{x:x,y:y,width:Math.max(len,0),height:barW,rx:3,fill:color}));
+        } else {
+          var x2 = bandStart + (stacked?0:si*(barW+barGap));
+          var y2 = stacked ? (margin.top+plotH) - (plotH*stackAccum/maxVal) - len : (margin.top+plotH) - len;
+          svg.appendChild(el('rect',{x:x2,y:y2,width:barW,height:Math.max(len,0),rx:3,fill:color}));
+        }
+        stackAccum += val;
+      });
+      // category label
+      if(horizontal){
+        var ly = bandStart + (stacked?barW:series.length*barW+ (series.length-1)*barGap)/2;
+        var lt = el('text',{x:margin.left-10,y:ly+3,'font-size':11,'text-anchor':'end',fill:'currentColor','fill-opacity':0.75});
+        lt.textContent = cat;
+        svg.appendChild(lt);
+      } else {
+        var lx = bandStart + (stacked?barW:series.length*barW+(series.length-1)*barGap)/2;
+        var lt2 = el('text',{x:lx,y:margin.top+plotH+18,'font-size':11,'text-anchor':'middle',fill:'currentColor','fill-opacity':0.75});
+        lt2.textContent = cat;
+        svg.appendChild(lt2);
+      }
+    });
+
+    mount(id, svg);
+  }
+
+  // ---------- Line / stacked area chart ----------
+  function lineAreaChart(id, opts){
+    var categories = opts.categories, series = opts.series, area = !!opts.area, stacked = !!opts.stacked;
+    var W = 900, H = 300;
+    var margin = {top:14,right:16,bottom:26,left:44};
+    var plotW = W - margin.left - margin.right;
+    var plotH = H - margin.top - margin.bottom;
+    var svg = svgRoot(W,H);
+    var n = categories.length;
+
+    var maxVal;
+    if(stacked){
+      maxVal = 0;
+      categories.forEach(function(c,i){
+        var sum = series.reduce(function(a,s){ return a + (s.values[i]||0); }, 0);
+        if(sum > maxVal) maxVal = sum;
+      });
+    } else {
+      maxVal = 0;
+      series.forEach(function(s){ s.values.forEach(function(v){ if(v>maxVal) maxVal=v; }); });
+    }
+    maxVal = niceMax(maxVal);
+
+    var steps = 4;
+    for(var g=0; g<=steps; g++){
+      var val = maxVal*g/steps;
+      var y = margin.top + plotH - plotH*g/steps;
+      svg.appendChild(el('line',{x1:margin.left,y1:y,x2:margin.left+plotW,y2:y,stroke:'currentColor','stroke-opacity':0.12}));
+      var t = el('text',{x:margin.left-8,y:y+3,'font-size':10,'text-anchor':'end',fill:'currentColor','fill-opacity':0.55});
+      t.textContent = fmt(val);
+      svg.appendChild(t);
+    }
+
+    function xAt(i){ return margin.left + plotW * (n===1?0.5:i/(n-1)); }
+
+    var cumBase = new Array(n).fill(0);
+    series.forEach(function(s, si){
+      var color = s.color || PALETTE[si % PALETTE.length];
+      var topPts = [];
+      var basePts = [];
+      for(var i=0;i<n;i++){
+        var base = stacked ? cumBase[i] : 0;
+        var val = s.values[i] || 0;
+        var top = base + val;
+        topPts.push([xAt(i), margin.top + plotH - plotH*(top/maxVal)]);
+        basePts.push([xAt(i), margin.top + plotH - plotH*(base/maxVal)]);
+        if(stacked) cumBase[i] = top;
+      }
+      if(area){
+        var d = 'M '+topPts[0][0]+' '+topPts[0][1];
+        for(var i2=1;i2<topPts.length;i2++){ d += ' L '+topPts[i2][0]+' '+topPts[i2][1]; }
+        for(var i3=basePts.length-1;i3>=0;i3--){ d += ' L '+basePts[i3][0]+' '+basePts[i3][1]; }
+        d += ' Z';
+        svg.appendChild(el('path',{d:d, fill:color, 'fill-opacity':0.75}));
+      }
+      var dl = 'M '+topPts[0][0]+' '+topPts[0][1];
+      for(var i4=1;i4<topPts.length;i4++){ dl += ' L '+topPts[i4][0]+' '+topPts[i4][1]; }
+      svg.appendChild(el('path',{d:dl, fill:'none', stroke:color, 'stroke-width':2.4, 'stroke-linejoin':'round','stroke-linecap':'round'}));
+      if(!area){
+        topPts.forEach(function(p){ svg.appendChild(el('circle',{cx:p[0],cy:p[1],r:3.2,fill:color})); });
+      }
+    });
+
+    categories.forEach(function(cat,i){
+      if(n>8 && i%2===1) return;
+      var t = el('text',{x:xAt(i),y:margin.top+plotH+18,'font-size':10,'text-anchor':'middle',fill:'currentColor','fill-opacity':0.6});
+      t.textContent = cat;
+      svg.appendChild(t);
+    });
+
+    mount(id, svg);
+  }
+
+  // ---------- Donut chart ----------
+  function donutChart(id, opts){
+    var data = opts.data;
+    var W=320,H=300, cx=110, cy=150, rOuter=105, rInner=62;
+    var svg = svgRoot(W,H);
+    var total = data.reduce(function(a,d){return a+d.value;},0);
+    var angle = -Math.PI/2;
+    data.forEach(function(d,i){
+      var frac = d.value/total;
+      var a0 = angle;
+      var a1 = angle + frac*Math.PI*2;
+      angle = a1;
+      var largeArc = (a1-a0) > Math.PI ? 1 : 0;
+      var x0o = cx + rOuter*Math.cos(a0), y0o = cy + rOuter*Math.sin(a0);
+      var x1o = cx + rOuter*Math.cos(a1), y1o = cy + rOuter*Math.sin(a1);
+      var x0i = cx + rInner*Math.cos(a1), y0i = cy + rInner*Math.sin(a1);
+      var x1i = cx + rInner*Math.cos(a0), y1i = cy + rInner*Math.sin(a0);
+      var d0 = 'M '+x0o+' '+y0o+' A '+rOuter+' '+rOuter+' 0 '+largeArc+' 1 '+x1o+' '+y1o+
+               ' L '+x0i+' '+y0i+' A '+rInner+' '+rInner+' 0 '+largeArc+' 0 '+x1i+' '+y1i+' Z';
+      svg.appendChild(el('path',{d:d0, fill:d.color||PALETTE[i%PALETTE.length], stroke:'var(--panel)','stroke-width':2}));
+    });
+    var totalText = el('text',{x:cx,y:cy-4,'font-size':22,'text-anchor':'middle',fill:'currentColor','font-weight':800,'font-family':"'Syne',sans-serif"});
+    totalText.textContent = total;
+    svg.appendChild(totalText);
+    var subText = el('text',{x:cx,y:cy+16,'font-size':11,'text-anchor':'middle',fill:'currentColor','fill-opacity':0.6});
+    subText.textContent = 'demos';
+    svg.appendChild(subText);
+    mount(id, svg);
+  }
+
+  // ---------- Treemap (simple slice-and-dice) ----------
+  function treemapChart(id, opts){
+    var data = opts.data.slice().sort(function(a,b){return b.value-a.value;});
+    var W=560,H=300;
+    var svg = svgRoot(W,H);
+    var total = data.reduce(function(a,d){return a+d.value;},0);
+
+    function layout(items, x, y, w, h){
+      if(!items.length) return;
+      if(items.length===1){
+        drawCell(items[0], x, y, w, h);
+        return;
+      }
+      var sum = items.reduce(function(a,d){return a+d.value;},0);
+      var horizontal = w >= h;
+      var half = sum/2, acc=0, splitIdx=0;
+      for(var i=0;i<items.length;i++){
+        acc += items[i].value;
+        if(acc >= half){ splitIdx = i; break; }
+      }
+      var group1 = items.slice(0, splitIdx+1);
+      var group2 = items.slice(splitIdx+1);
+      if(!group2.length){ group2=[group1.pop()]; }
+      var frac1 = group1.reduce(function(a,d){return a+d.value;},0) / sum;
+      if(horizontal){
+        var w1 = w*frac1;
+        layout(group1, x, y, w1, h);
+        layout(group2, x+w1, y, w-w1, h);
+      } else {
+        var h1 = h*frac1;
+        layout(group1, x, y, w, h1);
+        layout(group2, x, y+h1, w, h-h1);
+      }
+    }
+    function drawCell(d, x, y, w, h){
+      var i = data.indexOf(d);
+      svg.appendChild(el('rect',{x:x+2,y:y+2,width:Math.max(w-4,0),height:Math.max(h-4,0),rx:6,fill:d.color||PALETTE[i%PALETTE.length]}));
+      if(w>60 && h>34){
+        var t1 = el('text',{x:x+12,y:y+22,'font-size':13,'font-weight':700,fill:'#fff'});
+        t1.textContent = d.label;
+        svg.appendChild(t1);
+        var t2 = el('text',{x:x+12,y:y+40,'font-size':11,fill:'#fff','fill-opacity':0.85});
+        t2.textContent = d.value + ' demos (' + Math.round(100*d.value/total) + '%)';
+        svg.appendChild(t2);
+      } else if(w>40 && h>20){
+        var t3 = el('text',{x:x+8,y:y+h/2+4,'font-size':11,'font-weight':700,fill:'#fff'});
+        t3.textContent = d.label;
+        svg.appendChild(t3);
+      }
+    }
+    layout(data, 0, 0, W, H);
+    mount(id, svg);
+  }
+
+  // ---------- Funnel ----------
+  function funnelChart(id, opts){
+    var stages = opts.stages;
+    var W=560, H=stages.length*58;
+    var svg = svgRoot(W,H);
+    var maxVal = stages[0].value;
+    stages.forEach(function(s,i){
+      var frac = s.value/maxVal;
+      var w = (W-40)*frac;
+      var x = (W-w)/2;
+      var y = i*58 + 6;
+      var color = PALETTE[i % PALETTE.length];
+      svg.appendChild(el('rect',{x:x,y:y,width:w,height:42,rx:8,fill:color,'fill-opacity':0.88}));
+      var t = el('text',{x:W/2,y:y+18,'font-size':12.5,'font-weight':700,'text-anchor':'middle',fill:'#fff'});
+      t.textContent = s.label;
+      svg.appendChild(t);
+      var t2 = el('text',{x:W/2,y:y+35,'font-size':11.5,'text-anchor':'middle',fill:'#fff','fill-opacity':0.9});
+      t2.textContent = fmt(s.value) + (s.unit||'');
+      svg.appendChild(t2);
+    });
+    mount(id, svg);
+  }
+
+  // ---------- Waterfall ----------
+  function waterfallChart(id, opts){
+    var steps = opts.steps; // {label, value, type: 'total'|'delta'}
+    var W=620,H=300;
+    var margin={top:14,right:16,bottom:56,left:64};
+    var plotW=W-margin.left-margin.right, plotH=H-margin.top-margin.bottom;
+    var svg = svgRoot(W,H);
+
+    var running = 0, maxVal=0;
+    var computed = steps.map(function(s){
+      var start = running;
+      if(s.type==='total'){ running = s.value; }
+      else { running += s.value; }
+      var end = running;
+      maxVal = Math.max(maxVal, start, end);
+      return {label:s.label, start:start, end:end, type:s.type, value:s.value};
+    });
+    maxVal = niceMax(maxVal);
+
+    var steps4=4;
+    for(var g=0; g<=steps4; g++){
+      var val = maxVal*g/steps4;
+      var y = margin.top+plotH - plotH*g/steps4;
+      svg.appendChild(el('line',{x1:margin.left,y1:y,x2:margin.left+plotW,y2:y,stroke:'currentColor','stroke-opacity':0.12}));
+      var t=el('text',{x:margin.left-8,y:y+3,'font-size':10,'text-anchor':'end',fill:'currentColor','fill-opacity':0.55});
+      t.textContent = fmt(val);
+      svg.appendChild(t);
+    }
+
+    var n = computed.length;
+    var band = plotW/n, barW = band*0.55;
+    computed.forEach(function(c,i){
+      var x = margin.left + i*band + (band-barW)/2;
+      var yStart = margin.top+plotH - plotH*(Math.max(c.start,c.end)/maxVal);
+      var h = plotH*(Math.abs(c.end-c.start)/maxVal);
+      var color = c.type==='total' ? '#7b5ea7' : (c.value>=0 ? '#3ecfa0' : '#f4722e');
+      svg.appendChild(el('rect',{x:x,y:yStart,width:barW,height:Math.max(h,2),rx:4,fill:color}));
+      if(i>0 && computed[i-1]){
+        var prevX = margin.left+(i-1)*band+(band-barW)/2+barW;
+        var prevY = margin.top+plotH - plotH*(computed[i-1].end/maxVal);
+        svg.appendChild(el('line',{x1:prevX,y1:prevY,x2:x,y2:prevY,stroke:'currentColor','stroke-opacity':0.25,'stroke-dasharray':'3,3'}));
+      }
+      var valText = (c.value>=0&&c.type!=='total'?'+':'') + fmt(c.value);
+      var t2 = el('text',{x:x+barW/2,y:yStart-6,'font-size':11,'text-anchor':'middle',fill:'currentColor','font-weight':700});
+      t2.textContent = valText;
+      svg.appendChild(t2);
+      var t3 = el('text',{x:x+barW/2,y:margin.top+plotH+18,'font-size':10.5,'text-anchor':'middle',fill:'currentColor','fill-opacity':0.7});
+      t3.textContent = c.label;
+      svg.appendChild(t3);
+    });
+    mount(id, svg);
+  }
+
+  // ---------- Scatter / bubble ----------
+  function scatterChart(id, opts){
+    var points = opts.points;
+    var W=900,H=340;
+    var margin={top:16,right:20,bottom:40,left:50};
+    var plotW=W-margin.left-margin.right, plotH=H-margin.top-margin.bottom;
+    var svg = svgRoot(W,H);
+    var maxX = niceMax(Math.max.apply(null, points.map(function(p){return p.x;})));
+    var maxY = niceMax(Math.max.apply(null, points.map(function(p){return p.y;})));
+
+    for(var g=0; g<=4; g++){
+      var y = margin.top+plotH - plotH*g/4;
+      svg.appendChild(el('line',{x1:margin.left,y1:y,x2:margin.left+plotW,y2:y,stroke:'currentColor','stroke-opacity':0.1}));
+      var ty=el('text',{x:margin.left-8,y:y+3,'font-size':10,'text-anchor':'end',fill:'currentColor','fill-opacity':0.55});
+      ty.textContent = fmt(maxY*g/4);
+      svg.appendChild(ty);
+      var x = margin.left + plotW*g/4;
+      var tx=el('text',{x:x,y:margin.top+plotH+16,'font-size':10,'text-anchor':'middle',fill:'currentColor','fill-opacity':0.55});
+      tx.textContent = fmt(maxX*g/4);
+      svg.appendChild(tx);
+    }
+    var axisLabelX = el('text',{x:margin.left+plotW/2,y:H-4,'font-size':11,'text-anchor':'middle',fill:'currentColor','fill-opacity':0.6});
+    axisLabelX.textContent = opts.xLabel||'';
+    svg.appendChild(axisLabelX);
+    var axisLabelY = el('text',{x:14,y:margin.top+plotH/2,'font-size':11,'text-anchor':'middle',fill:'currentColor','fill-opacity':0.6, transform:'rotate(-90 14 '+(margin.top+plotH/2)+')'});
+    axisLabelY.textContent = opts.yLabel||'';
+    svg.appendChild(axisLabelY);
+
+    points.forEach(function(p,i){
+      var cx = margin.left + plotW*(p.x/maxX);
+      var cy = margin.top+plotH - plotH*(p.y/maxY);
+      var r = 6 + (p.r||1)*3.2;
+      svg.appendChild(el('circle',{cx:cx,cy:cy,r:r,fill:PALETTE[i%PALETTE.length],'fill-opacity':0.72,stroke:PALETTE[i%PALETTE.length],'stroke-width':1.4}));
+    });
+    mount(id, svg);
+  }
+
+  // ---------- Schematic region map (bubble grid) ----------
+  function regionMap(id, opts){
+    var regions = opts.regions;
+    var W=900,H=280;
+    var svg = svgRoot(W,H);
+    // rough world-grid positions (schematic, not geographically precise)
+    var positions = {
+      'América Latina':[210,175], 'Norteamérica':[190,90], 'Europa':[470,80],
+      'África':[470,190], 'Asia':[650,110], 'Oceanía':[730,220]
+    };
+    var maxV = Math.max.apply(null, regions.map(function(r){return r.value;}));
+    // faint world dot-grid backdrop
+    for(var gx=40; gx<W-40; gx+=26){
+      for(var gy=30; gy<H-20; gy+=26){
+        svg.appendChild(el('circle',{cx:gx,cy:gy,r:1.1,fill:'currentColor','fill-opacity':0.06}));
+      }
+    }
+    regions.forEach(function(r,i){
+      var pos = positions[r.label] || [100+i*120, 140];
+      var radius = 16 + 30*(r.value/maxV);
+      svg.appendChild(el('circle',{cx:pos[0],cy:pos[1],r:radius,fill:PALETTE[i%PALETTE.length],'fill-opacity':0.35,stroke:PALETTE[i%PALETTE.length],'stroke-width':2}));
+      var t = el('text',{x:pos[0],y:pos[1]+4,'font-size':13,'font-weight':800,'text-anchor':'middle',fill:'currentColor'});
+      t.textContent = r.value;
+      svg.appendChild(t);
+      var t2 = el('text',{x:pos[0],y:pos[1]+radius+16,'font-size':10.5,'text-anchor':'middle',fill:'currentColor','fill-opacity':0.7});
+      t2.textContent = r.label;
+      svg.appendChild(t2);
+    });
+    mount(id, svg);
+    legend('legend-mp', regions.map(function(r,i){ return {color:PALETTE[i%PALETTE.length], label:r.label+': '+r.value+' países (aprox.)'}; }));
+  }
+
+  // ---------- Gauge ----------
+  function gaugeChart(id, opts){
+    var value = opts.value, max = opts.max||100;
+    var W=200,H=120, cx=100, cy=100, r=80;
+    var svg = svgRoot(W,H);
+    var frac = Math.max(0,Math.min(1,value/max));
+    function arcPath(f0,f1,rad){
+      var a0 = Math.PI + f0*Math.PI, a1 = Math.PI + f1*Math.PI;
+      var x0=cx+rad*Math.cos(a0), y0=cy+rad*Math.sin(a0);
+      var x1=cx+rad*Math.cos(a1), y1=cy+rad*Math.sin(a1);
+      var large = (a1-a0)>Math.PI?1:0;
+      return 'M '+x0+' '+y0+' A '+rad+' '+rad+' 0 '+large+' 1 '+x1+' '+y1;
+    }
+    svg.appendChild(el('path',{d:arcPath(0,1,r), fill:'none', stroke:'currentColor','stroke-opacity':0.12,'stroke-width':16,'stroke-linecap':'round'}));
+    svg.appendChild(el('path',{d:arcPath(0,frac,r), fill:'none', stroke:'#3ecfa0','stroke-width':16,'stroke-linecap':'round'}));
+    mount(id, svg);
+  }
+
+  // ---------- render all charts ----------
+  barChart('chart-gc', {
+    categories:['Planta A','Planta B','Planta C','Planta D'],
+    series:[
+      {name:'Antes', color:'#f4722e', values:[14,11,9,16]},
+      {name:'Después', color:'#3ecfa0', values:[6,5,4,7]}
+    ]
+  });
+  legend('legend-gc', [{color:'#f4722e',label:'Antes'},{color:'#3ecfa0',label:'Después'}]);
+
+  barChart('chart-gb', {
+    categories:['Vibración','Termografía','Aceite','Ultrasonido'],
+    series:[
+      {name:'Manual', color:'#f4722e', values:[21,18,25,20]},
+      {name:'Con modelo', color:'#38BDF8', values:[6,7,9,5]}
+    ],
+    horizontal:true
+  });
+  legend('legend-gb', [{color:'#f4722e',label:'Manual (días)'},{color:'#38BDF8',label:'Con modelo (días)'}]);
+
+  var paradigmNames = {
+    'regresion':'Regresión','clasificacion':'Clasificación','anomalias':'Anomalías',
+    'clustering':'Clustering','series-tiempo':'Series de tiempo','gemelo-digital':'Gemelo digital',
+    'nuevas-tecnologias':'Nuevas tecnologías','vision':'Visión'
+  };
+  var famParadigm = {
+    rotativos:{regresion:3,clasificacion:3,'nuevas-tecnologias':1,anomalias:3,clustering:1,'series-tiempo':1,'gemelo-digital':1},
+    estaticos:{'series-tiempo':2,clasificacion:2,'gemelo-digital':1},
+    planta:{clustering:2,anomalias:1},
+    termo:{'nuevas-tecnologias':2,vision:1}
+  };
+  var famLabels = {rotativos:'Rotativos (13)', estaticos:'Estáticos y energía (5)', planta:'Planta y multi-sensor (3)', termo:'Termografía y nuevas técnicas (3)'};
+  var famLabelsShort = {rotativos:'Rotativos', estaticos:'Estáticos', planta:'Planta', termo:'Termografía'};
+  var paradigmOrder = ['regresion','clasificacion','anomalias','clustering','series-tiempo','gemelo-digital','nuevas-tecnologias','vision'];
+  var scSeries = paradigmOrder.map(function(p,i){
+    return {name:paradigmNames[p], color:PALETTE[i%PALETTE.length],
+      values:['rotativos','estaticos','planta','termo'].map(function(f){ return famParadigm[f][p]||0; })};
+  });
+  barChart('chart-sc', {
+    categories:['rotativos','estaticos','planta','termo'].map(function(f){return famLabelsShort[f];}),
+    series:scSeries, stacked:true
+  });
+  legend('legend-sc', paradigmOrder.map(function(p,i){ return {color:PALETTE[i%PALETTE.length], label:paradigmNames[p]}; }));
+
+  lineAreaChart('chart-ln', {
+    categories:['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
+    series:[{color:'#3ecfa0', values:[82,83,85,86,88,89,90,91,92,93,94,94]}]
+  });
+
+  lineAreaChart('chart-ar', {
+    categories:['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
+    series:[
+      {color:'#7b5ea7', values:[500,1100,1800,2600,3500,4500,5600,6800,8100,9500,11000,12600]},
+      {color:'#3ecfa0', values:[300,700,1200,1800,2500,3300,4200,5200,6300,7500,8800,10200]},
+      {color:'#38BDF8', values:[200,450,750,1100,1500,1950,2450,3000,3600,4250,4950,5700]},
+      {color:'#f4722e', values:[150,330,540,780,1050,1350,1680,2040,2430,2850,3300,3780]}
+    ],
+    area:true, stacked:true
+  });
+  legend('legend-ar', [
+    {color:'#7b5ea7',label:'Vibración'},{color:'#3ecfa0',label:'Termografía'},
+    {color:'#38BDF8',label:'Aceite'},{color:'#f4722e',label:'Ultrasonido'}
+  ]);
+
+  donutChart('chart-dn', {
+    data: paradigmOrder.map(function(p,i){ return {label:paradigmNames[p], value: paradigmNames[p]? (famParadigm.rotativos[p]||0)+(famParadigm.estaticos[p]||0)+(famParadigm.planta[p]||0)+(famParadigm.termo[p]||0) : 0, color:PALETTE[i%PALETTE.length]}; })
+  });
+  legend('legend-dn', paradigmOrder.map(function(p,i){
+    var v = (famParadigm.rotativos[p]||0)+(famParadigm.estaticos[p]||0)+(famParadigm.planta[p]||0)+(famParadigm.termo[p]||0);
+    return {color:PALETTE[i%PALETTE.length], label:paradigmNames[p]+': '+v};
+  }));
+
+  treemapChart('chart-tm', {
+    data:[
+      {label:'Rotativos', value:13, color:PALETTE[0]},
+      {label:'Estáticos y energía', value:5, color:PALETTE[1]},
+      {label:'Planta y multi-sensor', value:3, color:PALETTE[2]},
+      {label:'Termografía y nuevas técnicas', value:3, color:PALETTE[3]}
+    ]
+  });
+
+  funnelChart('chart-fn', {
+    stages:[
+      {label:'Activos monitoreados', value:480, unit:''},
+      {label:'Alertas de anomalía generadas', value:210, unit:'/mes'},
+      {label:'Validadas por ingeniería', value:130, unit:'/mes'},
+      {label:'Órdenes de mantenimiento generadas', value:95, unit:'/mes'}
+    ]
+  });
+
+  waterfallChart('chart-wf', {
+    steps:[
+      {label:'Ahorro bruto', value:42000, type:'total'},
+      {label:'Sensores y monitoreo', value:-7000},
+      {label:'Horas de análisis', value:-5000},
+      {label:'Ahorro neto', value:30000, type:'total'}
+    ]
+  });
+
+  scatterChart('chart-sp', {
+    xLabel:'Vibración (mm/s RMS)', yLabel:'Temperatura (°C)',
+    points:[
+      {x:2.1,y:58,r:2},{x:3.4,y:64,r:3},{x:1.8,y:55,r:1.5},{x:5.2,y:78,r:4},
+      {x:6.8,y:85,r:5},{x:2.9,y:60,r:2},{x:4.5,y:72,r:3.5},{x:7.5,y:90,r:5},
+      {x:3.9,y:68,r:2.5},{x:1.5,y:52,r:1},{x:5.9,y:80,r:4},{x:8.2,y:95,r:5.5}
+    ]
+  });
+
+  regionMap('chart-mp', {
+    regions:[
+      {label:'América Latina', value:9},
+      {label:'Norteamérica', value:3},
+      {label:'Europa', value:5},
+      {label:'África', value:2},
+      {label:'Asia', value:2},
+      {label:'Oceanía', value:1}
+    ]
+  });
+
+  gaugeChart('chart-gauge', {value:94, max:100});
+
+  // Matrix table
+  (function(){
+    var host = document.getElementById('matrix-wrap');
+    var rows = ['rotativos','estaticos','planta','termo'];
+    var table = document.createElement('table');
+    table.className = 'matrix';
+    var thead = document.createElement('thead');
+    var htr = document.createElement('tr');
+    htr.appendChild(document.createElement('th'));
+    paradigmOrder.forEach(function(p){
+      var th = document.createElement('th'); th.textContent = paradigmNames[p]; htr.appendChild(th);
+    });
+    var thTotal = document.createElement('th'); thTotal.textContent = 'Total'; htr.appendChild(thTotal);
+    thead.appendChild(htr);
+    table.appendChild(thead);
+    var tbody = document.createElement('tbody');
+    var colTotals = {};
+    rows.forEach(function(f){
+      var tr = document.createElement('tr');
+      var th = document.createElement('th'); th.textContent = famLabels[f].replace(/\s*\(\d+\)/,''); tr.appendChild(th);
+      var rowTotal = 0;
+      paradigmOrder.forEach(function(p){
+        var v = famParadigm[f][p] || 0;
+        rowTotal += v;
+        colTotals[p] = (colTotals[p]||0) + v;
+        var td = document.createElement('td'); td.className='num'; td.textContent = v || '—';
+        tr.appendChild(td);
+      });
+      var tdTotal = document.createElement('td'); tdTotal.className='num'; tdTotal.textContent = rowTotal;
+      tr.appendChild(tdTotal);
+      tbody.appendChild(tr);
+    });
+    var trTotal = document.createElement('tr');
+    var thTot = document.createElement('th'); thTot.textContent = 'Total'; trTotal.appendChild(thTot);
+    var grandTotal = 0;
+    paradigmOrder.forEach(function(p){
+      grandTotal += colTotals[p]||0;
+      var td = document.createElement('td'); td.className='num'; td.textContent = colTotals[p]||0;
+      trTotal.appendChild(td);
+    });
+    var tdGrand = document.createElement('td'); tdGrand.className='num'; tdGrand.textContent = grandTotal;
+    trTotal.appendChild(tdGrand);
+    tbody.appendChild(trTotal);
+    table.appendChild(tbody);
+    host.appendChild(table);
+  })();
+
+  // Decomposition tree (plain HTML)
+  (function(){
+    var host = document.getElementById('dtree-wrap');
+    var html = '';
+    html += '<div class="dtree">';
+    html += '<div class="dtree-root">Tasa de fallas alta<span class="n-val" style="display:block;color:var(--cta);font-weight:800;">100%</span></div>';
+    html += '<div class="dtree-connector"></div>';
+    html += '<div class="dtree-level">';
+    [['Rodamientos','38%'],['Motores','27%'],['Bombas','19%'],['Otros','16%']].forEach(function(pair){
+      html += '<div class="dtree-branch"><div class="dtree-node">'+pair[0]+'<span class="n-val">'+pair[1]+'</span></div></div>';
+    });
+    html += '</div>';
+    html += '</div>';
+    host.innerHTML = html;
+  })();
+
+  // Key influencers style bars
+  barChart('chart-inf', {
+    categories:['Vibración RMS','Temperatura','Edad del activo','Carga operativa','Humedad ambiente'],
+    series:[{color:'#f4722e', values:[86,71,58,44,22]}],
+    horizontal:true
+  });
+
+})();
+</script>
+
+</body>
+</html>
