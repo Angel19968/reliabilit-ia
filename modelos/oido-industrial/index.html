@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<!-- Google Analytics (GA4) — INACTIVO: reemplaza G-XXXXXXXXXX por tu Measurement ID real para activarlo -->
+<!-- Google Analytics (GA4). INACTIVO: reemplaza G-XXXXXXXXXX por tu Measurement ID real para activarlo -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -15,10 +15,10 @@
 <link rel="icon" href="../../assets/favicon.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
 <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
-<title>Oído Industrial — RELIABILIT-IA</title>
+<title>Oído Industrial. RELIABILIT-IA</title>
 <meta name="description" content="Estima el caudal y el costo anual de una fuga de aire comprimido a partir de su nivel ultrasónico, con simulación en vivo y una regresión polinomial ajustable.">
 
-<meta property="og:title" content="Oído Industrial — RELIABILIT-IA">
+<meta property="og:title" content="Oído Industrial. RELIABILIT-IA">
 <meta property="og:description" content="Mueve la presión de línea y el nivel ultrasónico y mira en vivo cuánto te cuesta al año una fuga que no puedes oír.">
 <meta property="og:image" content="../../assets/og-image.png">
 <meta property="og:type" content="website">
@@ -56,7 +56,7 @@
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "Oído Industrial — RELIABILIT-IA",
+  "name": "Oído Industrial. RELIABILIT-IA",
   "applicationCategory": "BusinessApplication",
   "operatingSystem": "Web",
   "url": "https://angel19968.github.io/reliabilit-ia/modelos/oido-industrial/",
@@ -388,7 +388,7 @@
     <h2>El problema</h2>
     <div class="context-grid">
       <div class="context-text">
-        <p>Una fuga de aire comprimido casi nunca se nota a simple oído — el silbido queda por encima del rango audible humano, enmascarado además por el ruido normal de planta. Según cifras típicas citadas en la industria, una parte importante del aire comprimido que genera un compresor se pierde en fugas que nadie repara porque nadie las detecta. Un detector ultrasónico sí "escucha" esa turbulencia de alta frecuencia y la traduce en un nivel de dB: entre más alto el nivel, más grande el orificio y más aire —y dinero— se escapa cada hora, las 24 horas del día.</p>
+        <p>Una fuga de aire comprimido casi nunca se nota a simple oído; el silbido queda por encima del rango audible humano, enmascarado además por el ruido normal de planta. Según cifras típicas citadas en la industria, una parte importante del aire comprimido que genera un compresor se pierde en fugas que nadie repara porque nadie las detecta. Un detector ultrasónico sí "escucha" esa turbulencia de alta frecuencia y la traduce en un nivel de dB: entre más alto el nivel, más grande el orificio y más aire (y dinero) se escapa cada hora, las 24 horas del día.</p>
         <p>Este demo simula esa lectura: mueve la presión de línea y el nivel ultrasónico medido, y mira en vivo cuánto caudal se estima que se pierde y cuánto cuesta eso al año.</p>
       </div>
       <aside class="context-visual">
@@ -404,7 +404,7 @@
     <h2>Demo interactivo</h2>
     <div class="panel">
       <div class="toggle-row">
-        <span class="label">Clasificación por umbrales de referencia — mueve los sliders para simular una lectura de campo.</span>
+        <span class="label">Clasificación por umbrales de referencia; mueve los sliders para simular una lectura de campo.</span>
         <label class="switch">
           <span>Modo Analista</span>
           <input type="checkbox" id="analystToggle">
@@ -454,13 +454,13 @@
             <div class="gauge-value"><b id="gaugeValue">0</b> <span class="gauge-note">0 = 25dB (mínimo), 100 = 95dB (fuga grande)</span></div>
           </div>
 
-          <p class="sim-note">Simulación ilustrativa: los pulsos ultrasónicos y el caudal se dibujan a partir de los mismos valores de los sliders — no provienen de un detector ultrasónico real.</p>
+          <p class="sim-note">Simulación ilustrativa: los pulsos ultrasónicos y el caudal se dibujan a partir de los mismos valores de los sliders; no provienen de un detector ultrasónico real.</p>
         </div>
       </div>
 
       <div class="analyst" id="analystPanel">
         <h3 style="font-size:18px; text-transform:none; letter-spacing:0; margin-bottom:8px; color:var(--text);">Reentrenar en vivo</h3>
-        <p style="font-size:15px; color:var(--muted); margin-bottom:18px;">Elige el grado del polinomio y observa cómo se reajusta la curva que relaciona dB con caudal (SCFM). El set de 22 fugas auditadas en campo se divide en 14 para entrenar (●, violeta) y 8 reservadas para probar qué tan bien generaliza (○, blanco) — la dispersión entre puntos viene de la presión de línea variable durante las mediciones (5-8 bar), el ruido ambiental y la distancia al punto de fuga.</p>
+        <p style="font-size:15px; color:var(--muted); margin-bottom:18px;">Elige el grado del polinomio y observa cómo se reajusta la curva que relaciona dB con caudal (SCFM). El set de 22 fugas auditadas en campo se divide en 14 para entrenar (●, violeta) y 8 reservadas para probar qué tan bien generaliza (○, blanco); la dispersión entre puntos viene de la presión de línea variable durante las mediciones (5-8 bar), el ruido ambiental y la distancia al punto de fuga.</p>
 
         <div class="dataset-wrap">
           <div class="dataset-label">Vista del dataset de entrenamiento</div>
@@ -488,10 +488,10 @@
   </section>
 
   <section class="business">
-    <h2>¿Qué significa para tu planta?</h2>
+    <h2>Cómo leer este número en planta</h2>
     <div class="business-grid">
       <div>
-        <p>Con la lectura actual, esta fuga se clasifica como <span class="stat" id="bizLevelInline">Bajo</span> y representa un costo anual proyectado de <span class="stat" id="bizCostInline">S/. 0</span> si se deja sin reparar. Un programa trimestral de detección ultrasónico —una tarde con el equipo adecuado— suele encontrar decenas de fugas por planta; sumadas, típicamente representan uno de los ahorros de energía más rápidos de recuperar en toda la planta, porque no requiere invertir en equipo nuevo, solo encontrar y sellar lo que ya se está pagando.</p>
+        <p>Con la lectura actual, esta fuga se clasifica como <span class="stat" id="bizLevelInline">Bajo</span> y representa un costo anual proyectado de <span class="stat" id="bizCostInline">S/. 0</span> si se deja sin reparar. Un programa trimestral de detección ultrasónico (una tarde con el equipo adecuado) suele encontrar decenas de fugas por planta; sumadas, típicamente representan uno de los ahorros de energía más rápidos de recuperar en toda la planta, porque no requiere invertir en equipo nuevo, solo encontrar y sellar lo que ya se está pagando.</p>
         <div class="biz-action" id="bizAction">
           <div class="biz-title" id="bizTitle">Calculando…</div>
           <div class="biz-detail" id="bizDetail"></div>
@@ -506,7 +506,7 @@
 
   <section id="cta">
     <h2>De esta demo a tu planta</h2>
-    <p style="color:var(--muted); max-width:640px; margin-bottom:20px;">La curva dB-caudal, los umbrales de severidad y la simulación de este demo están calibrados sobre datos sintéticos para poder compartir esta demo abiertamente — la metodología es la misma que aplicamos en campo para auditar tu red de aire comprimido real. Llevarlo a tu planta implica estandarizar cómo capturas tus mediciones ultrasónicas, tu presión de línea y tu tarifa eléctrica real, y calibrar el modelo con el patrón propio de tu red — ahí es donde entra nuestro motor AutoML, ajustando el modelo correcto para tu caso y evitando tanto falsas alarmas como fugas grandes que pasen desapercibidas. Se adapta al tipo de compresor y a la industria —minería, manufactura, energía, alimentos— cuando la calibramos con tus datos. Si quieres recorrer ese proceso, conversemos.</p>
+    <p style="color:var(--muted); max-width:640px; margin-bottom:20px;">La curva dB-caudal, los umbrales de severidad y la simulación de este demo están calibrados sobre datos sintéticos para poder compartir esta demo abiertamente, con la misma metodología que aplicamos en campo para auditar tu red de aire comprimido real. Llevarlo a tu planta implica estandarizar cómo capturas tus mediciones ultrasónicas, tu presión de línea y tu tarifa eléctrica real, y calibrar el modelo con el patrón propio de tu red; ahí entra el trabajo de calibración fina, ajustando el modelo correcto para tu caso y evitando tanto falsas alarmas como fugas grandes que pasen desapercibidas. Se adapta al tipo de compresor y a la industria (minería, manufactura, energía, alimentos) cuando la calibramos con tus datos. Si quieres recorrer ese proceso, conversemos.</p>
     <div class="cta-row">
       <a class="btn primary" href="https://chat.whatsapp.com/GvBz1tuUeNZ0xwTkjsuE3z" target="_blank" rel="noopener">Unirme a la comunidad de WhatsApp</a>
       <a class="btn ghost" href="https://www.linkedin.com/company/reliabilit-ia/" target="_blank" rel="noopener">Seguir en LinkedIn</a>
@@ -557,7 +557,7 @@
       <a href="https://www.linkedin.com/in/miguelcayllahua/" target="_blank" rel="noopener">LinkedIn personal</a>
       <a href="mailto:miguelcquispe@gmail.com">Correo</a>
     </div>
-    <p style="">La metodología es la misma que aplicamos en proyectos reales; los datos y la simulación de esta demo son sintéticos para poder compartirlos públicamente. Se calibra con tus propios datos —sin importar el tipo de compresor o la industria— cuando trabajamos juntos. Los parámetros de este demo son de referencia — se recalibran a la medida de cada equipo cuando trabajamos con tus datos.</p>
+    <p style="">El enfoque que ves aquí (algoritmo, validación, criterios de decisión) es el mismo que usamos con clientes reales; los números, en cambio, son sintéticos, para poder publicarlos sin comprometer información de nadie. Si quieres, calibramos este mismo modelo con tus propios datos.</p>
   </footer>
 </div>
 
@@ -570,9 +570,9 @@ const LEVELS = ['Bajo','Medio','Alto','Crítico'];
 const LEVEL_COLORS = ['#3ecfa0','#a8d966','#e8c547','#f4722e'];
 const LEVEL_DETAIL = [
   'Fuga pequeña, dentro de lo esperable en cualquier red de aire comprimido. Anotar y revisar en la próxima ronda de rutina.',
-  'Fuga moderada. Vale la pena programar su sellado en la próxima parada corta — el retorno suele ser rápido.',
+  'Fuga moderada. Vale la pena programar su sellado en la próxima parada corta; el retorno suele ser rápido.',
   'Fuga grande. El sobrecosto ya es significativo mes a mes; priorizar su reparación en la próxima ventana disponible.',
-  'Fuga muy grande. Está costando una cantidad considerable cada mes que sigue abierta — repararla debería ser inmediato.'
+  'Fuga muy grande. Está costando una cantidad considerable cada mes que sigue abierta; repararla debería ser inmediato.'
 ];
 const LEVEL_SIMPLE = [
   'fuga chica, solo anótala para la próxima ronda.',
@@ -700,10 +700,10 @@ function updateBasic(){
     confNote = 'La lectura está lejos de cualquier umbral entre niveles.';
   } else if(distToThresh > 0.07){
     confLevel = 'Media'; confColor = '#e8c547';
-    confNote = 'Cerca de un umbral — el nivel vecino también es plausible.';
+    confNote = 'Cerca de un umbral; el nivel vecino también es plausible.';
   } else {
     confLevel = 'Baja'; confColor = 'var(--cta)';
-    confNote = 'Justo en el borde entre dos niveles — trátalo como referencia, repite la medición.';
+    confNote = 'Justo en el borde entre dos niveles; trátalo como referencia, repite la medición.';
   }
   confidenceLine.textContent = 'Confianza de la clasificación: ' + confLevel;
   confidenceLine.style.color = confColor;
@@ -733,7 +733,7 @@ dbSlider.addEventListener('input', updateBasic);
 updateBasic();
 
 /* =========================================================
-   SIMULACIÓN EN VIVO — pulsos ultrasónicos animados desde un
+   SIMULACIÓN EN VIVO; pulsos ultrasónicos animados desde un
    punto de fuga (100% generado en cliente, solo ilustrativo)
    ========================================================= */
 const instrumentCanvas = document.getElementById('instrument');
@@ -824,7 +824,7 @@ function mainLoop(){
 requestAnimationFrame(mainLoop);
 
 /* =========================================================
-   MODO ANALISTA — dataset sintético + regresión polinomial animada
+   MODO ANALISTA; dataset sintético + regresión polinomial animada
    ========================================================= */
 function seededRandom(seed){
   let s = seed;
@@ -1071,13 +1071,13 @@ function animateToDegree(newDegree){
 
   const badge = document.getElementById('mFitBadge');
   if(r2Train < 0.94){
-    badge.textContent = '⚠ Subajuste — una recta no capta la curvatura real entre dB y caudal.';
+    badge.textContent = '⚠ Subajuste; una recta no capta la curvatura real entre dB y caudal.';
     badge.style.color = '#e8c547';
   } else if(gap > 0.12){
-    badge.textContent = '⚠ Sobreajuste — memoriza el entrenamiento pero generaliza peor a datos nuevos.';
+    badge.textContent = '⚠ Sobreajuste; memoriza el entrenamiento pero generaliza peor a datos nuevos.';
     badge.style.color = 'var(--cta)';
   } else {
-    badge.textContent = '✓ Ajuste razonable — generaliza bien a los datos de prueba.';
+    badge.textContent = '✓ Ajuste razonable; generaliza bien a los datos de prueba.';
     badge.style.color = 'var(--success)';
   }
 
@@ -1128,7 +1128,7 @@ analystToggle.addEventListener('change', ()=>{
   var GLOSSARY = [
     {term:'MCSA', def:'Análisis de firma de corriente del motor (Motor Current Signature Analysis): detecta fallas mecánicas y eléctricas midiendo variaciones en la corriente, sin abrir el equipo.'},
     {term:'RMS', def:'Valor cuadrático medio (Root Mean Square): resume la energía de una señal de vibración en un solo número comparable.'},
-    {term:'dB', def:'Decibel: unidad logarítmica de intensidad sonora — cada +10 dB representa aprox. 10 veces más energía acústica.'},
+    {term:'dB', def:'Decibel: unidad logarítmica de intensidad sonora; cada +10 dB representa aprox. 10 veces más energía acústica.'},
     {term:'ΔT', def:'Delta T: diferencia de temperatura entre dos puntos de medición.'},
     {term:'deslizamiento', def:'Slip: diferencia entre la velocidad del campo magnético del motor y la velocidad real del rotor; crece con más carga o daño mecánico.'},
     {term:'R²', def:'Coeficiente de determinación: qué tan bien el modelo explica la variación de los datos reales (1.0 = ajuste perfecto).'}

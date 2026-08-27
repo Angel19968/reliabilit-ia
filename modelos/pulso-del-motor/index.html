@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<!-- Google Analytics (GA4) — INACTIVO: reemplaza G-XXXXXXXXXX por tu Measurement ID real para activarlo -->
+<!-- Google Analytics (GA4). INACTIVO: reemplaza G-XXXXXXXXXX por tu Measurement ID real para activarlo -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -15,10 +15,10 @@
 <link rel="icon" href="../../assets/favicon.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
 <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
-<title>Pulso del Motor — RELIABILIT-IA</title>
+<title>Pulso del Motor. RELIABILIT-IA</title>
 <meta name="description" content="Detecta barras de rotor rotas con firma de corriente (MCSA) y una pinza amperimétrica, sin detener el motor. Simulación en vivo del espectro y clasificador ajustable.">
 
-<meta property="og:title" content="Pulso del Motor — RELIABILIT-IA">
+<meta property="og:title" content="Pulso del Motor. RELIABILIT-IA">
 <meta property="og:description" content="Mueve la carga y la profundidad de banda lateral y mira en vivo qué tan cerca está tu motor de una barra rota.">
 <meta property="og:image" content="../../assets/og-image.png">
 <meta property="og:type" content="website">
@@ -56,7 +56,7 @@
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "Pulso del Motor — RELIABILIT-IA",
+  "name": "Pulso del Motor. RELIABILIT-IA",
   "applicationCategory": "BusinessApplication",
   "operatingSystem": "Web",
   "url": "https://angel19968.github.io/reliabilit-ia/modelos/pulso-del-motor/",
@@ -396,8 +396,8 @@
     <h2>El problema</h2>
     <div class="context-grid">
       <div class="context-text">
-        <p>Para saber si un motor tiene barras de rotor dañadas, la forma tradicional es detenerlo y abrirlo — algo que en planta cuesta producción y solo se hace cuando ya hay sospecha fuerte. El Análisis de Firma de Corriente (MCSA, por sus siglas en inglés) permite mirar "adentro" del motor sin detenerlo: basta con una pinza amperimétrica y un analizador de espectro. Cuando una barra del rotor se rompe o fisura, aparecen dos picos pequeños ("bandas laterales") a los costados del pico principal de corriente, separados por una distancia que depende del deslizamiento del motor. Entre más profunda esa banda lateral respecto al pico principal, más severo el daño.</p>
-        <p>Este demo simula esa lectura: mueve la carga del motor y la profundidad de banda lateral medida, y mira en vivo qué severidad indica — y qué tan confiable es esa lectura.</p>
+        <p>Para saber si un motor tiene barras de rotor dañadas, la forma tradicional es detenerlo y abrirlo; algo que en planta cuesta producción y solo se hace cuando ya hay sospecha fuerte. El Análisis de Firma de Corriente (MCSA, por sus siglas en inglés) permite mirar "adentro" del motor sin detenerlo: basta con una pinza amperimétrica y un analizador de espectro. Cuando una barra del rotor se rompe o fisura, aparecen dos picos pequeños ("bandas laterales") a los costados del pico principal de corriente, separados por una distancia que depende del deslizamiento del motor. Entre más profunda esa banda lateral respecto al pico principal, más severo el daño.</p>
+        <p>Este demo simula esa lectura: mueve la carga del motor y la profundidad de banda lateral medida, y mira en vivo qué severidad indica; y qué tan confiable es esa lectura.</p>
       </div>
       <aside class="context-visual">
         <svg class="cv-wave" viewBox="0 0 260 52" preserveAspectRatio="none" aria-hidden="true"><path d="M0,28 C15,10 30,46 45,28 C60,10 75,46 90,28 C105,10 120,46 135,28 C150,10 165,46 180,28 C195,10 210,46 225,28 C235,20 245,28 260,28"/></svg>
@@ -412,7 +412,7 @@
     <h2>Demo interactivo</h2>
     <div class="panel">
       <div class="toggle-row">
-        <span class="label">Clasificación por umbrales de referencia — mueve los sliders para simular una lectura de campo.</span>
+        <span class="label">Clasificación por umbrales de referencia; mueve los sliders para simular una lectura de campo.</span>
         <label class="switch">
           <span>Modo Analista</span>
           <input type="checkbox" id="analystToggle">
@@ -464,13 +464,13 @@
             <div class="gauge-value"><b id="gaugeValue">0</b> <span class="gauge-note">0 = -55dB (sano), 100 = -15dB (severo)</span></div>
           </div>
 
-          <p class="sim-note">Simulación ilustrativa: el espectro de corriente (pico de línea + bandas laterales) se dibuja a partir de los mismos valores de los sliders — no proviene de una pinza amperimétrica real.</p>
+          <p class="sim-note">Simulación ilustrativa: el espectro de corriente (pico de línea + bandas laterales) se dibuja a partir de los mismos valores de los sliders; no proviene de una pinza amperimétrica real.</p>
         </div>
       </div>
 
       <div class="analyst" id="analystPanel">
         <h3 style="font-size:18px; text-transform:none; letter-spacing:0; margin-bottom:8px; color:var(--text);">Reentrenar en vivo (k vecinos más cercanos)</h3>
-        <p style="font-size:15px; color:var(--muted); margin-bottom:18px;">Los umbrales fijos (-38 / -30 / -22 dB) son una tabla de referencia genérica. Un modelo k-NN entrenado con un historial de 140 motores —cada uno con conteo real de barras rotas confirmado en taller al momento de la medición— puede aprender el patrón real de la firma de corriente, en vez de depender de un umbral único para todos los motores y cargas. El set se divide en 93 casos de entrenamiento (●) y 47 reservados para probar qué tan bien generaliza (○). Elige k: con k=1 el modelo memoriza cada punto de entrenamiento (incluido su ruido); con k muy alto, promedia tantos vecinos que diluye las fronteras entre clases.</p>
+        <p style="font-size:15px; color:var(--muted); margin-bottom:18px;">Los umbrales fijos (-38 / -30 / -22 dB) son una tabla de referencia genérica. Un modelo k-NN entrenado con un historial de 140 motores (cada uno con conteo real de barras rotas confirmado en taller al momento de la medición) puede aprender el patrón real de la firma de corriente, en vez de depender de un umbral único para todos los motores y cargas. El set se divide en 93 casos de entrenamiento (●) y 47 reservados para probar qué tan bien generaliza (○). Elige k: con k=1 el modelo memoriza cada punto de entrenamiento (incluido su ruido); con k muy alto, promedia tantos vecinos que diluye las fronteras entre clases.</p>
 
         <div class="dataset-wrap">
           <div class="dataset-label">Vista del dataset de entrenamiento</div>
@@ -497,10 +497,10 @@
   </section>
 
   <section class="business">
-    <h2>¿Qué significa para tu planta?</h2>
+    <h2>De este resultado a una acción</h2>
     <div class="business-grid">
       <div>
-        <p>Con la lectura actual, el motor se clasifica como <span class="stat" id="bizLevelInline">Sano</span>. Detectar una barra rota en etapa "Incipiente" en vez de "Severo" típicamente cambia una parada de emergencia con motor quemado (rebobinado + reemplazo de rotor + producción detenida) por una intervención planificada en la próxima ventana de mantenimiento — sin abrir el motor para confirmar la sospecha.</p>
+        <p>Con la lectura actual, el motor se clasifica como <span class="stat" id="bizLevelInline">Sano</span>. Detectar una barra rota en etapa "Incipiente" en vez de "Severo" típicamente cambia una parada de emergencia con motor quemado (rebobinado + reemplazo de rotor + producción detenida) por una intervención planificada en la próxima ventana de mantenimiento; sin abrir el motor para confirmar la sospecha.</p>
         <div class="biz-action" id="bizAction">
           <div class="biz-title" id="bizTitle">Calculando…</div>
           <div class="biz-detail" id="bizDetail"></div>
@@ -515,7 +515,7 @@
 
   <section id="cta">
     <h2>De esta demo a tu planta</h2>
-    <p style="color:var(--muted); max-width:640px; margin-bottom:20px;">Los umbrales de dB, las clases de severidad y la simulación de este demo están calibrados sobre datos sintéticos para poder compartir esta demo abiertamente — la metodología es la misma que aplicamos en campo para diagnosticar tu motor real. Llevarlo a tu planta implica estandarizar cómo capturas tus datos, analizarlos y prepararlos a fondo, y construir las variables que de verdad explican el problema. Con eso, nuestro motor AutoML elige y ajusta el modelo correcto para tu caso, calibra sus parámetros para que aprenda el patrón real —sin memorizar de más ni de menos— y afina las predicciones para evitar dos errores costosos: falsas alarmas, y algo peor, que el motor falle sin que el modelo lo haya anticipado. Se adapta al tipo de motor y a la industria —minería, manufactura, energía, alimentos— cuando la calibramos con tus datos. Si quieres recorrer ese proceso, conversemos.</p>
+    <p style="color:var(--muted); max-width:640px; margin-bottom:20px;">Los umbrales de dB, las clases de severidad y la simulación de este demo están calibrados sobre datos sintéticos para poder compartir esta demo abiertamente, con la misma metodología que aplicamos en campo para diagnosticar tu motor real. Llevarlo a tu planta implica estandarizar cómo capturas tus datos, analizarlos y prepararlos a fondo, y construir las variables que de verdad explican el problema. Con eso resuelto, el trabajo de calibración elige el modelo correcto para tu caso, ajusta sus parámetros para que aprenda el patrón real (sin memorizar de más ni de menos) y afina las predicciones para evitar dos errores costosos: falsas alarmas, y algo peor, que el motor falle sin que el modelo lo haya anticipado. Se adapta al tipo de motor y a la industria (minería, manufactura, energía, alimentos) cuando la calibramos con tus datos. Si quieres recorrer ese proceso, conversemos.</p>
     <div class="cta-row">
       <a class="btn primary" href="https://chat.whatsapp.com/GvBz1tuUeNZ0xwTkjsuE3z" target="_blank" rel="noopener">Unirme a la comunidad de WhatsApp</a>
       <a class="btn ghost" href="https://www.linkedin.com/company/reliabilit-ia/" target="_blank" rel="noopener">Seguir en LinkedIn</a>
@@ -566,7 +566,7 @@
       <a href="https://www.linkedin.com/in/miguelcayllahua/" target="_blank" rel="noopener">LinkedIn personal</a>
       <a href="mailto:miguelcquispe@gmail.com">Correo</a>
     </div>
-    <p style="">La metodología es la misma que aplicamos en proyectos reales; los datos y la simulación de esta demo son sintéticos para poder compartirlos públicamente. Se calibra con tus propios datos —sin importar el tipo de motor o la industria— cuando trabajamos juntos. Los parámetros de este demo son de referencia — se recalibran a la medida de cada equipo cuando trabajamos con tus datos.</p>
+    <p style="">Esta demo separa dos cosas: el método (real, el mismo de nuestros proyectos) y los datos (sintéticos, por diseño, para compartir sin exponer a ningún cliente). El siguiente paso natural es calibrar el mismo modelo con tus propios datos.</p>
   </footer>
 </div>
 
@@ -578,16 +578,16 @@
 const LEVELS = ['Sano','Incipiente','Moderado','Severo'];
 const LEVEL_COLORS = ['#3ecfa0','#a8d966','#e8c547','#f4722e'];
 const LEVEL_DETAIL = [
-  'Las bandas laterales están muy por debajo de la fundamental — no hay evidencia de barras rotas. Mantener ronda de monitoreo habitual.',
+  'Las bandas laterales están muy por debajo de la fundamental; no hay evidencia de barras rotas. Mantener ronda de monitoreo habitual.',
   'Aparece una banda lateral incipiente, consistente con una micro-fisura o barra en etapa temprana de daño. Repetir la medición en 2-4 semanas para confirmar tendencia.',
   'Banda lateral clara y sostenida. Indicio de una o más barras dañadas. Programar inspección física en la próxima parada.',
-  'Banda lateral muy próxima a la fundamental — señal fuerte de barras rotas múltiples. Priorizar intervención antes de la próxima falla no programada.'
+  'Banda lateral muy próxima a la fundamental; señal fuerte de barras rotas múltiples. Priorizar intervención antes de la próxima falla no programada.'
 ];
 const LEVEL_SIMPLE = [
   'el motor está sano, sigue con tu ronda normal.',
   'repite la medición en 2-4 semanas para confirmar.',
   'programa una inspección física en la próxima parada.',
-  'actúa ya — riesgo alto de barras rotas.'
+  'actúa ya; riesgo alto de barras rotas.'
 ];
 const DB_MIN = -55, DB_MAX = -15;
 const THRESHOLDS = [-38, -30, -22];
@@ -598,7 +598,7 @@ function classify(dB){
   return 3;
 }
 function slipFromLoad(loadPct){
-  return 0.6 + (loadPct/100)*3.4; // % — rango típico de motores de inducción
+  return 0.6 + (loadPct/100)*3.4; // %; rango típico de motores de inducción
 }
 
 /* =========================================================
@@ -730,10 +730,10 @@ function updateBasic(){
     confNote = 'La lectura está lejos de cualquier umbral entre clases.';
   } else if(distToThresh > 1.5){
     confLevel = 'Media'; confColor = '#e8c547';
-    confNote = 'Cerca de un umbral — la clase vecina también es plausible.';
+    confNote = 'Cerca de un umbral; la clase vecina también es plausible.';
   } else {
     confLevel = 'Baja'; confColor = 'var(--cta)';
-    confNote = 'Justo en el borde entre dos niveles — trátalo como referencia, repite la medición.';
+    confNote = 'Justo en el borde entre dos niveles; trátalo como referencia, repite la medición.';
   }
   confidenceLine.textContent = 'Confianza de la clasificación: ' + confLevel;
   confidenceLine.style.color = confColor;
@@ -761,7 +761,7 @@ dbSlider.addEventListener('input', updateBasic);
 updateBasic();
 
 /* =========================================================
-   SIMULACIÓN EN VIVO — espectro de corriente animado
+   SIMULACIÓN EN VIVO; espectro de corriente animado
    (100% generado en cliente a partir de carga/dB, solo ilustrativo)
    ========================================================= */
 const instrumentCanvas = document.getElementById('instrument');
@@ -850,7 +850,7 @@ function mainLoop(){
 requestAnimationFrame(mainLoop);
 
 /* =========================================================
-   MODO ANALISTA — dataset sintético + clasificador k-NN
+   MODO ANALISTA; dataset sintético + clasificador k-NN
    ========================================================= */
 function seededRandom(seed){
   let s = seed;
@@ -1016,7 +1016,7 @@ function drawDecisionMap(k){
   cctx.fillText('● entrenamiento · ○ prueba · color = nivel de severidad', pad, pad-16);
 }
 
-// Matriz de confusión (conjunto de prueba) — reemplaza las barras de
+// Matriz de confusión (conjunto de prueba); reemplaza las barras de
 // exactitud por clase: muestra con qué otro nivel se confunde cada
 // error, no solo cuánto acierta cada uno.
 function drawConfusion(k){
@@ -1030,7 +1030,7 @@ function drawConfusion(k){
 
   rctx.fillStyle = '#c9c9d4';
   rctx.font = '12px DM Mono, monospace';
-  rctx.fillText('Matriz de confusión (prueba) — filas = nivel real, columnas = predicho', padL-70, 14);
+  rctx.fillText('Matriz de confusión (prueba); filas = nivel real, columnas = predicho', padL-70, 14);
 
   LEVELS.forEach((name,j)=>{
     rctx.fillStyle = '#8a8a98';
@@ -1068,13 +1068,13 @@ function setK(k){
 
   const badge = document.getElementById('mFitBadge');
   if(accTrain < 0.66){
-    badge.textContent = '⚠ Subajuste — con k tan alto, el modelo promedia demasiados vecinos y diluye las fronteras entre clases.';
+    badge.textContent = '⚠ Subajuste; con k tan alto, el modelo promedia demasiados vecinos y diluye las fronteras entre clases.';
     badge.style.color = '#e8c547';
   } else if(gap > 0.15){
-    badge.textContent = '⚠ Sobreajuste — memoriza los puntos de entrenamiento (incluido su ruido) pero generaliza peor a datos nuevos.';
+    badge.textContent = '⚠ Sobreajuste; memoriza los puntos de entrenamiento (incluido su ruido) pero generaliza peor a datos nuevos.';
     badge.style.color = 'var(--cta)';
   } else {
-    badge.textContent = '✓ Ajuste razonable — generaliza bien a los datos de prueba.';
+    badge.textContent = '✓ Ajuste razonable; generaliza bien a los datos de prueba.';
     badge.style.color = 'var(--success)';
   }
 
@@ -1112,7 +1112,7 @@ analystToggle.addEventListener('change', ()=>{
   var GLOSSARY = [
     {term:'MCSA', def:'Análisis de firma de corriente del motor (Motor Current Signature Analysis): detecta fallas mecánicas y eléctricas midiendo variaciones en la corriente, sin abrir el equipo.'},
     {term:'RMS', def:'Valor cuadrático medio (Root Mean Square): resume la energía de una señal de vibración en un solo número comparable.'},
-    {term:'dB', def:'Decibel: unidad logarítmica de intensidad sonora — cada +10 dB representa aprox. 10 veces más energía acústica.'},
+    {term:'dB', def:'Decibel: unidad logarítmica de intensidad sonora; cada +10 dB representa aprox. 10 veces más energía acústica.'},
     {term:'ΔT', def:'Delta T: diferencia de temperatura entre dos puntos de medición.'},
     {term:'deslizamiento', def:'Slip: diferencia entre la velocidad del campo magnético del motor y la velocidad real del rotor; crece con más carga o daño mecánico.'},
     {term:'R²', def:'Coeficiente de determinación: qué tan bien el modelo explica la variación de los datos reales (1.0 = ajuste perfecto).'}

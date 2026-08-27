@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<!-- Google Analytics (GA4) — INACTIVO: reemplaza G-XXXXXXXXXX por tu Measurement ID real para activarlo -->
+<!-- Google Analytics (GA4). INACTIVO: reemplaza G-XXXXXXXXXX por tu Measurement ID real para activarlo -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -15,10 +15,10 @@
 <link rel="icon" href="../../assets/favicon.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
 <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
-<title>Familias de Turbinas — RELIABILIT-IA</title>
+<title>Familias de Turbinas. RELIABILIT-IA</title>
 <meta name="description" content="Agrupa turbinas en familias operativas reales usando clustering jerárquico, sin decirle al modelo cuántos grupos existen de antemano.">
 
-<meta property="og:title" content="Familias de Turbinas — RELIABILIT-IA">
+<meta property="og:title" content="Familias de Turbinas. RELIABILIT-IA">
 <meta property="og:description" content="Mueve potencia nominal y eficiencia térmica y mira en vivo a qué familia de turbinas pertenece esa combinación.">
 <meta property="og:image" content="../../assets/og-image.png">
 <meta property="og:type" content="website">
@@ -56,7 +56,7 @@
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "Familias de Turbinas — RELIABILIT-IA",
+  "name": "Familias de Turbinas. RELIABILIT-IA",
   "applicationCategory": "BusinessApplication",
   "operatingSystem": "Web",
   "url": "https://angel19968.github.io/reliabilit-ia/modelos/familias-de-turbinas/",
@@ -386,8 +386,8 @@
     <h2>El problema</h2>
     <div class="context-grid">
       <div class="context-text">
-        <p>La <a href="../radiografia-de-planta/">Radiografía de Planta</a> ya usó agrupamiento (k-means) sobre datos reducidos con PCA — pero ahí el número de grupos (k) se elegía de antemano. Este módulo resuelve un problema distinto: agrupar turbinas sin fijar cuántas familias existen, dejando que la propia estructura de los datos lo sugiera. Para eso usa clustering jerárquico aglomerativo: empieza tratando cada turbina como su propio grupo, y va fusionando los dos grupos más parecidos entre sí, uno a la vez, hasta que todo queda en un solo grupo. Ese historial de fusiones —el dendrograma— se puede "cortar" a distintas alturas para obtener 2, 3, 4 o más familias, y es al analista a quien le toca decidir dónde cortar con criterio.</p>
-        <p>Las dos variables que usa este demo —potencia nominal y eficiencia térmica— son datos de placa que cualquier operador de planta ya tiene. En la práctica, turbinas de potencias muy distintas (una microturbina de 2 MW y una de ciclo combinado de 200 MW) casi nunca deberían tratarse con la misma estrategia de mantenimiento — agruparlas correctamente es el primer paso para diferenciar esas estrategias.</p>
+        <p>La <a href="../radiografia-de-planta/">Radiografía de Planta</a> ya usó agrupamiento (k-means) sobre datos reducidos con PCA; pero ahí el número de grupos (k) se elegía de antemano. Este módulo resuelve un problema distinto: agrupar turbinas sin fijar cuántas familias existen, dejando que la propia estructura de los datos lo sugiera. Para eso usa clustering jerárquico aglomerativo: empieza tratando cada turbina como su propio grupo, y va fusionando los dos grupos más parecidos entre sí, uno a la vez, hasta que todo queda en un solo grupo. Ese historial de fusiones (el dendrograma) se puede "cortar" a distintas alturas para obtener 2, 3, 4 o más familias, y es al analista a quien le toca decidir dónde cortar con criterio.</p>
+        <p>Las dos variables que usa este demo (potencia nominal y eficiencia térmica) son datos de placa que cualquier operador de planta ya tiene. En la práctica, turbinas de potencias muy distintas (una microturbina de 2 MW y una de ciclo combinado de 200 MW) casi nunca deberían tratarse con la misma estrategia de mantenimiento; agruparlas correctamente es el primer paso para diferenciar esas estrategias.</p>
       </div>
       <aside class="context-visual">
         <svg class="cv-wave" viewBox="0 0 260 52" preserveAspectRatio="none" aria-hidden="true"><path d="M0,28 C15,10 30,46 45,28 C60,10 75,46 90,28 C105,10 120,46 135,28 C150,10 165,46 180,28 C195,10 210,46 225,28 C235,20 245,28 260,28"/></svg>
@@ -402,7 +402,7 @@
     <h2>Demo interactivo</h2>
     <div class="panel">
       <div class="toggle-row">
-        <span class="label">Clustering jerárquico aglomerativo (enlace promedio) — mueve los sliders para ubicar una turbina.</span>
+        <span class="label">Clustering jerárquico aglomerativo (enlace promedio); mueve los sliders para ubicar una turbina.</span>
         <label class="switch">
           <span>Modo Analista</span>
           <input type="checkbox" id="analystToggle">
@@ -452,13 +452,13 @@
             <div class="gauge-value"><b id="gaugeValue">0</b> <span class="gauge-note">0 = muy dentro de su familia, 100 = a medio camino de otra familia</span></div>
           </div>
 
-          <p class="sim-note">Simulación ilustrativa: el mapa y el punto se dibujan a partir de los mismos valores de los sliders — no provienen de un parque de turbinas real.</p>
+          <p class="sim-note">Simulación ilustrativa: el mapa y el punto se dibujan a partir de los mismos valores de los sliders; no provienen de un parque de turbinas real.</p>
         </div>
       </div>
 
       <div class="analyst" id="analystPanel">
         <h3 style="font-size:18px; text-transform:none; letter-spacing:0; margin-bottom:8px; color:var(--text);">Cortar el dendrograma en vivo</h3>
-        <p style="font-size:15px; color:var(--muted); margin-bottom:18px;">Elige en cuántos grupos (k) cortar el árbol de fusiones. Con muy pocos grupos, familias realmente distintas quedan mezcladas en una sola. Con demasiados, una familia cohesionada se fragmenta en subgrupos artificiales de un puñado de turbinas, sin que eso refleje ninguna diferencia real de fondo. El silhouette score —qué tan bien encaja cada turbina en su propio grupo frente a los demás— ayuda a detectar el punto razonable.</p>
+        <p style="font-size:15px; color:var(--muted); margin-bottom:18px;">Elige en cuántos grupos (k) cortar el árbol de fusiones. Con muy pocos grupos, familias realmente distintas quedan mezcladas en una sola. Con demasiados, una familia cohesionada se fragmenta en subgrupos artificiales de un puñado de turbinas, sin que eso refleje ninguna diferencia real de fondo. El silhouette score (qué tan bien encaja cada turbina en su propio grupo frente a los demás) ayuda a detectar el punto razonable.</p>
 
         <div class="dataset-wrap">
           <div class="dataset-label">Vista del dataset (72 turbinas simuladas, 3 familias reales usadas solo para validar)</div>
@@ -488,7 +488,7 @@
   </section>
 
   <section class="business">
-    <h2>¿Qué significa para tu planta?</h2>
+    <h2>Qué decisión habilita este dato</h2>
     <div class="business-grid">
       <div>
         <p>Con la combinación actual, esta turbina se agrupa en la familia <span class="stat" id="bizLevelInline">Pequeñas</span>. Agrupar bien tu parque de turbinas antes de definir políticas de mantenimiento evita dos errores comunes: tratar turbinas muy distintas con la misma frecuencia de inspección, o crear demasiadas políticas a la medida cuando en realidad el parque solo tiene un puñado de perfiles operativos genuinamente distintos.</p>
@@ -506,7 +506,7 @@
 
   <section id="cta">
     <h2>De esta demo a tu planta</h2>
-    <p style="color:var(--muted); max-width:640px; margin-bottom:20px;">El dataset y el agrupamiento de este demo están calibrados sobre datos sintéticos para poder compartir esta demo abiertamente — la metodología es la misma que aplicamos en campo para clasificar tu parque real. Llevarlo a tu planta implica correr este mismo algoritmo sobre el historial real de tus equipos, decidir junto contigo dónde cortar el dendrograma según cuántas políticas de mantenimiento distintas tiene sentido operar, y sumar las variables que tú ya registras (horas de operación, tipo de combustible, año de fabricación, etc.) — ahí es donde entra nuestro motor AutoML. Se adapta al tipo de equipo y a la industria —minería, manufactura, energía, alimentos— cuando la calibramos con tus datos. Si quieres recorrer ese proceso, conversemos.</p>
+    <p style="color:var(--muted); max-width:640px; margin-bottom:20px;">El dataset y el agrupamiento de este demo están calibrados sobre datos sintéticos para poder compartir esta demo abiertamente; el enfoque es el mismo que aplicamos en campo para clasificar tu parque real. Llevarlo a tu planta implica correr este mismo algoritmo sobre el historial real de tus equipos, decidir junto contigo dónde cortar el dendrograma según cuántas políticas de mantenimiento distintas tiene sentido operar, y sumar las variables que tú ya registras (horas de operación, tipo de combustible, año de fabricación, etc.). Ahí calibramos el modelo caso por caso. Se adapta al tipo de equipo y a la industria (minería, manufactura, energía, alimentos) cuando la calibramos con tus datos. Si quieres recorrer ese proceso, conversemos.</p>
     <div class="cta-row">
       <a class="btn primary" href="https://chat.whatsapp.com/GvBz1tuUeNZ0xwTkjsuE3z" target="_blank" rel="noopener">Unirme a la comunidad de WhatsApp</a>
       <a class="btn ghost" href="https://www.linkedin.com/company/reliabilit-ia/" target="_blank" rel="noopener">Seguir en LinkedIn</a>
@@ -557,7 +557,7 @@
       <a href="https://www.linkedin.com/in/miguelcayllahua/" target="_blank" rel="noopener">LinkedIn personal</a>
       <a href="mailto:miguelcquispe@gmail.com">Correo</a>
     </div>
-    <p style="">La metodología es la misma que aplicamos en proyectos reales; los datos y la simulación de esta demo son sintéticos para poder compartirlos públicamente. Se calibra con tus propios datos —sin importar el tipo de equipo o la industria— cuando trabajamos juntos. Los parámetros de este demo son de referencia — se recalibran a la medida de cada equipo cuando trabajamos con tus datos.</p>
+    <p style="">Aquí la metodología es real y los datos no. Generamos un dataset sintético para poder mostrar el modelo sin tocar información de ningún cliente, pero el algoritmo y su validación son los que usamos en proyectos reales. Calibrarlo con tus propios datos es la conversación que sigue.</p>
   </footer>
 </div>
 
@@ -586,12 +586,12 @@ const FAMILY_COLORS = ['#3ecfa0','#e8c547','#f4722e'];
 const FAMILY_DETAIL = [
   'Turbinas industriales pequeñas (aprox. 1-15 MW). Suelen justificar inspecciones más frecuentes por unidad de energía producida.',
   'Turbinas industriales medianas (aprox. 20-90 MW). Punto intermedio entre frecuencia de inspección y costo por parada.',
-  'Turbinas de ciclo combinado o de gran escala (150+ MW). Cada parada no programada tiene un costo mucho mayor — justifican monitoreo más intensivo.'
+  'Turbinas de ciclo combinado o de gran escala (150+ MW). Cada parada no programada tiene un costo mucho mayor; justifican monitoreo más intensivo.'
 ];
 const FAMILY_SIMPLE = [
-  'es una turbina pequeña — conviene inspeccionarla seguido.',
-  'es una turbina mediana — inspección en un punto intermedio.',
-  'es una turbina grande — una parada aquí cuesta mucho más, vigílala de cerca.'
+  'es una turbina pequeña; conviene inspeccionarla seguido.',
+  'es una turbina mediana; inspección en un punto intermedio.',
+  'es una turbina grande; una parada aquí cuesta mucho más, vigílala de cerca.'
 ];
 
 const points = [];
@@ -617,7 +617,7 @@ function renderDatasetPreview(){
   if(!tbody) return;
   tbody.innerHTML = points.map((p,i)=>`<tr><td>${i+1}</td><td>${fmtDate(p.date)}</td><td>${p.mw.toFixed(1)}</td><td>${p.eff.toFixed(1)}</td><td>${FAMILY_NAMES[p.fam]}</td></tr>`).join('');
   const sortedDates = points.map(p=>p.date).sort((a,b)=>a-b);
-  note.textContent = `${points.length} turbinas simuladas, registradas entre ${fmtDate(sortedDates[0])} y ${fmtDate(sortedDates[sortedDates.length-1])}. La columna "familia real" solo se usa para validar la calidad del agrupamiento — el algoritmo nunca la ve.`;
+  note.textContent = `${points.length} turbinas simuladas, registradas entre ${fmtDate(sortedDates[0])} y ${fmtDate(sortedDates[sortedDates.length-1])}. La columna "familia real" solo se usa para validar la calidad del agrupamiento; el algoritmo nunca la ve.`;
 }
 renderDatasetPreview();
 
@@ -793,7 +793,7 @@ function updateBasic(){
     confNote = 'Está en una zona intermedia entre dos familias.';
   } else {
     confLevel = 'Baja'; confColor = 'var(--cta)';
-    confNote = 'Está casi a medio camino entre dos familias — la etiqueta es la más cercana, pero por poco margen.';
+    confNote = 'Está casi a medio camino entre dos familias; la etiqueta es la más cercana, pero por poco margen.';
   }
   confidenceLine.textContent = 'Confianza de la asignación: ' + confLevel;
   confidenceLine.style.color = confColor;
@@ -823,7 +823,7 @@ mwSlider.addEventListener('input', updateBasic);
 effSlider.addEventListener('input', updateBasic);
 
 /* =========================================================
-   SIMULACIÓN EN VIVO — mapa de familias con el punto actual.
+   SIMULACIÓN EN VIVO; mapa de familias con el punto actual.
    ========================================================= */
 const instrumentCanvas = document.getElementById('instrument');
 const ictx = instrumentCanvas.getContext('2d');
@@ -892,7 +892,7 @@ function drawInstrument(mw, eff, fam){
 }
 
 /* =========================================================
-   MODO ANALISTA — cortar el dendrograma en k grupos
+   MODO ANALISTA; cortar el dendrograma en k grupos
    ========================================================= */
 const dendroCanvas = document.getElementById('dendro');
 const dctx = dendroCanvas.getContext('2d');
@@ -1001,13 +1001,13 @@ function setK(k){
 
   const badge = document.getElementById('mFitBadge');
   if(minSize <= 2){
-    badge.textContent = '⚠ Sobre-fragmentación — al menos un grupo es un puñado de turbinas: probablemente estás dividiendo una familia real en pedazos artificiales.';
+    badge.textContent = '⚠ Sobre-fragmentación; al menos un grupo es un puñado de turbinas: probablemente estás dividiendo una familia real en pedazos artificiales.';
     badge.style.color = '#e8c547';
   } else if(p < 0.85){
-    badge.textContent = '⚠ Muy pocos grupos — familias con perfiles operativos distintos están mezcladas en un mismo grupo.';
+    badge.textContent = '⚠ Muy pocos grupos; familias con perfiles operativos distintos están mezcladas en un mismo grupo.';
     badge.style.color = 'var(--cta)';
   } else {
-    badge.textContent = '✓ Número de familias razonable — buena separación entre grupos (silhouette alto) sin fragmentar en exceso.';
+    badge.textContent = '✓ Número de familias razonable; buena separación entre grupos (silhouette alto) sin fragmentar en exceso.';
     badge.style.color = 'var(--success)';
   }
 
@@ -1053,7 +1053,7 @@ updateBasic();
   var GLOSSARY = [
     {term:'MCSA', def:'Análisis de firma de corriente del motor (Motor Current Signature Analysis): detecta fallas mecánicas y eléctricas midiendo variaciones en la corriente, sin abrir el equipo.'},
     {term:'RMS', def:'Valor cuadrático medio (Root Mean Square): resume la energía de una señal de vibración en un solo número comparable.'},
-    {term:'dB', def:'Decibel: unidad logarítmica de intensidad sonora — cada +10 dB representa aprox. 10 veces más energía acústica.'},
+    {term:'dB', def:'Decibel: unidad logarítmica de intensidad sonora; cada +10 dB representa aprox. 10 veces más energía acústica.'},
     {term:'ΔT', def:'Delta T: diferencia de temperatura entre dos puntos de medición.'},
     {term:'deslizamiento', def:'Slip: diferencia entre la velocidad del campo magnético del motor y la velocidad real del rotor; crece con más carga o daño mecánico.'},
     {term:'R²', def:'Coeficiente de determinación: qué tan bien el modelo explica la variación de los datos reales (1.0 = ajuste perfecto).'}

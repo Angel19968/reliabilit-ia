@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<!-- Google Analytics (GA4) — INACTIVO: reemplaza G-XXXXXXXXXX por tu Measurement ID real para activarlo -->
+<!-- Google Analytics (GA4). INACTIVO: reemplaza G-XXXXXXXXXX por tu Measurement ID real para activarlo -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -15,10 +15,10 @@
 <link rel="icon" href="../../assets/favicon.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
 <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
-<title>Huella del Aceite — RELIABILIT-IA</title>
+<title>Huella del Aceite. RELIABILIT-IA</title>
 <meta name="description" content="Clasifica el estado de un equipo en Normal, Precaución o Crítico a partir de dos parámetros de análisis de aceite: acidez (TAN) y partículas de desgaste (hierro).">
 
-<meta property="og:title" content="Huella del Aceite — RELIABILIT-IA">
+<meta property="og:title" content="Huella del Aceite. RELIABILIT-IA">
 <meta property="og:description" content="Mueve la acidez (TAN) y el hierro del aceite y mira en vivo qué está diciendo el lubricante sobre el desgaste interno del equipo.">
 <meta property="og:image" content="../../assets/og-image.png">
 <meta property="og:type" content="website">
@@ -56,7 +56,7 @@
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "Huella del Aceite — RELIABILIT-IA",
+  "name": "Huella del Aceite. RELIABILIT-IA",
   "applicationCategory": "BusinessApplication",
   "operatingSystem": "Web",
   "url": "https://angel19968.github.io/reliabilit-ia/modelos/huella-del-aceite/",
@@ -383,19 +383,19 @@
     <div class="badge">Ingeniería aplicada a Lubricación</div>
     <span class="badge" style="border-color:var(--accent); color:var(--accent); margin-left:8px;">Nuevas tecnologías · Análisis de aceite</span>
     <h1>Huella del Aceite</h1>
-    <p class="lead">El aceite no solo lubrica — guarda una huella química de todo lo que le pasó al equipo por dentro.</p>
+    <p class="lead">El aceite no solo lubrica; guarda una huella química de todo lo que le pasó al equipo por dentro.</p>
   </header>
 
   <section class="context">
     <h2>El problema</h2>
     <div class="context-grid">
       <div class="context-text">
-        <p>Cambiar el aceite por calendario ignora lo que el aceite mismo está diciendo. Dos números bastan para empezar a leer esa huella: el TAN (Número de Acidez Total), que sube cuando el aceite se oxida y pierde su capacidad protectora, y el hierro disuelto (Fe), que sube cuando hay desgaste metal-metal en rodamientos, engranajes o camisas. Ninguno de los dos por sí solo cuenta toda la historia — juntos, permiten clasificar el estado del equipo antes de que el desgaste se note en vibración o en una falla real.</p>
+        <p>Cambiar el aceite por calendario ignora lo que el aceite mismo está diciendo. Dos números bastan para empezar a leer esa huella: el TAN (Número de Acidez Total), que sube cuando el aceite se oxida y pierde su capacidad protectora, y el hierro disuelto (Fe), que sube cuando hay desgaste metal-metal en rodamientos, engranajes o camisas. Ninguno de los dos por sí solo cuenta toda la historia; juntos, permiten clasificar el estado del equipo antes de que el desgaste se note en vibración o en una falla real.</p>
       </div>
       <aside class="context-visual">
         <svg class="cv-wave" viewBox="0 0 260 52" preserveAspectRatio="none" aria-hidden="true"><path d="M0,28 C15,10 30,46 45,28 C60,10 75,46 90,28 C105,10 120,46 135,28 C150,10 165,46 180,28 C195,10 210,46 225,28 C235,20 245,28 260,28"/></svg>
         <div class="cv-title"><span class="cv-dot"></span>Variables que observa el modelo</div>
-        <div class="cv-fact"><div class="cv-fact-label">TAN — Número de Acidez Total</div><div class="cv-fact-range">0.10 (aceite nuevo) → 4.00 mg KOH/g (muy oxidado)</div></div>
+        <div class="cv-fact"><div class="cv-fact-label">TAN. Número de Acidez Total</div><div class="cv-fact-range">0.10 (aceite nuevo) → 4.00 mg KOH/g (muy oxidado)</div></div>
         <div class="cv-fact"><div class="cv-fact-label">Hierro disuelto (Fe)</div><div class="cv-fact-range">0 ppm → 150 ppm (desgaste severo)</div></div>
       </aside>
     </div>
@@ -405,7 +405,7 @@
     <h2>Demo interactivo</h2>
     <div class="panel">
       <div class="toggle-row">
-        <span class="label">Clasificación por umbrales de referencia — mueve los sliders para simular un reporte de laboratorio.</span>
+        <span class="label">Clasificación por umbrales de referencia; mueve los sliders para simular un reporte de laboratorio.</span>
         <label class="switch">
           <span>Modo Analista</span>
           <input type="checkbox" id="analystToggle">
@@ -416,7 +416,7 @@
       <div class="demo-grid">
         <div class="controls-col">
           <div class="slider-group">
-            <label>TAN — Número de Acidez Total <span class="val" id="tanVal">0.60 mg KOH/g</span></label>
+            <label>TAN. Número de Acidez Total <span class="val" id="tanVal">0.60 mg KOH/g</span></label>
             <input type="range" id="tanSlider" min="0.10" max="4.00" step="0.05" value="0.60">
             <div class="hint"><span>0.10 (aceite nuevo)</span><span>4.00 mg KOH/g (muy oxidado)</span></div>
           </div>
@@ -451,7 +451,7 @@
             <div class="gauge-value"><b id="gaugeValue">0</b> <span class="gauge-note">toma el peor de los dos: TAN o hierro disuelto</span></div>
           </div>
 
-          <p class="sim-note">Simulación ilustrativa: los umbrales y el mapa de zonas son de ejemplo, calibrados sobre datos sintéticos — no provienen de un laboratorio de análisis de aceite real.</p>
+          <p class="sim-note">Simulación ilustrativa: los umbrales y el mapa de zonas son de ejemplo, calibrados sobre datos sintéticos; no provienen de un laboratorio de análisis de aceite real.</p>
         </div>
       </div>
 
@@ -484,10 +484,10 @@
   </section>
 
   <section class="business">
-    <h2>¿Qué significa para tu planta?</h2>
+    <h2>Qué decisión habilita este dato</h2>
     <div class="business-grid">
       <div>
-        <p>Con la lectura actual, el equipo se clasifica en <span class="stat" id="bizLevelInline">Normal</span>. Seguir operando con TAN o hierro elevados no da síntomas inmediatos — el aceite pierde su película protectora y el desgaste se acelera en silencio, hasta que aparece como vibración, ruido o, en el peor caso, una falla mecánica. Actuar cuando el aceite lo indica, no cuando el equipo lo grita, es la diferencia entre un cambio de aceite y un cambio de componente.</p>
+        <p>Con la lectura actual, el equipo se clasifica en <span class="stat" id="bizLevelInline">Normal</span>. Seguir operando con TAN o hierro elevados no da síntomas inmediatos; el aceite pierde su película protectora y el desgaste se acelera en silencio, hasta que aparece como vibración, ruido o, en el peor caso, una falla mecánica. Actuar cuando el aceite lo indica, no cuando el equipo lo grita, es la diferencia entre un cambio de aceite y un cambio de componente.</p>
         <div class="biz-action" id="bizAction">
           <div class="biz-title" id="bizTitle">Calculando…</div>
           <div class="biz-detail" id="bizDetail"></div>
@@ -502,7 +502,7 @@
 
   <section id="cta">
     <h2>De esta demo a tu planta</h2>
-    <p style="color:var(--muted); max-width:640px; margin-bottom:20px;">Los umbrales, las clases y la simulación de este demo están calibrados sobre datos sintéticos para poder compartir esta demo abiertamente — la metodología es la misma que aplicamos en campo para leer un reporte de laboratorio real. Llevarlo a tu planta implica estandarizar cómo tomas y envías tus muestras de aceite, incorporar más parámetros (viscosidad, agua, TBN, conteo de partículas por ISO 4406) según tu equipo, y calibrar el modelo con tu propio histórico — ahí es donde entra nuestro motor AutoML, ajustando los umbrales correctos para tu tipo de aceite y equipo, y evitando tanto falsas alarmas como desgaste real que pase desapercibido. Se adapta al tipo de lubricante y activo —motores, reductores, sistemas hidráulicos, transformadores— cuando lo calibramos con tus datos. Si quieres recorrer ese proceso, conversemos.</p>
+    <p style="color:var(--muted); max-width:640px; margin-bottom:20px;">Los umbrales, las clases y la simulación de este demo están calibrados sobre datos sintéticos para poder compartir esta demo abiertamente; el enfoque es el mismo que aplicamos en campo para leer un reporte de laboratorio real. Llevarlo a tu planta implica estandarizar cómo tomas y envías tus muestras de aceite, incorporar más parámetros (viscosidad, agua, TBN, conteo de partículas por ISO 4406) según tu equipo, y calibrar el modelo con tu propio histórico; ahí entra el trabajo de calibración fina, ajustando los umbrales correctos para tu tipo de aceite y equipo, y evitando tanto falsas alarmas como desgaste real que pase desapercibido. Se adapta al tipo de lubricante y activo (motores, reductores, sistemas hidráulicos, transformadores) cuando lo calibramos con tus datos. Si quieres recorrer ese proceso, conversemos.</p>
     <div class="cta-row">
       <a class="btn primary" href="https://chat.whatsapp.com/GvBz1tuUeNZ0xwTkjsuE3z" target="_blank" rel="noopener">Unirme a la comunidad de WhatsApp</a>
       <a class="btn ghost" href="https://www.linkedin.com/company/reliabilit-ia/" target="_blank" rel="noopener">Seguir en LinkedIn</a>
@@ -553,13 +553,13 @@
       <a href="https://www.linkedin.com/in/miguelcayllahua/" target="_blank" rel="noopener">LinkedIn personal</a>
       <a href="mailto:miguelcquispe@gmail.com">Correo</a>
     </div>
-    <p style="">La metodología es la misma que aplicamos en proyectos reales; los datos y la simulación de esta demo son sintéticos para poder compartirlos públicamente. Se calibra con tu propio histórico de laboratorio —sin importar el tipo de lubricante o activo— cuando trabajamos juntos. Los parámetros de este demo son de referencia — se recalibran a la medida de cada equipo cuando trabajamos con tus datos.</p>
+    <p style="">Aquí la metodología es real y los datos no. Generamos un dataset sintético para poder mostrar el modelo sin tocar información de ningún cliente, pero el algoritmo y su validación son los que usamos en proyectos reales. Calibrarlo con tu propio histórico de laboratorio es la conversación que sigue.</p>
   </footer>
 </div>
 
 <script>
 /* =========================================================
-   MODO BÁSICO — clasificación por umbrales de referencia
+   MODO BÁSICO; clasificación por umbrales de referencia
    ========================================================= */
 const LEVELS = ['Normal','Precaución','Crítico'];
 const LEVEL_COLORS = ['#3ecfa0','#e8c547','#f4722e'];
@@ -599,9 +599,9 @@ function fmtSoles(v){ return 'S/. ' + Math.round(v).toLocaleString('es-PE'); }
 
 const LEVEL_COSTS = [150, 1200, 11000]; // soles, ilustrativo: muestreo rutinario / cambio de aceite / falla de componente
 const LEVEL_ACTIONS = [
-  'Sin acción correctiva — continuar con el monitoreo de rutina en el próximo muestreo programado.',
+  'Sin acción correctiva; continuar con el monitoreo de rutina en el próximo muestreo programado.',
   'Cambiar el aceite y el filtro, y volver a muestrear en 2-4 semanas para confirmar que el TAN y el hierro bajen a rango normal.',
-  'Programar inspección del componente (rodamientos, engranajes) y posible reemplazo — el desgaste metal-metal ya está en curso.'
+  'Programar inspección del componente (rodamientos, engranajes) y posible reemplazo; el desgaste metal-metal ya está en curso.'
 ];
 
 function drawCostBars(highlightCls){
@@ -702,15 +702,15 @@ function updateBasic(){
   const sFe = 100*(fe-FE_MIN)/(FE_MAX-FE_MIN);
   let detail, simple;
   if(cls===0){
-    detail = 'El aceite está dentro de rango — ni la acidez ni el hierro disuelto indican degradación ni desgaste anormal.';
+    detail = 'El aceite está dentro de rango; ni la acidez ni el hierro disuelto indican degradación ni desgaste anormal.';
     simple = 'todo normal, sigue con el monitoreo de rutina.';
   } else if(cls===1){
     detail = sTan >= sFe
-      ? 'La acidez (TAN) está elevada — el aceite empieza a oxidarse y a perder capacidad protectora.'
-      : 'El hierro disuelto está elevado — hay desgaste metal-metal en curso, aunque el aceite en sí todavía no está muy degradado.';
+      ? 'La acidez (TAN) está elevada; el aceite empieza a oxidarse y a perder capacidad protectora.'
+      : 'El hierro disuelto está elevado; hay desgaste metal-metal en curso, aunque el aceite en sí todavía no está muy degradado.';
     simple = 'vale la pena cambiar el aceite pronto y volver a muestrear.';
   } else {
-    detail = 'Tanto el nivel de acidez como el de hierro (o al menos uno de forma severa) están fuera de rango — el aceite ya no protege bien y probablemente hay desgaste activo en el componente.';
+    detail = 'Tanto el nivel de acidez como el de hierro (o al menos uno de forma severa) están fuera de rango; el aceite ya no protege bien y probablemente hay desgaste activo en el componente.';
     simple = 'esto necesita inspección del componente, no solo un cambio de aceite.';
   }
   riskDot.style.background = color;
@@ -742,7 +742,7 @@ updateBasic();
 
 <script>
 /* =========================================================
-   MODO ANALISTA — dataset sintético + clasificador k-NN
+   MODO ANALISTA; dataset sintético + clasificador k-NN
    ========================================================= */
 function seededRandom(seed){
   let s = seed;
@@ -908,7 +908,7 @@ function drawConfusion(k){
 
   rctx.fillStyle = '#c9c9d4';
   rctx.font = '12px DM Mono, monospace';
-  rctx.fillText('Matriz de confusión (prueba) — filas = nivel real, columnas = predicho', padL-80, 14);
+  rctx.fillText('Matriz de confusión (prueba); filas = nivel real, columnas = predicho', padL-80, 14);
 
   LEVELS.forEach((name,j)=>{
     rctx.fillStyle = '#8a8a98';
@@ -946,16 +946,16 @@ function setK(k){
 
   const badge = document.getElementById('mFitBadge');
   if(k===1){
-    badge.textContent = '⚠ Sobreajuste — con k=1, el modelo copia al vecino más cercano y memoriza el ruido de laboratorio de cada muestra individual.';
+    badge.textContent = '⚠ Sobreajuste; con k=1, el modelo copia al vecino más cercano y memoriza el ruido de laboratorio de cada muestra individual.';
     badge.style.color = 'var(--cta)';
   } else if(k>=21){
-    badge.textContent = '⚠ Subajuste — con k tan alto, el modelo promedia demasiadas muestras y diluye la frontera entre niveles.';
+    badge.textContent = '⚠ Subajuste; con k tan alto, el modelo promedia demasiadas muestras y diluye la frontera entre niveles.';
     badge.style.color = '#e8c547';
   } else if(gap > 0.12){
-    badge.textContent = '⚠ Sigue sobreajustando — la exactitud de entrenamiento es bastante más alta que la de prueba.';
+    badge.textContent = '⚠ Sigue sobreajustando; la exactitud de entrenamiento es bastante más alta que la de prueba.';
     badge.style.color = 'var(--cta)';
   } else {
-    badge.textContent = '✓ Ajuste razonable — generaliza bien a muestras que el modelo no vio durante el entrenamiento.';
+    badge.textContent = '✓ Ajuste razonable; generaliza bien a muestras que el modelo no vio durante el entrenamiento.';
     badge.style.color = 'var(--success)';
   }
 

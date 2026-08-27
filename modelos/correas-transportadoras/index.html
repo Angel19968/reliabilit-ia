@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<!-- Google Analytics (GA4) — INACTIVO: reemplaza G-XXXXXXXXXX por tu Measurement ID real para activarlo -->
+<!-- Google Analytics (GA4). INACTIVO: reemplaza G-XXXXXXXXXX por tu Measurement ID real para activarlo -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -15,10 +15,10 @@
 <link rel="icon" href="../../assets/favicon.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
 <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
-<title>Rastreador de Correas — RELIABILIT-IA</title>
+<title>Rastreador de Correas. RELIABILIT-IA</title>
 <meta name="description" content="Clasifica el desvío lateral de una correa transportadora en alineada, desalineación leve o crítica, con regresión logística polinomial ajustable.">
 
-<meta property="og:title" content="Rastreador de Correas — RELIABILIT-IA">
+<meta property="og:title" content="Rastreador de Correas. RELIABILIT-IA">
 <meta property="og:description" content="Mueve el desvío lateral y la temperatura del rodillo y mira en vivo en qué estado cae tu correa transportadora.">
 <meta property="og:image" content="../../assets/og-image.png">
 <meta property="og:type" content="website">
@@ -56,7 +56,7 @@
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "Rastreador de Correas — RELIABILIT-IA",
+  "name": "Rastreador de Correas. RELIABILIT-IA",
   "applicationCategory": "BusinessApplication",
   "operatingSystem": "Web",
   "url": "https://angel19968.github.io/reliabilit-ia/modelos/correas-transportadoras/",
@@ -391,8 +391,8 @@
     <h2>El problema</h2>
     <div class="context-grid">
       <div class="context-text">
-        <p>Una correa transportadora bien alineada dura años; una que se desvía unos centímetros del centro empieza a rozar contra la estructura, desgasta el borde de forma irregular y, en los casos más avanzados, derrama material o se corta sola por el interruptor de emergencia de desvío (switch de desalineación). El desvío casi nunca aparece solo: suele venir acompañado de fricción extra en los rodillos, que se traduce en temperatura — dos señales que, combinadas, cuentan la historia mejor que cualquiera por separado.</p>
-        <p>Este demo simula esa lectura: mueve el desvío lateral de la banda y la temperatura del rodillo, y mira en vivo en qué estado —alineada, leve o crítica— cae la correa.</p>
+        <p>Una correa transportadora bien alineada dura años; una que se desvía unos centímetros del centro empieza a rozar contra la estructura, desgasta el borde de forma irregular y, en los casos más avanzados, derrama material o se corta sola por el interruptor de emergencia de desvío (switch de desalineación). El desvío casi nunca aparece solo: suele venir acompañado de fricción extra en los rodillos, que se traduce en temperatura; dos señales que, combinadas, cuentan la historia mejor que cualquiera por separado.</p>
+        <p>Este demo simula esa lectura: mueve el desvío lateral de la banda y la temperatura del rodillo, y mira en vivo en qué estado (alineada, leve o crítica) cae la correa.</p>
       </div>
       <aside class="context-visual">
         <svg class="cv-wave" viewBox="0 0 260 52" preserveAspectRatio="none" aria-hidden="true"><path d="M0,28 C15,10 30,46 45,28 C60,10 75,46 90,28 C105,10 120,46 135,28 C150,10 165,46 180,28 C195,10 210,46 225,28 C235,20 245,28 260,28"/></svg>
@@ -407,7 +407,7 @@
     <h2>Demo interactivo</h2>
     <div class="panel">
       <div class="toggle-row">
-        <span class="label">Clasificación por umbrales de referencia — mueve los sliders para simular una lectura de campo.</span>
+        <span class="label">Clasificación por umbrales de referencia; mueve los sliders para simular una lectura de campo.</span>
         <label class="switch">
           <span>Modo Analista</span>
           <input type="checkbox" id="analystToggle">
@@ -453,13 +453,13 @@
             <div class="gauge-value"><b id="gaugeValue">0</b> <span class="gauge-note">combina desvío lateral (60%) y temperatura de rodillo (40%)</span></div>
           </div>
 
-          <p class="sim-note">Simulación ilustrativa: la posición de la banda, el desgaste de borde y el derrame de material se dibujan a partir de los mismos valores de los sliders — no provienen de un sensor real.</p>
+          <p class="sim-note">Simulación ilustrativa: la posición de la banda, el desgaste de borde y el derrame de material se dibujan a partir de los mismos valores de los sliders; no provienen de un sensor real.</p>
         </div>
       </div>
 
       <div class="analyst" id="analystPanel">
         <h3 style="font-size:18px; text-transform:none; letter-spacing:0; margin-bottom:8px; color:var(--text);">Reentrenar en vivo</h3>
-        <p style="font-size:15px; color:var(--muted); margin-bottom:18px;">Elige el grado de expansión polinomial de la regresión logística (softmax) y observa cómo cambian las regiones de decisión. El set de 160 lecturas se divide en 106 para entrenar (●) y 54 reservadas para probar qué tan bien generaliza (○). El desvío y la temperatura están correlacionados (más desvío suele calentar más el rodillo por fricción), así que grado 1 ya captura bastante bien la tendencia — pero grados más altos ayudan a afinar la frontera cerca de los umbrales.</p>
+        <p style="font-size:15px; color:var(--muted); margin-bottom:18px;">Elige el grado de expansión polinomial de la regresión logística (softmax) y observa cómo cambian las regiones de decisión. El set de 160 lecturas se divide en 106 para entrenar (●) y 54 reservadas para probar qué tan bien generaliza (○). El desvío y la temperatura están correlacionados (más desvío suele calentar más el rodillo por fricción), así que grado 1 ya captura bastante bien la tendencia; pero grados más altos ayudan a afinar la frontera cerca de los umbrales.</p>
 
         <div class="dataset-wrap">
           <div class="dataset-label">Vista del dataset de entrenamiento</div>
@@ -486,10 +486,10 @@
   </section>
 
   <section class="business">
-    <h2>¿Qué significa para tu planta?</h2>
+    <h2>De la predicción a la decisión</h2>
     <div class="business-grid">
       <div>
-        <p>Con la lectura actual, la correa se clasifica como <span class="stat" id="bizLevelInline">Alineada</span>. Operar sostenidamente en desalineación leve o crítica acelera el desgaste del borde de la banda y de los rodillos guía mucho más rápido que operar centrada — detectarlo a tiempo suele ser la diferencia entre un ajuste de rodillos guía en la próxima ronda o el cambio de una banda completa, además del material derramado y las horas de limpieza que eso implica.</p>
+        <p>Con la lectura actual, la correa se clasifica como <span class="stat" id="bizLevelInline">Alineada</span>. Operar sostenidamente en desalineación leve o crítica acelera el desgaste del borde de la banda y de los rodillos guía mucho más rápido que operar centrada; detectarlo a tiempo suele ser la diferencia entre un ajuste de rodillos guía en la próxima ronda o el cambio de una banda completa, además del material derramado y las horas de limpieza que eso implica.</p>
         <div class="biz-action" id="bizAction">
           <div class="biz-title" id="bizTitle">Calculando…</div>
           <div class="biz-detail" id="bizDetail"></div>
@@ -504,7 +504,7 @@
 
   <section id="cta">
     <h2>De esta demo a tu planta</h2>
-    <p style="color:var(--muted); max-width:640px; margin-bottom:20px;">Los umbrales, los estados y la simulación de este demo están calibrados sobre datos sintéticos para poder compartir esta demo abiertamente — la metodología es la misma que aplicamos en campo para diagnosticar tu correa real. Llevarlo a tu planta implica estandarizar cómo capturas tus datos de desvío (sensores de tracking) y temperatura de rodillos, mapear los puntos críticos propios de tu layout (curvas, transferencias, tensores), y calibrar el modelo con tu propio histórico — ahí es donde entra nuestro motor AutoML, ajustando el modelo correcto para tu caso y evitando tanto falsas alarmas como correas operando desalineadas sin ninguna alerta. Se adapta al tipo de correa y a la industria —minería, cemento, agroindustria, puertos— cuando la calibramos con tus datos. Si quieres recorrer ese proceso, conversemos.</p>
+    <p style="color:var(--muted); max-width:640px; margin-bottom:20px;">Los umbrales, los estados y la simulación de este demo están calibrados sobre datos sintéticos para poder compartir esta demo abiertamente; el enfoque es el mismo que aplicamos en campo para diagnosticar tu correa real. Llevarlo a tu planta implica estandarizar cómo capturas tus datos de desvío (sensores de tracking) y temperatura de rodillos, mapear los puntos críticos propios de tu layout (curvas, transferencias, tensores), y calibrar el modelo con tu propio histórico; ese es el ajuste que hacemos caso por caso, ajustando el modelo correcto para tu caso y evitando tanto falsas alarmas como correas operando desalineadas sin ninguna alerta. Se adapta al tipo de correa y a la industria (minería, cemento, agroindustria, puertos) cuando la calibramos con tus datos. Si quieres recorrer ese proceso, conversemos.</p>
     <div class="cta-row">
       <a class="btn primary" href="https://chat.whatsapp.com/GvBz1tuUeNZ0xwTkjsuE3z" target="_blank" rel="noopener">Unirme a la comunidad de WhatsApp</a>
       <a class="btn ghost" href="https://www.linkedin.com/company/reliabilit-ia/" target="_blank" rel="noopener">Seguir en LinkedIn</a>
@@ -555,7 +555,7 @@
       <a href="https://www.linkedin.com/in/miguelcayllahua/" target="_blank" rel="noopener">LinkedIn personal</a>
       <a href="mailto:miguelcquispe@gmail.com">Correo</a>
     </div>
-    <p style="">La metodología es la misma que aplicamos en proyectos reales; los datos y la simulación de esta demo son sintéticos para poder compartirlos públicamente. Se calibra con tus propios datos —sin importar el tipo de correa o la industria— cuando trabajamos juntos. Los parámetros de este demo son de referencia — se recalibran a la medida de cada equipo cuando trabajamos con tus datos.</p>
+    <p style="">Esta demo usa la misma metodología que aplicamos en campo, aplicada a datos sintéticos para poder mostrarla abiertamente. Cuando la calibramos con tus propios datos, el modelo cambia por completo: los umbrales, los parámetros y hasta el algoritmo elegido dependen de tu caso.</p>
   </footer>
 </div>
 
@@ -565,7 +565,7 @@
    Umbrales validados por simulación externa en Node (seed=202)
    antes de fijarlos: con SCORE_THRESHOLDS=[35,65] la distribución
    resultante es ~41% alineada / ~42% leve / ~17% crítica sobre
-   160 lecturas sintéticas — balance razonable, ninguna clase vacía
+   160 lecturas sintéticas; balance razonable, ninguna clase vacía
    ni dominante.
    ========================================================= */
 const LEVELS = ['Alineada','Desalineación leve','Desalineación crítica'];
@@ -578,7 +578,7 @@ const LEVEL_DETAIL = [
 const LEVEL_SIMPLE = [
   'la correa está centrada, no hagas nada por ahora.',
   'revisa los rodillos guía en tu próxima ronda.',
-  'ajusta la correa pronto — riesgo de desgaste, derrame o corte.'
+  'ajusta la correa pronto; riesgo de desgaste, derrame o corte.'
 ];
 const SCORE_THRESHOLDS = [35, 65];
 
@@ -673,7 +673,7 @@ function updateBasic(){
 
   riskDot.style.background = color;
   riskTitle.style.color = color;
-  riskTitle.textContent = LEVELS[idx] + ' — índice ' + Math.round(score) + '/100';
+  riskTitle.textContent = LEVELS[idx] + '; índice ' + Math.round(score) + '/100';
   riskDetail.textContent = LEVEL_DETAIL[idx];
   const simpleEl = document.getElementById('simpleSummary');
   if(simpleEl) simpleEl.textContent = '💬 En palabras simples: ' + LEVEL_SIMPLE[idx];
@@ -685,10 +685,10 @@ function updateBasic(){
     confNote = 'La lectura está lejos de cualquier umbral entre niveles.';
   } else if(distToThresh > 4){
     confLevel = 'Media'; confColor = '#e8c547';
-    confNote = 'Cerca de un umbral — el nivel vecino también es plausible.';
+    confNote = 'Cerca de un umbral; el nivel vecino también es plausible.';
   } else {
     confLevel = 'Baja'; confColor = 'var(--cta)';
-    confNote = 'Justo en el borde entre dos niveles — trátalo como referencia, repite la medición.';
+    confNote = 'Justo en el borde entre dos niveles; trátalo como referencia, repite la medición.';
   }
   confidenceLine.textContent = 'Confianza de la clasificación: ' + confLevel;
   confidenceLine.style.color = confColor;
@@ -712,7 +712,7 @@ desvioSlider.addEventListener('input', updateBasic);
 tempSlider.addEventListener('input', updateBasic);
 
 /* =========================================================
-   SIMULACIÓN EN VIVO — vista superior del tramo de correa,
+   SIMULACIÓN EN VIVO; vista superior del tramo de correa,
    con el desvío lateral y el calor del rodillo (100% cliente)
    ========================================================= */
 const instrumentCanvas = document.getElementById('instrument');
@@ -823,7 +823,7 @@ function drawInstrument(desvio, temp, idx){
 }
 
 /* =========================================================
-   MODO ANALISTA — dataset sintético + regresión logística
+   MODO ANALISTA; dataset sintético + regresión logística
    multinomial (softmax) con expansión polinomial de grado d
    ========================================================= */
 function seededRandom(seed){ let s=seed; return function(){ s=(s*9301+49297)%233280; return s/233280; }; }
@@ -999,7 +999,7 @@ function drawConfusion(W_model, degree){
 
   rctx.fillStyle = '#c9c9d4';
   rctx.font = '12px DM Mono, monospace';
-  rctx.fillText('Matriz de confusión (prueba) — filas = estado real, columnas = predicho', padL-70, 14);
+  rctx.fillText('Matriz de confusión (prueba); filas = estado real, columnas = predicho', padL-70, 14);
 
   LEVELS.forEach((name,j)=>{
     rctx.fillStyle = '#8a8a98';
@@ -1038,13 +1038,13 @@ function setDegree(degree){
 
   const badge = document.getElementById('mFitBadge');
   if(accTrain < 0.75){
-    badge.textContent = '⚠ Subajuste — el modelo es demasiado simple para el patrón de los datos.';
+    badge.textContent = '⚠ Subajuste; el modelo es demasiado simple para el patrón de los datos.';
     badge.style.color = '#e8c547';
   } else if(gapPP > 15){
-    badge.textContent = '⚠ Sobreajuste — memoriza el entrenamiento pero generaliza peor a datos nuevos.';
+    badge.textContent = '⚠ Sobreajuste; memoriza el entrenamiento pero generaliza peor a datos nuevos.';
     badge.style.color = 'var(--cta)';
   } else {
-    badge.textContent = '✓ Ajuste razonable — generaliza bien a los datos de prueba.';
+    badge.textContent = '✓ Ajuste razonable; generaliza bien a los datos de prueba.';
     badge.style.color = 'var(--success)';
   }
 
@@ -1080,7 +1080,7 @@ updateBasic();
   var GLOSSARY = [
     {term:'MCSA', def:'Análisis de firma de corriente del motor (Motor Current Signature Analysis): detecta fallas mecánicas y eléctricas midiendo variaciones en la corriente, sin abrir el equipo.'},
     {term:'RMS', def:'Valor cuadrático medio (Root Mean Square): resume la energía de una señal de vibración en un solo número comparable.'},
-    {term:'dB', def:'Decibel: unidad logarítmica de intensidad sonora — cada +10 dB representa aprox. 10 veces más energía acústica.'},
+    {term:'dB', def:'Decibel: unidad logarítmica de intensidad sonora; cada +10 dB representa aprox. 10 veces más energía acústica.'},
     {term:'ΔT', def:'Delta T: diferencia de temperatura entre dos puntos de medición.'},
     {term:'deslizamiento', def:'Slip: diferencia entre la velocidad del campo magnético del motor y la velocidad real del rotor; crece con más carga o daño mecánico.'},
     {term:'R²', def:'Coeficiente de determinación: qué tan bien el modelo explica la variación de los datos reales (1.0 = ajuste perfecto).'}

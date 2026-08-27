@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<!-- Google Analytics (GA4) — INACTIVO: reemplaza G-XXXXXXXXXX por tu Measurement ID real para activarlo -->
+<!-- Google Analytics (GA4). INACTIVO: reemplaza G-XXXXXXXXXX por tu Measurement ID real para activarlo -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -15,11 +15,11 @@
 <link rel="icon" href="../../assets/favicon.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
 <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
-<title>Nubes de Sensores — RELIABILIT-IA</title>
+<title>Nubes de Sensores. RELIABILIT-IA</title>
 <meta name="description" content="Agrupa sensores de planta por su patrón de comportamiento y detecta automáticamente cuáles no encajan en ningún grupo conocido, usando clustering basado en densidad (DBSCAN).">
 
-<meta property="og:title" content="Nubes de Sensores — RELIABILIT-IA">
-<meta property="og:description" content="Mueve amplitud y frecuencia y mira en vivo a qué nube de sensores pertenece esa lectura — o si queda fuera de todas.">
+<meta property="og:title" content="Nubes de Sensores. RELIABILIT-IA">
+<meta property="og:description" content="Mueve amplitud y frecuencia y mira en vivo a qué nube de sensores pertenece esa lectura; o si queda fuera de todas.">
 <meta property="og:image" content="../../assets/og-image.png">
 <meta property="og:type" content="website">
 
@@ -56,7 +56,7 @@
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "Nubes de Sensores — RELIABILIT-IA",
+  "name": "Nubes de Sensores. RELIABILIT-IA",
   "applicationCategory": "BusinessApplication",
   "operatingSystem": "Web",
   "url": "https://angel19968.github.io/reliabilit-ia/modelos/nubes-de-sensores/",
@@ -379,15 +379,15 @@
     <div class="badge">Clustering · Sensores</div>
     <span class="badge" style="border-color:var(--accent); color:var(--accent); margin-left:8px;">No supervisado · DBSCAN</span>
     <h1>Nubes de Sensores</h1>
-    <p class="lead">¿Qué sensores de tu planta se comportan igual — y cuáles no se parecen a ningún otro?</p>
+    <p class="lead">¿Qué sensores de tu planta se comportan igual; y cuáles no se parecen a ningún otro?</p>
   </header>
 
   <section class="context">
     <h2>El problema</h2>
     <div class="context-grid">
       <div class="context-text">
-        <p>Las <a href="../familias-de-turbinas/">Familias de Turbinas</a> se agruparon con clustering jerárquico, que siempre termina metiendo a todos los elementos en algún grupo. Pero una planta con cientos de sensores casi siempre tiene algunos que no se parecen a ningún otro: mal calibrados, midiendo algo genuinamente distinto, o simplemente con un patrón único. Forzarlos dentro de un grupo solo para que "encajen" es engañoso. Este módulo usa DBSCAN, un algoritmo de clustering basado en densidad: agrupa los sensores que están rodeados de suficientes vecinos parecidos, y — a diferencia de los métodos anteriores — puede decir explícitamente "este sensor no pertenece a ninguna nube conocida", en vez de forzarlo al grupo más cercano aunque no encaje bien.</p>
-        <p>Las dos variables que usa este demo —amplitud normalizada de la señal y frecuencia dominante relativa— describen el "perfil" típico de la lectura de un sensor, sin importar qué mide exactamente. Sensores de variables lentas (temperatura, presión estática) tienden a agruparse en una zona; sensores cíclicos (flujo) en otra; sensores de vibración de alta frecuencia en otra. Los que caen fuera de esas tres nubes son candidatos a revisar primero.</p>
+        <p>Las <a href="../familias-de-turbinas/">Familias de Turbinas</a> se agruparon con clustering jerárquico, que siempre termina metiendo a todos los elementos en algún grupo. Pero una planta con cientos de sensores casi siempre tiene algunos que no se parecen a ningún otro: mal calibrados, midiendo algo genuinamente distinto, o simplemente con un patrón único. Forzarlos dentro de un grupo solo para que "encajen" es engañoso. Este módulo usa DBSCAN, un algoritmo de clustering basado en densidad: agrupa los sensores que están rodeados de suficientes vecinos parecidos, y ( a diferencia de los métodos anteriores ) puede decir explícitamente "este sensor no pertenece a ninguna nube conocida", en vez de forzarlo al grupo más cercano aunque no encaje bien.</p>
+        <p>Las dos variables que usa este demo (amplitud normalizada de la señal y frecuencia dominante relativa) describen el "perfil" típico de la lectura de un sensor, sin importar qué mide exactamente. Sensores de variables lentas (temperatura, presión estática) tienden a agruparse en una zona; sensores cíclicos (flujo) en otra; sensores de vibración de alta frecuencia en otra. Los que caen fuera de esas tres nubes son candidatos a revisar primero.</p>
       </div>
       <aside class="context-visual">
         <svg class="cv-wave" viewBox="0 0 260 52" preserveAspectRatio="none" aria-hidden="true"><path d="M0,28 C15,10 30,46 45,28 C60,10 75,46 90,28 C105,10 120,46 135,28 C150,10 165,46 180,28 C195,10 210,46 225,28 C235,20 245,28 260,28"/></svg>
@@ -402,7 +402,7 @@
     <h2>Demo interactivo</h2>
     <div class="panel">
       <div class="toggle-row">
-        <span class="label">DBSCAN (clustering basado en densidad) — mueve los sliders para simular el perfil de un sensor.</span>
+        <span class="label">DBSCAN (clustering basado en densidad); mueve los sliders para simular el perfil de un sensor.</span>
         <label class="switch">
           <span>Modo Analista</span>
           <input type="checkbox" id="analystToggle">
@@ -452,7 +452,7 @@
             <div class="gauge-value"><b id="gaugeValue">0</b> <span class="gauge-note">0 = zona vacía (candidato a ruido), 100 o más = zona densa, claramente dentro de una nube</span></div>
           </div>
 
-          <p class="sim-note">Simulación ilustrativa: el mapa y el punto se dibujan a partir de los mismos valores de los sliders — no provienen de sensores reales.</p>
+          <p class="sim-note">Simulación ilustrativa: el mapa y el punto se dibujan a partir de los mismos valores de los sliders; no provienen de sensores reales.</p>
         </div>
       </div>
 
@@ -461,7 +461,7 @@
         <p style="font-size:15px; color:var(--muted); margin-bottom:18px;">eps define qué tan cerca tienen que estar dos sensores para considerarse "vecinos". Con un eps muy chico, hasta sensores que sí pertenecen a una nube real quedan aislados y se marcan como ruido. Con un eps muy grande, nubes que en realidad son distintas terminan fusionadas en una sola. minPts (fijo en 4) es la cantidad mínima de vecinos que necesita un punto para considerarse el núcleo de una nube.</p>
 
         <div class="dataset-wrap">
-          <div class="dataset-label">Vista del dataset (90 sensores simulados — incluye sensores atípicos reales, usados solo para validar)</div>
+          <div class="dataset-label">Vista del dataset (90 sensores simulados; incluye sensores atípicos reales, usados solo para validar)</div>
           <div class="dataset-scroll">
             <table class="dataset-table">
               <thead><tr><th>#</th><th>Fecha</th><th>Amplitud</th><th>Frecuencia</th><th>Origen real</th></tr></thead>
@@ -486,7 +486,7 @@
   </section>
 
   <section class="business">
-    <h2>¿Qué significa para tu planta?</h2>
+    <h2>De la predicción a la decisión</h2>
     <div class="business-grid">
       <div>
         <p>Con el perfil actual, este sensor se agrupa como <span class="stat" id="bizLevelInline">Proceso lento</span>. Encontrar automáticamente qué sensores no encajan en ninguna nube conocida es, en la práctica, una forma barata de priorizar auditorías de instrumentación: en vez de revisar los cientos de sensores de una planta uno por uno, empiezas por los pocos que el algoritmo ya marcó como distintos a todo lo demás.</p>
@@ -504,7 +504,7 @@
 
   <section id="cta">
     <h2>De esta demo a tu planta</h2>
-    <p style="color:var(--muted); max-width:640px; margin-bottom:20px;">El dataset y las nubes de este demo están calibrados sobre datos sintéticos para poder compartir esta demo abiertamente — la metodología es la misma que aplicamos en campo para auditar tu instrumentación real. Llevarlo a tu planta implica calcular estas mismas métricas de comportamiento sobre el historial real de cada sensor, ajustar el radio de densidad al volumen y tipo de sensores que administras, y decidir junto contigo qué hacer con los que el algoritmo marque como atípicos — ahí es donde entra nuestro motor AutoML. Se adapta al tipo de equipo y a la industria —minería, manufactura, energía, alimentos— cuando la calibramos con tus datos. Si quieres recorrer ese proceso, conversemos.</p>
+    <p style="color:var(--muted); max-width:640px; margin-bottom:20px;">El dataset y las nubes de este demo están calibrados sobre datos sintéticos para poder compartir esta demo abiertamente; el enfoque es el mismo que aplicamos en campo para auditar tu instrumentación real. Llevarlo a tu planta implica calcular estas mismas métricas de comportamiento sobre el historial real de cada sensor, ajustar el radio de densidad al volumen y tipo de sensores que administras, y decidir junto contigo qué hacer con los que el algoritmo marque como atípicos. Ese ajuste lo hacemos a la medida de cada equipo. Se adapta al tipo de equipo y a la industria (minería, manufactura, energía, alimentos) cuando la calibramos con tus datos. Si quieres recorrer ese proceso, conversemos.</p>
     <div class="cta-row">
       <a class="btn primary" href="https://chat.whatsapp.com/GvBz1tuUeNZ0xwTkjsuE3z" target="_blank" rel="noopener">Unirme a la comunidad de WhatsApp</a>
       <a class="btn ghost" href="https://www.linkedin.com/company/reliabilit-ia/" target="_blank" rel="noopener">Seguir en LinkedIn</a>
@@ -555,7 +555,7 @@
       <a href="https://www.linkedin.com/in/miguelcayllahua/" target="_blank" rel="noopener">LinkedIn personal</a>
       <a href="mailto:miguelcquispe@gmail.com">Correo</a>
     </div>
-    <p style="">La metodología es la misma que aplicamos en proyectos reales; los datos y la simulación de esta demo son sintéticos para poder compartirlos públicamente. Se calibra con tus propios datos —sin importar el tipo de equipo o la industria— cuando trabajamos juntos. Los parámetros de este demo son de referencia — se recalibran a la medida de cada equipo cuando trabajamos con tus datos.</p>
+    <p style="">Esta demo usa la misma metodología que aplicamos en campo, aplicada a datos sintéticos para poder mostrarla abiertamente. Cuando la calibramos con tus propios datos, el modelo cambia por completo: los umbrales, los parámetros y hasta el algoritmo elegido dependen de tu caso.</p>
   </footer>
 </div>
 
@@ -658,12 +658,12 @@ function renderDatasetPreview(){
     return `<tr><td>${i+1}</td><td>${fmtDate(p.date)}</td><td>${p.x.toFixed(2)}</td><td>${p.y.toFixed(2)}</td><td>${origen}</td></tr>`;
   }).join('');
   const sortedDates = points.map(p=>p.date).sort((a,b)=>a-b);
-  note.textContent = `${points.length} sensores simulados, registrados entre ${fmtDate(sortedDates[0])} y ${fmtDate(sortedDates[sortedDates.length-1])} (${points.filter(p=>p.fam===-1).length} son atípicos reales). La columna "origen real" solo se usa para validar — el algoritmo nunca la ve.`;
+  note.textContent = `${points.length} sensores simulados, registrados entre ${fmtDate(sortedDates[0])} y ${fmtDate(sortedDates[sortedDates.length-1])} (${points.filter(p=>p.fam===-1).length} son atípicos reales). La columna "origen real" solo se usa para validar; el algoritmo nunca la ve.`;
 }
 renderDatasetPreview();
 
 /* =========================================================
-   MODELO DE PRODUCCIÓN fijo (eps=0.12, minPts=4 — validado
+   MODELO DE PRODUCCIÓN fijo (eps=0.12, minPts=4; validado
    como el mejor punto: 3 nubes, ruido contenido, alta pureza).
    ========================================================= */
 const PROD_EPS = 0.12, PROD_MINPTS = 4;
@@ -720,7 +720,7 @@ function labelColor(cls){
   return CLOUD_COLORS[prodClusterFamily[cls.clusterId]];
 }
 function labelDetail(cls){
-  if(cls.isNoise) return 'Esta lectura no tiene suficientes vecinos parecidos cerca — no encaja claramente en ninguna de las tres nubes conocidas. Vale la pena revisarlo antes de asumir que el sensor está bien.';
+  if(cls.isNoise) return 'Esta lectura no tiene suficientes vecinos parecidos cerca; no encaja claramente en ninguna de las tres nubes conocidas. Vale la pena revisarlo antes de asumir que el sensor está bien.';
   return CLOUD_DETAIL[prodClusterFamily[cls.clusterId]];
 }
 function labelSimple(cls){
@@ -794,7 +794,7 @@ function updateBasic(){
     confNote = 'Está dentro de la nube, pero cerca de su borde.';
   } else {
     confLevel = 'Baja'; confColor = 'var(--cta)';
-    confNote = 'Está apenas conectado a la nube — un sensor "borde", no un núcleo típico.';
+    confNote = 'Está apenas conectado a la nube; un sensor "borde", no un núcleo típico.';
   }
   confidenceLine.textContent = 'Confianza de la asignación: ' + confLevel;
   confidenceLine.style.color = confColor;
@@ -822,7 +822,7 @@ ampSlider.addEventListener('input', updateBasic);
 freqSlider.addEventListener('input', updateBasic);
 
 /* =========================================================
-   SIMULACIÓN EN VIVO — mapa de sensores con el punto actual.
+   SIMULACIÓN EN VIVO; mapa de sensores con el punto actual.
    ========================================================= */
 const instrumentCanvas = document.getElementById('instrument');
 const ictx = instrumentCanvas.getContext('2d');
@@ -882,7 +882,7 @@ function drawInstrument(amp, freq, cls){
 }
 
 /* =========================================================
-   MODO ANALISTA — eps ajustable
+   MODO ANALISTA; eps ajustable
    ========================================================= */
 const chartCanvas = document.getElementById('chart');
 const cctx = chartCanvas.getContext('2d');
@@ -1004,13 +1004,13 @@ function setEps(eps){
 
   const badge = document.getElementById('mFitBadge');
   if(ev.nClusters > 3 || ev.noiseFrac > 0.15){
-    badge.textContent = '⚠ eps demasiado chico — sensores que sí pertenecen a una nube real quedan aislados como ruido falso, o una nube se fragmenta en varias.';
+    badge.textContent = '⚠ eps demasiado chico; sensores que sí pertenecen a una nube real quedan aislados como ruido falso, o una nube se fragmenta en varias.';
     badge.style.color = 'var(--cta)';
   } else if(ev.nClusters < 3){
-    badge.textContent = '⚠ eps demasiado grande — nubes que en realidad son distintas terminan fusionadas en una sola.';
+    badge.textContent = '⚠ eps demasiado grande; nubes que en realidad son distintas terminan fusionadas en una sola.';
     badge.style.color = '#e8c547';
   } else {
-    badge.textContent = '✓ Separación razonable — recupera las 3 nubes reales sin fragmentar y sin marcar de más como ruido.';
+    badge.textContent = '✓ Separación razonable; recupera las 3 nubes reales sin fragmentar y sin marcar de más como ruido.';
     badge.style.color = 'var(--success)';
   }
 
@@ -1050,7 +1050,7 @@ updateBasic();
   var GLOSSARY = [
     {term:'MCSA', def:'Análisis de firma de corriente del motor (Motor Current Signature Analysis): detecta fallas mecánicas y eléctricas midiendo variaciones en la corriente, sin abrir el equipo.'},
     {term:'RMS', def:'Valor cuadrático medio (Root Mean Square): resume la energía de una señal de vibración en un solo número comparable.'},
-    {term:'dB', def:'Decibel: unidad logarítmica de intensidad sonora — cada +10 dB representa aprox. 10 veces más energía acústica.'},
+    {term:'dB', def:'Decibel: unidad logarítmica de intensidad sonora; cada +10 dB representa aprox. 10 veces más energía acústica.'},
     {term:'ΔT', def:'Delta T: diferencia de temperatura entre dos puntos de medición.'},
     {term:'deslizamiento', def:'Slip: diferencia entre la velocidad del campo magnético del motor y la velocidad real del rotor; crece con más carga o daño mecánico.'},
     {term:'R²', def:'Coeficiente de determinación: qué tan bien el modelo explica la variación de los datos reales (1.0 = ajuste perfecto).'}

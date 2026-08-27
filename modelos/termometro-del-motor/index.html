@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<!-- Google Analytics (GA4) — INACTIVO: reemplaza G-XXXXXXXXXX por tu Measurement ID real para activarlo -->
+<!-- Google Analytics (GA4). INACTIVO: reemplaza G-XXXXXXXXXX por tu Measurement ID real para activarlo -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -15,10 +15,10 @@
 <link rel="icon" href="../../assets/favicon.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
 <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
-<title>Termómetro del Motor — RELIABILIT-IA</title>
+<title>Termómetro del Motor. RELIABILIT-IA</title>
 <meta name="description" content="Predice la temperatura del devanado de un motor eléctrico según su carga y tiempo de operación continuo, usando una red neuronal entrenada desde cero.">
 
-<meta property="og:title" content="Termómetro del Motor — RELIABILIT-IA">
+<meta property="og:title" content="Termómetro del Motor. RELIABILIT-IA">
 <meta property="og:description" content="Mueve carga y tiempo de operación y mira en vivo la temperatura estimada del devanado.">
 <meta property="og:image" content="../../assets/og-image.png">
 <meta property="og:type" content="website">
@@ -56,7 +56,7 @@
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "Termómetro del Motor — RELIABILIT-IA",
+  "name": "Termómetro del Motor. RELIABILIT-IA",
   "applicationCategory": "BusinessApplication",
   "operatingSystem": "Web",
   "url": "https://angel19968.github.io/reliabilit-ia/modelos/termometro-del-motor/",
@@ -387,7 +387,7 @@
     <h2>El problema</h2>
     <div class="context-grid">
       <div class="context-text">
-        <p>La temperatura de un devanado no sube en línea recta con la carga ni con el tiempo: sube rápido al principio y luego se va "aplanando" a medida que el motor se acerca a su temperatura de equilibrio térmico — una curva de saturación, no una recta ni una parábola simple. Modelarla bien requiere capturar cómo interactúan dos variables a la vez (carga y tiempo de operación) sobre una forma no lineal. En vez de forzar esa curva con más términos polinomiales como en el <a href="../radar-de-rodamientos/">Radar de Rodamientos</a>, este módulo usa una red neuronal pequeña —un perceptrón multicapa entrenado por retropropagación (backpropagation), la técnica detrás de la mayoría del "deep learning" actual, aquí implementada desde cero— que aprende la forma de la curva directamente de los datos, sin que nadie le diga de antemano qué forma tiene.</p>
+        <p>La temperatura de un devanado no sube en línea recta con la carga ni con el tiempo: sube rápido al principio y luego se va "aplanando" a medida que el motor se acerca a su temperatura de equilibrio térmico; una curva de saturación, no una recta ni una parábola simple. Modelarla bien requiere capturar cómo interactúan dos variables a la vez (carga y tiempo de operación) sobre una forma no lineal. En vez de forzar esa curva con más términos polinomiales como en el <a href="../radar-de-rodamientos/">Radar de Rodamientos</a>, este módulo usa una red neuronal pequeña —un perceptrón multicapa entrenado por retropropagación (backpropagation), la técnica detrás de la mayoría del "deep learning" actual, aquí implementada desde cero— que aprende la forma de la curva directamente de los datos, sin que nadie le diga de antemano qué forma tiene.</p>
         <p>Este demo simula la temperatura del devanado de un motor eléctrico según dos datos que cualquier variador o PLC ya registra: el porcentaje de carga y las horas de operación continua desde el último arranque en frío. Es información que casi cualquier planta con motores eléctricos críticos ya tiene disponible, solo que rara vez se usa para anticipar sobrecalentamientos antes de que ocurran.</p>
       </div>
       <aside class="context-visual">
@@ -403,7 +403,7 @@
     <h2>Demo interactivo</h2>
     <div class="panel">
       <div class="toggle-row">
-        <span class="label">Red neuronal (perceptrón multicapa, retropropagación) — mueve los sliders para simular una condición de operación.</span>
+        <span class="label">Red neuronal (perceptrón multicapa, retropropagación); mueve los sliders para simular una condición de operación.</span>
         <label class="switch">
           <span>Modo Analista</span>
           <input type="checkbox" id="analystToggle">
@@ -453,13 +453,13 @@
             <div class="gauge-value"><b id="gaugeValue">0</b>°C</div>
           </div>
 
-          <p class="sim-note">Simulación ilustrativa: el mapa y el punto se dibujan a partir de los mismos valores de los sliders — no provienen de un motor real.</p>
+          <p class="sim-note">Simulación ilustrativa: el mapa y el punto se dibujan a partir de los mismos valores de los sliders; no provienen de un motor real.</p>
         </div>
       </div>
 
       <div class="analyst" id="analystPanel">
         <h3 style="font-size:18px; text-transform:none; letter-spacing:0; margin-bottom:8px; color:var(--text);">Ajustar el tamaño de la red en vivo</h3>
-        <p style="font-size:15px; color:var(--muted); margin-bottom:18px;">Cada botón entrena una red con un número distinto de neuronas en su única capa oculta, usando los mismos datos y la misma cantidad de iteraciones de entrenamiento. Con muy pocas neuronas, la red no tiene suficiente capacidad para aprender la forma curva de saturación y subajusta. A partir de 4 neuronas, la red ya captura bien la curva — y en este problema en particular, seguir agregando neuronas no la hace sobreajustar: la relación entre carga, tiempo y temperatura es una curva suave, así que el error que queda es sobre todo ruido de medición genuino, no memorización.</p>
+        <p style="font-size:15px; color:var(--muted); margin-bottom:18px;">Cada botón entrena una red con un número distinto de neuronas en su única capa oculta, usando los mismos datos y la misma cantidad de iteraciones de entrenamiento. Con muy pocas neuronas, la red no tiene suficiente capacidad para aprender la forma curva de saturación y subajusta. A partir de 4 neuronas, la red ya captura bien la curva; y en este problema en particular, seguir agregando neuronas no la hace sobreajustar: la relación entre carga, tiempo y temperatura es una curva suave, así que el error que queda es sobre todo ruido de medición genuino, no memorización.</p>
 
         <div class="dataset-wrap">
           <div class="dataset-label">Vista del dataset (220 lecturas simuladas — 146 entrenamiento / 74 prueba)</div>
@@ -489,10 +489,10 @@
   </section>
 
   <section class="business">
-    <h2>¿Qué significa para tu planta?</h2>
+    <h2>Qué decisión habilita este dato</h2>
     <div class="business-grid">
       <div>
-        <p>Con la condición actual, el devanado se estima en <span class="stat" id="bizLevelInline">Normal</span>. Anticipar la temperatura antes de que el motor llegue ahí —en vez de solo alarmar cuando ya la cruzó— da tiempo para bajar la carga, mejorar la ventilación o programar una parada antes de que el aislamiento del devanado empiece a degradarse por calor acumulado, que es una de las causas más comunes de falla prematura en motores eléctricos.</p>
+        <p>Con la condición actual, el devanado se estima en <span class="stat" id="bizLevelInline">Normal</span>. Anticipar la temperatura antes de que el motor llegue ahí (en vez de solo alarmar cuando ya la cruzó) da tiempo para bajar la carga, mejorar la ventilación o programar una parada antes de que el aislamiento del devanado empiece a degradarse por calor acumulado, que es una de las causas más comunes de falla prematura en motores eléctricos.</p>
         <div class="biz-action" id="bizAction">
           <div class="biz-title" id="bizTitle">Calculando…</div>
           <div class="biz-detail" id="bizDetail"></div>
@@ -507,7 +507,7 @@
 
   <section id="cta">
     <h2>De esta demo a tu planta</h2>
-    <p style="color:var(--muted); max-width:640px; margin-bottom:20px;">El dataset y la red de este demo están calibrados sobre datos sintéticos para poder compartir esta demo abiertamente — la metodología es la misma que aplicamos en campo para monitorear tu motor real. Llevarlo a tu planta implica entrenar esta misma red con lecturas reales de temperatura, carga y tiempo de operación de tus motores críticos, sumar variables adicionales que ya mides (temperatura ambiente, ventilación, calidad de la alimentación eléctrica) y calibrar el punto de alerta según la clase de aislamiento real de cada motor — ahí es donde entra nuestro motor AutoML. Se adapta al tipo de equipo y a la industria —minería, manufactura, energía, alimentos— cuando la calibramos con tus datos. Si quieres recorrer ese proceso, conversemos.</p>
+    <p style="color:var(--muted); max-width:640px; margin-bottom:20px;">El dataset y la red de este demo están calibrados sobre datos sintéticos para poder compartir esta demo abiertamente; el enfoque es el mismo que aplicamos en campo para monitorear tu motor real. Llevarlo a tu planta implica entrenar esta misma red con lecturas reales de temperatura, carga y tiempo de operación de tus motores críticos, sumar variables adicionales que ya mides (temperatura ambiente, ventilación, calidad de la alimentación eléctrica) y calibrar el punto de alerta según la clase de aislamiento real de cada motor. Ahí entra el trabajo de calibración fina. Se adapta al tipo de equipo y a la industria (minería, manufactura, energía, alimentos) cuando la calibramos con tus datos. Si quieres recorrer ese proceso, conversemos.</p>
     <div class="cta-row">
       <a class="btn primary" href="https://chat.whatsapp.com/GvBz1tuUeNZ0xwTkjsuE3z" target="_blank" rel="noopener">Unirme a la comunidad de WhatsApp</a>
       <a class="btn ghost" href="https://www.linkedin.com/company/reliabilit-ia/" target="_blank" rel="noopener">Seguir en LinkedIn</a>
@@ -558,7 +558,7 @@
       <a href="https://www.linkedin.com/in/miguelcayllahua/" target="_blank" rel="noopener">LinkedIn personal</a>
       <a href="mailto:miguelcquispe@gmail.com">Correo</a>
     </div>
-    <p style="">La metodología es la misma que aplicamos en proyectos reales; los datos y la simulación de esta demo son sintéticos para poder compartirlos públicamente. Se calibra con tus propios datos —sin importar el tipo de equipo o la industria— cuando trabajamos juntos. Los parámetros de este demo son de referencia — se recalibran a la medida de cada equipo cuando trabajamos con tus datos.</p>
+    <p style="">Aquí la metodología es real y los datos no. Generamos un dataset sintético para poder mostrar el modelo sin tocar información de ningún cliente, pero el algoritmo y su validación son los que usamos en proyectos reales. Calibrarlo con tus propios datos es la conversación que sigue.</p>
   </footer>
 </div>
 
@@ -700,13 +700,13 @@ const LEVELS = ['Normal','Elevada','Crítica'];
 const LEVEL_COLORS = ['#3ecfa0','#e8c547','#f4722e'];
 const LEVEL_DETAIL = [
   'La temperatura estimada está dentro de un rango normal de operación.',
-  'La temperatura estimada ya se acerca a niveles que aceleran el desgaste del aislamiento — vale la pena vigilar si la carga o el tiempo de operación se mantienen así.',
-  'La temperatura estimada está en un rango que puede degradar el aislamiento del devanado si se sostiene por mucho tiempo — considera reducir carga o mejorar la ventilación.'
+  'La temperatura estimada ya se acerca a niveles que aceleran el desgaste del aislamiento; vale la pena vigilar si la carga o el tiempo de operación se mantienen así.',
+  'La temperatura estimada está en un rango que puede degradar el aislamiento del devanado si se sostiene por mucho tiempo; considera reducir carga o mejorar la ventilación.'
 ];
 const LEVEL_SIMPLE = [
   'el motor está trabajando fresco, sin problema.',
   'vigila la carga, se está calentando más de lo ideal.',
-  'reduce carga o mejora la ventilación pronto — se está calentando de más.'
+  'reduce carga o mejora la ventilación pronto; se está calentando de más.'
 ];
 function levelOf(temp){
   if(temp < 75) return 0;
@@ -810,10 +810,10 @@ function updateBasic(){
     confNote = 'La estimación está lejos de cualquier umbral entre niveles, más allá del margen de error típico del modelo.';
   } else if(distToThresh > 0.6){
     confLevel = 'Media'; confColor = '#e8c547';
-    confNote = 'Cerca de un umbral — el nivel vecino también es plausible dado el margen de error típico.';
+    confNote = 'Cerca de un umbral; el nivel vecino también es plausible dado el margen de error típico.';
   } else {
     confLevel = 'Baja'; confColor = 'var(--cta)';
-    confNote = 'Justo en el borde entre dos niveles, dentro del margen de error del modelo — trata esta lectura con cautela.';
+    confNote = 'Justo en el borde entre dos niveles, dentro del margen de error del modelo; trata esta lectura con cautela.';
   }
   confidenceLine.textContent = 'Confianza de la clasificación: ' + confLevel;
   confidenceLine.style.color = confColor;
@@ -840,7 +840,7 @@ loadSlider.addEventListener('input', updateBasic);
 tSlider.addEventListener('input', updateBasic);
 
 /* =========================================================
-   SIMULACIÓN EN VIVO — mapa de calor de temperatura estimada.
+   SIMULACIÓN EN VIVO; mapa de calor de temperatura estimada.
    ========================================================= */
 const instrumentCanvas = document.getElementById('instrument');
 const ictx = instrumentCanvas.getContext('2d');
@@ -899,7 +899,7 @@ function drawInstrument(load, t, idx){
 }
 
 /* =========================================================
-   MODO ANALISTA — H ajustable
+   MODO ANALISTA. H ajustable
    ========================================================= */
 const chartCanvas = document.getElementById('chart');
 const cctx = chartCanvas.getContext('2d');
@@ -1011,13 +1011,13 @@ function setH(H){
 
   const badge = document.getElementById('mFitBadge');
   if(r2train < 0.90){
-    badge.textContent = '⚠ Subajuste — con tan pocas neuronas, la red no logra capturar la curva de saturación ni siquiera en los datos que ya conoce.';
+    badge.textContent = '⚠ Subajuste; con tan pocas neuronas, la red no logra capturar la curva de saturación ni siquiera en los datos que ya conoce.';
     badge.style.color = 'var(--cta)';
   } else if(gapPP > 8){
-    badge.textContent = '⚠ Sobreajuste — la red memoriza detalles del entrenamiento que no generalizan a datos nuevos.';
+    badge.textContent = '⚠ Sobreajuste; la red memoriza detalles del entrenamiento que no generalizan a datos nuevos.';
     badge.style.color = '#e8c547';
   } else {
-    badge.textContent = '✓ Ajuste razonable — buen R² en ambos conjuntos. En este problema, más neuronas no generan sobreajuste porque la curva real es suave: el error restante es sobre todo ruido de medición, no memorización.';
+    badge.textContent = '✓ Ajuste razonable; buen R² en ambos conjuntos. En este problema, más neuronas no generan sobreajuste porque la curva real es suave: el error restante es sobre todo ruido de medición, no memorización.';
     badge.style.color = 'var(--success)';
   }
 
@@ -1057,7 +1057,7 @@ updateBasic();
   var GLOSSARY = [
     {term:'MCSA', def:'Análisis de firma de corriente del motor (Motor Current Signature Analysis): detecta fallas mecánicas y eléctricas midiendo variaciones en la corriente, sin abrir el equipo.'},
     {term:'RMS', def:'Valor cuadrático medio (Root Mean Square): resume la energía de una señal de vibración en un solo número comparable.'},
-    {term:'dB', def:'Decibel: unidad logarítmica de intensidad sonora — cada +10 dB representa aprox. 10 veces más energía acústica.'},
+    {term:'dB', def:'Decibel: unidad logarítmica de intensidad sonora; cada +10 dB representa aprox. 10 veces más energía acústica.'},
     {term:'ΔT', def:'Delta T: diferencia de temperatura entre dos puntos de medición.'},
     {term:'deslizamiento', def:'Slip: diferencia entre la velocidad del campo magnético del motor y la velocidad real del rotor; crece con más carga o daño mecánico.'},
     {term:'R²', def:'Coeficiente de determinación: qué tan bien el modelo explica la variación de los datos reales (1.0 = ajuste perfecto).'}

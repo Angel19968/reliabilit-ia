@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<!-- Google Analytics (GA4) — INACTIVO: reemplaza G-XXXXXXXXXX por tu Measurement ID real para activarlo -->
+<!-- Google Analytics (GA4). INACTIVO: reemplaza G-XXXXXXXXXX por tu Measurement ID real para activarlo -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -15,10 +15,10 @@
 <link rel="icon" href="../../assets/favicon.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
 <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
-<title>Radar de Rodamientos — RELIABILIT-IA</title>
+<title>Radar de Rodamientos. RELIABILIT-IA</title>
 <meta name="description" content="Estima días hasta falla de un rodamiento a partir de vibración RMS y temperatura, con simulación en vivo de la señal de vibración y consumo de corriente.">
 
-<meta property="og:title" content="Radar de Rodamientos — RELIABILIT-IA">
+<meta property="og:title" content="Radar de Rodamientos. RELIABILIT-IA">
 <meta property="og:description" content="Mueve los sliders de vibración y temperatura y mira en vivo cómo cambia la señal, el consumo de corriente y los días estimados hasta falla.">
 <meta property="og:image" content="../../assets/og-image.png">
 <meta property="og:type" content="website">
@@ -56,7 +56,7 @@
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "Radar de Rodamientos — RELIABILIT-IA",
+  "name": "Radar de Rodamientos. RELIABILIT-IA",
   "applicationCategory": "BusinessApplication",
   "operatingSystem": "Web",
   "url": "https://angel19968.github.io/reliabilit-ia/modelos/radar-de-rodamientos/",
@@ -392,7 +392,7 @@
     <h2>El problema</h2>
     <div class="context-grid">
       <div class="context-text">
-        <p>Un rodamiento dañado no avisa con una alarma clara — avisa con más vibración y más calor, semanas antes de romperse. Este modelo aprende esa relación a partir de mediciones históricas y estima cuántos días de vida útil quedan, para decidir si el mantenimiento es esta semana o el próximo trimestre.</p>
+        <p>Un rodamiento dañado no avisa con una alarma clara; avisa con más vibración y más calor, semanas antes de romperse. Este modelo aprende esa relación a partir de mediciones históricas y estima cuántos días de vida útil quedan, para decidir si el mantenimiento es esta semana o el próximo trimestre.</p>
       </div>
       <aside class="context-visual">
         <svg class="cv-wave" viewBox="0 0 260 52" preserveAspectRatio="none" aria-hidden="true"><path d="M0,28 C15,10 30,46 45,28 C60,10 75,46 90,28 C105,10 120,46 135,28 C150,10 165,46 180,28 C195,10 210,46 225,28 C235,20 245,28 260,28"/></svg>
@@ -407,7 +407,7 @@
     <h2>Demo interactivo</h2>
     <div class="panel">
       <div class="toggle-row">
-        <span class="label">Modelo entrenado con datos sintéticos (Reg. Polinomial) — mueve los sliders para simular una lectura de campo.</span>
+        <span class="label">Modelo entrenado con datos sintéticos (Reg. Polinomial); mueve los sliders para simular una lectura de campo.</span>
         <label class="switch">
           <span>Modo Analista</span>
           <input type="checkbox" id="analystToggle">
@@ -462,13 +462,13 @@
             <div class="gauge-value"><b id="gaugeValue">12.4</b> A <span class="gauge-note">(sube con vibración/temperatura por mayores pérdidas mecánicas)</span></div>
           </div>
 
-          <p class="sim-note">Simulación ilustrativa: la forma de onda, los puntos de desgaste y la corriente se generan a partir de los mismos valores de los sliders — no provienen de un sensor real.</p>
+          <p class="sim-note">Simulación ilustrativa: la forma de onda, los puntos de desgaste y la corriente se generan a partir de los mismos valores de los sliders; no provienen de un sensor real.</p>
         </div>
       </div>
 
       <div class="analyst" id="analystPanel">
         <h3 style="font-size:18px; text-transform:none; letter-spacing:0; margin-bottom:8px; color:var(--text);">Reentrenar en vivo</h3>
-        <p style="font-size:15px; color:var(--muted); margin-bottom:18px;">Elige el grado del polinomio y observa cómo se reajusta la curva. El set de 20 rodamientos se divide en 13 para entrenar (●, violeta) y 7 reservados para probar qué tan bien generaliza (○, blanco) — el panel de residuos debajo muestra dónde el modelo se queda corto o se pasa.</p>
+        <p style="font-size:15px; color:var(--muted); margin-bottom:18px;">Elige el grado del polinomio y observa cómo se reajusta la curva. El set de 20 rodamientos se divide en 13 para entrenar (●, violeta) y 7 reservados para probar qué tan bien generaliza (○, blanco); el panel de residuos debajo muestra dónde el modelo se queda corto o se pasa.</p>
 
         <div class="dataset-wrap">
           <div class="dataset-label">Vista del dataset de entrenamiento</div>
@@ -496,7 +496,7 @@
   </section>
 
   <section class="business">
-    <h2>¿Qué significa para tu planta?</h2>
+    <h2>De la predicción a la decisión</h2>
     <div class="business-grid">
       <div>
         <p>Con la lectura actual de los sliders, el modelo estima <span class="stat" id="bizDaysInline">32 días</span> antes de que convenga intervenir. Detectar esta tendencia con anticipación típicamente cambia un paro no programado (horas de producción perdida + repuesto de emergencia) por un cambio de rodamiento planificado en la próxima ventana de mantenimiento. La diferencia de costo suele ser de un orden de magnitud.</p>
@@ -514,7 +514,7 @@
 
   <section id="cta">
     <h2>De esta demo a tu planta</h2>
-    <p style="color:var(--muted); max-width:640px; margin-bottom:20px;">Los coeficientes y la simulación de este demo están calibrados sobre datos sintéticos para poder compartir esta demo abiertamente — la metodología es la misma que aplicamos en campo para diagnosticar tu equipo real. Llevarlo a tu planta no es solo "cambiar el dataset": primero estandarizamos cómo capturas los datos de tus sensores, los analizamos y preparamos a fondo, y construimos las variables que de verdad explican una falla. Con eso, nuestro motor AutoML elige y ajusta el modelo correcto para tu caso, calibra sus parámetros para que aprenda el patrón real —sin memorizar de más ni de menos— y afina las predicciones para evitar dos errores costosos: falsas alarmas, y algo peor, que el equipo falle sin que el modelo lo haya anticipado. Se adapta al tipo de equipo y a la industria — minería, manufactura, energía, alimentos — cuando la calibramos con tus datos. Si quieres recorrer ese proceso, conversemos.</p>
+    <p style="color:var(--muted); max-width:640px; margin-bottom:20px;">Los coeficientes y la simulación de este demo están calibrados sobre datos sintéticos para poder compartir esta demo abiertamente; el enfoque es el mismo que aplicamos en campo para diagnosticar tu equipo real. Llevarlo a tu planta no es solo "cambiar el dataset": primero estandarizamos cómo capturas los datos de tus sensores, los analizamos y preparamos a fondo, y construimos las variables que de verdad explican una falla. A partir de ahí, elegimos y ajustamos el modelo correcto para tu caso, calibramos sus parámetros para que aprenda el patrón real (sin memorizar de más ni de menos) y afinamos las predicciones para evitar dos errores costosos: falsas alarmas, y algo peor, que el equipo falle sin que el modelo lo haya anticipado. Se adapta al tipo de equipo y a la industria ( minería, manufactura, energía, alimentos ) cuando la calibramos con tus datos. Si quieres recorrer ese proceso, conversemos.</p>
     <div class="cta-row">
       <a class="btn primary" href="https://chat.whatsapp.com/GvBz1tuUeNZ0xwTkjsuE3z" target="_blank" rel="noopener">Unirme a la comunidad de WhatsApp</a>
       <a class="btn ghost" href="https://www.linkedin.com/company/reliabilit-ia/" target="_blank" rel="noopener">Seguir en LinkedIn</a>
@@ -565,13 +565,13 @@
       <a href="https://www.linkedin.com/in/miguelcayllahua/" target="_blank" rel="noopener">LinkedIn personal</a>
       <a href="mailto:miguelcquispe@gmail.com">Correo</a>
     </div>
-    <p style="">La metodología es la misma que aplicamos en proyectos reales; los datos y la simulación de esta demo son sintéticos para poder compartirlos públicamente. Se calibra con tus propios datos —sin importar el tipo de equipo o la industria— cuando trabajamos juntos. Los parámetros de este demo son de referencia — se recalibran a la medida de cada equipo cuando trabajamos con tus datos.</p>
+    <p style="">Esta demo usa la misma metodología que aplicamos en campo, aplicada a datos sintéticos para poder mostrarla abiertamente. Cuando la calibramos con tus propios datos, el modelo cambia por completo: los umbrales, los parámetros y hasta el algoritmo elegido dependen de tu caso.</p>
   </footer>
 </div>
 
 <script>
 /* =========================================================
-   MODO BÁSICO — modelo "pre-entrenado" (coeficientes de ejemplo)
+   MODO BÁSICO; modelo "pre-entrenado" (coeficientes de ejemplo)
    ========================================================= */
 function baseLifeDays(vib){
   const a = 0.42, b = -11.2, c = 78;
@@ -673,7 +673,7 @@ function drawProjection(days, colorCss){
 }
 
 // Rango "denso" con el que se calibró el modelo de ejemplo. Fuera de ahí, la
-// predicción existe pero es extrapolación — se lo decimos al usuario en vez
+// predicción existe pero es extrapolación; se lo decimos al usuario en vez
 // de aparentar la misma certeza en todo el rango del slider.
 function computeConfidence(vib, temp){
   const vibIn = vib>=1 && vib<=10;
@@ -687,7 +687,7 @@ function computeConfidence(vib, temp){
   if((vibIn||vibNear) && (tempIn||tempNear)){
     return {level:'Media', color:'#e8c547', note:'Cerca del borde de los datos de calibración: la predicción es razonable, pero menos precisa.'};
   }
-  return {level:'Baja', color:'var(--cta)', note:'Fuera del rango típico de calibración — el modelo está extrapolando. Trátalo como referencia, no como certeza.'};
+  return {level:'Baja', color:'var(--cta)', note:'Fuera del rango típico de calibración; el modelo está extrapolando. Trátalo como referencia, no como certeza.'};
 }
 
 function updateBasic(){
@@ -707,12 +707,12 @@ function updateBasic(){
     simple = 'todo tranquilo, revisa en tu ronda normal de mantenimiento.';
   } else if(days > 14){
     color = '#e8c547';
-    title = 'Riesgo medio — revisar en ' + days + ' días';
+    title = 'Riesgo medio; revisar en ' + days + ' días';
     detail = 'Vibración o temperatura por encima de lo ideal. Programar inspección con analizador portátil.';
     simple = 'agenda una inspección en las próximas 2-4 semanas.';
   } else {
     color = 'var(--cta)';
-    title = 'Riesgo alto — revisar en ' + days + ' días';
+    title = 'Riesgo alto; revisar en ' + days + ' días';
     detail = 'Señal de degradación avanzada. Priorizar cambio de rodamiento en la próxima ventana disponible.';
     simple = 'cambia el rodamiento pronto, no esperes a la próxima parada larga.';
   }
@@ -741,7 +741,7 @@ tempSlider.addEventListener('input', updateBasic);
 updateBasic();
 
 /* =========================================================
-   SIMULACIÓN EN VIVO — instrumento animado + osciloscopio + corriente
+   SIMULACIÓN EN VIVO; instrumento animado + osciloscopio + corriente
    (100% generado en cliente a partir de vib/temp, solo ilustrativo)
    ========================================================= */
 const instrumentCanvas = document.getElementById('instrument');
@@ -901,7 +901,7 @@ function mainLoop(){
 requestAnimationFrame(mainLoop);
 
 /* =========================================================
-   MODO ANALISTA — dataset sintético + regresión polinomial animada
+   MODO ANALISTA; dataset sintético + regresión polinomial animada
    ========================================================= */
 function seededRandom(seed){
   let s = seed;
@@ -927,7 +927,7 @@ for(let i=0;i<20;i++){
   const daysAgo = (19-i)*29 + rnd()*20; // bitácora repartida en ~19 meses hacia atrás desde REF_DATE
   dataset.push({x: vib, y: y, date: dateFromDaysAgo(daysAgo)});
 }
-// Separamos entrenamiento (13) de prueba (7) — el ajuste solo ve el
+// Separamos entrenamiento (13) de prueba (7); el ajuste solo ve el
 // entrenamiento; el R² de prueba es lo que realmente delata sobre/subajuste.
 const trainPoints = dataset.filter((_,i)=> i%3 !== 0);
 const testPoints = dataset.filter((_,i)=> i%3 === 0);
@@ -1147,13 +1147,13 @@ function animateToDegree(newDegree){
 
   const badge = document.getElementById('mFitBadge');
   if(r2Train < 0.75){
-    badge.textContent = '⚠ Subajuste — el modelo es demasiado simple para el patrón de los datos.';
+    badge.textContent = '⚠ Subajuste; el modelo es demasiado simple para el patrón de los datos.';
     badge.style.color = '#e8c547';
   } else if(gap > 0.08 || r2Test < 0.15){
-    badge.textContent = '⚠ Sobreajuste — memoriza el entrenamiento pero generaliza peor a datos nuevos.';
+    badge.textContent = '⚠ Sobreajuste; memoriza el entrenamiento pero generaliza peor a datos nuevos.';
     badge.style.color = 'var(--cta)';
   } else {
-    badge.textContent = '✓ Ajuste razonable — generaliza bien a los datos de prueba.';
+    badge.textContent = '✓ Ajuste razonable; generaliza bien a los datos de prueba.';
     badge.style.color = 'var(--success)';
   }
 
@@ -1204,7 +1204,7 @@ analystToggle.addEventListener('change', ()=>{
   var GLOSSARY = [
     {term:'MCSA', def:'Análisis de firma de corriente del motor (Motor Current Signature Analysis): detecta fallas mecánicas y eléctricas midiendo variaciones en la corriente, sin abrir el equipo.'},
     {term:'RMS', def:'Valor cuadrático medio (Root Mean Square): resume la energía de una señal de vibración en un solo número comparable.'},
-    {term:'dB', def:'Decibel: unidad logarítmica de intensidad sonora — cada +10 dB representa aprox. 10 veces más energía acústica.'},
+    {term:'dB', def:'Decibel: unidad logarítmica de intensidad sonora; cada +10 dB representa aprox. 10 veces más energía acústica.'},
     {term:'ΔT', def:'Delta T: diferencia de temperatura entre dos puntos de medición.'},
     {term:'deslizamiento', def:'Slip: diferencia entre la velocidad del campo magnético del motor y la velocidad real del rotor; crece con más carga o daño mecánico.'},
     {term:'R²', def:'Coeficiente de determinación: qué tan bien el modelo explica la variación de los datos reales (1.0 = ajuste perfecto).'}

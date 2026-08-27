@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<!-- Google Analytics (GA4) — INACTIVO: reemplaza G-XXXXXXXXXX por tu Measurement ID real para activarlo -->
+<!-- Google Analytics (GA4). INACTIVO: reemplaza G-XXXXXXXXXX por tu Measurement ID real para activarlo -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -15,10 +15,10 @@
 <link rel="icon" href="../../assets/favicon.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
 <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
-<title>Semáforo de Bombas — RELIABILIT-IA</title>
+<title>Semáforo de Bombas. RELIABILIT-IA</title>
 <meta name="description" content="Clasifica el estado de una bomba centrífuga en verde, amarillo o rojo según qué tan lejos opera de su punto óptimo, con regresión logística polinomial ajustable.">
 
-<meta property="og:title" content="Semáforo de Bombas — RELIABILIT-IA">
+<meta property="og:title" content="Semáforo de Bombas. RELIABILIT-IA">
 <meta property="og:description" content="Mueve el caudal relativo al punto óptimo y la vibración y mira en vivo en qué color cae tu bomba.">
 <meta property="og:image" content="../../assets/og-image.png">
 <meta property="og:type" content="website">
@@ -56,7 +56,7 @@
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "Semáforo de Bombas — RELIABILIT-IA",
+  "name": "Semáforo de Bombas. RELIABILIT-IA",
   "applicationCategory": "BusinessApplication",
   "operatingSystem": "Web",
   "url": "https://angel19968.github.io/reliabilit-ia/modelos/semaforo-de-bombas/",
@@ -389,8 +389,8 @@
     <h2>El problema</h2>
     <div class="context-grid">
       <div class="context-text">
-        <p>Toda bomba centrífuga tiene un punto de diseño (BEP, best efficiency point) donde opera de forma más eficiente y con menor desgaste. Alejarse de ese punto —ya sea por defecto o por exceso de caudal— cambia el problema pero no lo elimina: muy por debajo aparece recirculación interna que calienta y desgasta el impulsor; muy por encima aparece cavitación, que erosiona los álabes a golpes microscópicos. El riesgo no crece en una sola dirección: es igual de alto lejos del punto óptimo por defecto que por exceso, algo que un modelo lineal simple no puede capturar bien.</p>
-        <p>Este demo simula esa lectura: mueve el caudal relativo al punto óptimo y la vibración, y mira en vivo en qué color —verde, amarillo o rojo— cae la bomba.</p>
+        <p>Toda bomba centrífuga tiene un punto de diseño (BEP, best efficiency point) donde opera de forma más eficiente y con menor desgaste. Alejarse de ese punto (ya sea por defecto o por exceso de caudal) cambia el problema pero no lo elimina: muy por debajo aparece recirculación interna que calienta y desgasta el impulsor; muy por encima aparece cavitación, que erosiona los álabes a golpes microscópicos. El riesgo no crece en una sola dirección: es igual de alto lejos del punto óptimo por defecto que por exceso, algo que un modelo lineal simple no puede capturar bien.</p>
+        <p>Este demo simula esa lectura: mueve el caudal relativo al punto óptimo y la vibración, y mira en vivo en qué color (verde, amarillo o rojo) cae la bomba.</p>
       </div>
       <aside class="context-visual">
         <svg class="cv-wave" viewBox="0 0 260 52" preserveAspectRatio="none" aria-hidden="true"><path d="M0,28 C15,10 30,46 45,28 C60,10 75,46 90,28 C105,10 120,46 135,28 C150,10 165,46 180,28 C195,10 210,46 225,28 C235,20 245,28 260,28"/></svg>
@@ -405,7 +405,7 @@
     <h2>Demo interactivo</h2>
     <div class="panel">
       <div class="toggle-row">
-        <span class="label">Clasificación por umbrales de referencia — mueve los sliders para simular una lectura de campo.</span>
+        <span class="label">Clasificación por umbrales de referencia; mueve los sliders para simular una lectura de campo.</span>
         <label class="switch">
           <span>Modo Analista</span>
           <input type="checkbox" id="analystToggle">
@@ -451,13 +451,13 @@
             <div class="gauge-value"><b id="gaugeValue">0</b> <span class="gauge-note">combina desviación del punto óptimo (50%) y vibración (50%)</span></div>
           </div>
 
-          <p class="sim-note">Simulación ilustrativa: la curva de la bomba y el punto de operación se dibujan a partir de los mismos valores de los sliders — no provienen de un sensor real.</p>
+          <p class="sim-note">Simulación ilustrativa: la curva de la bomba y el punto de operación se dibujan a partir de los mismos valores de los sliders; no provienen de un sensor real.</p>
         </div>
       </div>
 
       <div class="analyst" id="analystPanel">
         <h3 style="font-size:18px; text-transform:none; letter-spacing:0; margin-bottom:8px; color:var(--text);">Reentrenar en vivo</h3>
-        <p style="font-size:15px; color:var(--muted); margin-bottom:18px;">Elige el grado de expansión polinomial de la regresión logística (softmax) y observa cómo cambian las regiones de decisión. El set de 160 lecturas se divide en 106 para entrenar (●) y 54 reservadas para probar qué tan bien generaliza (○). Con grado 1 el modelo solo puede trazar una frontera recta — y como el riesgo sube tanto por defecto como por exceso de caudal, una recta no alcanza para separar las 3 clases; hacen falta términos cuadráticos para capturar esa forma de "U".</p>
+        <p style="font-size:15px; color:var(--muted); margin-bottom:18px;">Elige el grado de expansión polinomial de la regresión logística (softmax) y observa cómo cambian las regiones de decisión. El set de 160 lecturas se divide en 106 para entrenar (●) y 54 reservadas para probar qué tan bien generaliza (○). Con grado 1 el modelo solo puede trazar una frontera recta; y como el riesgo sube tanto por defecto como por exceso de caudal, una recta no alcanza para separar las 3 clases; hacen falta términos cuadráticos para capturar esa forma de "U".</p>
 
         <div class="dataset-wrap">
           <div class="dataset-label">Vista del dataset de entrenamiento</div>
@@ -484,10 +484,10 @@
   </section>
 
   <section class="business">
-    <h2>¿Qué significa para tu planta?</h2>
+    <h2>Lo que cambia en tu día a día</h2>
     <div class="business-grid">
       <div>
-        <p>Con la lectura actual, la bomba se clasifica en <span class="stat" id="bizLevelInline">Verde</span>. Operar sostenidamente en zona amarilla o roja acelera el desgaste del impulsor y los sellos mecánicos mucho más rápido que operar cerca del punto óptimo — detectarlo a tiempo suele ser la diferencia entre ajustar una válvula de estrangulamiento o reemplazar un impulsor erosionado por cavitación.</p>
+        <p>Con la lectura actual, la bomba se clasifica en <span class="stat" id="bizLevelInline">Verde</span>. Operar sostenidamente en zona amarilla o roja acelera el desgaste del impulsor y los sellos mecánicos mucho más rápido que operar cerca del punto óptimo; detectarlo a tiempo suele ser la diferencia entre ajustar una válvula de estrangulamiento o reemplazar un impulsor erosionado por cavitación.</p>
         <div class="biz-action" id="bizAction">
           <div class="biz-title" id="bizTitle">Calculando…</div>
           <div class="biz-detail" id="bizDetail"></div>
@@ -502,7 +502,7 @@
 
   <section id="cta">
     <h2>De esta demo a tu planta</h2>
-    <p style="color:var(--muted); max-width:640px; margin-bottom:20px;">Los umbrales, las clases y la simulación de este demo están calibrados sobre datos sintéticos para poder compartir esta demo abiertamente — la metodología es la misma que aplicamos en campo para diagnosticar tu bomba real. Llevarlo a tu planta implica estandarizar cómo capturas tus datos de caudal y vibración, encontrar el punto óptimo real de cada bomba (no todas comparten el mismo BEP), y calibrar el modelo con tu propio histórico — ahí es donde entra nuestro motor AutoML, ajustando el modelo correcto para tu caso y evitando tanto falsas alarmas como bombas operando en zona de riesgo sin ninguna alerta. Se adapta al tipo de bomba y a la industria —minería, manufactura, energía, alimentos— cuando la calibramos con tus datos. Si quieres recorrer ese proceso, conversemos.</p>
+    <p style="color:var(--muted); max-width:640px; margin-bottom:20px;">Los umbrales, las clases y la simulación de este demo están calibrados sobre datos sintéticos para poder compartir esta demo abiertamente, usando la misma metodología que aplicamos en campo para diagnosticar tu bomba real. Llevarlo a tu planta implica estandarizar cómo capturas tus datos de caudal y vibración, encontrar el punto óptimo real de cada bomba (no todas comparten el mismo BEP), y calibrar el modelo con tu propio histórico; ese es el ajuste que hacemos caso por caso, ajustando el modelo correcto para tu caso y evitando tanto falsas alarmas como bombas operando en zona de riesgo sin ninguna alerta. Se adapta al tipo de bomba y a la industria (minería, manufactura, energía, alimentos) cuando la calibramos con tus datos. Si quieres recorrer ese proceso, conversemos.</p>
     <div class="cta-row">
       <a class="btn primary" href="https://chat.whatsapp.com/GvBz1tuUeNZ0xwTkjsuE3z" target="_blank" rel="noopener">Unirme a la comunidad de WhatsApp</a>
       <a class="btn ghost" href="https://www.linkedin.com/company/reliabilit-ia/" target="_blank" rel="noopener">Seguir en LinkedIn</a>
@@ -553,7 +553,7 @@
       <a href="https://www.linkedin.com/in/miguelcayllahua/" target="_blank" rel="noopener">LinkedIn personal</a>
       <a href="mailto:miguelcquispe@gmail.com">Correo</a>
     </div>
-    <p style="">La metodología es la misma que aplicamos en proyectos reales; los datos y la simulación de esta demo son sintéticos para poder compartirlos públicamente. Se calibra con tus propios datos —sin importar el tipo de bomba o la industria— cuando trabajamos juntos. Los parámetros de este demo son de referencia — se recalibran a la medida de cada equipo cuando trabajamos con tus datos.</p>
+    <p style="">Nada en esta demo usa datos de un cliente real: son sintéticos, a propósito, para que la metodología se pueda compartir en abierto. El método en sí, cómo se valida y cómo se ajustan los parámetros, es el que aplicamos en campo. La calibración con tus propios datos cambia caso por caso.</p>
   </footer>
 </div>
 
@@ -571,7 +571,7 @@ const LEVEL_DETAIL = [
 const LEVEL_SIMPLE = [
   'la bomba está bien, no hagas nada por ahora.',
   'revisa el punto de operación en tu próxima ronda.',
-  'ajusta la bomba pronto — riesgo de cavitación o daño.'
+  'ajusta la bomba pronto; riesgo de cavitación o daño.'
 ];
 const SCORE_THRESHOLDS = [35, 65];
 
@@ -668,7 +668,7 @@ function updateBasic(){
 
   riskDot.style.background = color;
   riskTitle.style.color = color;
-  riskTitle.textContent = LEVELS[idx] + ' — índice ' + Math.round(score) + '/100';
+  riskTitle.textContent = LEVELS[idx] + '; índice ' + Math.round(score) + '/100';
   riskDetail.textContent = LEVEL_DETAIL[idx];
   const simpleEl = document.getElementById('simpleSummary');
   if(simpleEl) simpleEl.textContent = '💬 En palabras simples: ' + LEVEL_SIMPLE[idx];
@@ -680,10 +680,10 @@ function updateBasic(){
     confNote = 'La lectura está lejos de cualquier umbral entre niveles.';
   } else if(distToThresh > 4){
     confLevel = 'Media'; confColor = '#e8c547';
-    confNote = 'Cerca de un umbral — el nivel vecino también es plausible.';
+    confNote = 'Cerca de un umbral; el nivel vecino también es plausible.';
   } else {
     confLevel = 'Baja'; confColor = 'var(--cta)';
-    confNote = 'Justo en el borde entre dos niveles — trátalo como referencia, repite la medición.';
+    confNote = 'Justo en el borde entre dos niveles; trátalo como referencia, repite la medición.';
   }
   confidenceLine.textContent = 'Confianza de la clasificación: ' + confLevel;
   confidenceLine.style.color = confColor;
@@ -707,7 +707,7 @@ flowSlider.addEventListener('input', updateBasic);
 vibSlider.addEventListener('input', updateBasic);
 
 /* =========================================================
-   SIMULACIÓN EN VIVO — curva característica H-Q de la bomba,
+   SIMULACIÓN EN VIVO; curva característica H-Q de la bomba,
    con el punto de operación marcado (100% generado en cliente)
    ========================================================= */
 const instrumentCanvas = document.getElementById('instrument');
@@ -775,7 +775,7 @@ function drawInstrument(flowPct, vib, idx){
   const color = LEVEL_COLORS[idx];
 
   // efecto de cavitación (burbujas) si el caudal es muy alto, o de
-  // recirculación (remolino) si es muy bajo — puramente ilustrativo
+  // recirculación (remolino) si es muy bajo; puramente ilustrativo
   if(flowPct > 118){
     for(let i=0;i<6;i++){
       const t=(i/6+simTime*0.02)%1;
@@ -808,7 +808,7 @@ function drawInstrument(flowPct, vib, idx){
 function hexToRgb(hex){ const v=hex.replace('#',''); return [parseInt(v.slice(0,2),16),parseInt(v.slice(2,4),16),parseInt(v.slice(4,6),16)]; }
 
 /* =========================================================
-   MODO ANALISTA — dataset sintético + regresión logística
+   MODO ANALISTA; dataset sintético + regresión logística
    multinomial (softmax) con expansión polinomial de grado d
    ========================================================= */
 function seededRandom(seed){ let s=seed; return function(){ s=(s*9301+49297)%233280; return s/233280; }; }
@@ -981,7 +981,7 @@ function drawDecisionMap(W_model, degree){
   cctx.fillText('● entrenamiento · ○ prueba · color = nivel real', pad, pad-16);
 }
 
-// Matriz de confusión (conjunto de prueba) — reemplaza las barras de
+// Matriz de confusión (conjunto de prueba); reemplaza las barras de
 // exactitud por nivel: muestra con qué otro nivel se confunde cada
 // error, más útil para decidir prioridades de inspección.
 function drawConfusion(W_model, degree){
@@ -995,7 +995,7 @@ function drawConfusion(W_model, degree){
 
   rctx.fillStyle = '#c9c9d4';
   rctx.font = '12px DM Mono, monospace';
-  rctx.fillText('Matriz de confusión (prueba) — filas = nivel real, columnas = predicho', padL-60, 14);
+  rctx.fillText('Matriz de confusión (prueba); filas = nivel real, columnas = predicho', padL-60, 14);
 
   LEVELS.forEach((name,j)=>{
     rctx.fillStyle = '#8a8a98';
@@ -1034,13 +1034,13 @@ function setDegree(degree){
 
   const badge = document.getElementById('mFitBadge');
   if(accTrain < 0.75){
-    badge.textContent = '⚠ Subajuste — una frontera de grado 1 no puede separar un riesgo que sube en dos direcciones.';
+    badge.textContent = '⚠ Subajuste; una frontera de grado 1 no puede separar un riesgo que sube en dos direcciones.';
     badge.style.color = '#e8c547';
   } else if(gapPP > 15){
-    badge.textContent = '⚠ Sobreajuste — memoriza el entrenamiento pero generaliza peor a datos nuevos.';
+    badge.textContent = '⚠ Sobreajuste; memoriza el entrenamiento pero generaliza peor a datos nuevos.';
     badge.style.color = 'var(--cta)';
   } else {
-    badge.textContent = '✓ Ajuste razonable — generaliza bien a los datos de prueba.';
+    badge.textContent = '✓ Ajuste razonable; generaliza bien a los datos de prueba.';
     badge.style.color = 'var(--success)';
   }
 
@@ -1080,7 +1080,7 @@ updateBasic();
   var GLOSSARY = [
     {term:'MCSA', def:'Análisis de firma de corriente del motor (Motor Current Signature Analysis): detecta fallas mecánicas y eléctricas midiendo variaciones en la corriente, sin abrir el equipo.'},
     {term:'RMS', def:'Valor cuadrático medio (Root Mean Square): resume la energía de una señal de vibración en un solo número comparable.'},
-    {term:'dB', def:'Decibel: unidad logarítmica de intensidad sonora — cada +10 dB representa aprox. 10 veces más energía acústica.'},
+    {term:'dB', def:'Decibel: unidad logarítmica de intensidad sonora; cada +10 dB representa aprox. 10 veces más energía acústica.'},
     {term:'ΔT', def:'Delta T: diferencia de temperatura entre dos puntos de medición.'},
     {term:'deslizamiento', def:'Slip: diferencia entre la velocidad del campo magnético del motor y la velocidad real del rotor; crece con más carga o daño mecánico.'},
     {term:'R²', def:'Coeficiente de determinación: qué tan bien el modelo explica la variación de los datos reales (1.0 = ajuste perfecto).'}

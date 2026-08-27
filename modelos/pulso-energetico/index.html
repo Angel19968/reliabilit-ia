@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<!-- Google Analytics (GA4) — INACTIVO: reemplaza G-XXXXXXXXXX por tu Measurement ID real para activarlo -->
+<!-- Google Analytics (GA4). INACTIVO: reemplaza G-XXXXXXXXXX por tu Measurement ID real para activarlo -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -15,10 +15,10 @@
 <link rel="icon" href="../../assets/favicon.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
 <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
-<title>Pulso Energético — RELIABILIT-IA</title>
+<title>Pulso Energético. RELIABILIT-IA</title>
 <meta name="description" content="Proyecta el consumo energético esperado de tu planta y detecta desvíos anómalos antes de que se conviertan en sobrecostos.">
 
-<meta property="og:title" content="Pulso Energético — RELIABILIT-IA">
+<meta property="og:title" content="Pulso Energético. RELIABILIT-IA">
 <meta property="og:description" content="Mueve producción y consumo y mira en vivo si el gasto energético de hoy es normal o un desvío que vale la pena revisar.">
 <meta property="og:image" content="../../assets/og-image.png">
 <meta property="og:type" content="website">
@@ -56,7 +56,7 @@
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "Pulso Energético — RELIABILIT-IA",
+  "name": "Pulso Energético. RELIABILIT-IA",
   "applicationCategory": "BusinessApplication",
   "operatingSystem": "Web",
   "url": "https://angel19968.github.io/reliabilit-ia/modelos/pulso-energetico/",
@@ -391,7 +391,7 @@
     <h2>El problema</h2>
     <div class="context-grid">
       <div class="context-text">
-        <p>El consumo de una planta sube y baja con la producción — eso es normal. Lo que no es normal es cuando el consumo se desacopla de la producción: una fuga de aire comprimido, un motor que quedó encendido, un compresor perdiendo eficiencia. Este modelo aprende la relación esperada entre producción y consumo, y avisa cuándo el gasto de hoy se sale de ese patrón.</p>
+        <p>El consumo de una planta sube y baja con la producción; eso es normal. Lo que no es normal es cuando el consumo se desacopla de la producción: una fuga de aire comprimido, un motor que quedó encendido, un compresor perdiendo eficiencia. Este modelo aprende la relación esperada entre producción y consumo, y avisa cuándo el gasto de hoy se sale de ese patrón.</p>
       </div>
       <aside class="context-visual">
         <svg class="cv-wave" viewBox="0 0 260 52" preserveAspectRatio="none" aria-hidden="true"><path d="M0,28 C15,10 30,46 45,28 C60,10 75,46 90,28 C105,10 120,46 135,28 C150,10 165,46 180,28 C195,10 210,46 225,28 C235,20 245,28 260,28"/></svg>
@@ -406,7 +406,7 @@
     <h2>Demo interactivo</h2>
     <div class="panel">
       <div class="toggle-row">
-        <span class="label">Modelo entrenado con datos sintéticos (Serie de tiempo, tipo ARIMA) — mueve los sliders para simular una lectura de hoy.</span>
+        <span class="label">Modelo entrenado con datos sintéticos (Serie de tiempo, tipo ARIMA); mueve los sliders para simular una lectura de hoy.</span>
         <label class="switch">
           <span>Modo Analista</span>
           <input type="checkbox" id="analystToggle">
@@ -457,13 +457,13 @@
             <div class="cc-value" id="costMonthly">S/. 0</div>
           </div>
 
-          <p class="sim-note">Simulación ilustrativa: la serie histórica y la tarifa (S/. 0.62/kWh) son de ejemplo — no provienen del medidor real de ninguna planta.</p>
+          <p class="sim-note">Simulación ilustrativa: la serie histórica y la tarifa (S/. 0.62/kWh) son de ejemplo; no provienen del medidor real de ninguna planta.</p>
         </div>
       </div>
 
       <div class="analyst" id="analystPanel">
         <h3 style="font-size:18px; text-transform:none; letter-spacing:0; margin-bottom:8px; color:var(--text);">Reentrenar en vivo</h3>
-        <p style="font-size:15px; color:var(--muted); margin-bottom:18px;">Elige la ventana de suavizado (promedio móvil de los últimos N días) y observa cómo cambia el pronóstico. Los primeros 17 días son entrenamiento (●, violeta); los últimos 7 son prueba (○, blanco) — el error de pronóstico (MAPE) en la prueba es lo que de verdad importa.</p>
+        <p style="font-size:15px; color:var(--muted); margin-bottom:18px;">Elige la ventana de suavizado (promedio móvil de los últimos N días) y observa cómo cambia el pronóstico. Los primeros 17 días son entrenamiento (●, violeta); los últimos 7 son prueba (○, blanco); el error de pronóstico (MAPE) en la prueba es lo que de verdad importa.</p>
 
         <div class="dataset-wrap">
           <div class="dataset-label">Vista del dataset histórico</div>
@@ -490,10 +490,10 @@
   </section>
 
   <section class="business">
-    <h2>¿Qué significa para tu planta?</h2>
+    <h2>Qué hacer con este resultado</h2>
     <div class="business-grid">
       <div>
-        <p>Con la lectura actual, este desvío proyectado a un mes representa <span class="stat" id="bizCostInline">S/. 0</span> en sobrecosto energético. Detectarlo el mismo día que aparece — en vez de notarlo recién en la factura del mes — es la diferencia entre una corrección de 10 minutos y semanas de dinero perdido.</p>
+        <p>Con la lectura actual, este desvío proyectado a un mes representa <span class="stat" id="bizCostInline">S/. 0</span> en sobrecosto energético. Detectarlo el mismo día que aparece ( en vez de notarlo recién en la factura del mes ) es la diferencia entre una corrección de 10 minutos y semanas de dinero perdido.</p>
         <div class="biz-action" id="bizAction">
           <div class="biz-title" id="bizTitle">Calculando…</div>
           <div class="biz-detail" id="bizDetail"></div>
@@ -508,7 +508,7 @@
 
   <section id="cta">
     <h2>De esta demo a tu planta</h2>
-    <p style="color:var(--muted); max-width:640px; margin-bottom:20px;">La serie histórica, la relación producción-consumo y la tarifa de este demo están calibrados sobre datos sintéticos para poder compartir esta demo abiertamente — la metodología es la misma que aplicamos en campo para auditar tu planilla eléctrica real. Llevarlo a tu planta implica estandarizar cómo capturas tus lecturas de medidor y producción, analizarlas, y calibrar el modelo de pronóstico con tu propio histórico — ahí es donde entra nuestro motor AutoML, ajustando el modelo correcto y evitando falsas alarmas o desvíos reales que pasen desapercibidos. Se adapta al rubro de tu planta —manufactura, minería, alimentos, textil— cuando la calibramos con tu histórico real. Si quieres recorrer ese proceso, conversemos.</p>
+    <p style="color:var(--muted); max-width:640px; margin-bottom:20px;">La serie histórica, la relación producción-consumo y la tarifa de este demo están calibrados sobre datos sintéticos para poder compartir esta demo abiertamente, usando la misma metodología que aplicamos en campo para auditar tu planilla eléctrica real. Llevarlo a tu planta implica estandarizar cómo capturas tus lecturas de medidor y producción, analizarlas, y calibrar el modelo de pronóstico con tu propio histórico; ahí entra el trabajo de calibración fina, ajustando el modelo correcto y evitando falsas alarmas o desvíos reales que pasen desapercibidos. Se adapta al rubro de tu planta (manufactura, minería, alimentos, textil) cuando la calibramos con tu histórico real. Si quieres recorrer ese proceso, conversemos.</p>
     <div class="cta-row">
       <a class="btn primary" href="https://chat.whatsapp.com/GvBz1tuUeNZ0xwTkjsuE3z" target="_blank" rel="noopener">Unirme a la comunidad de WhatsApp</a>
       <a class="btn ghost" href="https://www.linkedin.com/company/reliabilit-ia/" target="_blank" rel="noopener">Seguir en LinkedIn</a>
@@ -559,7 +559,7 @@
       <a href="https://www.linkedin.com/in/miguelcayllahua/" target="_blank" rel="noopener">LinkedIn personal</a>
       <a href="mailto:miguelcquispe@gmail.com">Correo</a>
     </div>
-    <p style="">La metodología es la misma que aplicamos en proyectos reales; los datos y la simulación de esta demo son sintéticos para poder compartirlos públicamente. Se calibra con tu propio histórico de consumo —sin importar el rubro de tu planta— cuando trabajamos juntos. Los parámetros de este demo son de referencia — se recalibran a la medida de cada equipo cuando trabajamos con tus datos.</p>
+    <p style="">La metodología detrás de esta demo (el algoritmo, la forma de validarlo) es la misma que usamos en proyectos reales. Los datos que ves aquí son sintéticos, generados para poder compartir el enfoque sin exponer información de ningún cliente. El siguiente paso es calibrar este mismo modelo con tu propio histórico de consumo; conversemos si quieres ver cómo se vería en tu caso.</p>
   </footer>
 </div>
 
@@ -754,12 +754,12 @@ function updateBasic(){
   } else if(absDev <= BAND*2){
     color = '#e8c547';
     title = 'Desvío moderado';
-    detail = deviation>0 ? 'Se consume más de lo esperado. Vale la pena revisar en la próxima ronda.' : 'Se consume menos de lo esperado — probablemente algo positivo, pero confirma que no sea un sensor fallando.';
+    detail = deviation>0 ? 'Se consume más de lo esperado. Vale la pena revisar en la próxima ronda.' : 'Se consume menos de lo esperado; probablemente algo positivo, pero confirma que no sea un sensor fallando.';
     simple = deviation>0 ? 'revisa el consumo en tu próxima ronda.' : 'confirma que el medidor esté funcionando bien.';
   } else {
     color = 'var(--cta)';
-    title = 'Desvío alto — revisar hoy';
-    detail = deviation>0 ? 'Consumo muy por encima de lo esperado: posible fuga de aire, motor mal apagado o equipo funcionando fuera de horario.' : 'Consumo muy por debajo de lo esperado para esta producción — confirma que el medidor y la producción reportada sean correctos.';
+    title = 'Desvío alto; revisar hoy';
+    detail = deviation>0 ? 'Consumo muy por encima de lo esperado: posible fuga de aire, motor mal apagado o equipo funcionando fuera de horario.' : 'Consumo muy por debajo de lo esperado para esta producción; confirma que el medidor y la producción reportada sean correctos.';
     simple = deviation>0 ? 'revisa hoy: puede haber una fuga o un equipo mal apagado.' : 'revisa hoy el medidor, el dato no cuadra.';
   }
   riskDot.style.background = color;
@@ -772,7 +772,7 @@ function updateBasic(){
   const dailyExtraCost = Math.max(0, deviation) * TARIFA;
   costLine.textContent = deviation>0
     ? ('Sobrecosto de hoy: ' + fmtSoles(dailyExtraCost))
-    : 'Sin sobrecosto — consumo igual o menor al esperado.';
+    : 'Sin sobrecosto; consumo igual o menor al esperado.';
 
   const pct = Math.min(100, Math.max(0, 50 + (deviation/(BAND*2.5))*50));
   gaugeFill.style.width = pct.toFixed(1) + '%';
@@ -796,7 +796,7 @@ consSlider.addEventListener('input', updateBasic);
 updateBasic();
 
 /* =========================================================
-   MODO ANALISTA — pronóstico por promedio móvil, ventana ajustable
+   MODO ANALISTA; pronóstico por promedio móvil, ventana ajustable
    ========================================================= */
 function forecastSeries(window){
   // predicción del día i = promedio de los 'window' días anteriores
@@ -821,7 +821,7 @@ function renderDatasetPreview(){
     return `<tr><td>${fmtDate(date)}</td><td>${p.toFixed(1)}%</td><td>${consumption[i].toFixed(0)} kWh</td><td class="${isTrain?'set-train':'set-test'}">${isTrain?'Entrenamiento':'Prueba'}</td></tr>`;
   }).join('');
   const firstDate = dateForDay(0, N_HIST), lastDate = dateForDay(N_HIST-1, N_HIST);
-  note.textContent = `${N_HIST} días históricos (${fmtDate(firstDate)} — ${fmtDate(lastDate)}) — ${TRAIN_END} de entrenamiento, ${N_HIST-TRAIN_END} de prueba. "Hoy" en esta simulación es ${fmtDate(REF_DATE)}.`;
+  note.textContent = `${N_HIST} días históricos (${fmtDate(firstDate)} ( ${fmtDate(lastDate)}) ) ${TRAIN_END} de entrenamiento, ${N_HIST-TRAIN_END} de prueba. "Hoy" en esta simulación es ${fmtDate(REF_DATE)}.`;
 }
 renderDatasetPreview();
 
@@ -954,13 +954,13 @@ function setWindow(w){
 
   const badge = document.getElementById('mFitBadge');
   if(w <= 3){
-    badge.textContent = '⚠ Ventana muy corta — reacciona a cada variación normal como si fuera una tendencia (ruidoso).';
+    badge.textContent = '⚠ Ventana muy corta; reacciona a cada variación normal como si fuera una tendencia (ruidoso).';
     badge.style.color = 'var(--cta)';
   } else if(w >= 12){
-    badge.textContent = '⚠ Ventana muy larga — diluye el patrón semanal real y reacciona tarde a cambios genuinos.';
+    badge.textContent = '⚠ Ventana muy larga; diluye el patrón semanal real y reacciona tarde a cambios genuinos.';
     badge.style.color = '#e8c547';
   } else if(mapeTest < 12){
-    badge.textContent = '✓ Buen equilibrio — captura el patrón semanal sin perseguir el ruido diario.';
+    badge.textContent = '✓ Buen equilibrio; captura el patrón semanal sin perseguir el ruido diario.';
     badge.style.color = 'var(--success)';
   } else {
     badge.textContent = 'Ajuste aceptable, pero revisa otras ventanas para comparar el error de prueba.';
@@ -1001,7 +1001,7 @@ analystToggle.addEventListener('change', ()=>{
   var GLOSSARY = [
     {term:'MCSA', def:'Análisis de firma de corriente del motor (Motor Current Signature Analysis): detecta fallas mecánicas y eléctricas midiendo variaciones en la corriente, sin abrir el equipo.'},
     {term:'RMS', def:'Valor cuadrático medio (Root Mean Square): resume la energía de una señal de vibración en un solo número comparable.'},
-    {term:'dB', def:'Decibel: unidad logarítmica de intensidad sonora — cada +10 dB representa aprox. 10 veces más energía acústica.'},
+    {term:'dB', def:'Decibel: unidad logarítmica de intensidad sonora; cada +10 dB representa aprox. 10 veces más energía acústica.'},
     {term:'ΔT', def:'Delta T: diferencia de temperatura entre dos puntos de medición.'},
     {term:'deslizamiento', def:'Slip: diferencia entre la velocidad del campo magnético del motor y la velocidad real del rotor; crece con más carga o daño mecánico.'},
     {term:'R²', def:'Coeficiente de determinación: qué tan bien el modelo explica la variación de los datos reales (1.0 = ajuste perfecto).'}

@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<!-- Google Analytics (GA4) — INACTIVO: reemplaza G-XXXXXXXXXX por tu Measurement ID real para activarlo -->
+<!-- Google Analytics (GA4). INACTIVO: reemplaza G-XXXXXXXXXX por tu Measurement ID real para activarlo -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -15,10 +15,10 @@
 <link rel="icon" href="../../assets/favicon.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
 <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
-<title>Radiografía de Planta — RELIABILIT-IA</title>
+<title>Radiografía de Planta. RELIABILIT-IA</title>
 <meta name="description" content="Reduce 10 sensores de planta a un mapa visual de 2 ejes con PCA y agrupa el estado de tus equipos con k-means, sin necesitar leer sensor por sensor.">
 
-<meta property="og:title" content="Radiografía de Planta — RELIABILIT-IA">
+<meta property="og:title" content="Radiografía de Planta. RELIABILIT-IA">
 <meta property="og:description" content="Mueve la severidad mecánica y térmica y mira en vivo dónde cae tu equipo en el mapa de 10 sensores reducido a 2 ejes.">
 <meta property="og:image" content="../../assets/og-image.png">
 <meta property="og:type" content="website">
@@ -56,7 +56,7 @@
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "Radiografía de Planta — RELIABILIT-IA",
+  "name": "Radiografía de Planta. RELIABILIT-IA",
   "applicationCategory": "BusinessApplication",
   "operatingSystem": "Web",
   "url": "https://angel19968.github.io/reliabilit-ia/modelos/radiografia-de-planta/",
@@ -388,7 +388,7 @@
     <h2>El problema</h2>
     <div class="context-grid">
       <div class="context-text">
-        <p>Una planta real rara vez se monitorea con un solo sensor: vibración de motor y de bomba, corriente, ruido, temperatura de rodamiento y de bobinado, presión, humedad, caudal de refrigerante — cada uno cuenta una parte de la historia. Pero la mayoría de esos sensores se mueven juntos, porque en el fondo están reaccionando a un puñado de condiciones reales de la máquina: desgaste mecánico y estrés térmico o eléctrico. El Análisis de Componentes Principales (PCA) aprovecha esa redundancia para comprimir 10 lecturas correlacionadas en un mapa de solo 2 ejes que conserva la mayor parte de la información real, y sobre ese mapa se pueden agrupar los equipos en estados de operación reconocibles.</p>
+        <p>Una planta real rara vez se monitorea con un solo sensor: vibración de motor y de bomba, corriente, ruido, temperatura de rodamiento y de bobinado, presión, humedad, caudal de refrigerante; cada uno cuenta una parte de la historia. Pero la mayoría de esos sensores se mueven juntos, porque en el fondo están reaccionando a un puñado de condiciones reales de la máquina: desgaste mecánico y estrés térmico o eléctrico. El Análisis de Componentes Principales (PCA) aprovecha esa redundancia para comprimir 10 lecturas correlacionadas en un mapa de solo 2 ejes que conserva la mayor parte de la información real, y sobre ese mapa se pueden agrupar los equipos en estados de operación reconocibles.</p>
         <p>Este demo simula esa lectura: mueve la severidad mecánica y la térmica, y mira en vivo dónde cae el equipo en el mapa de 10 sensores reducido a 2 ejes.</p>
       </div>
       <aside class="context-visual">
@@ -404,7 +404,7 @@
     <h2>Demo interactivo</h2>
     <div class="panel">
       <div class="toggle-row">
-        <span class="label">Clasificación por grupo más cercano en el mapa — mueve los sliders para simular una lectura de campo.</span>
+        <span class="label">Clasificación por grupo más cercano en el mapa; mueve los sliders para simular una lectura de campo.</span>
         <label class="switch">
           <span>Modo Analista</span>
           <input type="checkbox" id="analystToggle">
@@ -455,16 +455,16 @@
             <div class="gauge-value"><b id="gaugeValue">0</b> <span class="gauge-note">resume, en un solo número, la tendencia conjunta de los 10 sensores</span></div>
           </div>
 
-          <p class="sim-note">Simulación ilustrativa: las 10 lecturas de sensor y su proyección en el mapa se generan a partir de los mismos valores de los sliders — no provienen de sensores reales.</p>
+          <p class="sim-note">Simulación ilustrativa: las 10 lecturas de sensor y su proyección en el mapa se generan a partir de los mismos valores de los sliders; no provienen de sensores reales.</p>
         </div>
       </div>
 
       <div class="analyst" id="analystPanel">
         <h3 style="font-size:18px; text-transform:none; letter-spacing:0; margin-bottom:8px; color:var(--text);">Reentrenar en vivo</h3>
-        <p style="font-size:15px; color:var(--muted); margin-bottom:18px;">El PCA y el agrupamiento (k-means) nunca ven la etiqueta del estado real del equipo — solo ven las 10 lecturas de sensor. Las etiquetas de régimen se usan únicamente para medir, después, qué tan bien separó el algoritmo los grupos, nunca para entrenarlo. El set de 93 lecturas de entrenamiento (●, violeta) se reduce primero de 10 a 2 dimensiones con PCA, y luego se agrupa con k-means. Elige cuántos grupos (k) buscar: con pocos grupos, estados de la planta claramente distintos quedan mezclados; con demasiados, un mismo estado real se parte en grupos artificiales que no aportan precisión adicional.</p>
+        <p style="font-size:15px; color:var(--muted); margin-bottom:18px;">El PCA y el agrupamiento (k-means) nunca ven la etiqueta del estado real del equipo; solo ven las 10 lecturas de sensor. Las etiquetas de régimen se usan únicamente para medir, después, qué tan bien separó el algoritmo los grupos, nunca para entrenarlo. El set de 93 lecturas de entrenamiento (●, violeta) se reduce primero de 10 a 2 dimensiones con PCA, y luego se agrupa con k-means. Elige cuántos grupos (k) buscar: con pocos grupos, estados de la planta claramente distintos quedan mezclados; con demasiados, un mismo estado real se parte en grupos artificiales que no aportan precisión adicional.</p>
 
         <div class="dataset-wrap">
-          <div class="dataset-label">Vista del dataset (10 sensores, sin etiqueta de estado — el modelo no la ve)</div>
+          <div class="dataset-label">Vista del dataset (10 sensores, sin etiqueta de estado; el modelo no la ve)</div>
           <div class="dataset-scroll">
             <table class="dataset-table">
               <thead><tr>
@@ -493,7 +493,7 @@
   </section>
 
   <section class="business">
-    <h2>¿Qué significa para tu planta?</h2>
+    <h2>Cómo leer este número en planta</h2>
     <div class="business-grid">
       <div>
         <p>Con la lectura actual, el equipo se agrupa como <span class="stat" id="bizLevelInline">Sano</span>. La ventaja de reducir 10 sensores a un mapa de 2 ejes no es solo visual: te permite comparar de un vistazo decenas de equipos de tu planta al mismo tiempo, detectar cuáles se están alejando del grupo "Sano" hacia un grupo de alerta, y priorizar tu ronda de mantenimiento por ese mapa en vez de revisar sensor por sensor, equipo por equipo.</p>
@@ -511,7 +511,7 @@
 
   <section id="cta">
     <h2>De esta demo a tu planta</h2>
-    <p style="color:var(--muted); max-width:640px; margin-bottom:20px;">Los 10 sensores, los grupos y la simulación de este demo están calibrados sobre datos sintéticos para poder compartir esta demo abiertamente — la metodología es la misma que aplicamos en campo para mapear tu planta real. Llevarlo a tu planta implica estandarizar cómo capturas las variables de cada equipo, decidir qué sensores realmente aportan información distinta, y calibrar cuántos grupos tiene sentido buscar en tu caso — ahí es donde entra nuestro motor AutoML, ajustando el modelo correcto para tu caso y evitando tanto mezclar estados distintos como fragmentar uno solo en grupos artificiales. Se adapta al tipo de planta y a la industria —minería, manufactura, energía, alimentos— cuando la calibramos con tus datos. Si quieres recorrer ese proceso, conversemos.</p>
+    <p style="color:var(--muted); max-width:640px; margin-bottom:20px;">Los 10 sensores, los grupos y la simulación de este demo están calibrados sobre datos sintéticos para poder compartir esta demo abiertamente, con la misma metodología que aplicamos en campo para mapear tu planta real. Llevarlo a tu planta implica estandarizar cómo capturas las variables de cada equipo, decidir qué sensores realmente aportan información distinta, y calibrar cuántos grupos tiene sentido buscar en tu caso; ahí calibramos el modelo, ajustando el modelo correcto para tu caso y evitando tanto mezclar estados distintos como fragmentar uno solo en grupos artificiales. Se adapta al tipo de planta y a la industria (minería, manufactura, energía, alimentos) cuando la calibramos con tus datos. Si quieres recorrer ese proceso, conversemos.</p>
     <div class="cta-row">
       <a class="btn primary" href="https://chat.whatsapp.com/GvBz1tuUeNZ0xwTkjsuE3z" target="_blank" rel="noopener">Unirme a la comunidad de WhatsApp</a>
       <a class="btn ghost" href="https://www.linkedin.com/company/reliabilit-ia/" target="_blank" rel="noopener">Seguir en LinkedIn</a>
@@ -562,7 +562,7 @@
       <a href="https://www.linkedin.com/in/miguelcayllahua/" target="_blank" rel="noopener">LinkedIn personal</a>
       <a href="mailto:miguelcquispe@gmail.com">Correo</a>
     </div>
-    <p style="">La metodología es la misma que aplicamos en proyectos reales; los datos y la simulación de esta demo son sintéticos para poder compartirlos públicamente. Se calibra con tus propios datos —sin importar el tipo de planta o la industria— cuando trabajamos juntos. Los parámetros de este demo son de referencia — se recalibran a la medida de cada equipo cuando trabajamos con tus datos.</p>
+    <p style="">El enfoque que ves aquí (algoritmo, validación, criterios de decisión) es el mismo que usamos con clientes reales; los números, en cambio, son sintéticos, para poder publicarlos sin comprometer información de nadie. Si quieres, calibramos este mismo modelo con tus propios datos.</p>
   </footer>
 </div>
 
@@ -570,7 +570,7 @@
 /* =========================================================
    Generación del dataset sintético: 10 sensores impulsados por
    2 factores latentes (severidad mecánica y térmica) + ruido
-   propio de cada sensor — la justificación real de por qué PCA
+   propio de cada sensor; la justificación real de por qué PCA
    funciona aquí: mucha de la "complejidad" de 10 sensores es en
    realidad redundante.
    ========================================================= */
@@ -783,7 +783,7 @@ function assignNearest(points, centers){
 
 /* =========================================================
    MODELO "DE PRODUCCIÓN" fijo (k=4, validado por simulación
-   externa como el punto de equilibrio real) — es el que usa
+   externa como el punto de equilibrio real); es el que usa
    el Modo Básico, independiente de lo que se explore abajo.
    ========================================================= */
 const PROD_K = 4;
@@ -902,10 +902,10 @@ function updateBasic(){
     confNote = 'La lectura está claramente más cerca de un grupo que de cualquier otro.';
   } else if(margin > 0.15){
     confLevel = 'Media'; confColor = '#e8c547';
-    confNote = 'Está entre dos grupos — el vecino también es plausible.';
+    confNote = 'Está entre dos grupos; el vecino también es plausible.';
   } else {
     confLevel = 'Baja'; confColor = 'var(--cta)';
-    confNote = 'Casi a mitad de camino entre dos grupos — trátalo como referencia, repite la medición.';
+    confNote = 'Casi a mitad de camino entre dos grupos; trátalo como referencia, repite la medición.';
   }
   confidenceLine.textContent = 'Confianza de la clasificación: ' + confLevel;
   confidenceLine.style.color = confColor;
@@ -934,7 +934,7 @@ mechSlider.addEventListener('input', updateBasic);
 thermSlider.addEventListener('input', updateBasic);
 
 /* =========================================================
-   SIMULACIÓN EN VIVO — mapa PCA con las 4 regiones del modelo
+   SIMULACIÓN EN VIVO; mapa PCA con las 4 regiones del modelo
    de producción y el punto actual.
    ========================================================= */
 const instrumentCanvas = document.getElementById('instrument');
@@ -998,7 +998,7 @@ function drawInstrument(curX, curY, label){
 }
 
 /* =========================================================
-   MODO ANALISTA — k ajustable
+   MODO ANALISTA; k ajustable
    ========================================================= */
 const chartCanvas = document.getElementById('chart');
 const cctx = chartCanvas.getContext('2d');
@@ -1121,13 +1121,13 @@ function setK(k){
 
   const badge = document.getElementById('mFitBadge');
   if(purTest < 0.85){
-    badge.textContent = '⚠ Subagrupamiento — mezcla estados de planta que en realidad son distintos.';
+    badge.textContent = '⚠ Subagrupamiento; mezcla estados de planta que en realidad son distintos.';
     badge.style.color = '#e8c547';
   } else if(k > 4){
-    badge.textContent = '⚠ Sobresegmentación — divide un mismo estado real en grupos artificiales, sin ganar precisión.';
+    badge.textContent = '⚠ Sobresegmentación; divide un mismo estado real en grupos artificiales, sin ganar precisión.';
     badge.style.color = 'var(--cta)';
   } else {
-    badge.textContent = '✓ Buen equilibrio — separa los estados reales de la planta sin fragmentarlos de más.';
+    badge.textContent = '✓ Buen equilibrio; separa los estados reales de la planta sin fragmentarlos de más.';
     badge.style.color = 'var(--success)';
   }
 
@@ -1167,7 +1167,7 @@ updateBasic();
   var GLOSSARY = [
     {term:'MCSA', def:'Análisis de firma de corriente del motor (Motor Current Signature Analysis): detecta fallas mecánicas y eléctricas midiendo variaciones en la corriente, sin abrir el equipo.'},
     {term:'RMS', def:'Valor cuadrático medio (Root Mean Square): resume la energía de una señal de vibración en un solo número comparable.'},
-    {term:'dB', def:'Decibel: unidad logarítmica de intensidad sonora — cada +10 dB representa aprox. 10 veces más energía acústica.'},
+    {term:'dB', def:'Decibel: unidad logarítmica de intensidad sonora; cada +10 dB representa aprox. 10 veces más energía acústica.'},
     {term:'ΔT', def:'Delta T: diferencia de temperatura entre dos puntos de medición.'},
     {term:'deslizamiento', def:'Slip: diferencia entre la velocidad del campo magnético del motor y la velocidad real del rotor; crece con más carga o daño mecánico.'},
     {term:'R²', def:'Coeficiente de determinación: qué tan bien el modelo explica la variación de los datos reales (1.0 = ajuste perfecto).'}

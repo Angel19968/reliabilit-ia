@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<!-- Google Analytics (GA4) — INACTIVO: reemplaza G-XXXXXXXXXX por tu Measurement ID real para activarlo -->
+<!-- Google Analytics (GA4). INACTIVO: reemplaza G-XXXXXXXXXX por tu Measurement ID real para activarlo -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -15,10 +15,10 @@
 <link rel="icon" href="../../assets/favicon.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
 <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
-<title>Memoria del Motor — RELIABILIT-IA</title>
+<title>Memoria del Motor. RELIABILIT-IA</title>
 <meta name="description" content="Compara un modelo sin memoria (solo la lectura actual) contra una LSTM entrenada desde cero que ve toda la secuencia de lecturas, para estimar días hasta falla.">
 
-<meta property="og:title" content="Memoria del Motor — RELIABILIT-IA">
+<meta property="og:title" content="Memoria del Motor. RELIABILIT-IA">
 <meta property="og:description" content="Mueve la vibración final y qué tan brusca fue la subida reciente, y mira cómo un modelo con memoria (LSTM) corrige la estimación de un modelo que solo ve el valor actual.">
 <meta property="og:image" content="../../assets/og-image.png">
 <meta property="og:type" content="website">
@@ -56,7 +56,7 @@
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "Memoria del Motor — RELIABILIT-IA",
+  "name": "Memoria del Motor. RELIABILIT-IA",
   "applicationCategory": "BusinessApplication",
   "operatingSystem": "Web",
   "url": "https://angel19968.github.io/reliabilit-ia/modelos/memoria-del-motor/",
@@ -376,8 +376,8 @@
     <h2>El problema</h2>
     <div class="context-grid">
       <div class="context-text">
-        <p>Todos los modelos de este catálogo, hasta ahora, deciden con la lectura del momento — el valor actual de vibración, temperatura o corriente. Eso funciona bien la mayor parte del tiempo, pero ignora algo que cualquier técnico experimentado sabe de memoria: la <span class="glossary-term" title="Trayectoria: la forma en que un valor cambió a lo largo del tiempo, no solo su nivel actual.">trayectoria</span> importa tanto como el valor. Una vibración de 8 mm/s alcanzada en una subida lenta y estable durante 6 meses no es la misma alerta que la misma vibración alcanzada con un salto brusco en las últimas dos semanas — aunque el sensor reporte exactamente el mismo número hoy.</p>
-        <p>Este demo entrena, desde cero en JavaScript y con <span class="glossary-term" title="Backpropagation Through Time: el algoritmo que permite entrenar redes recurrentes propagando el error hacia atrás a través de cada paso de tiempo de la secuencia.">BPTT</span>, una LSTM de una capa que procesa las últimas 12 lecturas completas (en vez de solo la última), y la compara en vivo contra un modelo sin memoria que solo ve el valor actual — el mismo tipo de modelo que ya viste en Radar de Rodamientos.</p>
+        <p>Todos los modelos de este catálogo, hasta ahora, deciden con la lectura del momento; el valor actual de vibración, temperatura o corriente. Eso funciona bien la mayor parte del tiempo, pero ignora algo que cualquier técnico experimentado sabe de memoria: la <span class="glossary-term" title="Trayectoria: la forma en que un valor cambió a lo largo del tiempo, no solo su nivel actual.">trayectoria</span> importa tanto como el valor. Una vibración de 8 mm/s alcanzada en una subida lenta y estable durante 6 meses no es la misma alerta que la misma vibración alcanzada con un salto brusco en las últimas dos semanas; aunque el sensor reporte exactamente el mismo número hoy.</p>
+        <p>Este demo entrena, desde cero en JavaScript y con <span class="glossary-term" title="Backpropagation Through Time: el algoritmo que permite entrenar redes recurrentes propagando el error hacia atrás a través de cada paso de tiempo de la secuencia.">BPTT</span>, una LSTM de una capa que procesa las últimas 12 lecturas completas (en vez de solo la última), y la compara en vivo contra un modelo sin memoria que solo ve el valor actual; el mismo tipo de modelo que ya viste en Radar de Rodamientos.</p>
       </div>
       <aside class="context-visual">
         <svg class="cv-wave" viewBox="0 0 260 52" preserveAspectRatio="none" aria-hidden="true"><path d="M0,28 C15,10 30,46 45,28 C60,10 75,46 90,28 C105,10 120,46 135,28 C150,10 165,46 180,28 C195,10 210,46 225,28 C235,20 245,28 260,28"/></svg>
@@ -392,7 +392,7 @@
     <h2>Demo interactivo</h2>
     <div class="panel">
       <div class="toggle-row">
-        <span class="label">Ambos modelos ya están entrenados sobre 260 secuencias sintéticas — mueve los sliders para simular una lectura de campo.</span>
+        <span class="label">Ambos modelos ya están entrenados sobre 260 secuencias sintéticas; mueve los sliders para simular una lectura de campo.</span>
         <label class="switch">
           <span>Modo Analista</span>
           <input type="checkbox" id="analystToggle">
@@ -439,7 +439,7 @@
 
       <div class="analyst" id="analystPanel">
         <h3 style="font-size:18px; text-transform:none; letter-spacing:0; margin-bottom:8px; color:var(--text);">Cómo se entrenaron ambos modelos</h3>
-        <p style="font-size:15px; color:var(--muted); margin-bottom:18px;">260 secuencias sintéticas de 12 lecturas, generadas con un nivel base y una aceleración reciente independientes entre sí (para que ningún modelo pueda "hacer trampa" adivinando la aceleración a partir del promedio de la secuencia). El objetivo real (días hasta falla) depende del valor final <b>y</b> de la aceleración reciente. El modelo sin memoria solo puede ver el valor final, así que estructuralmente no puede capturar la parte de aceleración — por diseño, no por estar mal entrenado.</p>
+        <p style="font-size:15px; color:var(--muted); margin-bottom:18px;">260 secuencias sintéticas de 12 lecturas, generadas con un nivel base y una aceleración reciente independientes entre sí (para que ningún modelo pueda "hacer trampa" adivinando la aceleración a partir del promedio de la secuencia). El objetivo real (días hasta falla) depende del valor final <b>y</b> de la aceleración reciente. El modelo sin memoria solo puede ver el valor final, así que estructuralmente no puede capturar la parte de aceleración; por diseño, no por estar mal entrenado.</p>
 
         <div class="dataset-wrap">
           <div class="dataset-label">Vista del dataset de entrenamiento</div>
@@ -454,24 +454,24 @@
 
         <div class="dataset-label">Dispersión: vibración final vs. aceleración reciente</div>
         <canvas id="scatter" width="800" height="320"></canvas>
-        <p class="sim-note" id="scatterHint">El punto blanco grande marca la combinación que tienes seleccionada ahora mismo en los sliders — muévelos para ver dónde cae tu lectura dentro del dataset de entrenamiento.</p>
+        <p class="sim-note" id="scatterHint">El punto blanco grande marca la combinación que tienes seleccionada ahora mismo en los sliders; muévelos para ver dónde cae tu lectura dentro del dataset de entrenamiento.</p>
         <canvas id="r2bars" width="800" height="180"></canvas>
         <div class="metrics">
           <span>R² sin memoria (prueba): <b id="mR2Base">–</b></span>
-          <span>R² con memoria — LSTM (prueba): <b id="mR2Lstm">–</b></span>
+          <span>R² con memoria. LSTM (prueba): <b id="mR2Lstm">–</b></span>
           <span>Correlación aceleración↔error del sin-memoria: <b id="mCorr">–</b></span>
         </div>
         <div class="fit-badge" id="mFitBadge">–</div>
-        <p class="arch-note">Arquitectura: LSTM de 1 capa, 8 unidades ocultas, puertas forget/input/candidato/salida completas, entrenada con <span class="glossary-term" title="Backpropagation Through Time: el algoritmo que permite entrenar redes recurrentes propagando el error hacia atrás a través de cada paso de tiempo de la secuencia.">BPTT</span> + optimizador Adam durante 220 épocas sobre las 195 secuencias de entrenamiento (65 reservadas para prueba). Hiperparámetros (tamaño oculto, tasa de aprendizaje, épocas) validados por simulación externa en Node.js antes de fijarlos en este demo — con menos épocas o sin normalizar las lecturas de entrada, el modelo no convergía de forma confiable.</p>
+        <p class="arch-note">Arquitectura: LSTM de 1 capa, 8 unidades ocultas, puertas forget/input/candidato/salida completas, entrenada con <span class="glossary-term" title="Backpropagation Through Time: el algoritmo que permite entrenar redes recurrentes propagando el error hacia atrás a través de cada paso de tiempo de la secuencia.">BPTT</span> + optimizador Adam durante 220 épocas sobre las 195 secuencias de entrenamiento (65 reservadas para prueba). Hiperparámetros (tamaño oculto, tasa de aprendizaje, épocas) validados por simulación externa en Node.js antes de fijarlos en este demo; con menos épocas o sin normalizar las lecturas de entrada, el modelo no convergía de forma confiable.</p>
       </div>
     </div>
   </section>
 
   <section class="business">
-    <h2>¿Qué significa para tu planta?</h2>
+    <h2>Qué hacer con este resultado</h2>
     <div class="business-grid">
       <div>
-        <p>Con la lectura actual, el modelo sin memoria estima <span class="stat" id="bizBaseInline">– días</span> y la LSTM estima <span class="stat" id="bizLstmInline">– días</span>. Cuando ambos coinciden, no cambia nada en tu decisión. Cuando difieren —como cuando la subida reciente fue brusca—, la LSTM es la que vio la señal de alerta real: dos equipos con la misma lectura de hoy pueden estar en momentos de vida útil muy distintos, y priorizar solo por el valor actual puede hacer que atiendas primero al equipo equivocado.</p>
+        <p>Con la lectura actual, el modelo sin memoria estima <span class="stat" id="bizBaseInline">– días</span> y la LSTM estima <span class="stat" id="bizLstmInline">– días</span>. Cuando ambos coinciden, no cambia nada en tu decisión. Cuando difieren (como cuando la subida reciente fue brusca), la LSTM es la que vio la señal de alerta real: dos equipos con la misma lectura de hoy pueden estar en momentos de vida útil muy distintos, y priorizar solo por el valor actual puede hacer que atiendas primero al equipo equivocado.</p>
         <div class="biz-action" id="bizAction">
           <div class="biz-title" id="bizTitle">Calculando…</div>
           <div class="biz-detail" id="bizDetail"></div>
@@ -486,7 +486,7 @@
 
   <section id="cta">
     <h2>De esta demo a tu planta</h2>
-    <p style="color:var(--muted); max-width:640px; margin-bottom:20px;">La arquitectura y el entrenamiento de este demo son reales; los datos son sintéticos para poder compartirlos públicamente. Llevar un modelo con memoria temporal a tu planta implica tener un historial real de lecturas secuenciales por equipo (no solo la última medición), suficientes casos de falla para validar que el patrón de aceleración realmente predice mejor que el valor puntual, y calibrar la arquitectura (tamaño de la memoria, cuántos pasos hacia atrás importan) con tus propios datos — ahí es donde entra nuestro motor AutoML. Se adapta al tipo de equipo y a la industria —minería, manufactura, energía, alimentos— cuando la calibramos con tus datos. Si quieres recorrer ese proceso, conversemos.</p>
+    <p style="color:var(--muted); max-width:640px; margin-bottom:20px;">La arquitectura y el entrenamiento de este demo son reales; los datos son sintéticos para poder compartirlos públicamente. Llevar un modelo con memoria temporal a tu planta implica tener un historial real de lecturas secuenciales por equipo (no solo la última medición), suficientes casos de falla para validar que el patrón de aceleración realmente predice mejor que el valor puntual, y calibrar la arquitectura (tamaño de la memoria, cuántos pasos hacia atrás importan) con tus propios datos. Ahí calibramos el modelo caso por caso. Se adapta al tipo de equipo y a la industria (minería, manufactura, energía, alimentos) cuando la calibramos con tus datos. Si quieres recorrer ese proceso, conversemos.</p>
     <div class="cta-row">
       <a class="btn primary" href="https://chat.whatsapp.com/GvBz1tuUeNZ0xwTkjsuE3z" target="_blank" rel="noopener">Unirme a la comunidad de WhatsApp</a>
       <a class="btn ghost" href="https://www.linkedin.com/company/reliabilit-ia/" target="_blank" rel="noopener">Seguir en LinkedIn</a>
@@ -537,7 +537,7 @@
       <a href="https://www.linkedin.com/in/miguelcayllahua/" target="_blank" rel="noopener">LinkedIn personal</a>
       <a href="mailto:miguelcquispe@gmail.com">Correo</a>
     </div>
-    <p style="">La metodología (LSTM entrenada desde cero con BPTT) es la misma que aplicamos en proyectos reales; los datos y las secuencias de esta demo son sintéticos para poder compartirlos públicamente. Se calibra con tus propios datos —sin importar el tipo de equipo o la industria— cuando trabajamos juntos. Los parámetros de este demo son de referencia — se recalibran a la medida de cada equipo cuando trabajamos con tus datos.</p>
+    <p style="">La metodología detrás de esta demo (el algoritmo, la forma de validarlo) es la misma que usamos en proyectos reales. Los datos que ves aquí son sintéticos, generados para poder compartir el enfoque sin exponer información de ningún cliente. El siguiente paso es calibrar este mismo modelo con tus propios datos; conversemos si quieres ver cómo se vería en tu caso.</p>
   </footer>
 </div>
 
@@ -551,7 +551,7 @@
    el nivel y la aceleración compartían la misma curva de forma,
    el modelo con memoria aprendía la relación EN SENTIDO CONTRARIO
    (por una correlación espuria entre el promedio de la secuencia
-   y la aceleración real) — este diseño la elimina.
+   y la aceleración real); este diseño la elimina.
    ========================================================= */
 const T = 12;
 function baseLifeDays(vib){ const a=0.42,b=-11.2,c=78; return Math.max(2, a*vib*vib+b*vib+c); }
@@ -817,7 +817,7 @@ function trainModels(){
 }
 
 /* =========================================================
-   MODO BÁSICO — sliders controlan una secuencia sintética
+   MODO BÁSICO; sliders controlan una secuencia sintética
    (nivel = final - aceleración, aceleración = slider)
    ========================================================= */
 const finalSlider = document.getElementById('finalSlider');
@@ -938,11 +938,11 @@ function updateBasic(){
   const gap = base - lstmP;
   let verdict, simple;
   if(accel < 0.5){
-    verdict = 'Subida gradual: ambos modelos coinciden — no hay señal de aceleración reciente que capturar.';
+    verdict = 'Subida gradual: ambos modelos coinciden; no hay señal de aceleración reciente que capturar.';
     simple = 'ambos modelos están de acuerdo, no hay urgencia extra.';
   } else if(gap > 8){
-    verdict = `La LSTM detecta la subida brusca reciente y recorta ${gap.toFixed(0)} días respecto al modelo sin memoria — trátalo como más urgente de lo que sugiere el valor actual por sí solo.`;
-    simple = 'la subida reciente es la señal de alerta real — prioriza este equipo antes de lo que sugiere el valor actual.';
+    verdict = `La LSTM detecta la subida brusca reciente y recorta ${gap.toFixed(0)} días respecto al modelo sin memoria; trátalo como más urgente de lo que sugiere el valor actual por sí solo.`;
+    simple = 'la subida reciente es la señal de alerta real; prioriza este equipo antes de lo que sugiere el valor actual.';
   } else if(gap > 2){
     verdict = `La LSTM ya nota cierta aceleración reciente y ajusta ${gap.toFixed(0)} días a la baja frente al modelo sin memoria.`;
     simple = 'hay algo de aceleración reciente, vale la pena vigilar más de cerca.';
@@ -956,7 +956,7 @@ function updateBasic(){
   bizBaseInline.textContent = base.toFixed(0) + ' días';
   bizLstmInline.textContent = lstmP.toFixed(0) + ' días';
   bizAction.style.borderColor = gap > 8 ? 'var(--cta)' : (gap > 2 ? '#e8c547' : 'var(--border)');
-  bizTitle.textContent = gap > 8 ? 'Prioriza según la LSTM, no según el valor actual' : (gap > 2 ? 'Vigila de cerca — aceleración moderada' : 'Ambos modelos coinciden');
+  bizTitle.textContent = gap > 8 ? 'Prioriza según la LSTM, no según el valor actual' : (gap > 2 ? 'Vigila de cerca; aceleración moderada' : 'Ambos modelos coinciden');
   bizDetail.textContent = verdict;
 
   drawProjection(base, lstmP);
@@ -1092,10 +1092,10 @@ function renderAnalyst(){
 
   const badge = document.getElementById('mFitBadge');
   if(r2Lstm > r2Base + 0.02){
-    badge.textContent = '✓ La LSTM generaliza mejor que el modelo sin memoria en el set de prueba — capturó parte de la señal de aceleración.';
+    badge.textContent = '✓ La LSTM generaliza mejor que el modelo sin memoria en el set de prueba; capturó parte de la señal de aceleración.';
     badge.style.color = 'var(--success)';
   } else {
-    badge.textContent = '≈ Ambos modelos generalizan de forma similar en R² global — la diferencia real se ve caso por caso, sobre todo cuando la aceleración reciente es alta.';
+    badge.textContent = '≈ Ambos modelos generalizan de forma similar en R² global; la diferencia real se ve caso por caso, sobre todo cuando la aceleración reciente es alta.';
     badge.style.color = '#e8c547';
   }
 }
@@ -1113,7 +1113,7 @@ analystToggle.addEventListener('change', ()=>{
   var GLOSSARY = [
     {term:'MCSA', def:'Análisis de firma de corriente del motor (Motor Current Signature Analysis): detecta fallas mecánicas y eléctricas midiendo variaciones en la corriente, sin abrir el equipo.'},
     {term:'RMS', def:'Valor cuadrático medio (Root Mean Square): resume la energía de una señal de vibración en un solo número comparable.'},
-    {term:'dB', def:'Decibel: unidad logarítmica de intensidad sonora — cada +10 dB representa aprox. 10 veces más energía acústica.'},
+    {term:'dB', def:'Decibel: unidad logarítmica de intensidad sonora; cada +10 dB representa aprox. 10 veces más energía acústica.'},
     {term:'ΔT', def:'Delta T: diferencia de temperatura entre dos puntos de medición.'},
     {term:'deslizamiento', def:'Slip: diferencia entre la velocidad del campo magnético del motor y la velocidad real del rotor; crece con más carga o daño mecánico.'},
     {term:'R²', def:'Coeficiente de determinación: qué tan bien el modelo explica la variación de los datos reales (1.0 = ajuste perfecto).'}

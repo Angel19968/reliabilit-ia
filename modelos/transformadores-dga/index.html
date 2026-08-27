@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<!-- Google Analytics (GA4) — INACTIVO: reemplaza G-XXXXXXXXXX por tu Measurement ID real para activarlo -->
+<!-- Google Analytics (GA4). INACTIVO: reemplaza G-XXXXXXXXXX por tu Measurement ID real para activarlo -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -15,10 +15,10 @@
 <link rel="icon" href="../../assets/favicon.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
 <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
-<title>Transformadores (DGA) — RELIABILIT-IA</title>
+<title>Transformadores (DGA). RELIABILIT-IA</title>
 <meta name="description" content="Diagnostica el tipo de falla en un transformador de potencia a partir del Análisis de Gases Disueltos (DGA), clasificando en las 7 zonas del Triángulo de Duval 1.">
 
-<meta property="og:title" content="Transformadores (DGA) — RELIABILIT-IA">
+<meta property="og:title" content="Transformadores (DGA). RELIABILIT-IA">
 <meta property="og:description" content="Mueve las lecturas de metano, etileno y acetileno y mira en vivo en qué zona del Triángulo de Duval cae tu transformador.">
 <meta property="og:image" content="../../assets/og-image.png">
 <meta property="og:type" content="website">
@@ -56,7 +56,7 @@
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "Transformadores (DGA) — RELIABILIT-IA",
+  "name": "Transformadores (DGA). RELIABILIT-IA",
   "applicationCategory": "BusinessApplication",
   "operatingSystem": "Web",
   "url": "https://angel19968.github.io/reliabilit-ia/modelos/transformadores-dga/",
@@ -390,15 +390,15 @@
     <h2>El problema</h2>
     <div class="context-grid">
       <div class="context-text">
-        <p>Un transformador de potencia en operación normal libera trazas de gases en su aceite dieléctrico. Cuando hay una falla incipiente —una descarga eléctrica, un punto caliente, una mezcla de ambas— la proporción de esos gases cambia de forma característica, mucho antes de que la falla sea visible o el transformador se dispare. El Análisis de Gases Disueltos (<span class="glossary-term" title="Dissolved Gas Analysis: técnica que interpreta los gases disueltos en el aceite de un transformador para diagnosticar el tipo de falla interna.">DGA</span>) es la técnica estándar de la industria eléctrica para leer esa señal, y el Triángulo de Duval es el método más usado para traducir tres de esos gases —metano (CH₄), etileno (C₂H₄) y acetileno (C₂H₂)— en un diagnóstico de qué tipo de falla está ocurriendo.</p>
+        <p>Un transformador de potencia en operación normal libera trazas de gases en su aceite dieléctrico. Cuando hay una falla incipiente (una descarga eléctrica, un punto caliente, una mezcla de ambas) la proporción de esos gases cambia de forma característica, mucho antes de que la falla sea visible o el transformador se dispare. El Análisis de Gases Disueltos (<span class="glossary-term" title="Dissolved Gas Analysis: técnica que interpreta los gases disueltos en el aceite de un transformador para diagnosticar el tipo de falla interna.">DGA</span>) es la técnica estándar de la industria eléctrica para leer esa señal, y el Triángulo de Duval es el método más usado para traducir tres de esos gases (metano (CH₄), etileno (C₂H₄) y acetileno (C₂H₂)) en un diagnóstico de qué tipo de falla está ocurriendo.</p>
         <p>Este demo implementa una versión simplificada, con fines pedagógicos, del Triángulo de Duval 1: mueve las tres lecturas de gas y mira en vivo en qué zona cae tu transformador, entre 7 tipos de falla reconocidos por la industria.</p>
       </div>
       <aside class="context-visual">
         <svg class="cv-wave" viewBox="0 0 260 52" preserveAspectRatio="none" aria-hidden="true"><path d="M0,28 C15,10 30,46 45,28 C60,10 75,46 90,28 C105,10 120,46 135,28 C150,10 165,46 180,28 C195,10 210,46 225,28 C235,20 245,28 260,28"/></svg>
         <div class="cv-title"><span class="cv-dot"></span>Variables que observa el modelo</div>
-        <div class="cv-fact"><div class="cv-fact-label">Metano — CH₄</div><div class="cv-fact-range">5 ppm → 500 ppm</div></div>
-        <div class="cv-fact"><div class="cv-fact-label">Etileno — C₂H₄</div><div class="cv-fact-range">2 ppm → 350 ppm</div></div>
-        <div class="cv-fact"><div class="cv-fact-label">Acetileno — C₂H₂</div><div class="cv-fact-range">0 ppm → 150 ppm</div></div>
+        <div class="cv-fact"><div class="cv-fact-label">Metano. CH₄</div><div class="cv-fact-range">5 ppm → 500 ppm</div></div>
+        <div class="cv-fact"><div class="cv-fact-label">Etileno. C₂H₄</div><div class="cv-fact-range">2 ppm → 350 ppm</div></div>
+        <div class="cv-fact"><div class="cv-fact-label">Acetileno. C₂H₂</div><div class="cv-fact-range">0 ppm → 150 ppm</div></div>
       </aside>
     </div>
   </section>
@@ -407,7 +407,7 @@
     <h2>Demo interactivo</h2>
     <div class="panel">
       <div class="toggle-row">
-        <span class="label">Clasificación por reglas del Triángulo de Duval — mueve los sliders para simular una lectura de laboratorio.</span>
+        <span class="label">Clasificación por reglas del Triángulo de Duval; mueve los sliders para simular una lectura de laboratorio.</span>
         <label class="switch">
           <span>Modo Analista</span>
           <input type="checkbox" id="analystToggle">
@@ -418,19 +418,19 @@
       <div class="demo-grid">
         <div class="controls-col">
           <div class="slider-group">
-            <label>Metano — CH₄ <span class="val" id="ch4Val">120 ppm</span></label>
+            <label>Metano. CH₄ <span class="val" id="ch4Val">120 ppm</span></label>
             <input type="range" id="ch4Slider" min="5" max="500" step="1" value="120">
             <div class="hint"><span>5 ppm</span><span>500 ppm</span></div>
           </div>
 
           <div class="slider-group">
-            <label>Etileno — C₂H₄ <span class="val" id="c2h4Val">40 ppm</span></label>
+            <label>Etileno. C₂H₄ <span class="val" id="c2h4Val">40 ppm</span></label>
             <input type="range" id="c2h4Slider" min="2" max="350" step="1" value="40">
             <div class="hint"><span>2 ppm</span><span>350 ppm</span></div>
           </div>
 
           <div class="slider-group">
-            <label>Acetileno — C₂H₂ <span class="val" id="c2h2Val">5 ppm</span></label>
+            <label>Acetileno. C₂H₂ <span class="val" id="c2h2Val">5 ppm</span></label>
             <input type="range" id="c2h2Slider" min="0" max="150" step="1" value="5">
             <div class="hint"><span>0 ppm</span><span>150 ppm</span></div>
           </div>
@@ -448,7 +448,7 @@
         </div>
 
         <div class="live-col">
-          <h3>Triángulo de Duval — lectura en vivo</h3>
+          <h3>Triángulo de Duval; lectura en vivo</h3>
           <div class="instrument-wrap">
             <canvas id="instrument" width="420" height="340"></canvas>
           </div>
@@ -459,13 +459,13 @@
             <div class="gauge-value"><b id="gaugeValue">0</b> <span class="gauge-note">nivel de urgencia asignado según el tipo de falla diagnosticado</span></div>
           </div>
 
-          <p class="sim-note">Simulación ilustrativa: el porcentaje de cada gas y la posición en el triángulo se calculan a partir de los mismos valores de los sliders — no provienen de un cromatógrafo de gases real.</p>
+          <p class="sim-note">Simulación ilustrativa: el porcentaje de cada gas y la posición en el triángulo se calculan a partir de los mismos valores de los sliders; no provienen de un cromatógrafo de gases real.</p>
         </div>
       </div>
 
       <div class="analyst" id="analystPanel">
         <h3 style="font-size:18px; text-transform:none; letter-spacing:0; margin-bottom:8px; color:var(--text);">Reentrenar en vivo</h3>
-        <p style="font-size:15px; color:var(--muted); margin-bottom:18px;">Elige el grado de expansión polinomial de la regresión logística (softmax) y observa cómo cambian las 7 regiones de decisión dentro del triángulo. El set de 160 lecturas se divide en 106 para entrenar (●) y 54 reservadas para probar qué tan bien generaliza (○). Las fronteras reales del Triángulo de Duval no son líneas rectas simples, así que grados más altos ayudan a que el modelo las aproxime mejor — pero ten cuidado con el sobreajuste en las zonas con menos ejemplos.</p>
+        <p style="font-size:15px; color:var(--muted); margin-bottom:18px;">Elige el grado de expansión polinomial de la regresión logística (softmax) y observa cómo cambian las 7 regiones de decisión dentro del triángulo. El set de 160 lecturas se divide en 106 para entrenar (●) y 54 reservadas para probar qué tan bien generaliza (○). Las fronteras reales del Triángulo de Duval no son líneas rectas simples, así que grados más altos ayudan a que el modelo las aproxime mejor; pero ten cuidado con el sobreajuste en las zonas con menos ejemplos.</p>
 
         <div class="dataset-wrap">
           <div class="dataset-label">Vista del dataset de entrenamiento</div>
@@ -492,10 +492,10 @@
   </section>
 
   <section class="business">
-    <h2>¿Qué significa para tu planta?</h2>
+    <h2>De este resultado a una acción</h2>
     <div class="business-grid">
       <div>
-        <p>Con la lectura actual, el transformador se clasifica como <span class="stat" id="bizLevelInline">—</span>. Un diagnóstico DGA correcto y oportuno es, típicamente, la diferencia entre programar una inspección dirigida en la próxima parada y enfrentar una salida de servicio forzada — o algo peor, la pérdida total de un activo cuyo reemplazo puede tardar meses en llegar. Por eso el DGA es una de las pocas técnicas predictivas que casi todas las plantas con transformadores críticos ya usan de alguna forma.</p>
+        <p>Con la lectura actual, el transformador se clasifica como <span class="stat" id="bizLevelInline">—</span>. Un diagnóstico DGA correcto y oportuno es, típicamente, la diferencia entre programar una inspección dirigida en la próxima parada y enfrentar una salida de servicio forzada; o algo peor, la pérdida total de un activo cuyo reemplazo puede tardar meses en llegar. Por eso el DGA es una de las pocas técnicas predictivas que casi todas las plantas con transformadores críticos ya usan de alguna forma.</p>
         <div class="biz-action" id="bizAction">
           <div class="biz-title" id="bizTitle">Calculando…</div>
           <div class="biz-detail" id="bizDetail"></div>
@@ -510,7 +510,7 @@
 
   <section id="cta">
     <h2>De esta demo a tu planta</h2>
-    <p style="color:var(--muted); max-width:640px; margin-bottom:20px;">Las reglas de clasificación y la simulación de este demo están calibradas sobre datos sintéticos para poder compartir esta demo abiertamente — la metodología (Triángulo de Duval, IEC 60599, IEEE C57.104) es la misma que se aplica en la industria eléctrica real. Llevarlo a tu planta implica estandarizar cómo capturas tus muestras de DGA (frecuencia, laboratorio, cadena de custodia), mapear qué transformadores son más críticos para tu operación, y calibrar el modelo con tu propio histórico de gases — ahí es donde entra nuestro motor AutoML, ajustando el modelo correcto para tu caso y las particularidades de tus transformadores. Se adapta al tipo de transformador y a la industria —minería, generación, distribución, manufactura— cuando lo calibramos con tus datos. Si quieres recorrer ese proceso, conversemos.</p>
+    <p style="color:var(--muted); max-width:640px; margin-bottom:20px;">Las reglas de clasificación y la simulación de este demo están calibradas sobre datos sintéticos para poder compartir esta demo abiertamente; la metodología (Triángulo de Duval, IEC 60599, IEEE C57.104) es la misma que se aplica en la industria eléctrica real. Llevarlo a tu planta implica estandarizar cómo capturas tus muestras de DGA (frecuencia, laboratorio, cadena de custodia), mapear qué transformadores son más críticos para tu operación, y calibrar el modelo con tu propio histórico de gases; eso lo resolvemos calibrando el modelo, ajustando el modelo correcto para tu caso y las particularidades de tus transformadores. Se adapta al tipo de transformador y a la industria (minería, generación, distribución, manufactura) cuando lo calibramos con tus datos. Si quieres recorrer ese proceso, conversemos.</p>
     <div class="cta-row">
       <a class="btn primary" href="https://chat.whatsapp.com/GvBz1tuUeNZ0xwTkjsuE3z" target="_blank" rel="noopener">Unirme a la comunidad de WhatsApp</a>
       <a class="btn ghost" href="https://www.linkedin.com/company/reliabilit-ia/" target="_blank" rel="noopener">Seguir en LinkedIn</a>
@@ -561,7 +561,7 @@
       <a href="https://www.linkedin.com/in/miguelcayllahua/" target="_blank" rel="noopener">LinkedIn personal</a>
       <a href="mailto:miguelcquispe@gmail.com">Correo</a>
     </div>
-    <p>La metodología (Triángulo de Duval / DGA) es la misma que se usa en la industria real; los datos y la simulación de esta demo son sintéticos para poder compartirlos públicamente. Se calibra con tus propios datos —sin importar el tipo de transformador o la industria— cuando trabajamos juntos. Los parámetros de este demo son de referencia — se recalibran a la medida de cada equipo cuando trabajamos con tus datos.</p>
+    <p>Esta demo separa dos cosas: el método (real, el mismo de nuestros proyectos) y los datos (sintéticos, por diseño, para compartir sin exponer a ningún cliente). El siguiente paso natural es calibrar el mismo modelo con tus propios datos.</p>
   </footer>
 </div>
 
@@ -591,11 +591,11 @@ const ZONE_COLORS = {
 const ZONE_DETAIL = {
   PD:'Predominan proporciones muy altas de metano casi puro, típico de descargas parciales de baja energía (efecto corona) en zonas de baja densidad dieléctrica o burbujas de gas en el aceite.',
   T1:'Sobrecalentamiento localizado de baja temperatura, típico de puntos calientes leves por conexiones flojas o sobrecarga moderada.',
-  T2:'Punto caliente más severo que T1 — indica posible degradación acelerada del aislamiento en la zona afectada.',
+  T2:'Punto caliente más severo que T1; indica posible degradación acelerada del aislamiento en la zona afectada.',
   T3:'Temperatura de falla muy alta, típicamente asociada a carbonización visible del aislamiento sólido o del aceite en la zona afectada.',
-  DT:'Combinación de gases que no encaja limpiamente en un solo mecanismo — sugiere una falla que empezó eléctrica y generó calor, o viceversa.',
+  DT:'Combinación de gases que no encaja limpiamente en un solo mecanismo; sugiere una falla que empezó eléctrica y generó calor, o viceversa.',
   D1:'Chispeo o arqueo de baja energía, comúnmente por conexiones defectuosas o descargas de baja intensidad en el aceite.',
-  D2:'Arqueo de alta energía — el hallazgo de mayor urgencia del triángulo, con riesgo real de falla catastrófica si no se atiende.'
+  D2:'Arqueo de alta energía; el hallazgo de mayor urgencia del triángulo, con riesgo real de falla catastrófica si no se atiende.'
 };
 const ZONE_ACTION = {
   PD:'Monitorear la tendencia en las próximas muestras; rara vez requiere intervención inmediata, pero conviene descartar humedad o burbujas de gas.',
@@ -613,7 +613,7 @@ const ZONE_SIMPLE = {
   T3:'es un punto caliente severo, prioriza la inspección física pronto.',
   DT:'es una falla mixta, trátala con la misma prioridad que una descarga.',
   D1:'hay chispeo de baja energía, revisa conexiones en tu próxima parada.',
-  D2:'es arqueo de alta energía — prioriza la inspección de inmediato.'
+  D2:'es arqueo de alta energía; prioriza la inspección de inmediato.'
 };
 const ZONE_URGENCY = {PD:25, T1:20, T2:45, T3:75, DT:65, D1:55, D2:95};
 
@@ -650,7 +650,7 @@ function classifyWithConfidence(ch4,c2h4,c2h2){
 }
 
 /* =========================================================
-   TRIÁNGULO DE DUVAL — geometría barycéntrica compartida por
+   TRIÁNGULO DE DUVAL; geometría barycéntrica compartida por
    el instrumento en vivo y el mapa de decisión del analista.
    Vértice superior = 100% CH4, inferior izquierdo = 100% C2H2,
    inferior derecho = 100% C2H4 (convención estándar del método).
@@ -796,10 +796,10 @@ function updateBasic(){
     confNote = 'La lectura está lejos de cualquier límite entre zonas del triángulo.';
   } else if(res.flips <= 2){
     confLevel = 'Media'; confColor = '#e8c547';
-    confNote = 'Cerca de un límite de zona — la zona vecina también es plausible.';
+    confNote = 'Cerca de un límite de zona; la zona vecina también es plausible.';
   } else {
     confLevel = 'Baja'; confColor = 'var(--cta)';
-    confNote = 'Justo en el borde entre zonas — trátalo como referencia, repite la muestra.';
+    confNote = 'Justo en el borde entre zonas; trátalo como referencia, repite la muestra.';
   }
   confidenceLine.textContent = 'Confianza del diagnóstico: ' + confLevel;
   confidenceLine.style.color = confColor;
@@ -813,7 +813,7 @@ function updateBasic(){
   bizLevelInline.style.color = color;
   bizAction.style.borderColor = color;
   bizTitle.style.color = color;
-  bizTitle.textContent = zone + ' — urgencia ' + urgency + '/100';
+  bizTitle.textContent = zone + '; urgencia ' + urgency + '/100';
   bizDetail.textContent = ZONE_ACTION[zone];
 
   drawProjection(urgency);
@@ -824,7 +824,7 @@ c2h4Slider.addEventListener('input', updateBasic);
 c2h2Slider.addEventListener('input', updateBasic);
 
 /* =========================================================
-   INSTRUMENTO EN VIVO — Triángulo de Duval con las 7 zonas
+   INSTRUMENTO EN VIVO. Triángulo de Duval con las 7 zonas
    sombreadas según la regla real, y la lectura actual marcada.
    ========================================================= */
 const instrumentCanvas = document.getElementById('instrument');
@@ -866,7 +866,7 @@ function drawInstrument(ch4pct,c2h4pct,c2h2pct, zone){
 }
 
 /* =========================================================
-   MODO ANALISTA — dataset sintético + regresión logística
+   MODO ANALISTA; dataset sintético + regresión logística
    multinomial (softmax) con expansión polinomial de grado d.
    Muestreo dirigido por zona (rechazo dentro del simplex) con
    pesos ilustrativos por zona, validado externamente en Node
@@ -1042,7 +1042,7 @@ function drawConfusion(W_model, degree){
 
   rctx.fillStyle = '#c9c9d4';
   rctx.font = '12px DM Mono, monospace';
-  rctx.fillText('Matriz de confusión (prueba) — filas = zona real, columnas = predicha', padL-30, 14);
+  rctx.fillText('Matriz de confusión (prueba); filas = zona real, columnas = predicha', padL-30, 14);
 
   ZONES.forEach((name,j)=>{
     rctx.fillStyle = '#8a8a98';
@@ -1083,13 +1083,13 @@ function setDegree(degree){
 
   const badge = document.getElementById('mFitBadge');
   if(accTrain < 0.75){
-    badge.textContent = '⚠ Subajuste — el modelo es demasiado simple para las fronteras reales del triángulo.';
+    badge.textContent = '⚠ Subajuste; el modelo es demasiado simple para las fronteras reales del triángulo.';
     badge.style.color = '#e8c547';
   } else if(gapPP > 15){
-    badge.textContent = '⚠ Sobreajuste — memoriza el entrenamiento pero generaliza peor a datos nuevos.';
+    badge.textContent = '⚠ Sobreajuste; memoriza el entrenamiento pero generaliza peor a datos nuevos.';
     badge.style.color = 'var(--cta)';
   } else {
-    badge.textContent = '✓ Ajuste razonable — generaliza bien a los datos de prueba.';
+    badge.textContent = '✓ Ajuste razonable; generaliza bien a los datos de prueba.';
     badge.style.color = 'var(--success)';
   }
 
@@ -1126,7 +1126,7 @@ updateBasic();
     {term:'DGA', def:'Dissolved Gas Analysis (Análisis de Gases Disueltos): técnica que interpreta los gases disueltos en el aceite de un transformador para diagnosticar el tipo de falla interna.'},
     {term:'MCSA', def:'Análisis de firma de corriente del motor (Motor Current Signature Analysis): detecta fallas mecánicas y eléctricas midiendo variaciones en la corriente, sin abrir el equipo.'},
     {term:'RMS', def:'Valor cuadrático medio (Root Mean Square): resume la energía de una señal de vibración en un solo número comparable.'},
-    {term:'dB', def:'Decibel: unidad logarítmica de intensidad sonora — cada +10 dB representa aprox. 10 veces más energía acústica.'},
+    {term:'dB', def:'Decibel: unidad logarítmica de intensidad sonora; cada +10 dB representa aprox. 10 veces más energía acústica.'},
     {term:'ΔT', def:'Delta T: diferencia de temperatura entre dos puntos de medición.'},
     {term:'deslizamiento', def:'Slip: diferencia entre la velocidad del campo magnético del motor y la velocidad real del rotor; crece con más carga o daño mecánico.'},
     {term:'R²', def:'Coeficiente de determinación: qué tan bien el modelo explica la variación de los datos reales (1.0 = ajuste perfecto).'}

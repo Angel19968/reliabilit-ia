@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<!-- Google Analytics (GA4) — INACTIVO: reemplaza G-XXXXXXXXXX por tu Measurement ID real para activarlo -->
+<!-- Google Analytics (GA4). INACTIVO: reemplaza G-XXXXXXXXXX por tu Measurement ID real para activarlo -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -15,10 +15,10 @@
 <link rel="icon" href="../../assets/favicon.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
 <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
-<title>Ojo Térmico — RELIABILIT-IA</title>
+<title>Ojo Térmico. RELIABILIT-IA</title>
 <meta name="description" content="Detecta y mide puntos calientes en una imagen termográfica simulada de un panel eléctrico, usando segmentación por crecimiento de regiones y el criterio ΔT que ya se usa en inspecciones termográficas reales.">
 
-<meta property="og:title" content="Ojo Térmico — RELIABILIT-IA">
+<meta property="og:title" content="Ojo Térmico. RELIABILIT-IA">
 <meta property="og:description" content="Mueve carga y severidad de una conexión y mira en vivo cómo el algoritmo aísla el punto caliente en la imagen térmica.">
 <meta property="og:image" content="../../assets/og-image.png">
 <meta property="og:type" content="website">
@@ -56,7 +56,7 @@
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "Ojo Térmico — RELIABILIT-IA",
+  "name": "Ojo Térmico. RELIABILIT-IA",
   "applicationCategory": "BusinessApplication",
   "operatingSystem": "Web",
   "url": "https://angel19968.github.io/reliabilit-ia/modelos/ojo-termico/",
@@ -389,8 +389,8 @@
     <h2>El problema</h2>
     <div class="context-grid">
       <div class="context-text">
-        <p>Hasta ahora, todos los módulos de RELIABILIT-IA trabajaron con números: vibración, temperatura puntual, corriente. Este último módulo trabaja con algo distinto — una imagen. Una cámara termográfica no entrega un solo número de temperatura, sino una grilla de miles de lecturas de temperatura, una por píxel. El trabajo del algoritmo no es clasificar un número, sino primero encontrar dónde está el punto caliente dentro de la imagen —una tarea de visión por computadora, no solo de estadística— y después medir qué tan caliente está en verdad. Este módulo implementa desde cero un algoritmo de crecimiento de regiones (flood fill): parte de los píxeles que superan un umbral de temperatura y va "contagiando" a sus vecinos inmediatos que también lo superan, hasta delimitar la región caliente completa como una sola forma conectada — el mismo principio que usa cualquier software de segmentación de imágenes, aplicado aquí a una imagen térmica en vez de una fotografía.</p>
-        <p>El criterio de severidad no usa temperatura absoluta, sino la diferencia (ΔT) entre el punto caliente y una conexión de referencia sana bajo la misma carga — así es como se interpretan las inspecciones termográficas reales en la industria (criterio similar al usado en normas como NETA ATS): una conexión a 45°C puede ser completamente normal si su vecina idéntica, con la misma carga, también está a 43°C — pero anormal si esa misma vecina está a 28°C.</p>
+        <p>Hasta ahora, todos los módulos de RELIABILIT-IA trabajaron con números: vibración, temperatura puntual, corriente. Este último módulo trabaja con algo distinto; una imagen. Una cámara termográfica no entrega un solo número de temperatura, sino una grilla de miles de lecturas de temperatura, una por píxel. El trabajo del algoritmo no es clasificar un número, sino primero encontrar dónde está el punto caliente dentro de la imagen (una tarea de visión por computadora, no solo de estadística) y después medir qué tan caliente está en verdad. Este módulo implementa desde cero un algoritmo de crecimiento de regiones (flood fill): parte de los píxeles que superan un umbral de temperatura y va "contagiando" a sus vecinos inmediatos que también lo superan, hasta delimitar la región caliente completa como una sola forma conectada; el mismo principio que usa cualquier software de segmentación de imágenes, aplicado aquí a una imagen térmica en vez de una fotografía.</p>
+        <p>El criterio de severidad no usa temperatura absoluta, sino la diferencia (ΔT) entre el punto caliente y una conexión de referencia sana bajo la misma carga; así es como se interpretan las inspecciones termográficas reales en la industria (criterio similar al usado en normas como NETA ATS): una conexión a 45°C puede ser completamente normal si su vecina idéntica, con la misma carga, también está a 43°C; pero anormal si esa misma vecina está a 28°C.</p>
       </div>
       <aside class="context-visual">
         <svg class="cv-wave" viewBox="0 0 260 52" preserveAspectRatio="none" aria-hidden="true"><path d="M0,28 C15,10 30,46 45,28 C60,10 75,46 90,28 C105,10 120,46 135,28 C150,10 165,46 180,28 C195,10 210,46 225,28 C235,20 245,28 260,28"/></svg>
@@ -405,7 +405,7 @@
     <h2>Demo interactivo</h2>
     <div class="panel">
       <div class="toggle-row">
-        <span class="label">Segmentación por crecimiento de regiones sobre una imagen térmica simulada — mueve los sliders para simular una inspección.</span>
+        <span class="label">Segmentación por crecimiento de regiones sobre una imagen térmica simulada; mueve los sliders para simular una inspección.</span>
         <label class="switch">
           <span>Modo Analista</span>
           <input type="checkbox" id="analystToggle">
@@ -455,13 +455,13 @@
             <div class="gauge-value"><b id="gaugeValue">0</b>°C</div>
           </div>
 
-          <p class="sim-note">Simulación ilustrativa: la imagen térmica se genera a partir de los mismos valores de los sliders — no proviene de una cámara termográfica real.</p>
+          <p class="sim-note">Simulación ilustrativa: la imagen térmica se genera a partir de los mismos valores de los sliders; no proviene de una cámara termográfica real.</p>
         </div>
       </div>
 
       <div class="analyst" id="analystPanel">
         <h3 style="font-size:18px; text-transform:none; letter-spacing:0; margin-bottom:8px; color:var(--text);">Ajustar el umbral de segmentación en vivo</h3>
-        <p style="font-size:15px; color:var(--muted); margin-bottom:18px;">El umbral (ΔT sobre la referencia) decide qué tan caliente debe estar un píxel para considerarse parte de un punto caliente. Con un umbral muy bajo, el ruido normal del sensor térmico —variaciones de menos de un grado— puede confundirse con puntos calientes reales y aparecer como regiones falsas adicionales. Con un umbral muy alto, el algoritmo deja de distinguir la falla real del fondo, y en casos sutiles puede no encontrar ninguna región en absoluto — es decir, no detectar una falla que sí existía.</p>
+        <p style="font-size:15px; color:var(--muted); margin-bottom:18px;">El umbral (ΔT sobre la referencia) decide qué tan caliente debe estar un píxel para considerarse parte de un punto caliente. Con un umbral muy bajo, el ruido normal del sensor térmico (variaciones de menos de un grado) puede confundirse con puntos calientes reales y aparecer como regiones falsas adicionales. Con un umbral muy alto, el algoritmo deja de distinguir la falla real del fondo, y en casos sutiles puede no encontrar ninguna región en absoluto; es decir, no detectar una falla que sí existía.</p>
 
         <div class="dataset-wrap">
           <div class="dataset-label">Casos históricos de inspección (usados solo para validar el criterio ΔT, no entrenan el algoritmo)</div>
@@ -491,10 +491,10 @@
   </section>
 
   <section class="business">
-    <h2>¿Qué significa para tu planta?</h2>
+    <h2>Lo que cambia en tu día a día</h2>
     <div class="business-grid">
       <div>
-        <p>Con la condición actual, la conexión inspeccionada se clasifica como <span class="stat" id="bizLevelInline">Normal</span>. Automatizar la primera lectura de una inspección termográfica —encontrar el punto más caliente y medir su ΔT real contra una referencia— no reemplaza al termógrafo certificado, pero sí ayuda a priorizar qué imágenes de cientos de fotos térmicas por ronda de inspección merecen revisión humana inmediata, en vez de esperar a que alguien las revise una por una.</p>
+        <p>Con la condición actual, la conexión inspeccionada se clasifica como <span class="stat" id="bizLevelInline">Normal</span>. Automatizar la primera lectura de una inspección termográfica (encontrar el punto más caliente y medir su ΔT real contra una referencia) no reemplaza al termógrafo certificado, pero sí ayuda a priorizar qué imágenes de cientos de fotos térmicas por ronda de inspección merecen revisión humana inmediata, en vez de esperar a que alguien las revise una por una.</p>
         <div class="biz-action" id="bizAction">
           <div class="biz-title" id="bizTitle">Calculando…</div>
           <div class="biz-detail" id="bizDetail"></div>
@@ -509,7 +509,7 @@
 
   <section id="cta">
     <h2>De esta demo a tu planta</h2>
-    <p style="color:var(--muted); max-width:640px; margin-bottom:20px;">La imagen y la segmentación de este demo están calibradas sobre datos sintéticos para poder compartir esta demo abiertamente — la metodología es la misma que aplicamos en una inspección termográfica real. Llevarlo a tu planta implica procesar tus propias imágenes térmicas reales, calibrar el umbral de segmentación a la resolución y el ruido de tu cámara específica, y automatizar la identificación de las conexiones de referencia según tu propio panel — ahí es donde entra nuestro motor AutoML. Se adapta al tipo de equipo y a la industria —minería, manufactura, energía, alimentos— cuando la calibramos con tus datos. Este módulo forma parte del catálogo público de RELIABILIT-IA; si quieres ver cómo se aplica cualquiera de ellas —o esta— a tu planta, conversemos.</p>
+    <p style="color:var(--muted); max-width:640px; margin-bottom:20px;">La imagen y la segmentación de este demo están calibradas sobre datos sintéticos para poder compartir esta demo abiertamente, usando la misma metodología que aplicamos en una inspección termográfica real. Llevarlo a tu planta implica procesar tus propias imágenes térmicas reales, calibrar el umbral de segmentación a la resolución y el ruido de tu cámara específica, y automatizar la identificación de las conexiones de referencia según tu propio panel. Eso se resuelve calibrando el modelo con tu patrón real. Se adapta al tipo de equipo y a la industria (minería, manufactura, energía, alimentos) cuando la calibramos con tus datos. Este módulo forma parte del catálogo público de RELIABILIT-IA; si quieres ver cómo se aplica cualquiera de ellas (o esta) a tu planta, conversemos.</p>
     <div class="cta-row">
       <a class="btn primary" href="https://chat.whatsapp.com/GvBz1tuUeNZ0xwTkjsuE3z" target="_blank" rel="noopener">Unirme a la comunidad de WhatsApp</a>
       <a class="btn ghost" href="https://www.linkedin.com/company/reliabilit-ia/" target="_blank" rel="noopener">Seguir en LinkedIn</a>
@@ -560,7 +560,7 @@
       <a href="https://www.linkedin.com/in/miguelcayllahua/" target="_blank" rel="noopener">LinkedIn personal</a>
       <a href="mailto:miguelcquispe@gmail.com">Correo</a>
     </div>
-    <p style="">La metodología es la misma que aplicamos en proyectos reales; los datos y la simulación de esta demo son sintéticos para poder compartirlos públicamente. Se calibra con tus propios datos —sin importar el tipo de equipo o la industria— cuando trabajamos juntos. Los parámetros de este demo son de referencia — se recalibran a la medida de cada equipo cuando trabajamos con tus datos.</p>
+    <p style="">Nada en esta demo usa datos de un cliente real: son sintéticos, a propósito, para que la metodología se pueda compartir en abierto. El método en sí, cómo se valida y cómo se ajustan los parámetros, es el que aplicamos en campo. La calibración con tus propios datos cambia caso por caso.</p>
   </footer>
 </div>
 
@@ -676,13 +676,13 @@ const LEVELS = ['Normal','Atención','Crítico'];
 const LEVEL_COLORS = ['#3ecfa0','#e8c547','#f4722e'];
 const LEVEL_DETAIL = [
   'La diferencia de temperatura frente a la conexión de referencia está dentro de lo esperable entre conexiones similares.',
-  'La diferencia de temperatura ya es notable — según criterios termográficos habituales, esto amerita programar una revisión, aunque no es una urgencia inmediata.',
-  'La diferencia de temperatura es alta y sostenida — esto suele indicar una conexión floja, corroída o sobrecargada. Amerita reparación programada o inmediata según la magnitud.'
+  'La diferencia de temperatura ya es notable; según criterios termográficos habituales, esto amerita programar una revisión, aunque no es una urgencia inmediata.',
+  'La diferencia de temperatura es alta y sostenida; esto suele indicar una conexión floja, corroída o sobrecargada. Amerita reparación programada o inmediata según la magnitud.'
 ];
 const LEVEL_SIMPLE = [
   'la conexión está bien, no hay nada raro.',
   'programa una revisión, sin urgencia inmediata.',
-  'repara pronto — probable conexión floja o sobrecargada.'
+  'repara pronto; probable conexión floja o sobrecargada.'
 ];
 function levelOf(deltaT){
   if(deltaT < 10) return 0;
@@ -795,10 +795,10 @@ function updateBasic(){
     confNote = 'El ΔT medido está lejos de cualquier umbral entre niveles.';
   } else if(distToThresh > 1.5){
     confLevel = 'Media'; confColor = '#e8c547';
-    confNote = 'Cerca de un umbral — el nivel vecino también es plausible.';
+    confNote = 'Cerca de un umbral; el nivel vecino también es plausible.';
   } else {
     confLevel = 'Baja'; confColor = 'var(--cta)';
-    confNote = 'Justo en el borde entre dos niveles — confirma con otra toma antes de decidir.';
+    confNote = 'Justo en el borde entre dos niveles; confirma con otra toma antes de decidir.';
   }
   confidenceLine.textContent = 'Confianza de la clasificación: ' + confLevel;
   confidenceLine.style.color = confColor;
@@ -855,7 +855,7 @@ function drawThermalImage(canvas, grid, region, showContour){
 }
 
 /* =========================================================
-   MODO ANALISTA — umbral ΔT ajustable
+   MODO ANALISTA; umbral ΔT ajustable
    ========================================================= */
 let currentTh = PROD_DELTA;
 
@@ -864,18 +864,18 @@ const MESES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov'
 function fmtDate(d){ return String(d.getDate()).padStart(2,'0')+' '+MESES[d.getMonth()]+' '+d.getFullYear(); }
 
 // Fechas fijas: cada caso es una inspección termográfica documentada,
-// espaciadas a lo largo de ~2 años (no derivadas de un rnd — son
+// espaciadas a lo largo de ~2 años (no derivadas de un rnd; son
 // eventos discretos de campo, como en los demás módulos de incidentes).
 const HISTORICAL_CASES = [
   {load:80, sev:0,  label:'Inspección de rutina, sin anomalías', date:new Date('2024-08-05')},
   {load:50, sev:2,  label:'Diferencia menor entre conexiones', date:new Date('2024-10-14')},
   {load:65, sev:6,  label:'Variación leve, dentro de lo esperable', date:new Date('2024-12-20')},
   {load:70, sev:12, label:'Conexión con calentamiento inicial', date:new Date('2025-02-27')},
-  {load:55, sev:18, label:'Posible deficiencia — monitorear', date:new Date('2025-05-08')},
+  {load:55, sev:18, label:'Posible deficiencia; monitorear', date:new Date('2025-05-08')},
   {load:90, sev:22, label:'Conexión con calentamiento notable', date:new Date('2025-07-16')},
-  {load:60, sev:28, label:'Deficiencia probable — programar reparación', date:new Date('2025-10-01')},
+  {load:60, sev:28, label:'Deficiencia probable; programar reparación', date:new Date('2025-10-01')},
   {load:45, sev:35, label:'Conexión con sobrecalentamiento serio', date:new Date('2025-12-11')},
-  {load:75, sev:42, label:'Deficiencia grave — reparación inmediata', date:new Date('2026-03-19')},
+  {load:75, sev:42, label:'Deficiencia grave; reparación inmediata', date:new Date('2026-03-19')},
   {load:85, sev:48, label:'Falla severa de contacto', date:new Date('2026-06-02')}
 ];
 
@@ -1001,10 +1001,10 @@ function setThreshold(th){
 
   const badge = document.getElementById('mFitBadge');
   if(regions.length === 0){
-    badge.textContent = '⚠ Umbral demasiado alto — el algoritmo no encuentra ninguna región: si hubiera una falla sutil, se perdería por completo.';
+    badge.textContent = '⚠ Umbral demasiado alto; el algoritmo no encuentra ninguna región: si hubiera una falla sutil, se perdería por completo.';
     badge.style.color = 'var(--cta)';
   } else if(regions.length > 1){
-    badge.textContent = '⚠ Umbral demasiado bajo — el ruido normal del sensor térmico aparece como regiones falsas adicionales, además de la región real.';
+    badge.textContent = '⚠ Umbral demasiado bajo; el ruido normal del sensor térmico aparece como regiones falsas adicionales, además de la región real.';
     badge.style.color = '#e8c547';
   } else {
     badge.textContent = '✓ Aísla bien la región caliente real, con área y ΔT consistentes con la falla simulada.';
@@ -1048,7 +1048,7 @@ updateBasic();
   var GLOSSARY = [
     {term:'MCSA', def:'Análisis de firma de corriente del motor (Motor Current Signature Analysis): detecta fallas mecánicas y eléctricas midiendo variaciones en la corriente, sin abrir el equipo.'},
     {term:'RMS', def:'Valor cuadrático medio (Root Mean Square): resume la energía de una señal de vibración en un solo número comparable.'},
-    {term:'dB', def:'Decibel: unidad logarítmica de intensidad sonora — cada +10 dB representa aprox. 10 veces más energía acústica.'},
+    {term:'dB', def:'Decibel: unidad logarítmica de intensidad sonora; cada +10 dB representa aprox. 10 veces más energía acústica.'},
     {term:'ΔT', def:'Delta T: diferencia de temperatura entre dos puntos de medición.'},
     {term:'deslizamiento', def:'Slip: diferencia entre la velocidad del campo magnético del motor y la velocidad real del rotor; crece con más carga o daño mecánico.'},
     {term:'R²', def:'Coeficiente de determinación: qué tan bien el modelo explica la variación de los datos reales (1.0 = ajuste perfecto).'}

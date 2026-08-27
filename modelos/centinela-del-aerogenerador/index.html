@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<!-- Google Analytics (GA4) — INACTIVO: reemplaza G-XXXXXXXXXX por tu Measurement ID real para activarlo -->
+<!-- Google Analytics (GA4). INACTIVO: reemplaza G-XXXXXXXXXX por tu Measurement ID real para activarlo -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -15,10 +15,10 @@
 <link rel="icon" href="../../assets/favicon.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
 <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
-<title>Centinela del Aerogenerador — RELIABILIT-IA</title>
+<title>Centinela del Aerogenerador. RELIABILIT-IA</title>
 <meta name="description" content="Detecta lecturas anómalas en la caja de engranajes de un aerogenerador sin necesitar ejemplos previos de falla, usando distancia estadística (Mahalanobis) al patrón de operación normal.">
 
-<meta property="og:title" content="Centinela del Aerogenerador — RELIABILIT-IA">
+<meta property="og:title" content="Centinela del Aerogenerador. RELIABILIT-IA">
 <meta property="og:description" content="Mueve vibración y temperatura de aceite de la caja de engranajes y mira en vivo qué tan lejos está esa lectura de cómo opera normalmente tu aerogenerador.">
 <meta property="og:image" content="../../assets/og-image.png">
 <meta property="og:type" content="website">
@@ -56,7 +56,7 @@
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "Centinela del Aerogenerador — RELIABILIT-IA",
+  "name": "Centinela del Aerogenerador. RELIABILIT-IA",
   "applicationCategory": "BusinessApplication",
   "operatingSystem": "Web",
   "url": "https://angel19968.github.io/reliabilit-ia/modelos/centinela-del-aerogenerador/",
@@ -391,7 +391,7 @@
     <h2>El problema</h2>
     <div class="context-grid">
       <div class="context-text">
-        <p>La mayoría de modelos predictivos necesitan ejemplos etiquetados de fallas pasadas para aprender a reconocerlas. El problema es que la caja de engranajes de un aerogenerador es justamente el componente donde menos ejemplos de falla documentada existen — es caro, de acceso difícil (arriba de la torre) y cada fabricante y modelo tiene su propio patrón de desgaste. La detección de anomalías resuelve esto de otra forma: en vez de aprender "así se ve una falla", aprende "así se ve la operación normal" a partir del propio historial saludable de ese aerogenerador, y marca matemáticamente como sospechosa cualquier lectura que se aleje demasiado de ese patrón — sin necesitar haber visto antes el tipo específico de falla que está por ocurrir.</p>
+        <p>La mayoría de modelos predictivos necesitan ejemplos etiquetados de fallas pasadas para aprender a reconocerlas. El problema es que la caja de engranajes de un aerogenerador es justamente el componente donde menos ejemplos de falla documentada existen; es caro, de acceso difícil (arriba de la torre) y cada fabricante y modelo tiene su propio patrón de desgaste. La detección de anomalías resuelve esto de otra forma: en vez de aprender "así se ve una falla", aprende "así se ve la operación normal" a partir del propio historial saludable de ese aerogenerador, y marca matemáticamente como sospechosa cualquier lectura que se aleje demasiado de ese patrón; sin necesitar haber visto antes el tipo específico de falla que está por ocurrir.</p>
         <p>Este demo simula esa lectura: mueve la vibración y la temperatura del aceite de la caja de engranajes, y mira en vivo qué tan lejos está esa combinación de cómo opera normalmente este aerogenerador.</p>
       </div>
       <aside class="context-visual">
@@ -407,7 +407,7 @@
     <h2>Demo interactivo</h2>
     <div class="panel">
       <div class="toggle-row">
-        <span class="label">Clasificación por distancia estadística al patrón normal — mueve los sliders para simular una lectura de campo.</span>
+        <span class="label">Clasificación por distancia estadística al patrón normal; mueve los sliders para simular una lectura de campo.</span>
         <label class="switch">
           <span>Modo Analista</span>
           <input type="checkbox" id="analystToggle">
@@ -457,13 +457,13 @@
             <div class="gauge-value"><b id="gaugeValue">0</b> <span class="gauge-note">% de la operación normal más cercana al promedio que esta lectura</span></div>
           </div>
 
-          <p class="sim-note">Simulación ilustrativa: el mapa de operación y el punto se dibujan a partir de los mismos valores de los sliders — no provienen de un sistema CMS real.</p>
+          <p class="sim-note">Simulación ilustrativa: el mapa de operación y el punto se dibujan a partir de los mismos valores de los sliders; no provienen de un sistema CMS real.</p>
         </div>
       </div>
 
       <div class="analyst" id="analystPanel">
         <h3 style="font-size:18px; text-transform:none; letter-spacing:0; margin-bottom:8px; color:var(--text);">Reentrenar en vivo</h3>
-        <p style="font-size:15px; color:var(--muted); margin-bottom:18px;">Este modelo nunca ve ejemplos de falla durante el entrenamiento — solo aprende la forma de la nube de 80 lecturas de operación normal de este aerogenerador (●, violeta) y calcula qué tan lejos está cualquier lectura nueva de esa nube, usando distancia de Mahalanobis. Elige qué tan estricto es el umbral de alarma (percentil de la distribución): un umbral bajo detecta más incidentes reales pero también dispara más falsas alarmas sobre operación normal; uno muy alto casi no genera falsas alarmas, pero deja pasar fallas incipientes. Los 10 incidentes históricos de la tabla de abajo se usan solo para medir qué tan bien funciona cada umbral — nunca para entrenar el modelo.</p>
+        <p style="font-size:15px; color:var(--muted); margin-bottom:18px;">Este modelo nunca ve ejemplos de falla durante el entrenamiento; solo aprende la forma de la nube de 80 lecturas de operación normal de este aerogenerador (●, violeta) y calcula qué tan lejos está cualquier lectura nueva de esa nube, usando distancia de Mahalanobis. Elige qué tan estricto es el umbral de alarma (percentil de la distribución): un umbral bajo detecta más incidentes reales pero también dispara más falsas alarmas sobre operación normal; uno muy alto casi no genera falsas alarmas, pero deja pasar fallas incipientes. Los 10 incidentes históricos de la tabla de abajo se usan solo para medir qué tan bien funciona cada umbral; nunca para entrenar el modelo.</p>
 
         <div class="dataset-wrap">
           <div class="dataset-label">Vista del dataset de operación normal</div>
@@ -502,10 +502,10 @@
   </section>
 
   <section class="business">
-    <h2>¿Qué significa para tu planta?</h2>
+    <h2>Qué hacer con este resultado</h2>
     <div class="business-grid">
       <div>
-        <p>Con la lectura actual, este aerogenerador se clasifica como <span class="stat" id="bizLevelInline">Normal</span>. La ventaja de este enfoque es que no necesitas esperar a acumular fallas documentadas para empezar a monitorear un aerogenerador nuevo o un modelo poco común en tu parque — basta con unas semanas de operación saludable para tener una línea base. Detectar una desviación en etapa "Atención" en vez de "Anómalo" típicamente cambia un reemplazo de caja de engranajes con grúa y semanas de turbina parada, por una inspección boroscópica planificada y un cambio de aceite.</p>
+        <p>Con la lectura actual, este aerogenerador se clasifica como <span class="stat" id="bizLevelInline">Normal</span>. La ventaja de este enfoque es que no necesitas esperar a acumular fallas documentadas para empezar a monitorear un aerogenerador nuevo o un modelo poco común en tu parque; basta con unas semanas de operación saludable para tener una línea base. Detectar una desviación en etapa "Atención" en vez de "Anómalo" típicamente cambia un reemplazo de caja de engranajes con grúa y semanas de turbina parada, por una inspección boroscópica planificada y un cambio de aceite.</p>
         <div class="biz-action" id="bizAction">
           <div class="biz-title" id="bizTitle">Calculando…</div>
           <div class="biz-detail" id="bizDetail"></div>
@@ -520,7 +520,7 @@
 
   <section id="cta">
     <h2>De esta demo a tu planta</h2>
-    <p style="color:var(--muted); max-width:640px; margin-bottom:20px;">La nube de operación normal, los umbrales y la simulación de este demo están calibrados sobre datos sintéticos para poder compartir esta demo abiertamente — la metodología es la misma que aplicamos en campo para monitorear tu aerogenerador real. Llevarlo a tu parque eólico implica estandarizar cómo capturas tus variables de CMS/SCADA (vibración, temperatura de aceite, velocidad del rotor), construir la línea base de operación normal de cada turbina, y elegir el umbral correcto según qué tan costosa es una falsa alarma frente a una falla no detectada en tu caso particular — ahí es donde entra nuestro motor AutoML, calibrando el modelo con el patrón real de cada máquina. Se adapta a la marca, modelo y tipo de caja de engranajes (con o sin multiplicador) cuando la calibramos con tus datos. Si quieres recorrer ese proceso, conversemos.</p>
+    <p style="color:var(--muted); max-width:640px; margin-bottom:20px;">La nube de operación normal, los umbrales y la simulación de este demo están calibrados sobre datos sintéticos para poder compartir esta demo abiertamente, usando la misma metodología que aplicamos en campo para monitorear tu aerogenerador real. Llevarlo a tu parque eólico implica estandarizar cómo capturas tus variables de CMS/SCADA (vibración, temperatura de aceite, velocidad del rotor), construir la línea base de operación normal de cada turbina, y elegir el umbral correcto según qué tan costosa es una falsa alarma frente a una falla no detectada en tu caso particular; ahí calibramos el modelo, calibrando el modelo con el patrón real de cada máquina. Se adapta a la marca, modelo y tipo de caja de engranajes (con o sin multiplicador) cuando la calibramos con tus datos. Si quieres recorrer ese proceso, conversemos.</p>
     <div class="cta-row">
       <a class="btn primary" href="https://chat.whatsapp.com/GvBz1tuUeNZ0xwTkjsuE3z" target="_blank" rel="noopener">Unirme a la comunidad de WhatsApp</a>
       <a class="btn ghost" href="https://www.linkedin.com/company/reliabilit-ia/" target="_blank" rel="noopener">Seguir en LinkedIn</a>
@@ -571,7 +571,7 @@
       <a href="https://www.linkedin.com/in/miguelcayllahua/" target="_blank" rel="noopener">LinkedIn personal</a>
       <a href="mailto:miguelcquispe@gmail.com">Correo</a>
     </div>
-    <p style="">La metodología es la misma que aplicamos en proyectos reales; los datos y la simulación de esta demo son sintéticos para poder compartirlos públicamente. Se calibra con tus propios datos —sin importar el tipo de equipo o la industria— cuando trabajamos juntos. Los parámetros de este demo son de referencia — se recalibran a la medida de cada equipo cuando trabajamos con tus datos.</p>
+    <p style="">La metodología detrás de esta demo (el algoritmo, la forma de validarlo) es la misma que usamos en proyectos reales. Los datos que ves aquí son sintéticos, generados para poder compartir el enfoque sin exponer información de ningún cliente. El siguiente paso es calibrar este mismo modelo con tus propios datos; conversemos si quieres ver cómo se vería en tu caso.</p>
   </footer>
 </div>
 
@@ -584,12 +584,12 @@ const LEVEL_COLORS = ['#3ecfa0','#e8c547','#f4722e'];
 const LEVEL_DETAIL = [
   'La lectura cae dentro del patrón habitual de operación de la caja de engranajes. Sin acción requerida.',
   'La lectura se aleja del patrón habitual, aunque no de forma extrema. Vale la pena anotarla y confirmar en la siguiente ronda si la tendencia continúa.',
-  'La lectura se aleja fuertemente de cómo opera normalmente esta caja de engranajes. Aunque el modelo nunca vio antes esta falla específica, la distancia estadística ya justifica una inspección — antes de subir una grúa, vale la pena confirmar con un boroscopio o un muestreo de aceite.'
+  'La lectura se aleja fuertemente de cómo opera normalmente esta caja de engranajes. Aunque el modelo nunca vio antes esta falla específica, la distancia estadística ya justifica una inspección; antes de subir una grúa, vale la pena confirmar con un boroscopio o un muestreo de aceite.'
 ];
 const LEVEL_SIMPLE = [
   'todo normal, no hagas nada por ahora.',
   'anótalo y confirma en tu siguiente ronda si sigue así.',
-  'programa una inspección — esto es raro para este aerogenerador.'
+  'programa una inspección; esto es raro para este aerogenerador.'
 ];
 const PCT_THRESHOLDS = [90, 97.5]; // percentiles de referencia para Atención / Anómalo
 const D2_THRESHOLDS = PCT_THRESHOLDS.map(p => -2*Math.log(1-p/100));
@@ -636,7 +636,7 @@ const trainPoints = dataset.filter((_,i)=> i%3 !== 0); // 80
 const testPoints = dataset.filter((_,i)=> i%3 === 0);  // 40
 
 // Ajuste real: media y covarianza muestral, calculadas SOLO con las 80
-// lecturas de entrenamiento — este es el único "aprendizaje" del modelo.
+// lecturas de entrenamiento; este es el único "aprendizaje" del modelo.
 const n = trainPoints.length;
 const meanX = trainPoints.reduce((a,p)=>a+p.x,0)/n;
 const meanY = trainPoints.reduce((a,p)=>a+p.y,0)/n;
@@ -663,7 +663,7 @@ function anomalyPercentile(d2){
   return (1 - Math.exp(-d2/2)) * 100; // CDF exacta de chi-cuadrado, 2 g.l.
 }
 
-// 10 incidentes históricos documentados — se usan solo para EVALUAR el
+// 10 incidentes históricos documentados; se usan solo para EVALUAR el
 // umbral elegido en Modo Analista, nunca para entrenar el modelo.
 const anomalies = [
   {x:3.6, y:68, label:'Picadura temprana en dientes de engranaje'},
@@ -751,7 +751,7 @@ function drawProjection(activeIdx, scorePct){
   pctx.fillText('costo de intervención evitado con detección temprana (ilustrativo)', padL, 14);
 
   // Indicador continuo: dónde cae exactamente esta lectura, calculado en vivo
-  // (no solo a qué nivel discreto pertenece) — el percentil real de anomalía.
+  // (no solo a qué nivel discreto pertenece); el percentil real de anomalía.
   if(typeof scorePct === 'number'){
     const by = H-12, bh = 5;
     pctx.fillStyle = 'rgba(244,244,247,0.10)';
@@ -778,7 +778,7 @@ function updateBasic(){
 
   riskDot.style.background = color;
   riskTitle.style.color = color;
-  riskTitle.textContent = LEVELS[idx] + ' — percentil ' + pct.toFixed(0) + '%';
+  riskTitle.textContent = LEVELS[idx] + '; percentil ' + pct.toFixed(0) + '%';
   riskDetail.textContent = LEVEL_DETAIL[idx];
   const simpleEl = document.getElementById('simpleSummary');
   if(simpleEl) simpleEl.textContent = '💬 En palabras simples: ' + LEVEL_SIMPLE[idx];
@@ -791,10 +791,10 @@ function updateBasic(){
     confNote = 'La lectura está lejos de cualquier umbral entre niveles.';
   } else if(distPct > 2){
     confLevel = 'Media'; confColor = '#e8c547';
-    confNote = 'Cerca de un umbral — el nivel vecino también es plausible.';
+    confNote = 'Cerca de un umbral; el nivel vecino también es plausible.';
   } else {
     confLevel = 'Baja'; confColor = 'var(--cta)';
-    confNote = 'Justo en el borde entre dos niveles — trátalo como referencia, repite la medición.';
+    confNote = 'Justo en el borde entre dos niveles; trátalo como referencia, repite la medición.';
   }
   confidenceLine.textContent = 'Confianza de la clasificación: ' + confLevel;
   confidenceLine.style.color = confColor;
@@ -811,7 +811,7 @@ function updateBasic(){
   bizLevelInline.style.color = color;
   bizAction.style.borderColor = color;
   bizTitle.style.color = color;
-  bizTitle.textContent = LEVELS[idx] + ' — percentil ' + pct.toFixed(0) + '%';
+  bizTitle.textContent = LEVELS[idx] + '; percentil ' + pct.toFixed(0) + '%';
   bizDetail.textContent = LEVEL_DETAIL[idx];
 
   drawProjection(idx, pct);
@@ -821,7 +821,7 @@ vibSlider.addEventListener('input', updateBasic);
 oilTempSlider.addEventListener('input', updateBasic);
 
 /* =========================================================
-   SIMULACIÓN EN VIVO — mapa de operación con elipses de
+   SIMULACIÓN EN VIVO; mapa de operación con elipses de
    confianza (Mahalanobis), calculado a partir del mismo ajuste
    que usa el Modo Básico.
    ========================================================= */
@@ -922,7 +922,7 @@ function liveLoop(){
 requestAnimationFrame(liveLoop);
 
 /* =========================================================
-   MODO ANALISTA — umbral (percentil) ajustable, evaluado contra
+   MODO ANALISTA; umbral (percentil) ajustable, evaluado contra
    el set de prueba normal + los 10 incidentes históricos
    ========================================================= */
 const chartCanvas = document.getElementById('chart');
@@ -1068,13 +1068,13 @@ function setPercentile(p){
 
   const badge = document.getElementById('mFitBadge');
   if(fpr > 0.20){
-    badge.textContent = '⚠ Demasiado sensible — dispara muchas falsas alarmas sobre operación normal.';
+    badge.textContent = '⚠ Demasiado sensible; dispara muchas falsas alarmas sobre operación normal.';
     badge.style.color = 'var(--cta)';
   } else if(recall < 0.60){
-    badge.textContent = '⚠ Demasiado permisivo — deja pasar la mayoría de los incidentes reales.';
+    badge.textContent = '⚠ Demasiado permisivo; deja pasar la mayoría de los incidentes reales.';
     badge.style.color = '#e8c547';
   } else {
-    badge.textContent = '✓ Equilibrio razonable — detecta la mayoría de incidentes sin disparar demasiadas falsas alarmas.';
+    badge.textContent = '✓ Equilibrio razonable; detecta la mayoría de incidentes sin disparar demasiadas falsas alarmas.';
     badge.style.color = 'var(--success)';
   }
 
@@ -1112,7 +1112,7 @@ analystToggle.addEventListener('change', ()=>{
 (function(){
   var GLOSSARY = [
     {term:'RMS', def:'Valor cuadrático medio (Root Mean Square): resume la energía de una señal de vibración en un solo número comparable.'},
-    {term:'Mahalanobis', def:'Distancia de Mahalanobis: mide qué tan lejos está una lectura del centro de la nube de operación normal, tomando en cuenta la forma y correlación de esa nube — no solo la distancia en línea recta.'},
+    {term:'Mahalanobis', def:'Distancia de Mahalanobis: mide qué tan lejos está una lectura del centro de la nube de operación normal, tomando en cuenta la forma y correlación de esa nube; no solo la distancia en línea recta.'},
     {term:'percentil', def:'Percentil: posición relativa de un valor dentro de una distribución; el percentil 95 significa que el valor es mayor que el 95% de las lecturas normales.'},
     {term:'D²', def:'Distancia de Mahalanobis al cuadrado: la métrica que este modelo usa para decidir qué tan anómala es una lectura respecto al patrón de operación normal.'},
     {term:'CMS', def:'Sistema de Monitoreo de Condición (Condition Monitoring System): sensores permanentes de vibración, temperatura y otras variables instalados en un aerogenerador para vigilancia continua.'}

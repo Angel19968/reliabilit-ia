@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<!-- Google Analytics (GA4) — INACTIVO: reemplaza G-XXXXXXXXXX por tu Measurement ID real para activarlo -->
+<!-- Google Analytics (GA4). INACTIVO: reemplaza G-XXXXXXXXXX por tu Measurement ID real para activarlo -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -15,10 +15,10 @@
 <link rel="icon" href="../../assets/favicon.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
 <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
-<title>Guardián de la Bomba — RELIABILIT-IA</title>
+<title>Guardián de la Bomba. RELIABILIT-IA</title>
 <meta name="description" content="Detecta anomalías en una bomba con apenas un puñado de lecturas históricas, usando distancia a los vecinos más cercanos y validación honesta de qué tan estable es el resultado.">
 
-<meta property="og:title" content="Guardián de la Bomba — RELIABILIT-IA">
+<meta property="og:title" content="Guardián de la Bomba. RELIABILIT-IA">
 <meta property="og:description" content="Mueve vibración y temperatura de rodamiento y mira en vivo qué tan lejos está esa lectura de las pocas lecturas históricas que tienes.">
 <meta property="og:image" content="../../assets/og-image.png">
 <meta property="og:type" content="website">
@@ -56,7 +56,7 @@
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "Guardián de la Bomba — RELIABILIT-IA",
+  "name": "Guardián de la Bomba. RELIABILIT-IA",
   "applicationCategory": "BusinessApplication",
   "operatingSystem": "Web",
   "url": "https://angel19968.github.io/reliabilit-ia/modelos/guardian-de-la-bomba/",
@@ -389,7 +389,7 @@
     <h2>El problema</h2>
     <div class="context-grid">
       <div class="context-text">
-        <p>El <a href="../detector-anomalias-compresor/">Detector de Anomalías del Compresor</a> funciona bien cuando hay un historial amplio —100 lecturas o más— para ajustar una distribución completa de "operación normal". Pero muchas bombas, sobre todo las no críticas o las recién instrumentadas, apenas tienen un puñado de lecturas históricas: 15, 20, tal vez 25. Ajustar una distribución completa con tan pocos datos es arriesgado — la variabilidad estimada puede ser inestable y dar una falsa sensación de precisión. Este modelo usa un enfoque distinto, pensado justamente para esa situación: en vez de asumir una forma para "normal", mide qué tan lejos está cada lectura nueva de sus vecinos más cercanos dentro del historial disponible, y es honesto sobre cuánto varía esa medida cuando el historial es tan chico.</p>
+        <p>El <a href="../detector-anomalias-compresor/">Detector de Anomalías del Compresor</a> funciona bien cuando hay un historial amplio (100 lecturas o más) para ajustar una distribución completa de "operación normal". Pero muchas bombas, sobre todo las no críticas o las recién instrumentadas, apenas tienen un puñado de lecturas históricas: 15, 20, tal vez 25. Ajustar una distribución completa con tan pocos datos es arriesgado; la variabilidad estimada puede ser inestable y dar una falsa sensación de precisión. Este modelo usa un enfoque distinto, pensado justamente para esa situación: en vez de asumir una forma para "normal", mide qué tan lejos está cada lectura nueva de sus vecinos más cercanos dentro del historial disponible, y es honesto sobre cuánto varía esa medida cuando el historial es tan chico.</p>
         <p>Este demo simula esa lectura: mueve la vibración y la temperatura de rodamiento, y mira en vivo qué tan lejos está esa combinación de las lecturas históricas de esta bomba en particular.</p>
       </div>
       <aside class="context-visual">
@@ -405,7 +405,7 @@
     <h2>Demo interactivo</h2>
     <div class="panel">
       <div class="toggle-row">
-        <span class="label">Clasificación por distancia a los vecinos más cercanos — mueve los sliders para simular una lectura de campo.</span>
+        <span class="label">Clasificación por distancia a los vecinos más cercanos; mueve los sliders para simular una lectura de campo.</span>
         <label class="switch">
           <span>Modo Analista</span>
           <input type="checkbox" id="analystToggle">
@@ -455,16 +455,16 @@
             <div class="gauge-value"><b id="gaugeValue">0</b> <span class="gauge-note">0 = idéntico al historial, 100 = en el umbral de "Anómalo" o más allá</span></div>
           </div>
 
-          <p class="sim-note">Simulación ilustrativa: el mapa y el punto de operación se dibujan a partir de los mismos valores de los sliders — no provienen de un sensor real.</p>
+          <p class="sim-note">Simulación ilustrativa: el mapa y el punto de operación se dibujan a partir de los mismos valores de los sliders; no provienen de un sensor real.</p>
         </div>
       </div>
 
       <div class="analyst" id="analystPanel">
         <h3 style="font-size:18px; text-transform:none; letter-spacing:0; margin-bottom:8px; color:var(--text);">Reentrenar en vivo</h3>
-        <p style="font-size:15px; color:var(--muted); margin-bottom:18px;">Con solo 20 lecturas históricas, no alcanza para separar un set de entrenamiento y otro de prueba como en los demás módulos. En su lugar, repetimos el cálculo 150 veces quitando al azar algunas lecturas del historial (una técnica llamada bootstrap), para medir qué tan estable es el resultado según el número de vecinos (k) que elijas. Un k muy chico hace que el puntaje de cualquier lectura dependa casi por completo de un solo vecino — y con tan pocos datos, cuál es "el vecino más cercano" puede cambiar mucho según qué lecturas exactas hayas registrado. Un k más grande promedia más vecinos y estabiliza el resultado.</p>
+        <p style="font-size:15px; color:var(--muted); margin-bottom:18px;">Con solo 20 lecturas históricas, no alcanza para separar un set de entrenamiento y otro de prueba como en los demás módulos. En su lugar, repetimos el cálculo 150 veces quitando al azar algunas lecturas del historial (una técnica llamada bootstrap), para medir qué tan estable es el resultado según el número de vecinos (k) que elijas. Un k muy chico hace que el puntaje de cualquier lectura dependa casi por completo de un solo vecino; y con tan pocos datos, cuál es "el vecino más cercano" puede cambiar mucho según qué lecturas exactas hayas registrado. Un k más grande promedia más vecinos y estabiliza el resultado.</p>
 
         <div class="dataset-wrap">
-          <div class="dataset-label">Vista del historial completo (sin separar entrenamiento/prueba — son muy pocos datos)</div>
+          <div class="dataset-label">Vista del historial completo (sin separar entrenamiento/prueba; son muy pocos datos)</div>
           <div class="dataset-scroll">
             <table class="dataset-table">
               <thead><tr><th>#</th><th>Fecha</th><th>Vibración (mm/s)</th><th>Temperatura (°C)</th></tr></thead>
@@ -500,10 +500,10 @@
   </section>
 
   <section class="business">
-    <h2>¿Qué significa para tu planta?</h2>
+    <h2>Cómo leer este número en planta</h2>
     <div class="business-grid">
       <div>
-        <p>Con la lectura actual, esta bomba se clasifica como <span class="stat" id="bizLevelInline">Normal</span>. La ventaja de este enfoque es que puedes empezar a vigilar un equipo desde su primera semana de operación, en vez de esperar meses a acumular suficiente historial para un modelo más sofisticado — a cambio, hay que ser honesto con uno mismo sobre cuánto puede variar el resultado mientras el historial siga siendo tan chico, y confirmar cualquier alerta con una inspección antes de actuar.</p>
+        <p>Con la lectura actual, esta bomba se clasifica como <span class="stat" id="bizLevelInline">Normal</span>. La ventaja de este enfoque es que puedes empezar a vigilar un equipo desde su primera semana de operación, en vez de esperar meses a acumular suficiente historial para un modelo más sofisticado; a cambio, hay que ser honesto con uno mismo sobre cuánto puede variar el resultado mientras el historial siga siendo tan chico, y confirmar cualquier alerta con una inspección antes de actuar.</p>
         <div class="biz-action" id="bizAction">
           <div class="biz-title" id="bizTitle">Calculando…</div>
           <div class="biz-detail" id="bizDetail"></div>
@@ -518,7 +518,7 @@
 
   <section id="cta">
     <h2>De esta demo a tu planta</h2>
-    <p style="color:var(--muted); max-width:640px; margin-bottom:20px;">El historial, los umbrales y la simulación de este demo están calibrados sobre datos sintéticos para poder compartir esta demo abiertamente — la metodología es la misma que aplicamos en campo para vigilar tu bomba real. Llevarlo a tu planta implica estandarizar cómo capturas tus primeras lecturas, elegir un número de vecinos (k) adecuado al tamaño real de tu historial, y decidir con qué margen de duda es razonable actuar mientras el historial sigue siendo chico — ahí es donde entra nuestro motor AutoML, calibrando el modelo con tu patrón real y creciendo en sofisticación a medida que se acumulan más datos. Se adapta al tipo de equipo y a la industria —minería, manufactura, energía, alimentos— cuando la calibramos con tus datos. Si quieres recorrer ese proceso, conversemos.</p>
+    <p style="color:var(--muted); max-width:640px; margin-bottom:20px;">El historial, los umbrales y la simulación de este demo están calibrados sobre datos sintéticos para poder compartir esta demo abiertamente, con la misma metodología que aplicamos en campo para vigilar tu bomba real. Llevarlo a tu planta implica estandarizar cómo capturas tus primeras lecturas, elegir un número de vecinos (k) adecuado al tamaño real de tu historial, y decidir con qué margen de duda es razonable actuar mientras el historial sigue siendo chico; ahí calibramos el modelo, calibrando el modelo con tu patrón real y creciendo en sofisticación a medida que se acumulan más datos. Se adapta al tipo de equipo y a la industria (minería, manufactura, energía, alimentos) cuando la calibramos con tus datos. Si quieres recorrer ese proceso, conversemos.</p>
     <div class="cta-row">
       <a class="btn primary" href="https://chat.whatsapp.com/GvBz1tuUeNZ0xwTkjsuE3z" target="_blank" rel="noopener">Unirme a la comunidad de WhatsApp</a>
       <a class="btn ghost" href="https://www.linkedin.com/company/reliabilit-ia/" target="_blank" rel="noopener">Seguir en LinkedIn</a>
@@ -569,7 +569,7 @@
       <a href="https://www.linkedin.com/in/miguelcayllahua/" target="_blank" rel="noopener">LinkedIn personal</a>
       <a href="mailto:miguelcquispe@gmail.com">Correo</a>
     </div>
-    <p style="">La metodología es la misma que aplicamos en proyectos reales; los datos y la simulación de esta demo son sintéticos para poder compartirlos públicamente. Se calibra con tus propios datos —sin importar el tipo de equipo o la industria— cuando trabajamos juntos. Los parámetros de este demo son de referencia — se recalibran a la medida de cada equipo cuando trabajamos con tus datos.</p>
+    <p style="">El enfoque que ves aquí (algoritmo, validación, criterios de decisión) es el mismo que usamos con clientes reales; los números, en cambio, son sintéticos, para poder publicarlos sin comprometer información de nadie. Si quieres, calibramos este mismo modelo con tus propios datos.</p>
   </footer>
 </div>
 
@@ -601,7 +601,7 @@ for(let i=0;i<N;i++){
   normal.push({x: vib, y: temp, date});
 }
 
-// Incidentes históricos documentados — se usan solo para EVALUAR,
+// Incidentes históricos documentados; se usan solo para EVALUAR,
 // nunca para entrenar el modelo (no hay "entrenamiento" supervisado
 // aquí: el modelo solo aprende la forma del historial normal).
 // Fechas fijas (no derivadas del rnd del historial) porque son eventos
@@ -650,13 +650,13 @@ function renderDatasetPreview(){
   if(!tbody) return;
   tbody.innerHTML = normal.map((p,i)=>`<tr><td>${i+1}</td><td>${fmtDate(p.date)}</td><td>${p.x.toFixed(2)}</td><td>${p.y.toFixed(1)}</td></tr>`).join('');
   const sortedDates = normal.map(p=>p.date).sort((a,b)=>a-b);
-  note.textContent = `${normal.length} lecturas, entre ${fmtDate(sortedDates[0])} y ${fmtDate(sortedDates[sortedDates.length-1])} — todo el historial disponible de esta bomba. Sin separación entrenamiento/prueba: son muy pocos datos para eso.`;
+  note.textContent = `${normal.length} lecturas, entre ${fmtDate(sortedDates[0])} y ${fmtDate(sortedDates[sortedDates.length-1])}; todo el historial disponible de esta bomba. Sin separación entrenamiento/prueba: son muy pocos datos para eso.`;
 }
 renderDatasetPreview();
 
 /* =========================================================
    MODELO "DE PRODUCCIÓN" fijo (k=10, validado por simulación
-   externa como un punto estable) — es el que usa el Modo Básico.
+   externa como un punto estable); es el que usa el Modo Básico.
    ========================================================= */
 const PROD_K = 10;
 const prodLOO = looScores(PROD_K);
@@ -669,12 +669,12 @@ const LEVEL_COLORS = ['#3ecfa0','#e8c547','#f4722e'];
 const LEVEL_DETAIL = [
   'La lectura está cerca del historial conocido de esta bomba. Sin acción requerida.',
   'La lectura se aleja del historial conocido, aunque no de forma extrema. Vale la pena anotarla y confirmar en la siguiente ronda.',
-  'La lectura se aleja fuertemente de todo lo registrado antes en esta bomba. Con historial tan chico, confirma con una inspección antes de actuar — pero no lo ignores.'
+  'La lectura se aleja fuertemente de todo lo registrado antes en esta bomba. Con historial tan chico, confirma con una inspección antes de actuar; pero no lo ignores.'
 ];
 const LEVEL_SIMPLE = [
   'todo normal, no hagas nada por ahora.',
   'anótalo y confirma en tu siguiente ronda.',
-  'esto es raro para esta bomba — confírmalo con una inspección, no lo ignores.'
+  'esto es raro para esta bomba; confírmalo con una inspección, no lo ignores.'
 ];
 
 function classifyProd(vib, temp){
@@ -782,10 +782,10 @@ function updateBasic(){
     confNote = 'La lectura está lejos de cualquier umbral entre niveles.';
   } else if(distToThresh > 0.15){
     confLevel = 'Media'; confColor = '#e8c547';
-    confNote = 'Cerca de un umbral — el nivel vecino también es plausible.';
+    confNote = 'Cerca de un umbral; el nivel vecino también es plausible.';
   } else {
     confLevel = 'Baja'; confColor = 'var(--cta)';
-    confNote = 'Justo en el borde entre dos niveles — con tan poco historial, repite la medición antes de decidir.';
+    confNote = 'Justo en el borde entre dos niveles; con tan poco historial, repite la medición antes de decidir.';
   }
   confidenceLine.textContent = 'Confianza de la clasificación: ' + confLevel;
   confidenceLine.style.color = confColor;
@@ -813,7 +813,7 @@ vibSlider.addEventListener('input', updateBasic);
 tempSlider.addEventListener('input', updateBasic);
 
 /* =========================================================
-   SIMULACIÓN EN VIVO — mapa con el historial y los k=10 vecinos
+   SIMULACIÓN EN VIVO; mapa con el historial y los k=10 vecinos
    más cercanos al punto actual resaltados.
    ========================================================= */
 const instrumentCanvas = document.getElementById('instrument');
@@ -876,7 +876,7 @@ function drawInstrument(vib, temp, idx){
 }
 
 /* =========================================================
-   MODO ANALISTA — k ajustable + validación por bootstrap
+   MODO ANALISTA; k ajustable + validación por bootstrap
    ========================================================= */
 const chartCanvas = document.getElementById('chart');
 const cctx = chartCanvas.getContext('2d');
@@ -967,9 +967,9 @@ function drawStabilityBars(cvNormal, cvBorderline, cvAnomaly){
   rctx.clearRect(0,0,W,H);
   const padL = 190, padR = 60, padT = 24, padB = 20;
   const rows = [
-    {label:'Variabilidad — lectura normal típica', value: cvNormal, color:'#3ecfa0'},
-    {label:'Variabilidad — incidente sutil', value: cvBorderline, color:'#e8c547'},
-    {label:'Variabilidad — incidente claro', value: cvAnomaly, color:'#f4722e'}
+    {label:'Variabilidad; lectura normal típica', value: cvNormal, color:'#3ecfa0'},
+    {label:'Variabilidad; incidente sutil', value: cvBorderline, color:'#e8c547'},
+    {label:'Variabilidad; incidente claro', value: cvAnomaly, color:'#f4722e'}
   ];
   const maxV = Math.max(0.5, cvNormal, cvBorderline, cvAnomaly);
   const rowH = (H-padT-padB)/rows.length;
@@ -1025,13 +1025,13 @@ function setK(k){
 
   const badge = document.getElementById('mFitBadge');
   if(cvN > 0.25){
-    badge.textContent = '⚠ Inestable — con tan pocos datos, el resultado depende demasiado de qué lecturas exactas tengas en el historial.';
+    badge.textContent = '⚠ Inestable; con tan pocos datos, el resultado depende demasiado de qué lecturas exactas tengas en el historial.';
     badge.style.color = 'var(--cta)';
   } else if(cvN > 0.08){
-    badge.textContent = '~ Aceptable, pero aún sensible — mejora con más historial acumulado.';
+    badge.textContent = '~ Aceptable, pero aún sensible; mejora con más historial acumulado.';
     badge.style.color = '#e8c547';
   } else {
-    badge.textContent = '✓ Estable — el resultado ya no depende tanto de la muestra exacta del historial.';
+    badge.textContent = '✓ Estable; el resultado ya no depende tanto de la muestra exacta del historial.';
     badge.style.color = 'var(--success)';
   }
 
@@ -1072,7 +1072,7 @@ updateBasic();
   var GLOSSARY = [
     {term:'MCSA', def:'Análisis de firma de corriente del motor (Motor Current Signature Analysis): detecta fallas mecánicas y eléctricas midiendo variaciones en la corriente, sin abrir el equipo.'},
     {term:'RMS', def:'Valor cuadrático medio (Root Mean Square): resume la energía de una señal de vibración en un solo número comparable.'},
-    {term:'dB', def:'Decibel: unidad logarítmica de intensidad sonora — cada +10 dB representa aprox. 10 veces más energía acústica.'},
+    {term:'dB', def:'Decibel: unidad logarítmica de intensidad sonora; cada +10 dB representa aprox. 10 veces más energía acústica.'},
     {term:'ΔT', def:'Delta T: diferencia de temperatura entre dos puntos de medición.'},
     {term:'deslizamiento', def:'Slip: diferencia entre la velocidad del campo magnético del motor y la velocidad real del rotor; crece con más carga o daño mecánico.'},
     {term:'R²', def:'Coeficiente de determinación: qué tan bien el modelo explica la variación de los datos reales (1.0 = ajuste perfecto).'}

@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<!-- Google Analytics (GA4) — INACTIVO: reemplaza G-XXXXXXXXXX por tu Measurement ID real para activarlo -->
+<!-- Google Analytics (GA4). INACTIVO: reemplaza G-XXXXXXXXXX por tu Measurement ID real para activarlo -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -15,10 +15,10 @@
 <link rel="icon" href="../../assets/favicon.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
 <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
-<title>Frontera de Vibración — RELIABILIT-IA</title>
+<title>Frontera de Vibración. RELIABILIT-IA</title>
 <meta name="description" content="Separa tres estados de vibración (Estable, Alerta, Crítico) con una frontera de decisión trazada por máximo margen, y observa en vivo cómo la regularización afecta esa frontera.">
 
-<meta property="og:title" content="Frontera de Vibración — RELIABILIT-IA">
+<meta property="og:title" content="Frontera de Vibración. RELIABILIT-IA">
 <meta property="og:description" content="Mueve vibración RMS y factor de cresta y mira en vivo de qué lado de la frontera cae la lectura.">
 <meta property="og:image" content="../../assets/og-image.png">
 <meta property="og:type" content="website">
@@ -56,7 +56,7 @@
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "Frontera de Vibración — RELIABILIT-IA",
+  "name": "Frontera de Vibración. RELIABILIT-IA",
   "applicationCategory": "BusinessApplication",
   "operatingSystem": "Web",
   "url": "https://angel19968.github.io/reliabilit-ia/modelos/frontera-de-vibracion/",
@@ -386,8 +386,8 @@
     <h2>El problema</h2>
     <div class="context-grid">
       <div class="context-text">
-        <p>El <a href="../semaforo-de-bombas/">Semáforo de Bombas</a> estima una probabilidad de cada estado (regresión logística). Este módulo usa una idea distinta y complementaria: en vez de estimar probabilidades, busca directamente la frontera —la línea de decisión— que separa mejor los tres estados de vibración, maximizando el margen entre cada clase y sus vecinas más cercanas. Es la misma lógica detrás de un clasificador de margen máximo (SVM). El resultado suele ser una frontera más "definida", útil cuando lo que te interesa no es tanto "qué probabilidad hay de..." sino "de qué lado de la línea está esta lectura, y qué tan cerca del borde".</p>
-        <p>Las dos variables que usa este demo —vibración RMS global y factor de cresta— son lecturas estándar de cualquier analizador de vibraciones. El factor de cresta (pico máximo dividido entre el RMS) suele subir antes de que el RMS global lo haga, así que combinarlos ayuda a distinguir un estado de "Alerta" temprano de uno ya "Crítico".</p>
+        <p>El <a href="../semaforo-de-bombas/">Semáforo de Bombas</a> estima una probabilidad de cada estado (regresión logística). Este módulo usa una idea distinta y complementaria: en vez de estimar probabilidades, busca directamente la frontera (la línea de decisión) que separa mejor los tres estados de vibración, maximizando el margen entre cada clase y sus vecinas más cercanas. Es la misma lógica detrás de un clasificador de margen máximo (SVM). El resultado suele ser una frontera más "definida", útil cuando lo que te interesa no es tanto "qué probabilidad hay de..." sino "de qué lado de la línea está esta lectura, y qué tan cerca del borde".</p>
+        <p>Las dos variables que usa este demo (vibración RMS global y factor de cresta) son lecturas estándar de cualquier analizador de vibraciones. El factor de cresta (pico máximo dividido entre el RMS) suele subir antes de que el RMS global lo haga, así que combinarlos ayuda a distinguir un estado de "Alerta" temprano de uno ya "Crítico".</p>
       </div>
       <aside class="context-visual">
         <svg class="cv-wave" viewBox="0 0 260 52" preserveAspectRatio="none" aria-hidden="true"><path d="M0,28 C15,10 30,46 45,28 C60,10 75,46 90,28 C105,10 120,46 135,28 C150,10 165,46 180,28 C195,10 210,46 225,28 C235,20 245,28 260,28"/></svg>
@@ -402,7 +402,7 @@
     <h2>Demo interactivo</h2>
     <div class="panel">
       <div class="toggle-row">
-        <span class="label">Clasificador de margen máximo (SVM lineal, uno-contra-todos) — mueve los sliders para simular una lectura de campo.</span>
+        <span class="label">Clasificador de margen máximo (SVM lineal, uno-contra-todos); mueve los sliders para simular una lectura de campo.</span>
         <label class="switch">
           <span>Modo Analista</span>
           <input type="checkbox" id="analystToggle">
@@ -451,13 +451,13 @@
             <div class="gauge-value"><b id="gaugeValue">0</b> <span class="gauge-note">0 = muy dentro de la región actual, 100 = justo en el límite con otro estado</span></div>
           </div>
 
-          <p class="sim-note">Simulación ilustrativa: el mapa y el punto de operación se dibujan a partir de los mismos valores de los sliders — no provienen de un sensor real.</p>
+          <p class="sim-note">Simulación ilustrativa: el mapa y el punto de operación se dibujan a partir de los mismos valores de los sliders; no provienen de un sensor real.</p>
         </div>
       </div>
 
       <div class="analyst" id="analystPanel">
         <h3 style="font-size:18px; text-transform:none; letter-spacing:0; margin-bottom:8px; color:var(--text);">Ajustar la regularización en vivo</h3>
-        <p style="font-size:15px; color:var(--muted); margin-bottom:18px;">λ (lambda) controla qué tan flexible puede ser la frontera para ajustarse a los datos de entrenamiento. Con λ muy alto, el modelo se vuelve demasiado rígido y clasifica mal incluso los datos que ya conoce (subajuste). Con λ bajo, la frontera se ajusta más a los datos — pero, al ser un modelo lineal con solo dos variables, su capacidad de "memorizar" ruido es limitada: en este dataset, el riesgo real está casi todo del lado del subajuste, no del sobreajuste. Elige un valor de λ para ver el efecto en la frontera y en la exactitud.</p>
+        <p style="font-size:15px; color:var(--muted); margin-bottom:18px;">λ (lambda) controla qué tan flexible puede ser la frontera para ajustarse a los datos de entrenamiento. Con λ muy alto, el modelo se vuelve demasiado rígido y clasifica mal incluso los datos que ya conoce (subajuste). Con λ bajo, la frontera se ajusta más a los datos; pero, al ser un modelo lineal con solo dos variables, su capacidad de "memorizar" ruido es limitada: en este dataset, el riesgo real está casi todo del lado del subajuste, no del sobreajuste. Elige un valor de λ para ver el efecto en la frontera y en la exactitud.</p>
 
         <div class="dataset-wrap">
           <div class="dataset-label">Vista del dataset (210 lecturas simuladas — 140 entrenamiento / 70 prueba)</div>
@@ -485,10 +485,10 @@
   </section>
 
   <section class="business">
-    <h2>¿Qué significa para tu planta?</h2>
+    <h2>De este resultado a una acción</h2>
     <div class="business-grid">
       <div>
-        <p>Con la lectura actual, esta bomba se clasifica como <span class="stat" id="bizLevelInline">Estable</span>. La ventaja de una frontera de margen máximo es que da una lectura clara de "qué tan cerca del límite" está una medición, no solo una etiqueta — eso ayuda a priorizar inspecciones cuando varios equipos están, por ejemplo, todos en "Alerta" pero algunos están mucho más cerca de volverse "Crítico" que otros.</p>
+        <p>Con la lectura actual, esta bomba se clasifica como <span class="stat" id="bizLevelInline">Estable</span>. La ventaja de una frontera de margen máximo es que da una lectura clara de "qué tan cerca del límite" está una medición, no solo una etiqueta; eso ayuda a priorizar inspecciones cuando varios equipos están, por ejemplo, todos en "Alerta" pero algunos están mucho más cerca de volverse "Crítico" que otros.</p>
         <div class="biz-action" id="bizAction">
           <div class="biz-title" id="bizTitle">Calculando…</div>
           <div class="biz-detail" id="bizDetail"></div>
@@ -503,7 +503,7 @@
 
   <section id="cta">
     <h2>De esta demo a tu planta</h2>
-    <p style="color:var(--muted); max-width:640px; margin-bottom:20px;">El dataset, la frontera y la simulación de este demo están calibrados sobre datos sintéticos para poder compartir esta demo abiertamente — la metodología es la misma que aplicamos en campo para clasificar tu equipo real. Llevarlo a tu planta implica calibrar la frontera con tus propias lecturas históricas, ajustar qué variables entran al modelo según los sensores que ya tienes instalados, y decidir el nivel de regularización adecuado al volumen de datos disponible — ahí es donde entra nuestro motor AutoML. Se adapta al tipo de equipo y a la industria —minería, manufactura, energía, alimentos— cuando la calibramos con tus datos. Si quieres recorrer ese proceso, conversemos.</p>
+    <p style="color:var(--muted); max-width:640px; margin-bottom:20px;">El dataset, la frontera y la simulación de este demo están calibrados sobre datos sintéticos para poder compartir esta demo abiertamente, con la misma metodología que aplicamos en campo para clasificar tu equipo real. Llevarlo a tu planta implica calibrar la frontera con tus propias lecturas históricas, ajustar qué variables entran al modelo según los sensores que ya tienes instalados, y decidir el nivel de regularización adecuado al volumen de datos disponible. Ese ajuste lo hacemos a la medida de cada equipo. Se adapta al tipo de equipo y a la industria (minería, manufactura, energía, alimentos) cuando la calibramos con tus datos. Si quieres recorrer ese proceso, conversemos.</p>
     <div class="cta-row">
       <a class="btn primary" href="https://chat.whatsapp.com/GvBz1tuUeNZ0xwTkjsuE3z" target="_blank" rel="noopener">Unirme a la comunidad de WhatsApp</a>
       <a class="btn ghost" href="https://www.linkedin.com/company/reliabilit-ia/" target="_blank" rel="noopener">Seguir en LinkedIn</a>
@@ -554,7 +554,7 @@
       <a href="https://www.linkedin.com/in/miguelcayllahua/" target="_blank" rel="noopener">LinkedIn personal</a>
       <a href="mailto:miguelcquispe@gmail.com">Correo</a>
     </div>
-    <p style="">La metodología es la misma que aplicamos en proyectos reales; los datos y la simulación de esta demo son sintéticos para poder compartirlos públicamente. Se calibra con tus propios datos —sin importar el tipo de equipo o la industria— cuando trabajamos juntos. Los parámetros de este demo son de referencia — se recalibran a la medida de cada equipo cuando trabajamos con tus datos.</p>
+    <p style="">Esta demo separa dos cosas: el método (real, el mismo de nuestros proyectos) y los datos (sintéticos, por diseño, para compartir sin exponer a ningún cliente). El siguiente paso natural es calibrar el mismo modelo con tus propios datos.</p>
   </footer>
 </div>
 
@@ -683,7 +683,7 @@ const prodModel = trainSVM(trainPoints, PROD_LAMBDA, PROD_EPOCHS, PROD_LR);
 
 const LEVEL_DETAIL = [
   'La lectura cae claramente en la región de operación estable.',
-  'La lectura muestra señales tempranas de desviación — vale la pena anotarla y darle seguimiento en la siguiente ronda.',
+  'La lectura muestra señales tempranas de desviación; vale la pena anotarla y darle seguimiento en la siguiente ronda.',
   'La lectura cae en la región crítica: se recomienda programar una inspección a la brevedad.'
 ];
 const LEVEL_SIMPLE = [
@@ -794,10 +794,10 @@ function updateBasic(){
     confNote = 'La lectura está lejos de cualquier frontera entre estados.';
   } else if(margin > 0.4){
     confLevel = 'Media'; confColor = '#e8c547';
-    confNote = 'Cerca de una frontera — el estado vecino también es plausible.';
+    confNote = 'Cerca de una frontera; el estado vecino también es plausible.';
   } else {
     confLevel = 'Baja'; confColor = 'var(--cta)';
-    confNote = 'Justo en el borde entre dos estados — confirma con otra lectura antes de decidir.';
+    confNote = 'Justo en el borde entre dos estados; confirma con otra lectura antes de decidir.';
   }
   confidenceLine.textContent = 'Confianza de la clasificación: ' + confLevel;
   confidenceLine.style.color = confColor;
@@ -824,7 +824,7 @@ vibSlider.addEventListener('input', updateBasic);
 crestSlider.addEventListener('input', updateBasic);
 
 /* =========================================================
-   SIMULACIÓN EN VIVO — mapa de regiones de decisión del
+   SIMULACIÓN EN VIVO; mapa de regiones de decisión del
    modelo de producción con el punto actual resaltado.
    ========================================================= */
 const instrumentCanvas = document.getElementById('instrument');
@@ -940,7 +940,7 @@ function drawDecisionMap(models){
 
   cctx.fillStyle = '#a8a8b4';
   cctx.font = '12px DM Mono, monospace';
-  cctx.fillText('● entrenamiento · ◯ prueba — color = estado real', pad, pad-16);
+  cctx.fillText('● entrenamiento · ◯ prueba; color = estado real', pad, pad-16);
 }
 
 function drawConfusion(models){
@@ -952,7 +952,7 @@ function drawConfusion(models){
   const padL = 130, padT = 34, cellW = 130, cellH = 42;
   rctx.fillStyle = '#c9c9d4';
   rctx.font = '13px DM Mono, monospace';
-  rctx.fillText('Matriz de confusión (conjunto de prueba) — filas = estado real, columnas = predicho', padL-90, 16);
+  rctx.fillText('Matriz de confusión (conjunto de prueba); filas = estado real, columnas = predicho', padL-90, 16);
 
   CLASS_NAMES.forEach((name,j)=>{
     rctx.fillStyle = '#8a8a98';
@@ -992,13 +992,13 @@ function setLambda(lambda){
 
   const badge = document.getElementById('mFitBadge');
   if(accTrain < 0.75){
-    badge.textContent = '⚠ Subajuste — con este λ la frontera es demasiado rígida: clasifica mal incluso datos que ya conoce.';
+    badge.textContent = '⚠ Subajuste; con este λ la frontera es demasiado rígida: clasifica mal incluso datos que ya conoce.';
     badge.style.color = 'var(--cta)';
   } else if(gapPP > 12){
-    badge.textContent = '⚠ Sobreajuste — la frontera se ajusta demasiado al entrenamiento y pierde generalización.';
+    badge.textContent = '⚠ Sobreajuste; la frontera se ajusta demasiado al entrenamiento y pierde generalización.';
     badge.style.color = '#e8c547';
   } else {
-    badge.textContent = '✓ Ajuste razonable — buena exactitud en ambos conjuntos, brecha contenida. Con un modelo lineal de 2 variables, el riesgo real aquí es subajustar, no sobreajustar.';
+    badge.textContent = '✓ Ajuste razonable; buena exactitud en ambos conjuntos, brecha contenida. Con un modelo lineal de 2 variables, el riesgo real aquí es subajustar, no sobreajustar.';
     badge.style.color = 'var(--success)';
   }
 
@@ -1038,7 +1038,7 @@ updateBasic();
   var GLOSSARY = [
     {term:'MCSA', def:'Análisis de firma de corriente del motor (Motor Current Signature Analysis): detecta fallas mecánicas y eléctricas midiendo variaciones en la corriente, sin abrir el equipo.'},
     {term:'RMS', def:'Valor cuadrático medio (Root Mean Square): resume la energía de una señal de vibración en un solo número comparable.'},
-    {term:'dB', def:'Decibel: unidad logarítmica de intensidad sonora — cada +10 dB representa aprox. 10 veces más energía acústica.'},
+    {term:'dB', def:'Decibel: unidad logarítmica de intensidad sonora; cada +10 dB representa aprox. 10 veces más energía acústica.'},
     {term:'ΔT', def:'Delta T: diferencia de temperatura entre dos puntos de medición.'},
     {term:'deslizamiento', def:'Slip: diferencia entre la velocidad del campo magnético del motor y la velocidad real del rotor; crece con más carga o daño mecánico.'},
     {term:'R²', def:'Coeficiente de determinación: qué tan bien el modelo explica la variación de los datos reales (1.0 = ajuste perfecto).'}

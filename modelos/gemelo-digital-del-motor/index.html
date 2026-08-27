@@ -2,7 +2,7 @@
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<!-- Google Analytics (GA4) — INACTIVO: reemplaza G-XXXXXXXXXX por tu Measurement ID real para activarlo -->
+<!-- Google Analytics (GA4). INACTIVO: reemplaza G-XXXXXXXXXX por tu Measurement ID real para activarlo -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -15,10 +15,10 @@
 <link rel="icon" href="../../assets/favicon.ico" sizes="any">
 <link rel="icon" type="image/svg+xml" href="../../assets/favicon.svg">
 <link rel="apple-touch-icon" href="../../assets/apple-touch-icon.png">
-<title>Gemelo Digital del Motor — RELIABILIT-IA</title>
-<meta name="description" content="Un modelo físico de un motor eléctrico corre en vivo junto al sensor real. La brecha entre ambos revela refrigeración degradada o aislamiento dañado — antes de que la temperatura absoluta lo delate.">
+<title>Gemelo Digital del Motor. RELIABILIT-IA</title>
+<meta name="description" content="Un modelo físico de un motor eléctrico corre en vivo junto al sensor real. La brecha entre ambos revela refrigeración degradada o aislamiento dañado; antes de que la temperatura absoluta lo delate.">
 
-<meta property="og:title" content="Gemelo Digital del Motor — RELIABILIT-IA">
+<meta property="og:title" content="Gemelo Digital del Motor. RELIABILIT-IA">
 <meta property="og:description" content="Mueve la carga, degrada la refrigeración o el aislamiento, y mira en vivo cómo se abre la brecha entre el gemelo digital (sano) y el sensor real.">
 <meta property="og:image" content="../../assets/og-image.png">
 <meta property="og:type" content="website">
@@ -56,7 +56,7 @@
 {
   "@context": "https://schema.org",
   "@type": "SoftwareApplication",
-  "name": "Gemelo Digital del Motor — RELIABILIT-IA",
+  "name": "Gemelo Digital del Motor. RELIABILIT-IA",
   "applicationCategory": "BusinessApplication",
   "operatingSystem": "Web",
   "url": "https://angel19968.github.io/reliabilit-ia/modelos/gemelo-digital-del-motor/",
@@ -408,14 +408,14 @@
     <div class="badge">Ingeniería aplicada a Motores Eléctricos</div>
     <span class="badge" style="border-color:var(--accent); color:var(--accent); margin-left:8px;">Simulación física · Gemelo digital en vivo</span>
     <h1>Gemelo Digital del Motor</h1>
-    <p class="lead">No compara tu motor contra otros motores — lo compara contra su propia física: la temperatura que debería tener ahora mismo si todo estuviera sano.</p>
+    <p class="lead">No compara tu motor contra otros motores; lo compara contra su propia física: la temperatura que debería tener ahora mismo si todo estuviera sano.</p>
   </header>
 
   <section class="context">
     <h2>El problema</h2>
     <div class="context-grid">
       <div class="context-text">
-        <p>Los demás modelos de este catálogo aprenden de datos históricos: comparan una lectura contra lo que vieron antes. Un <b>gemelo digital</b> es distinto — es una réplica construida con ecuaciones de ingeniería (balance de calor, en este caso) que corre en paralelo al motor real, sin necesitar ni un solo ejemplo de falla previa. Mientras el motor real opera, el gemelo calcula la temperatura de bobinado que <i>debería</i> tener, dada la carga y la temperatura ambiente actuales, asumiendo refrigeración y aislamiento sanos. Cuando el sensor real se aleja de esa predicción física de forma sostenida, algo cambió que la física no explica: refrigeración obstruida, aislamiento degradado, o ambas. Mueve los controles abajo y observa la brecha abrirse en vivo.</p>
+        <p>Los demás modelos de este catálogo aprenden de datos históricos: comparan una lectura contra lo que vieron antes. Un <b>gemelo digital</b> es distinto; es una réplica construida con ecuaciones de ingeniería (balance de calor, en este caso) que corre en paralelo al motor real, sin necesitar ni un solo ejemplo de falla previa. Mientras el motor real opera, el gemelo calcula la temperatura de bobinado que <i>debería</i> tener, dada la carga y la temperatura ambiente actuales, asumiendo refrigeración y aislamiento sanos. Cuando el sensor real se aleja de esa predicción física de forma sostenida, algo cambió que la física no explica: refrigeración obstruida, aislamiento degradado, o ambas. Mueve los controles abajo y observa la brecha abrirse en vivo.</p>
       </div>
       <aside class="context-visual">
         <svg class="cv-wave" viewBox="0 0 260 52" preserveAspectRatio="none" aria-hidden="true"><path d="M0,28 C15,10 30,46 45,28 C60,10 75,46 90,28 C105,10 120,46 135,28 C150,10 165,46 180,28 C195,10 210,46 225,28 C235,20 245,28 260,28"/></svg>
@@ -430,7 +430,7 @@
     <h2>Demo interactivo</h2>
     <div class="panel">
       <div class="toggle-row">
-        <span class="label">Simulación física en vivo (balance de calor de primer orden) — cambia la carga o degrada la refrigeración/aislamiento y observa la respuesta en tiempo real.</span>
+        <span class="label">Simulación física en vivo (balance de calor de primer orden); cambia la carga o degrada la refrigeración/aislamiento y observa la respuesta en tiempo real.</span>
         <label class="switch">
           <span>Modo Analista</span>
           <input type="checkbox" id="analystToggle">
@@ -511,21 +511,21 @@
             <div class="gauge-value"><b id="gaugeValue">0</b> °C <span class="gauge-note">atención 5 °C · alarma 15 °C (ilustrativo)</span></div>
           </div>
 
-          <p class="sim-note">Simulación ilustrativa: el modelo térmico, los umbrales y los costos son de ejemplo — no provienen del sistema de monitoreo real de ningún equipo. El "sensor real" de esta demo es el mismo modelo físico con fallas inyectadas + ruido de medición.</p>
+          <p class="sim-note">Simulación ilustrativa: el modelo térmico, los umbrales y los costos son de ejemplo; no provienen del sistema de monitoreo real de ningún equipo. El "sensor real" de esta demo es el mismo modelo físico con fallas inyectadas + ruido de medición.</p>
         </div>
       </div>
 
       <div class="analyst" id="analystPanel">
         <h3 style="font-size:18px; text-transform:none; letter-spacing:0; margin-bottom:8px; color:var(--text);">Atribución causal por simulación contrafactual</h3>
-        <p style="font-size:15px; color:var(--muted); margin-bottom:18px;">El gemelo también corre dos simulaciones "qué pasaría si": una con solo la refrigeración degradada, otra con solo el aislamiento degradado (ambas partiendo del mismo gemelo sano). Comparar cada una contra el gemelo sano estima cuánto del residual total explica cada falla — sin esperar a un diagnóstico manual.</p>
+        <p style="font-size:15px; color:var(--muted); margin-bottom:18px;">El gemelo también corre dos simulaciones "qué pasaría si": una con solo la refrigeración degradada, otra con solo el aislamiento degradado (ambas partiendo del mismo gemelo sano). Comparar cada una contra el gemelo sano estima cuánto del residual total explica cada falla; sin esperar a un diagnóstico manual.</p>
 
         <div class="attr-wrap">
           <div class="attr-row">
-            <div class="attr-label"><span>Aporte estimado — refrigeración</span><span id="attrCoolVal">– °C</span></div>
+            <div class="attr-label"><span>Aporte estimado; refrigeración</span><span id="attrCoolVal">– °C</span></div>
             <div class="attr-bar"><div class="attr-fill cooling" id="attrCoolFill"></div></div>
           </div>
           <div class="attr-row">
-            <div class="attr-label"><span>Aporte estimado — aislamiento</span><span id="attrInsulVal">– °C</span></div>
+            <div class="attr-label"><span>Aporte estimado; aislamiento</span><span id="attrInsulVal">– °C</span></div>
             <div class="attr-bar"><div class="attr-fill insul" id="attrInsulFill"></div></div>
           </div>
           <p class="attr-caveat">Estimación aproximada: con una sola falla activa el margen de error es menor a 2%; con ambas fallas activas a la vez, ronda 5–10% por la leve interacción no lineal entre refrigeración y aislamiento en la ecuación de balance térmico.</p>
@@ -552,7 +552,7 @@
   </section>
 
   <section class="business">
-    <h2>¿Qué significa para tu planta?</h2>
+    <h2>Qué hacer con este resultado</h2>
     <div class="business-grid">
       <div>
         <p>A diferencia de un modelo entrenado con historial de fallas, un gemelo digital se arma con datos que ya tienes en la placa del motor y su hoja técnica: potencia nominal, clase de aislamiento, curva de refrigeración. <span class="stat">Funciona desde el primer día</span>, sin esperar meses acumulando ejemplos de falla real. Con la lectura actual, el estado del motor es <span class="stat" id="bizCostInline">–</span>.</p>
@@ -570,7 +570,7 @@
 
   <section id="cta">
     <h2>De esta demo a tu planta</h2>
-    <p style="color:var(--muted); max-width:640px; margin-bottom:20px;">El modelo térmico, los umbrales y los costos de este demo están calibrados sobre datos sintéticos para poder compartir esta demo abiertamente — la lógica de ingeniería es la misma que aplicamos en campo para construir gemelos digitales de activos críticos. Llevarlo a tu planta implica levantar los datos técnicos del equipo (hoja de datos, curvas de refrigeración) y calibrar el modelo físico contra unas pocas lecturas reales de tu sensor — no contra años de historial de fallas. Se adapta a otros activos con comportamiento térmico similar —transformadores, generadores, reductores— cuando lo calibramos con tu equipo real. Si quieres recorrer ese proceso, conversemos.</p>
+    <p style="color:var(--muted); max-width:640px; margin-bottom:20px;">El modelo térmico, los umbrales y los costos de este demo están calibrados sobre datos sintéticos para poder compartir esta demo abiertamente; la lógica de ingeniería es la misma que aplicamos en campo para construir gemelos digitales de activos críticos. Llevarlo a tu planta implica levantar los datos técnicos del equipo (hoja de datos, curvas de refrigeración) y calibrar el modelo físico contra unas pocas lecturas reales de tu sensor, no contra años de historial de fallas. Se adapta a otros activos con comportamiento térmico similar (transformadores, generadores, reductores) cuando lo calibramos con tu equipo real. Si quieres recorrer ese proceso, conversemos.</p>
     <div class="cta-row">
       <a class="btn primary" href="https://chat.whatsapp.com/GvBz1tuUeNZ0xwTkjsuE3z" target="_blank" rel="noopener">Unirme a la comunidad de WhatsApp</a>
       <a class="btn ghost" href="https://www.linkedin.com/company/reliabilit-ia/" target="_blank" rel="noopener">Seguir en LinkedIn</a>
@@ -621,7 +621,7 @@
       <a href="https://www.linkedin.com/in/miguelcayllahua/" target="_blank" rel="noopener">LinkedIn personal</a>
       <a href="mailto:miguelcquispe@gmail.com">Correo</a>
     </div>
-    <p style="">La metodología es la misma que aplicamos en proyectos reales; los datos y la simulación de esta demo son sintéticos para poder compartirlos públicamente. Se calibra con la hoja técnica y unas pocas lecturas reales de tu propio equipo cuando trabajamos juntos. Los parámetros de este demo son de referencia — se recalibran a la medida de cada motor cuando trabajamos con tus datos.</p>
+    <p style="">La metodología es la misma que aplicamos en proyectos reales; los datos y la simulación de esta demo son sintéticos para poder compartirlos públicamente. Se calibra con la hoja técnica y unas pocas lecturas reales de tu propio equipo cuando trabajamos juntos. Los parámetros de este demo son de referencia; se recalibran a la medida de cada motor cuando trabajamos con tus datos.</p>
   </footer>
 </div>
 
@@ -705,8 +705,8 @@ function initSim() {
 }
 initSim();
 
-const PLANNED_COST = 2600;   // soles, inspección/ajuste planificado — ilustrativo
-const EMERGENCY_COST = 15000; // soles, rebobinado + parada no planificada — ilustrativo
+const PLANNED_COST = 2600;   // soles, inspección/ajuste planificado; ilustrativo
+const EMERGENCY_COST = 15000; // soles, rebobinado + parada no planificada; ilustrativo
 
 function fmtSoles(v) { return 'S/. ' + Math.round(v).toLocaleString('es-PE'); }
 
@@ -874,15 +874,15 @@ function render(load, Tamb, displayedReal, residual) {
 
   let detail, simple;
   if (estado.key === 'normal') {
-    riskTitle.textContent = 'Normal — el sensor sigue al gemelo';
+    riskTitle.textContent = 'Normal; el sensor sigue al gemelo';
     detail = 'La brecha entre el gemelo digital y el sensor real es pequeña: la física explica bien lo que mide el sensor. Refrigeración y aislamiento se comportan como se espera para esta carga.';
     simple = 'todo normal, el motor se comporta como predice la física.';
   } else if (estado.key === 'atencion') {
-    riskTitle.textContent = 'Atención — brecha sostenida';
+    riskTitle.textContent = 'Atención; brecha sostenida';
     detail = 'El sensor real está por encima de lo que el gemelo sano predice para esta carga. Activa el Modo Analista para ver cuánto de esa brecha explica la refrigeración y cuánto el aislamiento.';
     simple = 'hay una brecha que vale la pena revisar en la próxima ronda de inspección.';
   } else {
-    riskTitle.textContent = 'Alarma — la física ya no explica al sensor';
+    riskTitle.textContent = 'Alarma; la física ya no explica al sensor';
     detail = 'La brecha entre gemelo y sensor real es grande y sostenida: esto no es ruido de medición, es una falla física activa (refrigeración, aislamiento, o ambas). Requiere atención antes de la próxima falla térmica.';
     simple = 'esto ya necesita inspección pronto, no una revisión de rutina.';
   }
@@ -911,8 +911,8 @@ function render(load, Tamb, displayedReal, residual) {
   bizTitle.style.color = estado.color;
   bizTitle.textContent = riskTitle.textContent;
   bizDetail.textContent = estado.key === 'normal'
-    ? 'No se requiere acción — sigue monitoreando en vivo.'
-    : 'Una inspección planificada dentro de esta ventana cuesta en promedio ' + fmtSoles(PLANNED_COST) + '; un rebobinado de emergencia por falla de aislamiento (parada + repuesto urgente + producción perdida) cuesta en promedio ' + fmtSoles(EMERGENCY_COST) + ' — un ahorro potencial de ' + fmtSoles(EMERGENCY_COST - PLANNED_COST) + ' (ilustrativo).';
+    ? 'No se requiere acción; sigue monitoreando en vivo.'
+    : 'Una inspección planificada dentro de esta ventana cuesta en promedio ' + fmtSoles(PLANNED_COST) + '; un rebobinado de emergencia por falla de aislamiento (parada + repuesto urgente + producción perdida) cuesta en promedio ' + fmtSoles(EMERGENCY_COST) + '; un ahorro potencial de ' + fmtSoles(EMERGENCY_COST - PLANNED_COST) + ' (ilustrativo).';
 
   drawLiveChart();
   drawCostComparison();
@@ -983,7 +983,7 @@ setInterval(tick, TICK_MS);
     {term:'gemelo digital', def:'Réplica virtual de un activo físico, construida con ecuaciones de ingeniería (no solo estadística), que corre en paralelo al equipo real para comparar predicción física contra medición real.'},
     {term:'constante de tiempo', def:'Tiempo característico (τ) que tarda un cuerpo en alcanzar ~63% del cambio hacia su nueva temperatura de equilibrio; motores más grandes (más masa) tienen τ mayor.'},
     {term:'residual', def:'Diferencia entre lo que predice el modelo (gemelo) y lo que mide el sensor real; un residual que crece de forma sostenida es la señal de alerta.'},
-    {term:'contrafactual', def:'Simulación de "qué pasaría si" solo una variable hubiera cambiado, manteniendo las demás en su estado sano — permite estimar cuánto aporta cada falla por separado.'}
+    {term:'contrafactual', def:'Simulación de "qué pasaría si" solo una variable hubiera cambiado, manteniendo las demás en su estado sano; permite estimar cuánto aporta cada falla por separado.'}
   ];
   var SKIP_TAGS = {SCRIPT:1, STYLE:1, SELECT:1, OPTION:1, TITLE:1};
   var wrapped = {};
