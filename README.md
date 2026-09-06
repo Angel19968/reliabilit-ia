@@ -2,11 +2,12 @@
 
 **Modelos interactivos que anticipan fallas, no solo las registran.**
 
-RELIABILIT-IA es un proyecto de mantenimiento predictivo e ingeniería de confiabilidad aplicada. Este repositorio reúne tres bloques de contenido, todos autocontenidos en HTML/CSS/JS (sin backend, sin build step, sin librerías de ML de por medio):
+RELIABILIT-IA es un proyecto de mantenimiento predictivo e ingeniería de confiabilidad aplicada. Este repositorio reúne cuatro bloques de contenido, todos autocontenidos en HTML/CSS/JS (sin backend ni build step):
 
 1. **24 demos interactivas de machine learning** (`modelos/`) — cada una explica, en el navegador, un algoritmo real aplicado a un problema concreto de planta: vibración en rodamientos, temperatura de motores, firma de corriente de motores (MCSA), fugas de aire comprimido, gemelos digitales físicos, redes neuronales recurrentes, imágenes térmicas, y más.
 2. **16 análisis de ingeniería de confiabilidad estadística** (`confiabilidad-calculos/` y `confiabilidad-avanzada/`) — Weibull, Kaplan-Meier, Nelson-Aalen, MCF/ROCOF de sistemas reparables, curva de Duane, stress-strength interference, entre otros, cada uno **auditado numéricamente contra la librería Python `reliability`** (no solo implementado, sino verificado).
 3. **Un panel de Business Intelligence** (`panel-analitico/`) con 15 tipos de gráfico construidos a mano en SVG, aplicados a datos de planta.
+4. **Un laboratorio y atlas de la biblioteca Python `reliability`** (`laboratorio-reliability/`) con simuladores editables, 84 temas, 152 escenarios calculados y ejemplos reproducibles en Python.
 
 Cada demo de `modelos/` funciona en dos modos: un **Modo Básico**, pensado para cualquier persona (mueve un par de sliders y mira la predicción cambiar en vivo, traducida a decisiones de negocio, no a números sueltos), y un **Modo Analista**, pensado para quien quiera ver el modelo por dentro — el dataset, los hiperparámetros ajustables, y cómo cambian las métricas de ajuste (subajuste, sobreajuste, exactitud, matrices de confusión) según las decisiones que tomes.
 
@@ -30,6 +31,13 @@ Histograma de fallas + PDF superpuesta · MCF de sistema reparable (NHPP Power L
 ## Panel Analítico (`panel-analitico/`)
 
 15 tipos de gráfico de Business Intelligence construidos a mano en SVG sobre datos de planta: comparaciones y tendencias (columnas/barras agrupadas, columnas apiladas, líneas, áreas apiladas), parte-a-todo (dona, treemap, embudo, cascada), relación (dispersión/burbujas), mapas, KPIs, tablas detalladas y visualizaciones de estructura de modelos de IA (árbol de descomposición, jerarquías).
+
+## Laboratorio reliability (`laboratorio-reliability/`)
+
+Guía independiente en español basada en la documentación pública de `reliability 0.9.0`. Incluye laboratorios interactivos de Weibull, Kaplan–Meier, disponibilidad y reemplazo por edad; además incorpora un atlas de distribuciones, gráficos de probabilidad, modelos ALT, sistemas reparables, pruebas de confiabilidad y física de falla. El HTML funciona sin conexión porque contiene las gráficas calculadas dentro del propio archivo.
+
+- [Abrir el laboratorio interactivo](laboratorio-reliability/)
+- [Consultar los ejemplos reproducibles en Python](laboratorio-reliability/ejemplos-reliabilit-ia.py)
 
 ## Un aviso importante sobre los datos
 
