@@ -116,16 +116,18 @@
   }
   .search-input:focus{border-color:var(--accent);}
   .search-input::placeholder{color:var(--muted);}
-  .filter-group{display:flex; flex-wrap:wrap; gap:8px; align-items:center;}
-  .filter-label{font-size:11px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin-right:2px;}
-  .chip{
-    font-family:'DM Mono', monospace; font-size:13px; padding:7px 14px; border-radius:999px;
-    border:1px solid var(--border); background:transparent; color:var(--text); cursor:pointer;
-    transition:border-color .15s, background .15s;
+  .filter-select{
+    font-family:'DM Mono', monospace; font-size:13px; padding:10px 14px; border-radius:10px;
+    border:1px solid var(--border); background:var(--panel); color:var(--text); cursor:pointer;
+    outline:none; transition:border-color .15s; max-width:100%;
   }
-  .chip:hover{border-color:var(--success);}
-  .chip.active{background:var(--success); border-color:var(--success); color:#0a0a0f; font-weight:600;}
+  .filter-select:hover, .filter-select:focus{border-color:var(--success);}
   .filter-reset{font-size:12px; color:var(--muted); background:none; border:none; text-decoration:underline; cursor:pointer; font-family:'DM Mono', monospace;}
+  h1 .count-badge{
+    display:inline-block; vertical-align:middle; font-family:'DM Mono', monospace; font-weight:500;
+    font-size:13px; color:var(--muted); background:var(--panel2, var(--panel)); border:1px solid var(--border);
+    border-radius:999px; padding:4px 12px; margin-left:10px;
+  }
   .filter-count{font-size:13px; color:var(--muted); margin-top:14px;}
   #modelGrid{display:flex; flex-direction:column; gap:36px; margin-top:20px;}
   .family-heading{font-family:'Space Grotesk', sans-serif; font-weight:600; font-size:18px; margin-bottom:14px; display:flex; align-items:center; gap:8px;}
@@ -180,10 +182,12 @@
   .mc-alert{stroke:#f87171; fill:#f87171; opacity:.9;}
   .mc-dim{fill:var(--muted); opacity:.35;}
   .mr-link{
-    flex:none; font-family:'DM Mono', monospace; font-size:13px; color:var(--accent);
-    text-decoration:none; white-space:nowrap; border-bottom:1px solid transparent;
+    flex:none; font-family:'DM Mono', monospace; font-weight:600; font-size:12.5px; color:#0a0a0f;
+    background:var(--cta); border-radius:8px; padding:8px 14px;
+    text-decoration:none; white-space:nowrap; display:inline-flex; align-items:center; gap:5px;
+    transition:opacity .15s, transform .15s;
   }
-  .mr-link:hover{border-bottom-color:var(--accent);}
+  .mr-link:hover{opacity:.88; transform:translateY(-1px);}
   @media (max-width:640px){
     .model-row-head{flex-wrap:wrap; row-gap:6px; padding:12px 14px;}
     .mr-title{flex-basis:100%; order:1; font-size:14px;}
@@ -245,9 +249,9 @@
   .footer-links a{color:var(--muted); text-decoration:none;}
   .footer-links a:hover{color:var(--success);}
   .nav-row{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; position:sticky; top:0; z-index:30; background:var(--bg); padding:14px 0; margin:0 -40px; padding-left:40px; padding-right:40px; border-bottom:1px solid transparent;}
-  @media (max-width:720px){ .nav-row{margin:0 -20px; padding-left:20px; padding-right:20px;} }
+  @media (max-width:1060px){ .nav-row{margin:0 -20px; padding-left:20px; padding-right:20px;} }
   .nav-row.is-stuck{border-bottom-color:var(--border);}
-  .quick-links{display:flex; gap:18px; flex-wrap:wrap;}
+  .quick-links{display:flex; gap:18px; flex-wrap:wrap; align-items:center;}
   .quick-links a{font-size:13px; color:var(--muted); text-decoration:none;}
   .quick-links a:hover{color:var(--success);}
   .nav-actions{display:flex; align-items:center; gap:12px;}
@@ -271,7 +275,7 @@
   }
   .nav-dropdown-menu a:hover{background:var(--panel2); color:var(--success);}
   .nav-dropdown-menu .nav-dropdown-note{font-size:11px; color:var(--muted); padding:2px 10px 4px;}
-  @media (max-width:720px){
+  @media (max-width:1060px){
     .nav-dropdown-menu{position:static; box-shadow:none; border:none; padding:0 0 0 12px; margin-top:4px; display:none;}
     .nav-dropdown.is-open .nav-dropdown-menu{display:flex;}
     .nav-dropdown-menu a{padding:10px 4px; border-bottom:1px solid var(--border); font-size:14px; border-radius:0;}
@@ -281,7 +285,7 @@
     border-radius:10px; width:38px; height:38px; align-items:center; justify-content:center;
     color:var(--text); cursor:pointer; flex-shrink:0;
   }
-  @media (max-width:720px){
+  @media (max-width:1060px){
     .nav-toggle{display:inline-flex;}
     .quick-links{
       display:none; flex-direction:column; gap:0; width:100%; order:10;
@@ -560,7 +564,7 @@
 </head>
 <body>
 <svg aria-hidden="true" style="position:absolute;width:0;height:0;overflow:hidden">
-<symbol id="icon-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3.2"/><path d="M12 3v3M12 18v3M3 12h3M18 12h3M5.6 5.6l2.1 2.1M16.3 16.3l2.1 2.1M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1"/></symbol>
+<symbol id="icon-gear" viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><circle cx="12" cy="12" r="7.2"/><rect x="10.8" y="0.9" width="2.4" height="3" rx="1"/><rect x="10.8" y="0.9" width="2.4" height="3" rx="1" transform="rotate(45 12 12)"/><rect x="10.8" y="0.9" width="2.4" height="3" rx="1" transform="rotate(90 12 12)"/><rect x="10.8" y="0.9" width="2.4" height="3" rx="1" transform="rotate(135 12 12)"/><rect x="10.8" y="0.9" width="2.4" height="3" rx="1" transform="rotate(180 12 12)"/><rect x="10.8" y="0.9" width="2.4" height="3" rx="1" transform="rotate(225 12 12)"/><rect x="10.8" y="0.9" width="2.4" height="3" rx="1" transform="rotate(270 12 12)"/><rect x="10.8" y="0.9" width="2.4" height="3" rx="1" transform="rotate(315 12 12)"/></symbol>
 <symbol id="icon-menu" viewBox="0 0 24 24"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="20" y2="17"/></symbol>
 <symbol id="icon-x" viewBox="0 0 24 24"><line x1="5" y1="5" x2="19" y2="19"/><line x1="19" y1="5" x2="5" y2="19"/></symbol>
 <symbol id="icon-thermometer" viewBox="0 0 24 24"><path d="M12 15V5a2 2 0 1 0-4 0v10a4 4 0 1 0 4 0z"/><line x1="12" y1="9" x2="12" y2="14.5"/></symbol>
@@ -676,45 +680,40 @@
 
   <p class="crumb"><a href="../">RELIABILIT-IA</a> / Catálogo</p>
   <section id="modelos" class="page-head">
-    <h1>Catálogo completo <span style="color:var(--muted); font-weight:500; font-size:0.6em;">24 demos</span></h1>
+    <h1>Catálogo completo <span class="count-badge">24 demos</span></h1>
     <p class="lead" style="margin-top:10px;">Las 24 demos interactivas de RELIABILIT-IA, filtrables por técnica y sector. Cada una corre en el navegador con datos sintéticos, en Modo Básico y Modo Analista.</p>
 
     <div class="filters">
       <input type="search" id="searchInput" class="search-input" placeholder="Buscar por nombre o problema (ej. vibración, aceite, transformador)…">
-    </div>
-
-    <div class="filters">
-      <div class="filter-group" id="paradigmFilters" data-filter="paradigm">
-        <span class="filter-label">Técnica:</span>
-        <button class="chip" data-value="regresion">Regresión</button>
-        <button class="chip" data-value="series-tiempo">Series de tiempo</button>
-        <button class="chip" data-value="clasificacion">Clasificación</button>
-        <button class="chip" data-value="anomalias">Anomalías</button>
-        <button class="chip" data-value="clustering">Clustering</button>
-        <button class="chip" data-value="vision">Visión</button>
-        <button class="chip" data-value="nuevas-tecnologias">Nuevas tecnologías</button>
-        <button class="chip" data-value="gemelo-digital">Gemelo digital</button>
-      </div>
-    </div>
-    <div class="filters">
-      <div class="filter-group" id="sectorFilters" data-filter="sector">
-        <span class="filter-label">Sector:</span>
-        <button class="chip" data-value="rodamientos">Rodamientos</button>
-        <button class="chip" data-value="motores">Motores</button>
-        <button class="chip" data-value="bombas">Bombas</button>
-        <button class="chip" data-value="compresores">Compresores</button>
-        <button class="chip" data-value="aire-comprimido">Aire comprimido</button>
-        <button class="chip" data-value="turbinas">Turbinas</button>
-        <button class="chip" data-value="energia">Energía</button>
-        <button class="chip" data-value="planta">Planta</button>
-        <button class="chip" data-value="sensores">Sensores</button>
-        <button class="chip" data-value="vibracion">Vibración</button>
-        <button class="chip" data-value="termografia">Termografía</button>
-        <button class="chip" data-value="correas">Correas transportadoras</button>
-        <button class="chip" data-value="transformadores">Transformadores</button>
-        <button class="chip" data-value="calderas">Calderas</button>
-        <button class="chip" data-value="aceite">Aceite</button>
-      </div>
+      <select class="filter-select" id="paradigmFilter" aria-label="Filtrar por técnica">
+        <option value="">Técnica: todas</option>
+        <option value="regresion">Regresión</option>
+        <option value="series-tiempo">Series de tiempo</option>
+        <option value="clasificacion">Clasificación</option>
+        <option value="anomalias">Anomalías</option>
+        <option value="clustering">Clustering</option>
+        <option value="vision">Visión</option>
+        <option value="nuevas-tecnologias">Nuevas tecnologías</option>
+        <option value="gemelo-digital">Gemelo digital</option>
+      </select>
+      <select class="filter-select" id="sectorFilter" aria-label="Filtrar por sector">
+        <option value="">Sector: todos</option>
+        <option value="rodamientos">Rodamientos</option>
+        <option value="motores">Motores</option>
+        <option value="bombas">Bombas</option>
+        <option value="compresores">Compresores</option>
+        <option value="aire-comprimido">Aire comprimido</option>
+        <option value="turbinas">Turbinas</option>
+        <option value="energia">Energía</option>
+        <option value="planta">Planta</option>
+        <option value="sensores">Sensores</option>
+        <option value="vibracion">Vibración</option>
+        <option value="termografia">Termografía</option>
+        <option value="correas">Correas transportadoras</option>
+        <option value="transformadores">Transformadores</option>
+        <option value="calderas">Calderas</option>
+        <option value="aceite">Aceite</option>
+      </select>
       <button class="filter-reset" id="filterReset">Limpiar filtros</button>
     </div>
     <p class="filter-count" id="filterCount"></p>
@@ -1215,31 +1214,28 @@
     });
   }
 
-  ['paradigmFilters','sectorFilters'].forEach(function(id){
-    var group = document.getElementById(id);
-    var key = group.getAttribute('data-filter');
-    group.querySelectorAll('.chip').forEach(function(chip){
-      chip.addEventListener('click', function(){
-        var val = chip.getAttribute('data-value');
-        if(active[key] === val){
-          active[key] = null;
-          chip.classList.remove('active');
-        } else {
-          active[key] = val;
-          group.querySelectorAll('.chip').forEach(function(c){ c.classList.remove('active'); });
-          chip.classList.add('active');
-        }
-        apply();
-      });
+  var paradigmSelect = document.getElementById('paradigmFilter');
+  var sectorSelect = document.getElementById('sectorFilter');
+  if(paradigmSelect){
+    paradigmSelect.addEventListener('change', function(){
+      active.paradigm = paradigmSelect.value || null;
+      apply();
     });
-  });
+  }
+  if(sectorSelect){
+    sectorSelect.addEventListener('change', function(){
+      active.sector = sectorSelect.value || null;
+      apply();
+    });
+  }
 
   document.getElementById('filterReset').addEventListener('click', function(){
     active.paradigm = null;
     active.sector = null;
     active.text = '';
     if(searchInput) searchInput.value = '';
-    document.querySelectorAll('.chip').forEach(function(c){ c.classList.remove('active'); });
+    if(paradigmSelect) paradigmSelect.value = '';
+    if(sectorSelect) sectorSelect.value = '';
     cards.forEach(function(card){
       if(card.classList.contains('is-open')) closeRow(card);
     });
