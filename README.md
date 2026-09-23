@@ -103,7 +103,7 @@ Es un sitio estático, sin backend ni build step: también puedes clonar el repo
 
 ¿Tienes datos de tus propios equipos y quieres ver cómo se vería esto calibrado con tu información?
 
-- WhatsApp comunidad: https://chat.whatsapp.com/GvBz1tuUeNZ0xwTkjsuE3z
+- WhatsApp comunidad: https://chat.whatsapp.com/LhQKC6H8bW4Dk5fCMV1AOY
 - WhatsApp directo (Miguel): https://wa.me/51997610310
 - YouTube: https://www.youtube.com/@miguelangelcayllahuaquispe998
 - LinkedIn empresa: https://www.linkedin.com/company/reliabilit-ia/
